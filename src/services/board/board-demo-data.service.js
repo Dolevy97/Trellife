@@ -5,9 +5,9 @@ export const boardDemoDataService = {
     createDemoBoards
 }
 
-function createDemoBoards(length = 20){
+function createDemoBoards(length = 20) {
     const boards = []
-    for (let i =0; i<length; i++){
+    for (let i = 0; i < length; i++) {
         boards.push(_createDemoBoard())
     }
     return boards
@@ -21,7 +21,7 @@ function _createDemoBoard() {
         archivedAt: getRandomIntInclusive(0, 9) < 3 ? _getRandomTimestamp() : null,
         createdBy: _getRandomMember(),
         style: {
-            backgroundImage: '',
+            backgroundImage: 'https://images.unsplash.com/photo-1480497490787-505ec076689f?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         },
         labels: _getRandomLabels(),
         members: _getRandomMembers(),
