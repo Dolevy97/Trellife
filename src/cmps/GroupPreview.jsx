@@ -16,9 +16,9 @@ export function GroupPreview({ group }) {
                 ))}
             </div>
             <footer className='group-preview-footer'>
-                <button className="add-card-button">
+                {/* <button className="add-card-button"> */}
                     <span className="add-icon">+</span> Add a card
-                </button>
+                {/* </button> */}
             </footer>
         </section>
     )
