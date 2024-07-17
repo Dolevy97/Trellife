@@ -6,27 +6,30 @@ import { Link } from 'react-router-dom'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { loadBoard, addBoardMsg } from '../store/actions/board.actions'
 
+import { GroupPreview } from "../cmps/GroupPreview.jsx"
 
 export function BoardDetails() {
-
-  const {boardId} = useParams()
+  const { boardId } = useParams()
   const board = useSelector(storeState => storeState.boardModule.board)
 
   useEffect(() => {
     loadBoard(boardId)
   }, [boardId])
 
-  
+  const groups = board?.groups || []
 
   return (
-    <section className="board-details">
+    <section className="group-list-container">
       <Link to="/board">Back to list</Link>
-      <h1>Board Details</h1>
-      {board && <div>
-        <pre> {JSON.stringify(board, null, 2)} </pre>
-      </div>
-      }
-
+      {board && (
+        <div className='group-container'>
+          
+          {groups.map(group => (
+            <GroupPreview key={group.id} group={group} />
+          ))}
+        
+        </div>
+      )}
     </section>
   )
 }
