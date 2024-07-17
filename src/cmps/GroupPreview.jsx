@@ -7,6 +7,9 @@ export function GroupPreview({ group }) {
         <section className="group-preview-container">
             <header className='group-preview-header'>
                 <span>{group.title}</span>
+                <div> <span> Collapse</span>
+                    <span> Dots</span>
+                </div>
             </header>
             <div className="group-preview-tasks">
                 {tasks.map(task => (
@@ -16,9 +19,9 @@ export function GroupPreview({ group }) {
                 ))}
             </div>
             <footer className='group-preview-footer'>
-                {/* <button className="add-card-button"> */}
-                    <span className="add-icon">+</span> Add a card
-                {/* </button> */}
+
+                <span className="add-icon">+Add a card</span>
+
             </footer>
         </section>
     )
