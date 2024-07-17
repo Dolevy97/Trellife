@@ -356,26 +356,6 @@ function _getRandomLabels() {
     return randomLabels;
 }
 
-// // Example usage
-// console.log(getRandomLabels());
-
-// function _getRandomLabel() {
-//     const labels = [
-//         'Code Review',
-//         'Bug Fix',
-//         'Feature Add',
-//         'Refactor',
-//         'Testing',
-//         'Documentation',
-//         'Design',
-//         'Meeting',
-//         'Planning',
-//         'Deployment'
-//     ];
-
-//     return labels[Math.floor(Math.random() * labels.length)];
-// }
-
 function _getRandomFullName() {
     const firstNames = ['John', 'Emma', 'Michael', 'Sophia', 'William', 'Olivia', 'James', 'Ava', 'Robert', 'Isabella'];
     const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez'];
