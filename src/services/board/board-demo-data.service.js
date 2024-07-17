@@ -57,7 +57,12 @@ function _getRandomActivityTask(board) {
 
 function _getRandomActivityGroup(board) {
     const groups = board.groups
-    return { id, title } = groups[getRandomIntInclusive(0, groups.length - 1)]
+    const randGroup = groups[getRandomIntInclusive(0, groups.length - 1)]
+    const activityGroup = {
+        id : randGroup.id,
+        title : randGroup.title
+    }
+    return activityGroup
 }
 
 function _getRandomActivityMember(board) {
