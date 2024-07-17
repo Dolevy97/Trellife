@@ -1,13 +1,13 @@
 .board-index {
-    font-size: 1.111em;
     width: 100vw;
 
     header {
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
-        height: 6.889em;
+        height: 7.75em;
         width: 91.4vw;
+        max-width: 850px;
         margin-inline: auto;
         padding: 32px;
 
@@ -53,7 +53,7 @@
 
 h2 {
     margin: 0;
-    font-size: 1.11em;
+    font-size: 1.25em;
 }
 
 button {
@@ -61,7 +61,7 @@ button {
 }
 
 h3 {
-    font-size: 1.111em;
+    font-size: 1.25em;
     font-weight: 500;
 }
 
@@ -78,7 +78,7 @@ h3 {
         height: 60px;
         background: linear-gradient(#E774BB, #943D73);
         border-radius: 4px;
-        font-size: 1.944em;
+        font-size: 2.188em;
         font-weight: 700;
         color: #1D2125;
 
@@ -95,6 +95,8 @@ h3 {
 .board-main {
     padding: 32px;
     height: fit-content;
+    // width: 91vw;
+    margin: auto;
 
     .boards-header {
         font-size: 20px;

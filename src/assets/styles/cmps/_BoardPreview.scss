@@ -5,6 +5,9 @@
     max-width: 300.5px;
     height: 96px;
     margin-inline-end: 1em;
+    margin-block: 1.7em;
+
+    flex: 1 1 calc(30vw - 1em);
 
     .board-preview-wrapper {
         position: relative;
@@ -41,6 +44,7 @@
         top: .5em;
         left: .5em;
         color: white;
+        font-size: 1rem;
     }
 }
 
@@ -48,7 +52,6 @@
     display: flex;
     justify-content: flex-end;
     margin: 8px 0;
-    padding: 0 20px;
 
     .btn-add-to-collection {
         display: flex;
