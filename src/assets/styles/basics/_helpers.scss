@@ -10,7 +10,6 @@
 // flex helpers
 
 .flex {
-
     display: flex;
 
     > *.full {
@@ -37,4 +36,9 @@
 }
 .portrait-ratio {
     @include aspect-ratio(9, 16);
+}
+
+//Clean List
+.clean-list{
+    list-style-type: none;
 }
