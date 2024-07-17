@@ -268,7 +268,7 @@ async function _createBoards() {
                                     createdAt: 1590999817436,
                                     byMember: {
                                         _id: 'u101',
-                                        fullname: 'Tal Tarablus',
+                                        fullname: 'Yoni Dolan',
                                         imgUrl: '',
                                     },
                                 },
@@ -308,7 +308,7 @@ async function _createBoards() {
                     createdAt: 154514,
                     byMember: {
                         _id: 'u101',
-                        fullname: 'Abi Abambi',
+                        fullname: 'Yonatan Hershko',
                         imgUrl: 'http://some-img',
                     },
                     group: {
