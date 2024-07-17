@@ -19,10 +19,11 @@ export function BoardIndex() {
     }, [filterBy])
 
     return (
-        <main className="index">
+        <main className="board-index">
             <header>
-                <h2>Boards</h2>
+                <div className="workspace-icon">T</div>
             </header>
+            <h2>Boards</h2>
             {/* <Filter filterBy={filterBy} setFilterBy={setFilterBy} /> */}
             <BoardList
                 boards={boards} />
