@@ -16,4 +16,10 @@
     button {
         margin-inline-end: 0;
     }
+    
+    .workspace-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(var(--ds-background-accent-magenta-bolder, #b22865), var(--ds-background-accent-magenta-subtle, #cd5a91));
+    }
 }
