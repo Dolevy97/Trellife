@@ -110,7 +110,7 @@ function _getRandomTask(board) {
         description: _getRandomTaskDescription(),
         checklists: _getRandomChecklists(),
         memberIds: _getRandomTaskMemberIds(board),
-        labelsIds: _getRandomTaskMemberIds(board),
+        labelsIds: _getRandomTaskLabels(board),
         byMember: _getRandomTaskMember(board),
         style: {
             backgroundColor: getRandomColor()
@@ -118,11 +118,11 @@ function _getRandomTask(board) {
     }
 }
 
-function _getRandomTaskMemberIds(board) {
+function _getRandomTaskMember(board) {
     return board.members[getRandomIntInclusive(0, board.members.length - 1)]
 }
 
-function _getRandomTaskMemberIds(board) {
+function _getRandomTaskLabels(board) {
     const boardLabelids = board.labels.map(label => label.id)
     const taskLabelIds = []
     const length = getRandomIntInclusive(0, boardLabelids.length)
