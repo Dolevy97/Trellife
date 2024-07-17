@@ -1,4 +1,7 @@
 .board-list {
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;    
+
+    width: 93.6vw;
 }
