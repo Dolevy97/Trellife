@@ -16,15 +16,7 @@ export function BoardDetails() {
     loadBoard(boardId)
   }, [boardId])
 
-  async function onAddBoardMsg(boardId) {
-    try {
-        await addBoardMsg(boardId, 'bla bla ' + parseInt(Math.random()*10))
-        showSuccessMsg(`Board msg added`)
-    } catch (err) {
-        showErrorMsg('Cannot add board msg')
-    }        
-
-}
+  
 
   return (
     <section className="board-details">
@@ -34,7 +26,6 @@ export function BoardDetails() {
         <pre> {JSON.stringify(board, null, 2)} </pre>
       </div>
       }
-      <button onClick={() => { onAddBoardMsg(board._id) }}>Add board msg</button>
 
     </section>
   )
