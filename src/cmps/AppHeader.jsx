@@ -11,6 +11,7 @@ export function AppHeader() {
 				<NavLink to="/" className="logo">
 					E2E Demo
 				</NavLink>
+				<Link to={'/board'}>Board</Link>
 			</nav>
 		</header>
 	)
