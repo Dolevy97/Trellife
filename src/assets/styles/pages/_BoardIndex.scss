@@ -1,25 +1,103 @@
 .board-index {
+    font-size: 1.111em;
+    width: 100vw;
+
     header {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
         height: 6.889em;
-        width: 88.2vw;
+        width: 91.4vw;
         margin-inline: auto;
-    }
+        padding: 32px;
 
-    h2 {
-        margin: 0;
-        font-size: 1.11em;
-    }
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-    button {
-        margin-inline-end: 0;
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 20px;
+            padding: 6px 12px;
+            border-radius: 3px;
+            font-weight: 500;
+            transition-property: background-color, border-color, box-shadow;
+            transition-duration: 85ms;
+            transition-timing-function: ease;
+            background-color: #579DFF;
+            color: $bgclr1;
+
+            &:hover {
+                background-color: #85B8FF;
+            }
+
+            .invite-icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding-inline-end: 8px;
+            }
+        }
     }
-    
+}
+
+
+.horizontal-rule {
+    margin: auto;
+    width: 92.5%;
+    border-color: #A6C5E229;
+    height: 1px;
+}
+
+
+h2 {
+    margin: 0;
+    font-size: 1.11em;
+}
+
+button {
+    margin-inline-end: 0;
+}
+
+h3 {
+    font-size: 1.111em;
+    font-weight: 500;
+}
+
+.workspace {
+    display: flex;
+    align-items: center;
+
     .workspace-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
         width: 60px;
         height: 60px;
-        background: linear-gradient(var(--ds-background-accent-magenta-bolder, #b22865), var(--ds-background-accent-magenta-subtle, #cd5a91));
+        background: linear-gradient(#E774BB, #943D73);
+        border-radius: 4px;
+        font-size: 1.944em;
+        font-weight: 700;
+        color: #1D2125;
+
+        margin-inline-end: 10px;
+    }
+
+    h3 {
+        margin: 0;
+        padding: 0;
+    }
+
+}
+
+.board-main {
+    padding: 32px;
+    height: fit-content;
+
+    .boards-header {
+        font-size: 20px;
+        margin-block-end: 30px;
     }
 }
