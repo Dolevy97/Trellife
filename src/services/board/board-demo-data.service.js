@@ -1,66 +1,244 @@
-import { getRandomIntInclusive, makeId } from "../util.service";
+import { getRandomColor, getRandomIntInclusive, makeId } from "../util.service";
 
 
 export const boardDemoDataService = {
     createDemoBoards
 }
 
+function createDemoBoards(length = 20){
+    const boards = []
+    for (let i =0; i<length; i++){
+        boards.push(_createDemoBoard())
+    }
+    return boards
+}
+
 function _createDemoBoard() {
     const board = {
         _id: makeId(),
-        title: _generateProjectTitle(),
+        title: _getProjectTitle(),
         isStarred: getRandomIntInclusive(0, 9) < 3 ? true : false,
-        archivedAt: getRandomIntInclusive(0, 9) < 3 ? _generateRandomTimestamp() : null,
-        createdBy: _generateRandomMember(),
+        archivedAt: getRandomIntInclusive(0, 9) < 3 ? _getRandomTimestamp() : null,
+        createdBy: _getRandomMember(),
         style: {
             backgroundImage: '',
         },
-        labels: _generateRandomLabels(),
+        labels: _getRandomLabels(),
         members: _getRandomMembers(),
-        groups: _getRandomGroups(),
+    }
+    board.groups = _getRandomGroups(board),
+        board.activities = _getRandomActivities(board)
+}
+
+function _getRandomActivities(board) {
+    const length = getRandomIntInclusive(10, 50)
+    const activities = []
+    for (let i = 0; i < 50; i++) {
+        const activity = _getRandomActivity(board)
+        activities.push(activity)
     }
 }
 
-function _getRandomGroups() {
+function _getRandomActivity(board) {
+    return {
+        id: 'a' + makeId(),
+        title: _getRandomActivityTitle(),
+        byMember: _getRandomActivityMember(board),
+        group: _getRandomActivityGroup(board),
+        task: _getRandomActivityTask(board)
+    }
+}
+
+function _getRandomActivityTask(board) {
+    const tasks = board.tasks
+    return { id, title } = tasks[getRandomIntInclusive(0, tasks.length - 1)]
+}
+
+
+function _getRandomActivityGroup(board) {
+    const groups = board.groups
+    return { id, title } = groups[getRandomIntInclusive(0, groups.length - 1)]
+}
+
+function _getRandomActivityMember(board) {
+    const members = board.members
+    return members[getRandomIntInclusive(0, members.length - 1)]
+}
+
+function _getRandomActivityTitle() {
+    const activities = ['add task', 'change cover', 'add comment']
+    return activities[getRandomIntInclusive(0, activities.length - 1)]
+}
+
+function _getRandomGroups(board) {
     const length = getRandomIntInclusive(2, 10)
     const groups = []
     for (let i = 0; i < length; i++) {
-        const group = _getRandomGroup()
+        const group = _getRandomGroup(board)
         groups.push(group)
         break
     }
     return groups
 }
 
-function _getRandomGroup() {
+function _getRandomGroup(board) {
     const group = {
         id: 'g' + makeId(),
         title: 'Group' + getRandomIntInclusive(1, 99),
-        archivedAt: getRandomIntInclusive(0, 9) < 3 ? _generateRandomTimestamp() : null,
-        tasks: _generateRandomTasks(),
-
+        archivedAt: getRandomIntInclusive(0, 9) < 3 ? _getRandomTimestamp() : null,
+        tasks: _getRandomTasks(board),
+        style: {}
     }
 }
 
-function _generateRandomTasks() {
+function _getRandomTasks(board) {
     const length = getRandomIntInclusive(2, 20)
     const tasks = []
     for (let i = 0; i < length; i++) {
-        tasks.push(_generateRandomTask())
+        tasks.push(_getRandomTask(board))
     }
     return tasks
 }
 
-function _generateRandomTask() {
+function _getRandomTask(board) {
     return {
         id: 't' + makeId(),
-        title: _generateRandomTaskName(),
+        title: _getRandomTaskName(),
         status: _getRandomTaskStatus(),
         priority: _getRandomPriority(),
         dueDate: _getRandomDueDate(),
         description: _getRandomTaskDescription(),
-        
+        checklists: _getRandomChecklists(),
+        memberIds: _getRandomTaskMemberIds(board),
+        labelsIds: _getRandomTaskMemberIds(board),
+        byMember: _getRandomTaskMember(board),
+        style: {
+            backgroundColor: getRandomColor()
+        }
     }
+}
+
+function _getRandomTaskMemberIds(board) {
+    return board.members[getRandomIntInclusive(0, board.members.length - 1)]
+}
+
+function _getRandomTaskMemberIds(board) {
+    const boardLabelids = board.labels.map(label => label.id)
+    const taskLabelIds = []
+    const length = getRandomIntInclusive(0, boardLabelids.length)
+    for (let i = 0; i < length; i++) {
+        const id = boardLabelids.splice(getRandomIntInclusive(0, boardLabelids.length - 1), 1)[0]
+        taskLabelIds.push(id)
+    }
+    return taskLabelIds
+}
+
+function _getRandomTaskMemberIds(board) {
+    const boardMemberids = board.members.map(member => member.id)
+    const taskMemberIds = []
+    const length = getRandomIntInclusive(0, boardMemberids.length)
+    for (let i = 0; i < length; i++) {
+        const id = boardMemberids.splice(getRandomIntInclusive(0, boardMemberids.length - 1), 1)[0]
+        taskMemberIds.push(id)
+    }
+    return taskMemberIds
+}
+
+function _getRandomChecklists() {
+    const length = getRandomIntInclusive(4, 10)
+    const checklists = []
+    for (let i = 0; i < length; i++) {
+        const checklist = _getRandomChecklist()
+        checklists.push(checklist)
+        break
+    }
+    return checklists
+}
+
+function _getRandomChecklist() {
+    return {
+        id: 'cl' + makeId(),
+        title: _getRandomChecklistTitle(),
+        todos: _getRandomTodos(),
+    }
+}
+
+function _getRandomTodos() {
+    const length = getRandomIntInclusive(2, 10)
+    const todos = []
+    for (let i = 0; i < length; i++) {
+        const todo = _getRandomTodo()
+        todos.push(todo)
+        break
+    }
+    return todos
+}
+
+function _getRandomTodo() {
+    return {
+        id: 'td' + makeId(),
+        title: getRandomTodoTitle(),
+        isDone: getRandomIntInclusive(0, 9) < 4 ? true : false
+    }
+}
+
+function getRandomTodoTitle() {
+    const titles = [
+        "Finish the financial report",
+        "Prepare the client presentation",
+        "Update project management software",
+        "Review marketing strategy",
+        "Schedule team meeting",
+        "Research market trends",
+        "Organize company event",
+        "Write a blog post",
+        "Develop new product feature",
+        "Conduct customer survey",
+        "Send monthly newsletter",
+        "Analyze sales data",
+        "Draft business proposal",
+        "Test software update",
+        "Create social media posts",
+        "Coordinate design review",
+        "Analyze customer feedback",
+        "Create marketing plan",
+        "Review industry trends",
+        "Plan team-building event",
+        "Finalize project plan",
+        "Develop training program",
+        "Compile competitive analysis"
+    ];
+
+    const randomIndex = Math.floor(Math.random() * titles.length);
+    return titles[randomIndex];
+}
+
+function _getRandomChecklistTitle() {
+    const titles = [
+        "Daily Tasks",
+        "Project Milestones",
+        "Weekly Goals",
+        "Monthly Objectives",
+        "Team Meeting Agenda",
+        "Client Meeting Preparation",
+        "Marketing Campaign Plan",
+        "Product Launch Steps",
+        "Event Planning Checklist",
+        "Website Update Tasks",
+        "Sales Target Goals",
+        "Budget Review Checklist",
+        "Customer Feedback Follow-Up",
+        "New Employee Onboarding",
+        "Quality Assurance Tasks",
+        "Content Creation Plan",
+        "Social Media Strategy",
+        "Inventory Management",
+        "Supplier Coordination",
+        "Performance Review Preparation"
+    ];
+
+    const randomIndex = Math.floor(Math.random() * titles.length);
+    return titles[randomIndex];
 }
 
 function _getRandomTaskDescription() {
@@ -94,17 +272,14 @@ function _getRandomTaskDescription() {
     return descriptions[randomIndex];
 }
 
-// Example usage
-console.log(getRandomTaskDescription());
-
 function _getRandomDueDate() {
     const currentDate = new Date();
     const lastWeek = new Date(currentDate);
     lastWeek.setDate(lastWeek.getDate() - 7);
-    
+
     const nextMonth = new Date(currentDate);
     nextMonth.setMonth(nextMonth.getMonth() + 1);
-    
+
     const randomTimestamp = Math.floor(
         lastWeek.getTime() + Math.random() * (nextMonth.getTime() - lastWeek.getTime())
     );
@@ -115,7 +290,7 @@ function _getRandomDueDate() {
 // Example usage
 console.log(getRandomDueDate());
 
-function _getRandomPriority(){
+function _getRandomPriority() {
     const randNum = getRandomIntInclusive(1, 3)
     if (randNum === 1) return 'high'
     if (randNum === 2) return 'medium'
@@ -129,7 +304,7 @@ function _getRandomTaskStatus() {
     return 'done'
 }
 
-function _generateRandomTaskName() {
+function _getRandomTaskName() {
     const verbs = ['Implement', 'Debug', 'Optimize', 'Refactor', 'Test', 'Design', 'Review', 'Update'];
     const nouns = ['Algorithm', 'Database', 'API', 'UI', 'Module', 'Function', 'Component', 'Framework'];
 
@@ -143,23 +318,23 @@ function _getRandomMembers() {
     const length = getRandomIntInclusive(2, 10)
     const members = []
     for (let i = 0; i < length; i++) {
-        const member = _generateRandomMember()
+        const member = _getRandomMember()
         members.push(member)
         break
     }
     return members
 }
 
-function _generateRandomMember() {
+function _getRandomMember() {
     const member = {
         _id: 'u' + makeId(),
-        fullname: _generateRandomFullName(),
+        fullname: _getRandomFullName(),
         imgUrl: ''
     }
     return member
 }
 
-function _generateRandomLabels() {
+function _getRandomLabels() {
     const labels = [
         'Important', 'Easy', 'Critical', 'Simple', 'Urgent', 'Straightforward', 'Essential',
         'Manageable', 'High Priority', 'Basic', 'Vital', 'Effortless', 'Significant',
@@ -182,7 +357,7 @@ function _generateRandomLabels() {
 }
 
 // // Example usage
-// console.log(generateRandomLabels());
+// console.log(getRandomLabels());
 
 // function _getRandomLabel() {
 //     const labels = [
@@ -201,7 +376,7 @@ function _generateRandomLabels() {
 //     return labels[Math.floor(Math.random() * labels.length)];
 // }
 
-function _generateRandomFullName() {
+function _getRandomFullName() {
     const firstNames = ['John', 'Emma', 'Michael', 'Sophia', 'William', 'Olivia', 'James', 'Ava', 'Robert', 'Isabella'];
     const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez'];
 
@@ -211,7 +386,7 @@ function _generateRandomFullName() {
     return `${randomFirstName} ${randomLastName}`;
 }
 
-function _generateRandomTimestamp() {
+function _getRandomTimestamp() {
     const now = new Date();
     const twoYearsAgo = new Date(now.getFullYear() - 2, now.getMonth(), now.getDate());
 
@@ -224,7 +399,7 @@ function _generateRandomTimestamp() {
 
 
 
-function _generateProjectTitle() {
+function _getProjectTitle() {
     const adjectives = ['Innovative', 'Dynamic', 'Advanced', 'Intelligent', 'Sustainable', 'Futuristic', 'Efficient', 'Streamlined'];
     const nouns = ['Solution', 'System', 'Platform', 'Framework', 'Application', 'Network', 'Interface', 'Engine'];
     const domains = ['AI', 'IoT', 'Blockchain', 'Cloud', 'Data', 'Security', 'Mobile', 'Web'];
