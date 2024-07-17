@@ -288,7 +288,7 @@ function _getRandomDueDate() {
 }
 
 // Example usage
-console.log(getRandomDueDate());
+// console.log(getRandomDueDate());
 
 function _getRandomPriority() {
     const randNum = getRandomIntInclusive(1, 3)
