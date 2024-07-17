@@ -34,7 +34,7 @@ export function BoardIndex() {
 
             <section className="board-main">
                 <h2 className='boards-header'>Boards</h2>
-                {/* <Filter filterBy={filterBy} setFilterBy={setFilterBy} /> */}
+                <Filter filterBy={filterBy} setFilterBy={setFilterBy} />
                 <BoardList
                     boards={boards} />
             </section>
