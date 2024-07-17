@@ -26,43 +26,54 @@ function _createDemoBoard() {
         labels: _getRandomLabels(),
         members: _getRandomMembers(),
     }
-    board.groups = _getRandomGroups(board),
-        board.activities = _getRandomActivities(board)
+
+    board.groups = _getRandomGroups(board)
+    board.activities = _getRandomActivities(board)
+    return board
 }
 
 function _getRandomActivities(board) {
     const length = getRandomIntInclusive(10, 50)
     const activities = []
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < length; i++) {
         const activity = _getRandomActivity(board)
         activities.push(activity)
     }
+    return activities
 }
 
 function _getRandomActivity(board) {
-    return {
+    const activity = {
         id: 'a' + makeId(),
         title: _getRandomActivityTitle(),
         byMember: _getRandomActivityMember(board),
         group: _getRandomActivityGroup(board),
-        task: _getRandomActivityTask(board)
+        // task: _getRandomActivityTask(board)
     }
+    activity.task = _getRandomActivityTask(activity.group)
+    activity.group = { id: activity.group.id, title: activity.group.title }
+    return activity
 }
 
-function _getRandomActivityTask(board) {
-    const tasks = board.tasks
-    return { id, title } = tasks[getRandomIntInclusive(0, tasks.length - 1)]
+function _getRandomActivityTask(group) {
+    const tasks = group.tasks
+    const randTask = tasks[getRandomIntInclusive(0, tasks.length - 1)]
+    const task = {
+        id: randTask.id,
+        title: randTask.title
+    }
+    return task
 }
 
 
 function _getRandomActivityGroup(board) {
     const groups = board.groups
     const randGroup = groups[getRandomIntInclusive(0, groups.length - 1)]
-    const activityGroup = {
-        id : randGroup.id,
-        title : randGroup.title
-    }
-    return activityGroup
+    // const activityGroup = {
+    //     id: randGroup.id,
+    //     title: randGroup.title
+    // }
+    return randGroup
 }
 
 function _getRandomActivityMember(board) {
@@ -81,7 +92,6 @@ function _getRandomGroups(board) {
     for (let i = 0; i < length; i++) {
         const group = _getRandomGroup(board)
         groups.push(group)
-        break
     }
     return groups
 }
@@ -94,6 +104,7 @@ function _getRandomGroup(board) {
         tasks: _getRandomTasks(board),
         style: {}
     }
+    return group
 }
 
 function _getRandomTasks(board) {
@@ -292,9 +303,6 @@ function _getRandomDueDate() {
     return randomTimestamp;
 }
 
-// Example usage
-console.log(getRandomDueDate());
-
 function _getRandomPriority() {
     const randNum = getRandomIntInclusive(1, 3)
     if (randNum === 1) return 'high'
@@ -375,14 +383,10 @@ function _getRandomTimestamp() {
     const now = new Date();
     const twoYearsAgo = new Date(now.getFullYear() - 2, now.getMonth(), now.getDate());
 
-    const randomTimestamp = new Date(
-        twoYearsAgo.getTime() + Math.random() * (now.getTime() - twoYearsAgo.getTime())
-    );
+    const randomTimestamp = twoYearsAgo.getTime() + Math.random() * (now.getTime() - twoYearsAgo.getTime());
 
-    return randomTimestamp;
+    return Math.floor(randomTimestamp);
 }
-
-
 
 function _getProjectTitle() {
     const adjectives = ['Innovative', 'Dynamic', 'Advanced', 'Intelligent', 'Sustainable', 'Futuristic', 'Efficient', 'Streamlined'];
@@ -395,4 +399,3 @@ function _getProjectTitle() {
 
     return `${randomAdjective} ${randomDomain} ${randomNoun}`;
 }
-
