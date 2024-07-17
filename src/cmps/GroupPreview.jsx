@@ -8,15 +8,17 @@ export function GroupPreview({ group }) {
             <header className='group-preview-header'>
                 <span>{group.title}</span>
             </header>
-
-            {tasks.map(task => (
-                <div key={task.id} className="group-preview-tasks">
-                    <span>{task.title}</span>
-                </div>
-            ))}
-
+            <div className="group-preview-tasks">
+                {tasks.map(task => (
+                    <div key={task.id} className="tasks-container">
+                        <span>{task.title}</span>
+                    </div>
+                ))}
+            </div>
             <footer className='group-preview-footer'>
-                <span>Add a card</span>
+                <button className="add-card-button">
+                    <span className="add-icon">+</span> Add a card
+                </button>
             </footer>
         </section>
     )
