@@ -7,11 +7,11 @@ export function BoardList({ boards }) {
     return <section>
         <section className="board-list">
             <article className='board-preview'>
-                <Outlet />
                 <div className='board-preview-wrapper'>
                     <div className='board-preview-img'>
                         <Link to='/board/add' >
                             <article className='create-new-board'>
+                                <Outlet />
                                 <p>Create new board</p>
                             </article>
                         </Link>
