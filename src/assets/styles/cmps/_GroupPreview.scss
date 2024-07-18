@@ -13,7 +13,7 @@
         justify-content: space-between;
         padding: 9px 4px;
         margin: 4px 4px 0;
-    
+
         input {
             border: none;
             outline: none;
@@ -23,29 +23,29 @@
             font-size: 14px;
             color: $textclr2;
             width: 77%;
-            height: 33px; 
+            height: 33px;
             margin: 0;
-            padding: 9px 6px; 
+            padding: 9px 6px;
             overflow: hidden;
             border-radius: 8px;
             background-color: #23262a;
             cursor: pointer;
             border: 2px solid #86b6f4;
-           
+
         }
-    
+
         span {
             font-weight: 600;
             font-size: 14px;
             color: $textclr2;
             width: 77%;
-            height: 40px; 
+            height: 40px;
             display: flex;
             align-items: center;
-            padding: 9px 8px; 
+            padding: 9px 8px;
             cursor: pointer;
         }
-    
+
         div {
             display: flex;
             gap: 8px;
@@ -72,38 +72,36 @@
             border-radius: 8px;
             box-shadow: 0 1px 0 rgba(9, 30, 66, .25);
             padding: 6px 8px;
-            height: 36px;
+            min-height: 36px;
             display: flex;
-            align-items: center;
+        
             border: 2px solid transparent;
-
+            
             &:hover {
                 border-color: #86b6f4;
                 cursor: pointer;
             }
-
+            
             .task-links {
                 text-decoration: none;
                 color: $textclr2;
-
+                display: flex; 
             }
-
-
+            
             .task-preview {
                 display: flex;
-                align-content: center;
-                align-items: center;
-
+                flex-direction: column;
+                justify-content: center; 
+                width: 100%; 
+                padding: 6px 0px;
                 span {
                     font-size: 14px;
                     font-weight: 400;
                     color: $textclr2;
                     word-wrap: break-word;
-                    // line-height: 20px;
                     width: 100%;
-                    white-space: nowrap;
-                    // overflow: hidden;
-                    // text-overflow: ellipsis;
+                    
+                   
                 }
             }
         }

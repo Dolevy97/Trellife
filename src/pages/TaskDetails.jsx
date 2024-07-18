@@ -102,7 +102,7 @@ export function TaskDetails() {
                         <div className="members-img-container">
                             {membersIds.map(id => {
                                 const member = getMemberById(id)
-                                return <img key={member._id} className="member-thumbnail" src='../../../src/assets/imgs/user-img1.jpg' />
+                                return <img key={member._id} className="member-thumbnail" src='../../../src/assets/imgs/user-img1.jpg' title={member.fullname} />
                             }
                             )}
                         </div>
