@@ -1,14 +1,10 @@
 .board-filter {
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
+    flex-wrap: wrap;
 
-    // width: 90vw;
-    max-width: 1266px;
-
-    padding: 20px 0 8px .5em;
-
-    margin: auto;
+    max-width: 1250px;
+    padding: 20px 8px 8px;
 
     label {
         font-size: 0.75em;

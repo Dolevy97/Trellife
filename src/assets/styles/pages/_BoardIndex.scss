@@ -94,9 +94,8 @@ h3 {
 
 .board-main {
     padding: 32px;
-    height: fit-content;
-    // width: 91vw;
-    margin: auto;
+    margin: 0 auto;
+    max-width: 95%;
 
     .boards-header {
         font-size: 20px;
