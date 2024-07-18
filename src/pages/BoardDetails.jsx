@@ -53,7 +53,6 @@ export function BoardDetails() {
         </div>
       </header>
       <section className="group-list-container">
-        <Link className='back-to-boardlist-link' to="/board">Back to list</Link>
         {board && (
           <div className='group-container'>
             {groups.map(group => (

@@ -18,10 +18,6 @@ export function BoardIndex() {
         loadBoards(filterBy)
     }, [filterBy])
 
-    function onTest() {
-        console.log('test')
-    }
-
     return (
         <main className="board-index">
             <header>
