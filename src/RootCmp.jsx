@@ -26,7 +26,7 @@ export function RootCmp() {
                         <Route path="vision" element={<AboutVision />} />
                     </Route>
                     <Route path="board" element={<BoardIndex />} />
-                    <Route path="board/:boardId" element={<BoardDetails />} >
+                    <Route path="board/:boardId/" element={<BoardDetails />} >
                         <Route path=":groupId/:taskId" element={<TaskDetails />} />
                     </Route>
                 </Routes>
