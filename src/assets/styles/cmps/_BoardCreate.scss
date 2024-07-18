@@ -10,6 +10,11 @@
 
     padding: 12px;
 
+    &.from-header {
+        top: 48px;
+        right: -248px;
+    }
+
 
     .preview-container {
         display: flex;
@@ -52,6 +57,7 @@
             line-height: 40px;
             text-overflow: ellipsis;
             white-space: nowrap;
+            color: $txtclr1;
         }
     }
 
@@ -126,6 +132,7 @@
 
         font-weight: 600;
         font-family: inherit;
+        
 
         &:hover {
             cursor: pointer;

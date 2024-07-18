@@ -2,10 +2,12 @@ import { Link, NavLink } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { useEffect, useState } from 'react'
 import { DropdownMenu } from './DropdownMenu'
+import { BoardCreate } from './BoardCreate'
 
 export function AppHeader() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 	const [menuToOpen, setMenuToOpen] = useState(null)
+	const [isAdding, setIsAdding] = useState(false)
 
 	const navigate = useNavigate()
 
@@ -52,6 +54,10 @@ export function AppHeader() {
 						<p className='header-link-text' title='Templates'>Templates</p>
 						<img src="../src\assets\styles\imgs\Icones\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
 					</article>
+					<button onClick={() => { setIsAdding(true) }} className="btn-create">
+						Create
+					</button>
+					{isAdding && <BoardCreate setIsAdding={setIsAdding} />}
 				</section>
 			</div>
 			<nav>
