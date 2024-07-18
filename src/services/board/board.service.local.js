@@ -12,7 +12,6 @@ export const boardService = {
     getById,
     save,
     remove,
-    addBoardMsg
 }
 
 window.cs = boardService
@@ -20,7 +19,7 @@ window.cs = boardService
 
 async function query(filterBy = { name: '' }) {
     var boards = await storageService.query(STORAGE_KEY)
-
+    boards = _filter(boards, filterBy)
     return boards
 }
 
@@ -48,20 +47,6 @@ async function save(board) {
         savedBoard = await storageService.post(STORAGE_KEY, boardToSave)
     }
     return savedBoard
-}
-
-async function addBoardMsg(boardId, txt) {
-    // Later, this is all done by the backend
-    const board = await getById(boardId)
-
-    const msg = {
-        id: makeId(),
-        txt
-    }
-    board.msgs.push(msg)
-    await storageService.put(STORAGE_KEY, board)
-
-    return msg
 }
 
 async function _createBoards() {
@@ -329,4 +314,12 @@ async function _createBoards() {
     // ]
     boards = boardDemoDataService.createDemoBoards()
     saveToStorage(STORAGE_KEY, boards)
+}
+
+function _filter(boards, filterBy) {
+    if (filterBy.title) {
+        const regex = new RegExp(filterBy.title, 'i')
+        boards = boards.filter(board => regex.test(board.title))
+    }
+    return boards
 }
