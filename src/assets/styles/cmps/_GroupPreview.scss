@@ -56,15 +56,21 @@
                 cursor: pointer;
             }
 
-            span {
-                font-size: 14px;
-                // color: #b6c2cf;
-                word-wrap: break-word;
-                line-height: 20px;
-                width: 100%;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
+            .task-details {
+                display: flex;
+                align-content: center;
+                align-items: center;
+                span {
+                    font-size: 14px;
+                    font-weight: 400;
+                    // color: #b6c2cf;
+                    word-wrap: break-word;
+                    // line-height: 20px;
+                    width: 100%;
+                    white-space: nowrap;
+                    // overflow: hidden;
+                    // text-overflow: ellipsis;
+                }
             }
         }
     }
@@ -86,6 +92,7 @@
             // transition: background-color 0.2s ease;
             padding: 6px 8px;
             font-weight: 600;
+
             &:hover {
                 color: #ffffff;
                 background-color: rgba(255, 255, 255, 0.1);

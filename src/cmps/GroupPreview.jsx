@@ -1,6 +1,7 @@
 
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 
-export function GroupPreview({ group }) {
+export function GroupPreview({ group, boardId }) {
     const tasks = group?.tasks || []
 
     return (
@@ -14,15 +15,18 @@ export function GroupPreview({ group }) {
             <div className="group-preview-tasks">
                 {tasks.map(task => (
                     <div key={task.id} className="tasks-container">
-                        <span>{task.title}</span>
+                        <Link key={task.id} replace to={`/board/${boardId}/${group.id}/${task.id}`}>
+                            <div className='task-details'>
+                                <span>{task.title}</span>
+                            </div>
+                        </Link>
                     </div>
                 ))}
             </div>
             <footer className='group-preview-footer'>
-
                 <span className="add-icon">+Add a card</span>
-
             </footer>
+           
         </section>
     )
 }
