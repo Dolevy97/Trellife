@@ -1,9 +1,30 @@
+import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router"
 
-export function DropdownMenu({ menu, setIsMenuOpen }) {
+export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen }) {
     const boards = useSelector(storeState => storeState.boardModule.boards)
     const navigate = useNavigate()
+	const dropdownRef = useRef(null);
+
+
+    function handleClickOutside(event) {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            setIsMenuOpen(false)
+        }
+    }
+
+    useEffect(() => {
+        if (isMenuOpen) {
+            document.addEventListener('mousedown', handleClickOutside)
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [isMenuOpen])
+
 
     function renderMenuContent() {
         switch (menu) {
@@ -62,7 +83,7 @@ export function DropdownMenu({ menu, setIsMenuOpen }) {
         }
     }
     return (
-        <div className={`dropdown-menu ${menu}`}>
+        <div className={`dropdown-menu ${menu}`} ref={dropdownRef}>
             {renderMenuContent()}
         </div>
     )
