@@ -15,8 +15,8 @@ export function GroupPreview({ group, boardId }) {
             <div className="group-preview-tasks">
                 {tasks.map(task => (
                     <div key={task.id} className="tasks-container">
-                        <Link key={task.id} replace to={`/board/${boardId}/${group.id}/${task.id}`}>
-                            <div className='task-details'>
+                        <Link className='task-links' key={task.id} replace to={`/board/${boardId}/${group.id}/${task.id}`}>
+                            <div className='task-preview'>
                                 <span>{task.title}</span>
                             </div>
                         </Link>

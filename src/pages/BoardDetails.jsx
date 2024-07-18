@@ -17,21 +17,34 @@ export function BoardDetails() {
   }, [boardId])
 
   const groups = board?.groups || []
-
+if (!board) return
   return (
-    <section className="group-list-container">
-      <Link to="/board">Back to list</Link>
-      {board && (
-        <div className='group-container'>
-          {groups.map(group => (
-            <GroupPreview key={group.id} boardId={boardId} group={group} />
-          ))}
+    <section>
+      <header className='groups-header'>
+        <div className='groups-header-leftside'>
+          <span className='groups-header-logo'> {board.title}</span>
+        <span>star</span>
+        </div>
+        <div className='groups-header-rightside'>
 
         </div>
-      )}
+      </header>
+      <section className="group-list-container">
+        <Link className='back-to-boardlist-link' to="/board">Back to list</Link>
+        {board && (
+          <div className='group-container'>
+            {groups.map(group => (
+              <GroupPreview key={group.id} boardId={boardId} group={group} />
+            ))}
+            <div className='add-group'>
+              <span> + Add anothe list </span>
+            </div>
+          </div>
+        )}
 
-      <Outlet />
+        <Outlet />
 
+      </section>
     </section>
   )
 }

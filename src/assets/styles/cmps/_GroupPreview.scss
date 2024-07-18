@@ -4,7 +4,7 @@
     width: 272px;
     display: flex;
     flex-direction: column;
-    max-height: calc(100vh - 40px);
+    max-height: calc(100vh - 201px);
 
     .group-preview-header {
         height: 40px;
@@ -56,10 +56,18 @@
                 cursor: pointer;
             }
 
-            .task-details {
+            .task-links {
+                text-decoration: none;
+                color: #b6c2cf;
+
+            }
+
+
+            .task-preview {
                 display: flex;
                 align-content: center;
                 align-items: center;
+
                 span {
                     font-size: 14px;
                     font-weight: 400;

@@ -1,16 +1,28 @@
 
-import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 
+import { useEffect } from 'react';
+import {useParams, useNavigate } from 'react-router-dom';
 
 export function TaskDetails() {
 
-    return (
-        <section className="TaskDetails-container">
-            {/* <h2><Link to={`/board/${board._id}`}> T</Link></h2> */}
+    const navigate = useNavigate()
+    const { taskId, groupId, boardId } = useParams()
 
-            <h1>Test</h1>
-        </section >
+    useEffect(()=>{
+        // loadTask()
+    },[])
+
+    function onBack(){
+        navigate(`/board/${boardId}`, { replace: true })
+    }
+
+    return (
+        <div className="task-details-backdrop" onClick={onBack}>
+            <section className="task-details">
+        
+            </section>
+        </div >
     )
 }
 
