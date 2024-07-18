@@ -24,9 +24,7 @@ export function GroupPreview({ group ,boardId}) {
             <footer className='group-preview-footer'>
                 <span className="add-icon">+Add a card</span>
             </footer>
-            <section>
-            <Outlet />
-            </section>
+           
         </section>
     )
 }
