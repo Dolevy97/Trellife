@@ -4,8 +4,9 @@
     min-width: 152px;
     max-width: 300.5px;
     height: 96px;
-    margin-inline-end: 1em;
-    margin-block: 1.7em;
+    margin-block: 1.35em;
+
+    padding: 4px 8px;
 
     flex: 1 1 calc(30vw - 1em);
 
@@ -17,10 +18,13 @@
         border-radius: 3px;
 
         .board-preview-img {
+            position: relative;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            object-position: 50% 20%;
+            background-color: #A1BDD914;
+            background-position: 50% 60%;
+            background-size: cover;
+            text-decoration: none;
         }
 
         .overlay {
@@ -35,23 +39,23 @@
                 background-color: rgb(0 0 0 / 0.25);
             }
         }
-
-
     }
 
     .title {
         position: absolute;
-        top: .5em;
+        top: .2em;
         left: .5em;
         color: white;
         font-size: 1rem;
+
     }
+
 }
 
 .btn-container {
     display: flex;
     justify-content: flex-end;
-    margin: 8px 0;
+    margin-block: 3px 12px;
 
     .btn-add-to-collection {
         display: flex;

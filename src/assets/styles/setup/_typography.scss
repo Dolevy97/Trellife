@@ -1,35 +1,40 @@
-
+@font-face {
+  font-family: 'nunito regular';
+  src: url('../fonts/NunitoSans-Regular.ttf');
+}
 
 @font-face {
-    font-family: 'nunito regular';
-    src: url('../fonts/NunitoSans-Regular.ttf');
-  }
+  font-family: 'Segoe UI Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: url('../fonts/Segoe UI.woff') format('woff');
+}
 
-  @font-face {
-    font-family: 'Segoe UI Regular';
-    font-style: normal;
-    font-weight: normal;
-    src: url('../fonts/Segoe UI.woff') format('woff');
-  }
-  
 //   @font-face {
 //     font-family: 'Segoe UI Italic';
 //     font-style: normal;
 //     font-weight: normal;
 //     src: url('../fonts/Segoe UI Italiddc.woff') format('woff');
 //   }
-  
-  @font-face {
-    font-family: 'Segoe UI Bold';
-    font-style: normal;
-    font-weight: normal;
-    src: url('../fonts/Segoe UI Bold.woff') format('woff');
-  }
-  
-  @font-face {
-    font-family: 'Segoe UI Bold Italic';
-    font-style: normal;
-    font-weight: normal;
-    src: url('../fonts/Segoe UI Bold Italic.woff') format('woff');
-  }
-  
+
+@font-face {
+  font-family: 'Segoe UI Bold';
+  font-style: normal;
+  font-weight: normal;
+  src: url('../fonts/Segoe UI Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Segoe UI Bold Italic';
+  font-style: normal;
+  font-weight: normal;
+  src: url('../fonts/Segoe UI Bold Italic.woff') format('woff');
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24
+}
