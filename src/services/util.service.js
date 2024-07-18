@@ -60,3 +60,12 @@ export function loadFromStorage(key) {
     return (data) ? JSON.parse(data) : undefined
 }
 
+export function getRandomTimestamp() {
+    const now = new Date();
+    const twoYearsAgo = new Date(now.getFullYear() - 2, now.getMonth(), now.getDate());
+
+    const randomTimestamp = twoYearsAgo.getTime() + Math.random() * (now.getTime() - twoYearsAgo.getTime());
+
+    return Math.floor(randomTimestamp);
+}
+

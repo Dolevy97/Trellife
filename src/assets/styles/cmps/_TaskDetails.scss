@@ -1,19 +1,43 @@
+@mixin task-gtc {
+    display: grid;
+    grid-template-columns: auto minmax(auto, 512px) auto;
+    ;
+}
+
+// $gtc: auto minmax(auto,512px) auto;
+
 .task-details-backdrop {
     position: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.75);
     inset: 0;
     width: 100%;
     height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75);
     z-index: 2;
 
 
     .task-details {
-        border-radius: 8px;
+        @include task-gtc();
         min-height: 600px;
-        width: 100px;
+        min-width: 500px;
         background-color: rgb(50 57 64);
+        border-radius: 8px;
+        color: white;
+
+        .task-header {
+            @include task-gtc();
+            grid-column: 1/-1;
+            
+            .task-title{
+                grid-column: 2/3;
+            }
+        }
+
+        .task-description{
+            grid-column: 2/3;
+        }
+
     }
 }

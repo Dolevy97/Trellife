@@ -12,6 +12,7 @@ export const boardService = {
     getById,
     save,
     remove,
+    
 }
 
 window.cs = boardService
@@ -40,6 +41,9 @@ async function save(board) {
     }
     return board
 }
+
+
+
 
 async function _createBoards() {
     let boards = await loadFromStorage(STORAGE_KEY)

@@ -1,8 +1,36 @@
+import { useState, useEffect } from 'react'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
 
-import { Link, Outlet, useNavigate } from 'react-router-dom';
 
-export function GroupPreview({ group, boardId }) {
+import { boardService } from '../services/board/'
+import {updateBoard } from '../store/actions/board.actions'
+
+
+
+
+
+export function GroupPreview({ group, boardId, board, setBoard }) {
     const tasks = group?.tasks || []
+    const handleAddTask = async () => {
+        try {
+            const newTask = boardService.getEmptyTask()
+            const updatedGroup = {
+                ...group,
+                tasks: [...group.tasks, newTask]
+            }
+            const updatedGroups = board.groups.map(g => g.id === group.id ? updatedGroup : g)
+            const updatedBoard = {
+                ...board,
+                groups: updatedGroups
+            }
+            const savedBoard = await updateBoard(updatedBoard)
+            setBoard(savedBoard) 
+            // console.log(newTask);
+        } catch (err) {
+            console.error('Failed to add task:', err)
+        }
+    }
+    
 
     return (
         <section className="group-preview-container">
@@ -24,7 +52,7 @@ export function GroupPreview({ group, boardId }) {
                 ))}
             </div>
             <footer className='group-preview-footer'>
-                <span className="add-icon">+Add a card</span>
+                <span className="add-icon" onClick={handleAddTask}>+Add a card</span>
             </footer>
            
         </section>
