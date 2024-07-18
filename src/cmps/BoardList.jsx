@@ -9,9 +9,9 @@ export function BoardList({ boards }) {
             <article className='board-preview'>
                 <div className='board-preview-wrapper'>
                     <div className='board-preview-img'>
+                        <Outlet />
                         <Link to='/board/add' >
                             <article className='create-new-board'>
-                                <Outlet />
                                 <p>Create new board</p>
                             </article>
                         </Link>
