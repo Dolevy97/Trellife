@@ -46,7 +46,7 @@ export function BoardDetails() {
       <header className='groups-header'>
         <div className='groups-header-leftside'>
           <span className='groups-header-logo'> {board.title}</span>
-          <span>star</span>
+          <img src="../src\assets\styles\imgs\Icones\star.svg"/>
         </div>
         <div className='groups-header-rightside'>
 
