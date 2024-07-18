@@ -11,7 +11,8 @@ import {updateBoard } from '../store/actions/board.actions'
 
 export function GroupPreview({ group, boardId, board, setBoard }) {
     const tasks = group?.tasks || []
-    const handleAddTask = async () => {
+    
+    async function handleAddTask() {
         try {
             const newTask = boardService.getEmptyTask()
             const updatedGroup = {
