@@ -18,6 +18,7 @@ export function AppHeader() {
 		}
 	}
 
+
 	return (
 		<header className="app-header full">
 			<div className='flex'>
@@ -56,7 +57,7 @@ export function AppHeader() {
 			<nav>
 				<Link to={'/board'}>Board</Link>
 			</nav>
-			{isMenuOpen && <DropdownMenu menu={menuToOpen} setIsMenuOpen={setIsMenuOpen} />}
+			{isMenuOpen && <DropdownMenu menu={menuToOpen} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />}
 		</header>
 	)
 }

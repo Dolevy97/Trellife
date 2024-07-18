@@ -17,11 +17,15 @@
 
     .task-details {
         @include task-gtc();
-        min-height: 600px;
+        // min-height: 600px;
         min-width: 768px;
         background-color: rgb(50 57 64);
         border-radius: 8px;
         color: white;
+
+        & >*{
+            padding:0.5em;
+        }
 
         .task-header {
             @include task-gtc();
@@ -34,13 +38,10 @@
             }
         }
 
-     
-
         .members-labels-notifications-date-container {
             display: flex;
             gap: 1em;
             grid-column: 2/3;
-            padding:0.5em;
 
             .members-img-container {
                 display: flex;
@@ -62,7 +63,6 @@
             width: 512px;
             height: 100px;
             place-self: center;
-            padding:0.5em;
         }
 
         .activity-container{

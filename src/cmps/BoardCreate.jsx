@@ -18,22 +18,22 @@ export function BoardCreate() {
 
     function handleClickOutside(event) {
         if (boardCreateRef.current && !boardCreateRef.current.contains(event.target)) {
-            setIsBoardCreateOpen(false);
-            navigate('/board'); // Navigate to the main route or any other route you prefer
+            setIsBoardCreateOpen(false)
+            navigate('/board')
         }
-    };
+    }
 
     useEffect(() => {
         setIsBoardCreateOpen(true)
         if (isBoardCreateOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
+            document.addEventListener('mousedown', handleClickOutside)
         } else {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside)
         }
 
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
     }, [isBoardCreateOpen]);
 
     function onChooseBGColor({ target }) {

@@ -1,4 +1,4 @@
-import { updateBoard } from "./board.actions"
+import { loadBoard, updateBoard } from "./board.actions"
 
 export async function upadteTask(taskToEdit, groupId, group, board) {
 
@@ -18,6 +18,7 @@ export async function upadteTask(taskToEdit, groupId, group, board) {
 
     try {
         await updateBoard(boardToSave)
+        await loadBoard(boardToSave._id)
         console.log('Task updated')
     } catch (er) {
         console.log('err: ' + er)

@@ -10,10 +10,12 @@ import { AppHeader } from './cmps/AppHeader'
 import { UserMsg } from './cmps/UserMsg.jsx'
 import { TaskDetails } from './pages/TaskDetails.jsx'
 import { BoardCreate } from './cmps/BoardCreate.jsx'
+import { loadBoards } from './store/actions/board.actions.js'
 
 
 
 export function RootCmp() {
+    loadBoards() //For the header to from anywhere
     return (
         <div className="main-container">
             <AppHeader />
