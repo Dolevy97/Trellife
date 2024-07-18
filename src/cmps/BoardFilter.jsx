@@ -25,6 +25,11 @@ export function Filter({ filterBy, setFilterBy }) {
         setFilterToEdit({ ...filterToEdit, [field]: value })
     }
 
+    function onClearSearch() {
+        setFilterToEdit({ ...filterToEdit, title: '' })
+    }
+
+    const { title } = filterToEdit
 
     return (
         <section className="board-filter">
@@ -34,7 +39,11 @@ export function Filter({ filterBy, setFilterBy }) {
 
             <article className="search-filter-container">
                 <label className='long-label' htmlFor="search">Search</label>
-                <input type="text" name='title' id='search' />
+                <div className='input-container'>
+                    <span className="material-symbols-outlined search-icon">search</span>
+                    <input onChange={handleChange} value={title} type="text" name='title' id='search' placeholder='Search boards' />
+                    <button onClick={onClearSearch} className='btn-clear-search'><span className="material-symbols-outlined">x</span></button>
+                </div>
             </article>
         </section>
     )
