@@ -6,6 +6,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { boardService } from '../services/board';
 import { updateBoard } from '../store/actions/board.actions';
+import { upadteTask } from '../store/actions/task.actions';
+
+// import userImg from '../assets/imgs/user-img.JPG'
 
 export function TaskDetails() {
 
@@ -51,26 +54,8 @@ export function TaskDetails() {
 
     async function onSubmit(ev) {
         ev.preventDefault()
-
-        let tasks = group.tasks
-        tasks = tasks.map(task => {
-            if (task.id !== taskToEdit.id) return task
-            return taskToEdit
-        })
-
-
-        let groups = board.groups
-        groups = groups.map(group => {
-            if (group.id !== groupId) return group
-            return { ...group, tasks }
-        })
-
-
-        const boardToSave = {...board, groups}
-        
-       
         try {
-            await updateBoard(boardToSave)
+            upadteTask(taskToEdit, groupId, group, board)
             onBack()
         } catch (er) {
             console.log('err: ' + er)
@@ -90,19 +75,29 @@ export function TaskDetails() {
 
     if (!taskToEdit) return <section>Loading...</section>
 
-    const { title, description } = taskToEdit
+    const { title, description, members } = taskToEdit
 
     return (
         <div className="task-details-backdrop" onClick={onBack}>
             <form className="task-details" onSubmit={onSubmit} onClick={(ev) => ev.stopPropagation()}>
+
                 <header className="task-header">
                     <h2 className="task-title">{title}</h2>
                 </header>
-                <textarea className="task-description" onChange={handleChange} value={description} name="description">
+                
+                <textarea className="task-description" onChange={handleChange} value={description} name="description" />
 
-                </textarea>
+                <div className="members-labels-notifications-date-container">
+                    <div className="members-container">
+                        {members.map(member => <img key={member._id} className="member-thumbnail" src='../../../src/assets/imgs/user-img1.JPG' />
+                        )}
+                    </div>
+                </div>
+                
                 <button>Submit</button>
+
             </form>
+            {/* <pre>{JSON.stringify(taskToEdit,null,2)}</pre> */}
         </div >
     )
 }

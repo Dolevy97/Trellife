@@ -21,7 +21,7 @@
     .task-details {
         @include task-gtc();
         min-height: 600px;
-        min-width: 500px;
+        min-width: 768px;
         background-color: rgb(50 57 64);
         border-radius: 8px;
         color: white;
@@ -29,14 +29,35 @@
         .task-header {
             @include task-gtc();
             grid-column: 1/-1;
-            
-            .task-title{
+
+            .task-title {
                 grid-column: 2/3;
+                margin-inline-end: auto;
             }
         }
 
-        .task-description{
+        .task-description {
             grid-column: 2/3;
+            width: 512px;
+            height: 100px;
+            place-self: center;
+            padding:0.5em;
+        }
+
+        .members-labels-notifications-date-container {
+            grid-column: 2/3;
+            padding:0.5em;
+
+            .members-container {
+                display: flex;
+                gap:2px;
+                
+                .member-thumbnail {
+                    height: 2em;
+                    width: 2em;
+                    border-radius: 50%;
+                }
+            }
         }
 
     }
