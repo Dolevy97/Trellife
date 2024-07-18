@@ -7,10 +7,12 @@ export function AppHeader() {
 
 	return (
 		<header className="app-header full">
+			<NavLink to="/">
+				<div className='logo-wrapper'>
+					<div className='logo'></div>
+				</div>
+			</NavLink>
 			<nav>
-				<NavLink to="/" className="logo">
-					E2E Demo
-				</NavLink>
 				<Link to={'/board'}>Board</Link>
 			</nav>
 		</header>

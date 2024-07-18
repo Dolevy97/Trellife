@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom';
 
 export function BoardPreview({ board }) {
-    // console.log(board);
     return (
         <article className='board-preview'>
             <Link to={`/board/${board._id}`}>
-                <div className='board-preview-wrapper'>
+                <div className='board-preview-wrapper' title={board.title}>
                     <div
                         style={{ backgroundImage: `url(${board.style.backgroundImage})` }}
                         className='board-preview-img'

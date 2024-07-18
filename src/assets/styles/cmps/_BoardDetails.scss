@@ -1,23 +1,22 @@
 .group-list-container {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    background-color: #22272b;
-    min-height: 100vh;
-  
-    a {
-      text-decoration: none;
-      color: #b6c2cf;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #22272b;
+  min-height: 100vh;
+
+  .back-to-boardlist-link {
+    text-decoration: none;
+    color: #b6c2cf;
+    margin-bottom: 20px;
   }
-  
-  .group-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 272px);
-    gap: 12px;
-    padding-bottom: 20px;
-    // overflow-x: auto;
-    // padding: 0 6px;
-  }
+}
+
+.group-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 272px);
+  gap: 12px;
+  padding-bottom: 20px;
+  // overflow-x: auto;
+  // padding: 0 6px;
+}
