@@ -3,12 +3,10 @@
     flex-wrap: wrap;
     justify-content: space-between;
 
-    width: 89vw;
+    width: 90vw;
     max-width: 1250px;
 
-    margin: auto;
-
-    padding: 20px 0 8px;
+    padding: 20px 0 8px .5em;
 
     label {
         font-size: 0.75em;
@@ -24,6 +22,24 @@
 
     .long-label {
         width: 250px;
+    }
+}
+
+.sort-container {
+    display: flex;
+    flex-direction: column;
+
+    select {
+        padding: 8px .25em;
+        width: 250px;
+        box-shadow: inset 0 0 0 1px #738496;
+        color: #b6c2cf;
+        background-color: #22272b;
+        border-radius: 3px;
+        line-height: 20px;
+        font-family: inherit;
+        border: none;
+        outline: none;
     }
 }
 

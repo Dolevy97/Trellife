@@ -1,0 +1,82 @@
+.board-create {
+    position: absolute;
+    left: 300px;
+    top: 0;
+
+    width: 304px;
+    height: 602px;
+    // background-color: white;
+    background-color: #282d33;
+    border-radius: 8px;
+    z-index: 5;
+
+    .preview-container {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 8px;
+
+        .preview {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 120px;
+            border-radius: 3px;
+            background: none;
+            background-position: center center;
+            background-size: cover;
+            box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
+        }
+    }
+
+    .create-header {
+        display: grid;
+        position: relative;
+        grid-template-columns: 32px 1fr 32px;
+        align-items: center;
+        padding: 4px 8px;
+        text-align: center;
+
+        h1 {
+            position: relative;
+            grid-column: 1 / span 3;
+            grid-row: 1;
+            height: 40px;
+            margin: 0;
+            padding: 0 32px;
+            overflow: hidden;
+            font-size: 0.875em;
+            font-weight: 600;
+            letter-spacing: -0.003em;
+            line-height: 40px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    .bg-picker {
+        display: flex;
+        justify-content: space-between;
+        gap: 5px;
+
+        padding: 12px;
+
+        .bg {
+            width: 40px;
+            height: 32px;
+            border-radius: 3px;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .title-input {
+        display: flex;
+        flex-direction: column;
+
+        padding: 12px;
+
+    }
+}

@@ -1,14 +1,15 @@
 .board-preview {
+
     position: relative;
+    min-width: 208px;
     width: 30vw;
-    min-width: 152px;
     max-width: 300.5px;
+
     height: 96px;
     margin-block: 1.35em;
 
     padding: 4px 8px;
 
-    flex: 1 1 calc(30vw - 1em);
 
     .board-preview-wrapper {
         position: relative;
@@ -25,6 +26,33 @@
             background-position: 50% 60%;
             background-size: cover;
             text-decoration: none;
+
+            a {
+                text-decoration: none;
+                color: inherit;
+            }
+
+            .create-new-board {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                width: 100%;
+                height: 100%;
+
+                transition: background-color 85ms;
+
+                &:hover {
+                    background-color: #a6c5e229;
+                    cursor: pointer;
+                }
+
+                p {
+                    margin: 0;
+                    padding: 0;
+                    font-size: 0.875em;
+                }
+            }
         }
 
         .overlay {

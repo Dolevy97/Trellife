@@ -18,6 +18,7 @@ export function BoardIndex() {
         loadBoards(filterBy)
     }, [filterBy])
 
+
     return (
         <main className="board-index">
             <header>
@@ -36,7 +37,8 @@ export function BoardIndex() {
                 <h2 className='boards-header'>Boards</h2>
                 <Filter filterBy={filterBy} setFilterBy={setFilterBy} />
                 <BoardList
-                    boards={boards} />
+                    boards={boards}
+                    />
             </section>
         </main>
     )
