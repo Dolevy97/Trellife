@@ -33,9 +33,16 @@ export function Filter({ filterBy, setFilterBy }) {
 
     return (
         <section className="board-filter">
-            <label className='short-label' htmlFor="sort">Sort by</label>
-
-            <label className='short-label' htmlFor="filter">Filter by</label>
+            <article className="sort-container">
+                <label className='short-label' htmlFor="sort">Sort by</label>
+                <select name="sortBy" id="">
+                    <option value="most-recent-active">Most recently active</option>
+                    <option value="least-recent-active">Least recently active</option>
+                    <option value="alphabet-a-z">Alphabetically A-Z</option>
+                    <option value="alphabet-z-a">Alphabetically Z-A</option>
+                </select>
+            </article>
+            {/* <label className='short-label' htmlFor="filter">Filter by</label> */}
 
             <article className="search-filter-container">
                 <label className='long-label' htmlFor="search">Search</label>

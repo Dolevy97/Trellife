@@ -19,9 +19,9 @@ function _createDemoBoard() {
         title: _getProjectTitle(),
         isStarred: getRandomIntInclusive(0, 9) < 3 ? true : false,
         archivedAt: getRandomIntInclusive(0, 9) < 3 ? _getRandomTimestamp() : null,
-        createdBy: _getRandomMember(),
+        createdBy: getRandomMember(),
         style: {
-            backgroundImage: 'https://images.unsplash.com/photo-1480497490787-505ec076689f?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            background: 'url(https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1748&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
         },
         labels: _getRandomLabels(),
         members: _getRandomMembers(),
@@ -332,13 +332,13 @@ function _getRandomMembers() {
     const length = getRandomIntInclusive(2, 10)
     const members = []
     for (let i = 0; i < length; i++) {
-        const member = _getRandomMember()
+        const member = getRandomMember()
         members.push(member)
     }
     return members
 }
 
-function _getRandomMember() {
+export function getRandomMember() {
     const member = {
         _id: 'u' + makeId(),
         fullname: _getRandomFullName(),

@@ -1,12 +1,12 @@
 const { DEV, VITE_LOCAL } = import.meta.env
 
-import { getRandomIntInclusive, makeId } from '../util.service'
+import { getRandomIntInclusive, makeId, getRandomTimestamp } from '../util.service'
 
 import { boardService as local } from './board.service.local'
 import { boardService as remote } from './board.service.remote'
 
 function getEmptyBoard() {
-	return {
+    return {
         title: '',
         isStarred: false,
         archivedAt: null,
@@ -20,7 +20,7 @@ function getEmptyBoard() {
         activities: [],
         cmpsOrder: [],
     }
-    
+
 }
 
 function getDefaultFilter() {
@@ -30,9 +30,39 @@ function getDefaultFilter() {
 }
 
 const service = VITE_LOCAL === 'true' ? local : remote
-export const boardService = { getEmptyBoard, getDefaultFilter, ...service }
+export const boardService = { getEmptyTask,getEmptyGroup, getEmptyBoard, getDefaultFilter, ...service }
 
 // Easy access to this service from the dev tools console
 // when using script - dev / dev:local
 
+function getEmptyGroup(title = 'New List') {
+    return {
+        id: makeId(),
+        title: title,
+        tasks: [],
+        style: {},
+        archivedAt: getRandomIntInclusive(0, 9) < 3 ? getRandomTimestamp() : null,
+    }
+}
+
+
+function getEmptyTask() {
+    return {
+        id: 't' + makeId(),
+        title: '',
+        status: '',
+        priority: '',
+        dueDate: null,
+        description: '',
+        checklists: [{}],
+        memberIds: [],
+        labelsIds: [],
+        byMember: {},
+        style: {}
+
+
+    }
+}
+
 if (DEV) window.boardService = boardService
+
