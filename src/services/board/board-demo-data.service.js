@@ -21,7 +21,7 @@ function _createDemoBoard() {
         archivedAt: getRandomIntInclusive(0, 9) < 3 ? _getRandomTimestamp() : null,
         createdBy: _getRandomMember(),
         style: {
-            backgroundImage: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1748&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            backgroundImage: 'https://images.unsplash.com/photo-1480497490787-505ec076689f?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         },
         labels: _getRandomLabels(),
         members: _getRandomMembers(),
@@ -117,7 +117,7 @@ function _getRandomTasks(board) {
 }
 
 function _getRandomTask(board) {
-    return {
+    const task =  {
         id: 't' + makeId(),
         title: _getRandomTaskName(),
         status: _getRandomTaskStatus(),
@@ -132,6 +132,7 @@ function _getRandomTask(board) {
             backgroundColor: getRandomColor()
         }
     }
+    return task
 }
 
 function _getRandomTaskMember(board) {
@@ -150,11 +151,11 @@ function _getRandomTaskLabels(board) {
 }
 
 function _getRandomTaskMemberIds(board) {
-    const boardMemberids = board.members.map(member => member.id)
+    const boardMemberIds = board.members.map(member => member._id)
     const taskMemberIds = []
-    const length = getRandomIntInclusive(0, boardMemberids.length)
+    const length = getRandomIntInclusive(0, boardMemberIds.length)
     for (let i = 0; i < length; i++) {
-        const id = boardMemberids.splice(getRandomIntInclusive(0, boardMemberids.length - 1), 1)[0]
+        const id = boardMemberIds.splice(getRandomIntInclusive(0, boardMemberIds.length - 1), 1)[0]
         taskMemberIds.push(id)
     }
     return taskMemberIds
@@ -333,7 +334,6 @@ function _getRandomMembers() {
     for (let i = 0; i < length; i++) {
         const member = _getRandomMember()
         members.push(member)
-        break
     }
     return members
 }
@@ -356,7 +356,7 @@ function _getRandomLabels() {
     ];
 
     const numLabels = Math.floor(Math.random() * 9) + 2; // Generates a number between 2 and 10
-    const randomLabels = [];
+    let randomLabels = [];
 
     while (randomLabels.length < numLabels) {
         const randomIndex = Math.floor(Math.random() * labels.length);
@@ -365,7 +365,7 @@ function _getRandomLabels() {
             randomLabels.push(label);
         }
     }
-
+    randomLabels = randomLabels.map(label => ({ id: 'l' + makeId(), title: label, color: getRandomColor() }))
     return randomLabels;
 }
 
