@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { loadBoard, addBoardMsg } from '../store/actions/board.actions'
@@ -19,17 +19,16 @@ export function BoardDetails() {
   const groups = board?.groups || []
 
   return (
-    <section className="group-list-container">
-      <Link to="/board">Back to list</Link>
-      {board && (
-        <div className='group-container'>
-          
-          {groups.map(group => (
-            <GroupPreview key={group.id} group={group} />
-          ))}
-        
-        </div>
-      )}
-    </section>
+      <section className="group-list-container">
+        <Link to="/board">Back to list</Link>
+        {board && (
+          <div className='group-container'>
+            {groups.map(group => (
+              <GroupPreview key={group.id} boardId={boardId} group={group} />
+            ))}
+
+          </div>
+        )}
+      </section>
   )
 }
