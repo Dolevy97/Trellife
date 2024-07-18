@@ -1,10 +1,7 @@
 @mixin task-gtc {
     display: grid;
     grid-template-columns: auto minmax(auto, 512px) auto;
-    ;
 }
-
-// $gtc: auto minmax(auto,512px) auto;
 
 .task-details-backdrop {
     position: fixed;
@@ -29,6 +26,7 @@
         .task-header {
             @include task-gtc();
             grid-column: 1/-1;
+            height: auto;
 
             .task-title {
                 grid-column: 2/3;
@@ -36,19 +34,15 @@
             }
         }
 
-        .task-description {
-            grid-column: 2/3;
-            width: 512px;
-            height: 100px;
-            place-self: center;
-            padding:0.5em;
-        }
+     
 
         .members-labels-notifications-date-container {
+            display: flex;
+            gap: 1em;
             grid-column: 2/3;
             padding:0.5em;
 
-            .members-container {
+            .members-img-container {
                 display: flex;
                 gap:2px;
                 
@@ -58,6 +52,21 @@
                     border-radius: 50%;
                 }
             }
+        }
+
+        .description-container {
+            display: flex;
+            flex-direction: column;
+
+            grid-column: 2/3;
+            width: 512px;
+            height: 100px;
+            place-self: center;
+            padding:0.5em;
+        }
+
+        .activity-container{
+            grid-column: 2/3;
         }
 
     }
