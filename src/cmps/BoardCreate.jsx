@@ -68,7 +68,8 @@ export function BoardCreate({ setIsAdding }) {
                     <img src="../src\assets\styles\imgs\add-preview.svg" alt="" />
                 </div>
             </div>
-            <section className="bg-picker">
+            <label htmlFor="bg-picker" className="bg-picker-label">Background</label>
+            <section className="bg-picker" id="bg-picker">
                 <article onClick={onChooseBGColor} className="bg" style={{ backgroundColor: 'lightpink' }}></article>
                 <article onClick={onChooseBGColor} className="bg" style={{ backgroundColor: 'lightblue' }}></article>
                 <article onClick={onChooseBGColor} className="bg" style={{ backgroundColor: 'lightgreen' }}></article>
