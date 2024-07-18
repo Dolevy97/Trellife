@@ -9,7 +9,7 @@
 
   .back-to-boardlist-link {
     text-decoration: none;
-    color: #b6c2cf;
+    color: $textclr2;
     margin-bottom: 20px;
   }
 
@@ -43,7 +43,7 @@
 }
 
 .group-container {
-  display: flex;  // Change to flex
+  display: flex;  
   gap: 12px;
   padding-bottom: 20px;
   min-height: calc(100vh - 140px);  
@@ -51,11 +51,10 @@
 }
 
 .group-preview-container {
-  flex: 0 0 272px;  // Fixed width, don't grow or shrink
-  // ... (keep the existing styles)
+  flex: 0 0 272px; 
 }
 
-// Add these new styles for the horizontal scrollbar
+
 .group-list-container::-webkit-scrollbar {
   height: 12px;
 }

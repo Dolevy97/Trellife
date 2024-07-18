@@ -1,0 +1,50 @@
+.dropdown-menu {
+    width: 200px;
+
+    background: #282E33;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 20;
+
+    position: absolute;
+    top: 48px;
+
+    &.Boards {
+        left: 102px;
+    }
+
+    &.Recent {
+        left: 196px;
+    }
+
+    &.Starred {
+        left: 288px;
+    }
+
+    &.Templates {
+        left: 385px;
+    }
+
+    .menu-content {
+        padding: 10px;
+
+        h3 {
+            margin-block-end: 10px;
+            font-size: 1em;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            padding: 8px 0;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}
