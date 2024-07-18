@@ -125,7 +125,7 @@ function _getRandomTask(board) {
         dueDate: _getRandomDueDate(),
         description: _getRandomTaskDescription(),
         checklists: _getRandomChecklists(),
-        memberIds: _getRandomTaskMemberIds(board),
+        members: _getRandomTaskMembers(board),
         labelsIds: _getRandomTaskLabels(board),
         byMember: _getRandomTaskMember(board),
         style: {
@@ -150,15 +150,16 @@ function _getRandomTaskLabels(board) {
     return taskLabelIds
 }
 
-function _getRandomTaskMemberIds(board) {
-    const boardMemberIds = board.members.map(member => member._id)
-    const taskMemberIds = []
-    const length = getRandomIntInclusive(0, boardMemberIds.length)
+function _getRandomTaskMembers(board) {
+    // const boardMemberIds = board.members.map(member => member._id)
+    const boardMembers= board.members
+    const taskMembers = []
+    const length = getRandomIntInclusive(0, boardMembers.length)
     for (let i = 0; i < length; i++) {
-        const id = boardMemberIds.splice(getRandomIntInclusive(0, boardMemberIds.length - 1), 1)[0]
-        taskMemberIds.push(id)
+        const id = boardMembers.splice(getRandomIntInclusive(0, boardMembers.length - 1), 1)[0]
+        taskMembers.push(id)
     }
-    return taskMemberIds
+    return taskMembers
 }
 
 function _getRandomChecklists() {
@@ -342,7 +343,7 @@ export function getRandomMember() {
     const member = {
         _id: 'u' + makeId(),
         fullname: _getRandomFullName(),
-        imgUrl: ''
+        imgUrl: '../src/assets/imgs/user-img1.JPG'
     }
     return member
 }
