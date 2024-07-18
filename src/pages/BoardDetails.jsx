@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link, Outlet } from 'react-router-dom'
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { loadBoard, addBoardMsg, updateBoard } from '../store/actions/board.actions'
 import { boardService } from '../services/board/'
-
 
 import { GroupPreview } from "../cmps/GroupPreview.jsx"
 
@@ -15,17 +14,15 @@ export function BoardDetails() {
   const boardFromStore = useSelector(storeState => storeState.boardModule.board)
   const [board, setBoard] = useState(boardFromStore)
 
-
   useEffect(() => {
     loadBoard(boardId)
   }, [boardId])
-
 
   useEffect(() => {
     setBoard(boardFromStore)
   }, [boardFromStore])
 
-  async function handleAddGroup () {
+  async function handleAddGroup() {
     try {
       const newGroup = boardService.getEmptyGroup()
       const updatedBoard = {
@@ -46,7 +43,7 @@ export function BoardDetails() {
       <header className='groups-header'>
         <div className='groups-header-leftside'>
           <span className='groups-header-logo'> {board.title}</span>
-          <img src="../src\assets\styles\imgs\Icones\star.svg"/>
+          <img src="../src\assets\styles\imgs\Icones\star.svg" />
         </div>
         <div className='groups-header-rightside'>
 
@@ -56,10 +53,13 @@ export function BoardDetails() {
         {board && (
           <div className='group-container'>
             {groups.map(group => (
-              <GroupPreview key={group.id}  boardId={boardId} group={group} board={board} setBoard={setBoard}  />
+              <GroupPreview key={group.id} boardId={boardId} group={group} board={board} setBoard={setBoard} />
             ))}
             <div className='add-group' onClick={handleAddGroup}>
-              <span> + Add another list </span>
+
+                <img src="../src/assets/styles/imgs/Icones/add.svg" alt="add" />
+              <span  >
+                Add another list </span>
             </div>
           </div>
         )}

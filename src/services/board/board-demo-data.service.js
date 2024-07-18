@@ -286,7 +286,7 @@ function _getRandomTaskDescription() {
     ];
 
     const randomIndex = Math.floor(Math.random() * descriptions.length);
-    return getRandomIntInclusive(1, 10) <= 2 ? '' : descriptions[randomIndex];
+    return descriptions[randomIndex];
 }
 
 function _getRandomDueDate() {
