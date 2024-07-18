@@ -4,8 +4,8 @@
   padding: 20px;
   background-color: #22272b;
   min-height: 100vh;
-  overflow-x: auto;  
-  overflow-y: hidden;  
+  overflow-x: auto;
+  overflow-y: hidden;
 
   .back-to-boardlist-link {
     text-decoration: none;
@@ -18,7 +18,7 @@
     height: 40px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    // justify-content: space-between;
     padding: 9px 8px;
     margin: 4px 4px 0;
     padding: 12px;
@@ -26,16 +26,27 @@
     background-color: #ffffff4e;
     min-width: 272px;
     color: white;
-    transition: background-color 0.3s ease; 
-    cursor: pointer; 
-  
+    transition: background-color 0.1s;
+    cursor: pointer;
+    img {
+      width: 16px;
+      height: 16px;
+      margin-right: 6px;
+      .add{
+        filter: invert(99%) sepia(92%) saturate(1%) hue-rotate(194deg) brightness(105%) contrast(100%);
+      }
+    }
     span {
+      display: flex;
+      
       font-weight: 600;
       font-size: 14px;
-    
+
+     
     }
+
     &:hover {
-      background-color: #828e9b66; 
+      background-color: #828e9b66;
     }
 
   }
@@ -43,15 +54,15 @@
 }
 
 .group-container {
-  display: flex;  
+  display: flex;
   gap: 12px;
   padding-bottom: 20px;
-  min-height: calc(100vh - 140px);  
-  align-items: flex-start; 
+  min-height: calc(100vh - 140px);
+  align-items: flex-start;
 }
 
 .group-preview-container {
-  flex: 0 0 272px; 
+  flex: 0 0 272px;
 }
 
 
