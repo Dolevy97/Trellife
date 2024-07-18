@@ -2,6 +2,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { useEffect, useState } from 'react'
+import { DropdownMenu } from './DropdownMenu'
 
 export function AppHeader() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -56,6 +57,7 @@ export function AppHeader() {
 			<nav>
 				<Link to={'/board'}>Board</Link>
 			</nav>
+			{isMenuOpen && <DropdownMenu menu={menuToOpen} setIsMenuOpen={setIsMenuOpen} />}
 		</header>
 	)
 }
