@@ -1,5 +1,5 @@
 .group-preview-container {
-    background-color: #101204;
+    background-color: #04120d;
     border-radius: 12px;
     width: 272px;
     display: flex;
@@ -14,10 +14,27 @@
         padding: 9px 8px;
         margin: 4px 4px 0;
 
+        input {
+            border: none;
+            outline: none;
+            background-color: transparent;
+            font-size: 14px;
+            font-weight: 600;
+            color: $textclr2;
+            background-color: #707070;
+            width: 77%;
+            min-height: 20px;
+            margin: 0;
+            padding: 6px 8px 6px 12px;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
         span {
             font-weight: 600;
             font-size: 14px;
-            // color: #b6c2cf;
+            color: $textclr2;
         }
 
         div {
@@ -58,7 +75,7 @@
 
             .task-links {
                 text-decoration: none;
-                color: #b6c2cf;
+                color: $textclr2;
 
             }
 
@@ -71,7 +88,7 @@
                 span {
                     font-size: 14px;
                     font-weight: 400;
-                    // color: #b6c2cf;
+                    color: $textclr2;
                     word-wrap: break-word;
                     // line-height: 20px;
                     width: 100%;
@@ -90,16 +107,22 @@
         padding: 8px 8px 0;
         margin: 0 4px 8px;
 
-        span {
-            // color: #b6c2cf;
+        .add-icon {
+            color: $textclr2;
             font-size: 14px;
             display: flex;
             align-items: center;
             width: 100%;
             border-radius: 8px;
-            // transition: background-color 0.2s ease;
+
             padding: 6px 8px;
             font-weight: 600;
+
+            img {
+                width: 14px;
+                height: 14px;
+                margin-right: 4px;
+            }
 
             &:hover {
                 color: #ffffff;
