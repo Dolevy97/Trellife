@@ -18,6 +18,9 @@ export function BoardIndex() {
         loadBoards(filterBy)
     }, [filterBy])
 
+    function onTest() {
+        console.log('test')
+    }
 
     return (
         <main className="board-index">
@@ -38,7 +41,7 @@ export function BoardIndex() {
                 <Filter filterBy={filterBy} setFilterBy={setFilterBy} />
                 <BoardList
                     boards={boards}
-                    />
+                />
             </section>
         </main>
     )
