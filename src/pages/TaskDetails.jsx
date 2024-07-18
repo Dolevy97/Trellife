@@ -6,6 +6,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { boardService } from '../services/board';
 import { updateBoard } from '../store/actions/board.actions';
+import { upadteTask } from '../store/actions/task.actions';
+
+// import userImg from '../assets/imgs/user-img.JPG'
 
 export function TaskDetails() {
 
@@ -51,26 +54,8 @@ export function TaskDetails() {
 
     async function onSubmit(ev) {
         ev.preventDefault()
-
-        let tasks = group.tasks
-        tasks = tasks.map(task => {
-            if (task.id !== taskToEdit.id) return task
-            return taskToEdit
-        })
-
-
-        let groups = board.groups
-        groups = groups.map(group => {
-            if (group.id !== groupId) return group
-            return { ...group, tasks }
-        })
-
-
-        const boardToSave = {...board, groups}
-        
-       
         try {
-            await updateBoard(boardToSave)
+            upadteTask(taskToEdit, groupId, group, board)
             onBack()
         } catch (er) {
             console.log('err: ' + er)
@@ -88,21 +73,75 @@ export function TaskDetails() {
         setTaskToEdit({ ...taskToEdit, [field]: value })
     }
 
+    function getMemberById(id) {
+        return board.members.find(member => member._id === id)
+    }
+
+    function getLabelById(id) {
+        const label = board.labels.find(label => label.id === id)
+        return label
+    }
+
     if (!taskToEdit) return <section>Loading...</section>
 
-    const { title, description } = taskToEdit
+    const { title, description, membersIds, labelsIds } = taskToEdit
+    console.log(labelsIds);
 
     return (
         <div className="task-details-backdrop" onClick={onBack}>
             <form className="task-details" onSubmit={onSubmit} onClick={(ev) => ev.stopPropagation()}>
+
                 <header className="task-header">
                     <h2 className="task-title">{title}</h2>
                 </header>
-                <textarea className="task-description" onChange={handleChange} value={description} name="description">
 
-                </textarea>
+                <div className="members-labels-notifications-date-container">
+
+                    <div className="members-container">
+                        <span>Members</span>
+                        <div className="members-img-container">
+                            {membersIds.map(id => {
+                                const member = getMemberById(id)
+                                return <img key={member._id} className="member-thumbnail" src='../../../src/assets/imgs/user-img1.jpg' />
+                            }
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="labels-container">
+                        <span>Labels</span>
+                        <div className="labels-container">
+                            {labelsIds.map(id => {
+                                const label = getLabelById(id)
+                                return <span className="label" key={id} style={{ backgroundColor: label.color }}>{label.title}</span>
+                            })}
+                        </div>
+                    </div>
+
+                    <div className="date-container">
+                        <span>Due date</span>
+                        <div className="date">
+                            <input type="checkbox" />
+                            <input type="date" />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="description-container">
+                    <span>Description</span>
+                    <textarea className="description" onChange={handleChange} value={description} name="description" />
+                </div>
+
+
+                <div className="activity-container">
+                    <span>Activity</span>
+
+                </div>
+
                 <button>Submit</button>
+
             </form>
+            {/* <pre>{JSON.stringify(taskToEdit,null,2)}</pre> */}
         </div >
     )
 }

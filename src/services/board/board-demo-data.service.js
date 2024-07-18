@@ -117,7 +117,7 @@ function _getRandomTasks(board) {
 }
 
 function _getRandomTask(board) {
-    const task =  {
+    const task = {
         id: 't' + makeId(),
         title: _getRandomTaskName(),
         status: _getRandomTaskStatus(),
@@ -125,7 +125,7 @@ function _getRandomTask(board) {
         dueDate: _getRandomDueDate(),
         description: _getRandomTaskDescription(),
         checklists: _getRandomChecklists(),
-        memberIds: _getRandomTaskMemberIds(board),
+        membersIds: _getRandomTaskMembersIds(board),
         labelsIds: _getRandomTaskLabels(board),
         byMember: _getRandomTaskMember(board),
         style: {
@@ -150,15 +150,15 @@ function _getRandomTaskLabels(board) {
     return taskLabelIds
 }
 
-function _getRandomTaskMemberIds(board) {
-    const boardMemberIds = board.members.map(member => member._id)
-    const taskMemberIds = []
-    const length = getRandomIntInclusive(0, boardMemberIds.length)
+function _getRandomTaskMembersIds(board) {
+    const boardMembersIds = board.members.map(member => member._id)
+    const taskMembersIds = []
+    const length = getRandomIntInclusive(0, boardMembersIds.length)
     for (let i = 0; i < length; i++) {
-        const id = boardMemberIds.splice(getRandomIntInclusive(0, boardMemberIds.length - 1), 1)[0]
-        taskMemberIds.push(id)
+        const id = boardMembersIds.splice(getRandomIntInclusive(0, boardMembersIds.length - 1), 1)[0]
+        taskMembersIds.push(id)
     }
-    return taskMemberIds
+    return taskMembersIds
 }
 
 function _getRandomChecklists() {
@@ -342,7 +342,7 @@ export function getRandomMember() {
     const member = {
         _id: 'u' + makeId(),
         fullname: _getRandomFullName(),
-        imgUrl: ''
+        imgUrl: '../src/assets/imgs/user-img1.JPG'
     }
     return member
 }
