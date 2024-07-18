@@ -8,6 +8,27 @@
     border-bottom: 1px solid rgba(159, 173, 188, 0.16);
     padding: 8px;
 
+    .header-links {
+        display: flex;
+        gap: .25em;
+
+        .logo-wrapper {
+            font-weight: 500;
+            &:hover {
+                cursor: pointer;
+            }
+
+            p {
+                margin: 0 6px 0 0;
+            }
+
+            .svg-arrow-down {
+                width: 14px;
+                filter: invert(73%) sepia(21%) saturate(206%) hue-rotate(170deg) brightness(90%) contrast(90%);
+            }
+        }
+    }
+
 
     .logo-wrapper {
         position: relative;
@@ -17,6 +38,8 @@
         justify-content: center;
         padding-inline: 8px;
         border-radius: 3px;
+        margin-inline-end: .25em;
+
     }
 
     .logo-wrapper:hover {
