@@ -33,21 +33,12 @@ async function remove(boardId) {
 }
 
 async function save(board) {
-    var savedBoard
     if (board._id) {
-        const boardToSave = {
-            _id: board._id,
-            name: board.name,
-            ...board
-        }
-        savedBoard = await storageService.put(STORAGE_KEY, boardToSave)
+        await storageService.put(STORAGE_KEY, board)
     } else {
-        const boardToSave = {
-            name: board.name
-        }
-        savedBoard = await storageService.post(STORAGE_KEY, boardToSave)
+        await storageService.post(STORAGE_KEY, board)
     }
-    return savedBoard
+    return board
 }
 
 async function _createBoards() {
