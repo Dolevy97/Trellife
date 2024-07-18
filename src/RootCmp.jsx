@@ -8,6 +8,7 @@ import { BoardDetails } from './pages/BoardDetails'
 import { AppHeader } from './cmps/AppHeader'
 import { AppFooter } from './cmps/AppFooter'
 import { UserMsg } from './cmps/UserMsg.jsx'
+import { TaskDetails } from './pages/TaskDetails.jsx'
 
 
 
@@ -25,7 +26,9 @@ export function RootCmp() {
                         <Route path="vision" element={<AboutVision />} />
                     </Route>
                     <Route path="board" element={<BoardIndex />} />
-                    <Route path="board/:boardId" element={<BoardDetails />} />
+                    <Route path="board/:boardId/" element={<BoardDetails />} >
+                        <Route path=":groupId/:taskId" element={<TaskDetails />} />
+                    </Route>
                 </Routes>
             </main>
             <AppFooter />
