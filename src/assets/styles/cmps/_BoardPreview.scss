@@ -16,6 +16,15 @@
         width: 100%;
         height: 100%;
         border-radius: 3px;
+        
+
+        &:hover {
+            & .board-preview-img .board-preview-star {
+                opacity: 1;
+                right: .5em;
+                visibility: visible;
+            }
+        }
 
         .board-preview-img {
             position: relative;
@@ -26,6 +35,28 @@
             background-size: cover;
             text-decoration: none;
             border-radius: 3px;
+
+            .board-preview-star {
+                opacity: 0;
+                visibility: hidden;
+
+                position: absolute;
+                right: 0;
+                bottom: .5em;
+                width: 14px;
+                z-index: 5;
+
+                transition: .15s;
+
+                &.starred {
+                    filter: brightness(0) invert(71%) sepia(86%) saturate(1849%) hue-rotate(6deg) contrast(98%);
+
+                }
+
+                &:hover {
+                    scale: 1.2;
+                }
+            }
 
 
             a {
@@ -80,7 +111,42 @@
         font-size: 1rem;
 
     }
+}
 
+.empty-starred {
+    opacity: 0;
+    visibility: hidden;
+
+    position: absolute;
+    bottom: .5em;
+    right: .5em;
+
+    width: 14px;
+    z-index: 5;
+
+    filter: brightness(0) invert(71%) sepia(86%) saturate(1849%) hue-rotate(6deg) contrast(98%);
+
+
+    transition: scale .15s;
+
+    &:hover {
+        opacity: 1;
+        visibility: visible;
+        scale: 1.2;
+    }
+}
+
+.board-preview-star.starred:hover {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.board-preview-star.starred:hover+.empty-starred {
+    opacity: 1;
+    visibility: visible;
+    filter: brightness(0) invert(71%) sepia(86%) saturate(1849%) hue-rotate(6deg) contrast(98%);
+
+    scale: 1.2;
 }
 
 .btn-container {
