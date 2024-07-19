@@ -34,25 +34,25 @@ export function AppHeader() {
 						handleMenuChange('Boards')
 					}}>
 						<p className='header-link-text' title='Boards'>Boards</p>
-						<img src="../src\assets\styles\imgs\Icones\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+						<img src="../../../src\assets\styles\imgs\Icones\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
 					</article>
 					<article className='logo-wrapper' onClick={() => {
 						handleMenuChange('Recent')
 					}}>
 						<p className='header-link-text' title='Recent'>Recent</p>
-						<img src="../src\assets\styles\imgs\Icones\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+						<img src="../../../src\assets\styles\imgs\Icones\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
 					</article>
 					<article className='logo-wrapper' onClick={() => {
 						handleMenuChange('Starred')
 					}}>
 						<p className='header-link-text' title='Starred'>Starred</p>
-						<img src="../src\assets\styles\imgs\Icones\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+						<img src="../../../src\assets\styles\imgs\Icones\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
 					</article>
 					<article className='logo-wrapper' onClick={() => {
 						handleMenuChange('Templates')
 					}}>
 						<p className='header-link-text' title='Templates'>Templates</p>
-						<img src="../src\assets\styles\imgs\Icones\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+						<img src="../../../src\assets\styles\imgs\Icones\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
 					</article>
 					<button onClick={() => { setIsAdding(true) }} className="btn-create">
 						Create
