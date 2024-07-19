@@ -51,6 +51,10 @@ export function BoardCreate({ setIsAdding }) {
 
     async function onAddBoard() {
         const newBoard = { ...boardToAdd, style: { background: background }, createdBy: getRandomMember() }
+        if (!newBoard.title) {
+
+            return
+        }
         await addBoard(newBoard)
         if (setIsAdding) setIsAdding(false)
         else navigate(-1)
@@ -81,6 +85,7 @@ export function BoardCreate({ setIsAdding }) {
             <section className="title-input">
                 <label htmlFor="title">Board title<span>*</span></label>
                 <input value={title} onChange={handleChange} type="text" id="title" name="title" />
+                {!title && <p>👋 Board title is required</p>}
             </section>
 
             <button onClick={onAddBoard} className="btn-create">Create</button>

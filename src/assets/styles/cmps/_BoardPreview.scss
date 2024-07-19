@@ -21,7 +21,7 @@
         &:hover {
             & .board-preview-img .board-preview-star {
                 opacity: 1;
-                right: .5em;
+                right: .813em;
                 visibility: visible;
             }
         }
@@ -42,7 +42,7 @@
 
                 position: absolute;
                 right: 0;
-                bottom: .5em;
+                bottom: .625em;
                 width: 14px;
                 z-index: 5;
 
@@ -51,7 +51,7 @@
                 &.starred {
                     opacity: 1;
                     visibility: visible;
-                    right: .5em;
+                    right: .813em;
                     filter: brightness(0) invert(71%) sepia(86%) saturate(1849%) hue-rotate(6deg) contrast(98%);
                 }
 
@@ -121,7 +121,7 @@
 
     position: absolute;
     bottom: .5em;
-    right: .5em;
+    right: .813em;
 
     width: 14px;
     z-index: 5;
