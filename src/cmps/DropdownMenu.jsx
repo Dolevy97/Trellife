@@ -5,7 +5,7 @@ import { useNavigate } from "react-router"
 export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen }) {
     const boards = useSelector(storeState => storeState.boardModule.boards)
     const navigate = useNavigate()
-	const dropdownRef = useRef(null);
+    const dropdownRef = useRef(null);
 
 
     function handleClickOutside(event) {
@@ -23,7 +23,7 @@ export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen }) {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside)
         }
-    }, [isMenuOpen])
+    }, [])
 
 
     function renderMenuContent() {
