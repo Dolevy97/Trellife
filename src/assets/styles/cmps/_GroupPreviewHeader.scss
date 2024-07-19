@@ -1,0 +1,156 @@
+.group-preview-header {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 4px;
+    margin: 4px 4px 0;
+    position: relative;
+    align-items: center;
+   
+    input {
+        border: none;
+        outline: none;
+        background-color: transparent;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        color: $textclr2;
+        width: 77%;
+        height: 33px;
+        margin: 0;
+        padding: 9px 6px;
+        overflow: hidden;
+        border-radius: 8px;
+        background-color: #23262a;
+        cursor: pointer;
+        border: 2px solid #86b6f4;
+
+    }
+
+    .three-dots-btn-wrapper{
+        width: 28px;
+        height: 28px;
+        border-radius:4px; 
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.1s ease;
+        &:hover {
+            background-color: rgba(132, 153, 189, 0.34);
+        }
+    .three-dots-open {
+        cursor: pointer;
+        height: 16px;
+        width: 16px;
+    }
+}
+
+    
+
+    span {
+        font-weight: 600;
+        font-size: 14px;
+        color: $textclr2;
+        width: 77%;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        padding: 9px 8px;
+        cursor: pointer;
+    }
+
+   .header-svg-container{
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+
+    .header-options-menu {
+        position: absolute;
+        top: 40px;
+        left: 235px;
+        background-color: #222a2b;
+        border-radius: 8px;
+        box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25);
+        width: 284px;
+            height: 350px;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        border: 1px rgba(132, 153, 189, 0.34) solid;
+
+        .options-menu-header {
+            padding: 9px 12px;
+            position: relative;
+          
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: $textclr2;
+            // margin-top: 8px;
+            .close-btn-wrapper {
+                position: absolute;
+                right: 8px;
+                top: 6px;
+                width: 28px;
+                height: 28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius:4px; 
+                cursor: pointer;
+                transition: background-color 0.1s ease;
+                &:hover {
+                    background-color: rgba(132, 153, 189, 0.34);
+                }
+    
+                img {
+                    height: 16px;
+                    width: 16px;
+                }
+            }
+
+        }
+
+        p {
+            margin: 0;
+            padding: 4px 6px;
+            cursor: pointer;
+            font-size: 14px;
+            color: $textclr2;
+
+            &:hover {
+                background-color: rgba(132, 153, 189, 0.34);
+            }
+
+        }
+   
+        .options-menu-footer {
+            position: absolute;
+            bottom: 0;
+            width: 284px;
+
+            border-top: 1px solid rgba(132, 153, 189, 0.34);
+            margin: 0;
+            padding: 4px 6px;
+            margin-bottom: 8px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgba(132, 153, 189, 0.34);
+            }
+
+            span {
+                font-size: 14px;
+                color: $textclr2;
+            }
+        }
+    }
+
+}
