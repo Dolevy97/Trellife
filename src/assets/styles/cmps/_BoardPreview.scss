@@ -49,8 +49,10 @@
                 transition: .15s;
 
                 &.starred {
+                    opacity: 1;
+                    visibility: visible;
+                    right: .5em;
                     filter: brightness(0) invert(71%) sepia(86%) saturate(1849%) hue-rotate(6deg) contrast(98%);
-
                 }
 
                 &:hover {
@@ -134,19 +136,6 @@
         visibility: visible;
         scale: 1.2;
     }
-}
-
-.board-preview-star.starred:hover {
-    opacity: 0;
-    visibility: hidden;
-}
-
-.board-preview-star.starred:hover+.empty-starred {
-    opacity: 1;
-    visibility: visible;
-    filter: brightness(0) invert(71%) sepia(86%) saturate(1849%) hue-rotate(6deg) contrast(98%);
-
-    scale: 1.2;
 }
 
 .btn-container {

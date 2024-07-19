@@ -4,31 +4,12 @@
     header {
         display: flex;
         align-items: flex-start;
-        justify-content: space-between;
+        justify-content: center;
         height: 7.75em;
         width: 91.4vw;
         max-width: 850px;
         margin-inline: auto;
         padding: 32px;
-
-        button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            @include btn;
-
-            &:hover {
-                background-color: #85B8FF;
-            }
-
-            .invite-icon {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding-inline-end: 8px;
-            }
-        }
     }
 }
 
@@ -57,6 +38,7 @@ h3 {
 
 .workspace {
     display: flex;
+    justify-content: center;
     align-items: center;
 
     .workspace-icon {
@@ -90,5 +72,6 @@ h3 {
     .boards-header {
         font-size: 20px;
         margin-block-end: 30px;
+        padding-inline: 8px;
     }
 }
