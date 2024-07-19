@@ -38,7 +38,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                             <div className='task-preview'>
                                 <span>{task.title}</span>
                                 {task.description && task.description.trim() !== '' && (
-                                    <span><img src="../src/assets/styles/imgs/Icones/description.svg" alt="description" /></span>
+                                    <span><img src="../../../src/assets/styles/imgs/Icones/description.svg" alt="description" /></span>
                                 )}
                             </div>
                         </Link>
@@ -47,7 +47,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
             </div>
             <footer className='group-preview-footer'>
                 <span className="add-icon" onClick={handleAddTask}>
-                    <img src="../src/assets/styles/imgs/Icones/add.svg" alt="add" />
+                    <img src="../../../src/assets/styles/imgs/Icones/add.svg" alt="add" />
                     Add a card
                 </span>
             </footer>

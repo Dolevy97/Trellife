@@ -43,11 +43,11 @@ export function BoardDetails() {
       <header className='groups-header'>
         <div className='groups-header-leftside'>
           <span className='groups-header-logo'> {board.title}</span>
-          <img className='empty-star' src="../src\assets\styles\imgs\Icones\star.svg" />
+          <img className='empty-star' src="../../../src\assets\styles\imgs\Icones\star.svg" />
         </div>
         <div className='groups-header-rightside'>
-          <img className='user-img' src="../src\assets\imgs\user-img1.JPG" alt="" />
-          <img className='user-img' src="../src\assets\imgs\user-img1.JPG" alt="" />
+          <img className='user-img' src="../../../src\assets\imgs\user-img1.JPG" alt="" />
+          <img className='user-img' src="../../../src\assets\imgs\user-img1.JPG" alt="" />
           <span className='member-img'></span>
         </div>
       </header>
@@ -59,7 +59,7 @@ export function BoardDetails() {
             ))}
             <div className='add-group' onClick={handleAddGroup}>
 
-              <img src="../src/assets/styles/imgs/Icones/add.svg" alt="add" />
+              <img src="../../../src/assets/styles/imgs/Icones/add.svg" alt="add" />
               <span  >
                 Add another list </span>
             </div>
