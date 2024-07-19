@@ -16,17 +16,7 @@
             align-items: center;
             justify-content: center;
 
-            font-family: inherit;
-            font-size: 14px;
-            line-height: 20px;
-            padding: 6px 12px;
-            border-radius: 3px;
-            font-weight: 500;
-            transition-property: background-color, border-color, box-shadow;
-            transition-duration: 85ms;
-            transition-timing-function: ease;
-            background-color: #579DFF;
-            color: $bgclr1;
+            @include btn;
 
             &:hover {
                 background-color: #85B8FF;

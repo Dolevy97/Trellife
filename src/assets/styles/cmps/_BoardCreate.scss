@@ -85,11 +85,8 @@
         flex-direction: column;
 
         label {
-            font-size: 0.75em;
-            font-weight: 700;
-            line-height: 16px;
-            margin-block: 12px 4px;
-            color: #9fadbc;
+            @include label;
+
 
             span {
                 color: #e2483d;
@@ -144,12 +141,9 @@
 }
 
 .bg-picker-label {
+    @include label;
+
     display: block;
-    
-    font-size: 0.75em;
-    font-weight: 700;
-    line-height: 16px;
-    margin-block: 12px 4px;
-    color: #9fadbc;
+
 
 }
