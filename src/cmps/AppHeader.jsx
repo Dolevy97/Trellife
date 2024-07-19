@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { DropdownMenu } from './DropdownMenu'
 import { BoardCreate } from './BoardCreate'
 
-export function AppHeader() {
+export function AppHeader({ isHomePage }) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 	const [menuToOpen, setMenuToOpen] = useState(null)
 	const [isAdding, setIsAdding] = useState(false)
@@ -22,7 +22,7 @@ export function AppHeader() {
 
 
 	return (
-		<header className="app-header full">
+		<header className={`app-header full ${isHomePage ? 'homepage' : ''}`}>
 			<div className='flex'>
 				<NavLink to="/">
 					<div className='logo-wrapper'>
