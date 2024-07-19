@@ -27,6 +27,7 @@ export function AppHeader({ isHomePage }) {
 				<NavLink to="/">
 					<div className='logo-wrapper'>
 						<div className='logo'></div>
+						<span className='logo-text'>Trellife</span>
 					</div>
 				</NavLink>
 				<section className="header-links">

@@ -31,6 +31,13 @@
   src: url('../fonts/Segoe UI Bold Italic.woff') format('woff');
 }
 
+@font-face {
+  font-family: 'Charlie';
+  font-style: normal;
+  font-weight: normal;
+  src: url('../../../src/assets/styles/fonts/Charlie.ttf') format('truetype');
+}
+
 .material-symbols-outlined {
   font-variation-settings:
     'FILL' 0,
