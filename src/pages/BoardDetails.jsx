@@ -96,20 +96,20 @@ export function BoardDetails() {
   }
 
   async function handleOnDragEnd(result) {
-    if (!result.destination) return;
+    if (!result.destination) return
 
-    const updatedGroups = Array.from(board.groups);
-    const [reorderedItem] = updatedGroups.splice(result.source.index, 1);
-    updatedGroups.splice(result.destination.index, 0, reorderedItem);
+    const updatedGroups = Array.from(board.groups)
+    const [reorderedItem] = updatedGroups.splice(result.source.index, 1)
+    updatedGroups.splice(result.destination.index, 0, reorderedItem)
 
-    const updatedBoard = { ...board, groups: updatedGroups };
-    setBoard(updatedBoard);
+    const updatedBoard = { ...board, groups: updatedGroups }
+    setBoard(updatedBoard)
 
     try {
       const updatedBoardFromServer = await updateBoard(updatedBoard)
       setBoard(updatedBoardFromServer)
     } catch (err) {
-      console.error('Failed to update board:', err);
+      console.error('Failed to update board:', err)
     }
   }
 
@@ -155,10 +155,6 @@ export function BoardDetails() {
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                           className={`group-item ${snapshot.isDragging ? 'dragging' : ''}`}
-                          style={{
-                            ...provided.draggableProps.style,
-                            margin: 0
-                          }}
                         >
                           <GroupPreview
                             key={group.id}
