@@ -79,6 +79,21 @@ export function BoardDetails() {
     }
   }
 
+  async function onClickStar(ev) {
+    ev.stopPropagation()
+    ev.preventDefault()
+    
+    const updatedBoard = { ...board, isStarred: !board.isStarred }
+    
+    try {
+      setBoard(updatedBoard) 
+      await updateBoard(updatedBoard) 
+    } catch (error) {
+      console.error('Failed to update board:', error)
+      setBoard(board) 
+    }
+  }
+
   const groups = board?.groups || []
   if (!board) return null
 
@@ -87,12 +102,22 @@ export function BoardDetails() {
       <header className='groups-header'>
         <div className='groups-header-leftside'>
           <span className='groups-header-logo'>{board.title}</span>
-          <img className='empty-star' src="../../../src/assets/styles/imgs/Icones/star.svg" alt="star" />
-        </div>
+          <div 
+            className='star-container' 
+            onClick={onClickStar} 
+            title='Click to star or unstar this board. Starred boards show up at the top of your boards list.'
+          >
+            <img 
+              className={`groupsheader-preview-star ${board.isStarred ? 'starred' : ''}`}
+              src={board.isStarred ? "../src/assets/styles/imgs/Icones/fullstar.svg" : '../src/assets/styles/imgs/Icones/star.svg'}
+              alt="star icon" 
+            />
+          </div>
+            </div>
         <div className='groups-header-rightside'>
           <img className='user-img' src="../../../src\assets\imgs\user-imgs\user-img1.jpg" alt="user" />
-          <img className='user-img' src="../../../src/assets/imgs/user-img1.JPG" alt="user" />
-          <span className='member-img'></span>
+          <img className='user-img' src="../../../src\assets\imgs\user-imgs\user-img2.jpeg" alt="user" />
+          <span className='member-img'><span>DL</span></span>
         </div>
       </header>
 
