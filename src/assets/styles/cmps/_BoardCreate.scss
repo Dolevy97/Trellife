@@ -6,14 +6,14 @@
     width: 304px;
     background-color: #282d33;
     border-radius: 8px;
-    z-index: 5;
+    z-index: 10;
 
     padding: 12px;
 
     box-shadow: 0px 0px 0px 1px #39424a, 0px 8px 12px #0304045C, 0px 0px 1px 1px #03040480;
 
     &.from-header {
-        top: 48px;
+        top: 40px;
         right: -248px;
     }
 
@@ -85,11 +85,8 @@
         flex-direction: column;
 
         label {
-            font-size: 0.75em;
-            font-weight: 700;
-            line-height: 16px;
-            margin-block: 12px 4px;
-            color: #9fadbc;
+            @include label;
+
 
             span {
                 color: #e2483d;
@@ -144,12 +141,9 @@
 }
 
 .bg-picker-label {
+    @include label;
+
     display: block;
-    
-    font-size: 0.75em;
-    font-weight: 700;
-    line-height: 16px;
-    margin-block: 12px 4px;
-    color: #9fadbc;
+
 
 }

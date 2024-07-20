@@ -39,17 +39,19 @@ export function BoardDetails() {
   const groups = board?.groups || []
   if (!board) return
   return (
-    <section>
+    <section style={{background:board.style.background}} >
       <header className='groups-header'>
         <div className='groups-header-leftside'>
           <span className='groups-header-logo'> {board.title}</span>
-          <img src="../src\assets\styles\imgs\Icones\star.svg" />
+          <img className='empty-star' src="../../../src\assets\styles\imgs\Icones\star.svg" />
         </div>
         <div className='groups-header-rightside'>
-
+          <img className='user-img' src="../../../src\assets\imgs\user-img1.JPG" alt="" />
+          <img className='user-img' src="../../../src\assets\imgs\user-img1.JPG" alt="" />
+          <span className='member-img'></span>
         </div>
       </header>
-      <section className="group-list-container">
+      <section className="group-list-container" style={{background:board.style.background}} >
         {board && (
           <div className='group-container'>
             {groups.map(group => (
@@ -57,7 +59,7 @@ export function BoardDetails() {
             ))}
             <div className='add-group' onClick={handleAddGroup}>
 
-                <img src="../src/assets/styles/imgs/Icones/add.svg" alt="add" />
+              <img src="../../../src/assets/styles/imgs/Icones/add.svg" alt="add" />
               <span  >
                 Add another list </span>
             </div>

@@ -28,31 +28,56 @@
 @mixin aspect-ratio($width, $height) {
     position: relative;
     overflow: hidden;
+
     &::before {
-      display: block;
-      content: "";
-      width: 100%;
-      padding-top: calc(($height / $width) * 100%);
+        display: block;
+        content: "";
+        width: 100%;
+        padding-top: calc(($height / $width) * 100%);
     }
-    > * {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+
+    >* {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
     }
-  
-    > img {
-      height: 100%;
-      object-fit: cover;
+
+    >img {
+        height: 100%;
+        object-fit: cover;
     }
-  }
-  
-  // Mixin for removing hover efects on iphone screen
-  @mixin hover-supported {    
+}
+
+// Mixin for removing hover efects on iphone screen
+@mixin hover-supported {
     @media not all and (pointer: coarse) {
         &:hover {
             @content;
         }
     }
-  }
+}
+
+
+@mixin label {
+    font-size: 0.75em;
+    font-weight: 700;
+    line-height: 16px;
+    margin-block: 12px 4px;
+    color: #9fadbc;
+}
+
+@mixin btn {
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 6px 12px;
+    border-radius: 3px;
+    font-weight: 500;
+    transition-property: background-color, border-color, box-shadow;
+    transition-duration: 85ms;
+    transition-timing-function: ease;
+    background-color: #579DFF;
+    color: $bgclr1;
+}

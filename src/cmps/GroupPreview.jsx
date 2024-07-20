@@ -6,6 +6,8 @@ import { GroupPreviewHeader } from './GroupPreviewHeader'
 
 export function GroupPreview({ group, boardId, board, setBoard }) {
     const tasks = group?.tasks || []
+    const [openMenuGroupId, setOpenMenuGroupId] = useState(null)
+
 
     async function handleAddTask() {
         try {
@@ -27,7 +29,8 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
 
     return (
         <section className="group-preview-container">
-            <GroupPreviewHeader group={group} board={board} setBoard={setBoard} />
+            <GroupPreviewHeader group={group} board={board} setBoard={setBoard}
+             openMenuGroupId={openMenuGroupId} setOpenMenuGroupId={setOpenMenuGroupId}/>
             <div className="group-preview-tasks">
                 {tasks.map(task => (
                     <div key={task.id} className="tasks-container">
@@ -35,7 +38,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                             <div className='task-preview'>
                                 <span>{task.title}</span>
                                 {task.description && task.description.trim() !== '' && (
-                                    <span><img src="../src/assets/styles/imgs/Icones/description.svg" alt="description" /></span>
+                                    <span><img src="../../../src/assets/styles/imgs/Icones/description.svg" alt="description" /></span>
                                 )}
                             </div>
                         </Link>
@@ -44,7 +47,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
             </div>
             <footer className='group-preview-footer'>
                 <span className="add-icon" onClick={handleAddTask}>
-                    <img src="../src/assets/styles/imgs/Icones/add.svg" alt="add" />
+                    <img src="../../../src/assets/styles/imgs/Icones/add.svg" alt="add" />
                     Add a card
                 </span>
             </footer>

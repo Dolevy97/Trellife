@@ -4,14 +4,11 @@
     flex-wrap: wrap;
 
     max-width: 1250px;
-    padding: 20px 8px 8px;
+    padding: 20px 0 8px;
+    margin: auto;
 
     label {
-        font-size: 0.75em;
-        font-weight: 700;
-        line-height: 16px;
-        margin-block: 12px 4px;
-        color: #9fadbc;
+        @include label
     }
 
     .short-label {
