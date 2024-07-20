@@ -355,7 +355,7 @@ function _getRandomLabels() {
         'Imperative', 'Plain'
     ];
 
-    const numLabels = Math.floor(Math.random() * 9) + 2; // Generates a number between 2 and 10
+    const numLabels = getRandomIntInclusive(0,7)
     let randomLabels = [];
 
     while (randomLabels.length < numLabels) {
