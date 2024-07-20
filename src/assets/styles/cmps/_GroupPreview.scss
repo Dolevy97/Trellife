@@ -38,10 +38,12 @@
                 border-color: #86b6f4;
                 cursor: pointer;
             }
+
             &:hover .pen-display {
                 opacity: 1;
-              }
-              .pen-display {
+            }
+
+            .pen-display {
                 position: absolute;
                 top: 3px;
                 right: 3px;
@@ -52,7 +54,8 @@
                 height: 24px;
                 border-radius: 50%;
                 z-index: 25;
-                opacity: 0; 
+                opacity: 0;
+
                 img {
                     height: 16px;
                     width: 16px;
@@ -71,13 +74,13 @@
 
             .task-preview {
                 display: flex;
-                // flex-direction: column;
-                justify-content: center;
+                flex-direction: column;
+                align-items: flex-start;
                 width: 100%;
                 padding: 4px 0px;
-                align-items: center;
 
-            
+
+
                 span {
                     font-size: 14px;
                     font-weight: 400;
@@ -88,8 +91,64 @@
 
                 }
 
-             
+
             }
+
+            .task-container1 {
+                display: flex;
+
+                .label-tab {
+                    width: 40px;
+                    height: 8px;
+                    border-radius: 4px;
+                    margin-right: 4px;
+                    position: relative;
+                    overflow: hidden;
+
+                    &:hover {
+                        box-shadow: inset 0 0 0 10000px rgba(0, 0, 0, 0.1);
+                    }
+
+                }
+            }
+
+            .task-container2 {
+                // needs to Fix the Y
+            }
+
+            .task-container3 {
+                display: flex;
+              
+                gap: 2px;
+
+                .members-container {
+                    display: flex;
+                    // flex-wrap: wrap;
+                    // justify-content: space-between;
+                    gap: 2px;
+
+                    .member-thumbnail {
+                        height: 24px;
+                        width: 24px;
+                        border-radius: 50%;
+
+                        img {
+                            
+                            object-fit: cover;
+                        }
+                    }
+                }
+
+
+                .task-description {
+                    img {
+                        height: 16px;
+                        width: 16px;
+                    }
+                }
+
+            }
+
         }
 
         .addtask-from-container {
