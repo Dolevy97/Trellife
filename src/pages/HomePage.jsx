@@ -33,8 +33,8 @@ export function HomePage() {
                             </div>
                             <div className="text-content">
                                 <p>Simple, flexible, and powerful.
-                                All it takes are boards, lists,
-                                and cards to get a clear view of who’s doing what and what needs to get done.</p>
+                                All it takes are boards, groups,
+                                and tasks to get a clear view of who’s doing what and what needs to get done.</p>
                             </div>
                         </div>
                     </div>
