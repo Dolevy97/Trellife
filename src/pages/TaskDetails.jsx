@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { boardService } from '../services/board';
 import { updateBoard } from '../store/actions/board.actions';
 import { upadteTask } from '../store/actions/task.actions';
+import { TaskAction } from '../cmps/TaskAction';
 
 // import userImg from '../assets/imgs/user-img.JPG'
 
@@ -16,6 +17,7 @@ export function TaskDetails() {
     const [board, setBoard] = useState(null)
     const [group, setGroup] = useState(null)
     const [taskToEdit, setTaskToEdit] = useState(null)
+    const [action, SetAction] = useState(null)
 
 
     const { taskId, groupId, boardId } = useParams()
@@ -83,10 +85,10 @@ export function TaskDetails() {
         return label
     }
 
-    function onAddToCardClicked(ev){
-        const {target} = ev
-        // console.log(target.className)
-    }
+    // function onAddToCardClicked(action) {
+    //     // const {target} = ev
+    //     SetAction(action)
+    // }
 
     if (!taskToEdit || !group) return <section>Loading...</section>
 
@@ -157,15 +159,24 @@ export function TaskDetails() {
                         <span className="add-to-card fs12">
                             Add to card
                         </span>
-                        
-                        <button className="action" onClick={()=>onAddToCardClicked()}><img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" /><span>Members</span></button>
-                        <button className="action" onClick={()=>onAddToCardClicked()}><img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" /><span>Labels</span></button>
-                        <button className="action" onClick={()=>onAddToCardClicked()}><img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" /><span>Checklist</span></button>
-                        <button className="action" onClick={()=>onAddToCardClicked()}><img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" /><span>Dates</span></button>
-                        <button className="action" onClick={()=>onAddToCardClicked()}><img className="attachment-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/attachment.svg" /><span>Attachment</span></button>
-                        <button className="action" onClick={()=>onAddToCardClicked()}><img className="location-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/location.svg" /><span>Location</span></button>
-                        <button className="action" onClick={()=>onAddToCardClicked()}><img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" /><span>Cover</span></button>
-                        <button className="action" onClick={()=>onAddToCardClicked()}><img className="custom-fields-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/custom-fields.svg" /><span>Custom fields</span></button>
+
+                        <button className="action" onClick={()=>SetAction('members')}><img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" /><span>Members</span>
+                        {action==='members' && <TaskAction action="members"/>}
+                        </button>
+                        <button className="action" onClick={()=>SetAction()}><img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" /><span>Labels</span>
+                        </button>
+                        <button className="action" onClick={()=>SetAction()}><img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" /><span>Checklist</span>
+                        </button>
+                        <button className="action" onClick={()=>SetAction()}><img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" /><span>Dates</span>
+                        </button>
+                        <button className="action" onClick={()=>SetAction()}><img className="attachment-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/attachment.svg" /><span>Attachment</span>
+                        </button>
+                        <button className="action" onClick={()=>SetAction()}><img className="location-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/location.svg" /><span>Location</span>
+                        </button>
+                        <button className="action" onClick={()=>SetAction()}><img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" /><span>Cover</span>
+                        </button>
+                        <button className="action" onClick={()=>SetAction()}><img className="custom-fields-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/custom-fields.svg" /><span>Custom fields</span>
+                        </button>
 
                     </section>
                 </main>

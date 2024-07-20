@@ -26,12 +26,15 @@ export function getRandomIntInclusive(min, max) {
 }
 
 export function getRandomColor() {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
-  for (var i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
+    //   var letters = '0123456789ABCDEF';
+    //   var color = '#';
+    //   for (var i = 0; i < 6; i++) {
+    //     color += letters[Math.floor(Math.random() * 16)];
+    //   }
+
+    const colors = ['#0055cc', '#7f5f01', '#a54800', '#ae2e24', '#206a83', '#5e4db2', '216e4e']
+    const color = colors[getRandomIntInclusive(0, colors.length - 1)]
+    return color;
 }
 
 export function randomPastTime() {
