@@ -49,6 +49,8 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
             const savedBoard = await updateBoard(updatedBoard)
             setBoard(savedBoard)
             console.log(newTask)
+            setNewTaskTitle('')
+
         } catch (err) {
             console.error('Failed to add task:', err)
         }
@@ -85,7 +87,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
             />
             <div className="group-preview-tasks">
                 {tasks.map(task => (
-                    <div key={task.id} className="tasks-container" onClick={() => handleTaskClick(task.id)}>
+                    <div key={task.id} className="task-container" onClick={() => handleTaskClick(task.id)}>
                         <div className='task-preview'>
                             <span>{task.title}</span>
                             {task.description && task.description.trim() !== '' && (
@@ -102,7 +104,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                 {isAddingTask && (
                     <div className='addtask-from-container' ref={addTaskRef}>
                         <form className='addtask-form' onSubmit={(e) => e.preventDefault()}>
-                            <input
+                        <textarea
                                 type="text"
                                 value={newTaskTitle}
                                 onChange={handleInputChange}
