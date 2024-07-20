@@ -43,6 +43,7 @@ export function TaskDetails() {
         setTaskToEdit(() => {
             const group = board.groups.find(group => group.id === groupId)
             setGroup(group)
+            // console.log(group)
             const task = group.tasks.find(task => task.id === taskId)
             return task
         })
@@ -54,12 +55,12 @@ export function TaskDetails() {
 
     async function onSubmit(ev) {
         ev.preventDefault()
-        try {
-            upadteTask(taskToEdit, groupId, group, board)
-            onBack()
-        } catch (er) {
-            console.log('err: ' + er)
-        }
+        // try {
+        //     upadteTask(taskToEdit, groupId, group, board)
+        //     onBack()
+        // } catch (er) {
+        //     console.log('err: ' + er)
+        // }
     }
 
     function handleChange({ target }) {
@@ -82,64 +83,92 @@ export function TaskDetails() {
         return label
     }
 
-    if (!taskToEdit) return <section>Loading...</section>
+    function onAddToCardClicked(ev){
+        const {target} = ev
+        // console.log(target.className)
+    }
+
+    if (!taskToEdit || !group) return <section>Loading...</section>
 
     const { title, description, membersIds, labelsIds } = taskToEdit
-    console.log(labelsIds);
 
     return (
         <div className="task-details-backdrop" onClick={onBack}>
             <form className="task-details" onSubmit={onSubmit} onClick={(ev) => ev.stopPropagation()}>
 
                 <header className="task-header">
-                    <h2 className="task-title">{title}</h2>
+                    <img className="card-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/card.svg" />
+                    <span className="task-title">{title}</span>
+                    <span className="task-in-list fs12">in list <span>{group.title}</span></span>
+                    <img className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" />
                 </header>
 
-                <div className="members-labels-notifications-date-container">
+                <main className="task-main">
+                    <section className="task-content">
 
-                    <div className="members-container">
-                        <span>Members</span>
-                        <div className="members-img-container">
-                            {membersIds.map(id => {
-                                const member = getMemberById(id)
-                                return <img key={member._id} className="member-thumbnail" src='../../../src/assets/imgs/user-img1.jpg' title={member.fullname} />
-                            }
-                            )}
+                        <div className="members-labels-notifications-date-container">
+
+                            <div className="members-container">
+                                <span className="fs12">Members</span>
+                                <div className="members-img-container">
+                                    {membersIds.map(id => {
+                                        const member = getMemberById(id)
+                                        return <img key={member._id} className="member-thumbnail" src='../../../src/assets/imgs/user-imgs/user-img1.jpg' title={member.fullname} />
+                                    }
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="labels-container">
+                                <span className="fs12">Labels</span>
+                                <div className="labels">
+                                    {labelsIds.map(id => {
+                                        const label = getLabelById(id)
+                                        return <span className="label" key={id} style={{ backgroundColor: label.color }}>{label.title}</span>
+                                    })}
+                                </div>
+                            </div>
+
+                            <div className="date-container">
+                                <span className="fs12">Due date</span>
+                                <div className="date">
+                                    <input className="checkbox" type="checkbox" />
+                                    <input className="date" type="date" />
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="labels-container">
-                        <span>Labels</span>
-                        <div className="labels-container">
-                            {labelsIds.map(id => {
-                                const label = getLabelById(id)
-                                return <span className="label" key={id} style={{ backgroundColor: label.color }}>{label.title}</span>
-                            })}
+                        <div className="description-container">
+                            <img className="description-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/description.svg" />
+                            <span>Description</span>
+                            <textarea className="description" onChange={handleChange} value={description} name="description" />
                         </div>
-                    </div>
 
-                    <div className="date-container">
-                        <span>Due date</span>
-                        <div className="date">
-                            <input type="checkbox" />
-                            <input type="date" />
+
+                        <div className="activity-container">
+                            <img className="activity-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/activity.svg" />
+                            <span>Activity</span>
+
                         </div>
-                    </div>
-                </div>
 
-                <div className="description-container">
-                    <span>Description</span>
-                    <textarea className="description" onChange={handleChange} value={description} name="description" />
-                </div>
+                        <button>Submit</button>
+                    </section>
+                    <section className="task-actions">
+                        <span className="add-to-card fs12">
+                            Add to card
+                        </span>
+                        
+                        <button className="action" onClick={()=>onAddToCardClicked()}><img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" /><span>Members</span></button>
+                        <button className="action" onClick={()=>onAddToCardClicked()}><img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" /><span>Labels</span></button>
+                        <button className="action" onClick={()=>onAddToCardClicked()}><img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" /><span>Checklist</span></button>
+                        <button className="action" onClick={()=>onAddToCardClicked()}><img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" /><span>Dates</span></button>
+                        <button className="action" onClick={()=>onAddToCardClicked()}><img className="attachment-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/attachment.svg" /><span>Attachment</span></button>
+                        <button className="action" onClick={()=>onAddToCardClicked()}><img className="location-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/location.svg" /><span>Location</span></button>
+                        <button className="action" onClick={()=>onAddToCardClicked()}><img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" /><span>Cover</span></button>
+                        <button className="action" onClick={()=>onAddToCardClicked()}><img className="custom-fields-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/custom-fields.svg" /><span>Custom fields</span></button>
 
-
-                <div className="activity-container">
-                    <span>Activity</span>
-
-                </div>
-
-                <button>Submit</button>
-
+                    </section>
+                </main>
             </form>
             {/* <pre>{JSON.stringify(taskToEdit,null,2)}</pre> */}
         </div >
