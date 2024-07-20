@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { DropdownMenu } from './DropdownMenu'
 import { BoardCreate } from './BoardCreate'
 
-export function AppHeader() {
+export function AppHeader({ isHomePage }) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 	const [menuToOpen, setMenuToOpen] = useState(null)
 	const [isAdding, setIsAdding] = useState(false)
@@ -20,16 +20,14 @@ export function AppHeader() {
 		}
 	}
 
-
 	return (
-		<header className="app-header full">
+		<header className={`app-header full ${isHomePage ? 'homepage' : ''}`}>
 			<div className='flex'>
-				<NavLink to="/">
-					<div className='logo-wrapper'>
-						<div className='logo'></div>
-					</div>
-				</NavLink>
-				<section className="header-links">
+				<div onClick={() => navigate('/')} className={`logo-wrapper  ${isHomePage ? 'homepage' : ''}`}>
+					<div className='logo'></div>
+					<span className='logo-text'>Trellife</span>
+				</div>
+				<section className={`header-links ${isHomePage ? 'homepage' : ''}`}>
 					<article className='logo-wrapper' onClick={() => {
 						handleMenuChange('Boards')
 					}}>
@@ -60,8 +58,16 @@ export function AppHeader() {
 					{isAdding && <BoardCreate setIsAdding={setIsAdding} />}
 				</section>
 			</div>
+			<Link to={'/board'}>Board</Link>
 			<nav>
-				<Link to={'/board'}>Board</Link>
+				<section className={`homepage-links ${isHomePage ? 'homepage' : ''}`}>
+					<article className="btn-login">
+						Log in
+					</article>
+					<article className="btn-register">
+						Get Trellife for free
+					</article>
+				</section>
 			</nav>
 			{isMenuOpen && <DropdownMenu menu={menuToOpen} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />}
 		</header>

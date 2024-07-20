@@ -90,7 +90,7 @@ export function BoardDetails() {
           <img className='empty-star' src="../../../src/assets/styles/imgs/Icones/star.svg" alt="star" />
         </div>
         <div className='groups-header-rightside'>
-          <img className='user-img' src="../../../src/assets/imgs/user-img1.JPG" alt="user" />
+          <img className='user-img' src="../../../src\assets\imgs\user-imgs\user-img1.jpg" alt="user" />
           <img className='user-img' src="../../../src/assets/imgs/user-img1.JPG" alt="user" />
           <span className='member-img'></span>
         </div>

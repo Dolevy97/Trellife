@@ -1,3 +1,16 @@
+@function em($pixels, $context: 16) {
+    @if (unitless($pixels)) {
+        $pixels: $pixels * 1px;
+    }
+
+    @if (unitless($context)) {
+        $context: $context * 1px;
+    }
+
+    @return $pixels / $context * 1em;
+}
+
+
 @mixin task-gtc {
     display: grid;
     grid-template-columns: auto minmax(auto, 512px) auto;
@@ -16,58 +29,180 @@
 
 
     .task-details {
-        @include task-gtc();
-        // min-height: 600px;
-        min-width: 768px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        display: flex;
+        flex-direction: column;
+        min-height: em(600, 16);
+        min-width: em(768, 16);
         background-color: rgb(50 57 64);
         border-radius: 8px;
-        color: white;
+        color: rgb(182, 194, 207);
 
-        & >*{
-            padding:0.5em;
+        .fs12 {
+            font-size: em(12);
+            margin-block-end: em(4,14);
+        }
+
+        .icon {
+            height: em(20);
+            width: em(20);
+            position: absolute;
         }
 
         .task-header {
-            @include task-gtc();
-            grid-column: 1/-1;
-            height: auto;
-
-            .task-title {
-                grid-column: 2/3;
-                margin-inline-end: auto;
-            }
-        }
-
-        .members-labels-notifications-date-container {
-            display: flex;
-            gap: 1em;
-            grid-column: 2/3;
-
-            .members-img-container {
-                display: flex;
-                gap:2px;
-                
-                .member-thumbnail {
-                    height: 2em;
-                    width: 2em;
-                    border-radius: 50%;
-                }
-            }
-        }
-
-        .description-container {
+            position: relative;
             display: flex;
             flex-direction: column;
+            min-height: em(32);
+            padding: em(8) em(52)em(8) em(56);
 
-            grid-column: 2/3;
-            width: 512px;
-            height: 100px;
-            place-self: center;
+            .task-title {
+                font-size: em(20);
+                font-weight: 600;
+                margin-inline-end: auto;
+            }
+
+            .task-in-list {
+                padding-inline-start: em(1);
+            }
+
+            .close-icon {
+                right: em(14);
+                top: em(14);
+            }
+
+            .card-icon {
+                left: em(26);
+                top: em(14);
+            }
         }
 
-        .activity-container{
-            grid-column: 2/3;
+        .task-main {
+            display: flex;
+
+            &>*>* {
+                position: relative;
+            }
+
+            .task-content {
+                padding: 0 em(8) em(8) em(57);
+
+                .members-labels-notifications-date-container {
+                    display: flex;
+                    gap: 1em;
+                    flex-wrap: wrap;
+                    margin-block-end: 2em;
+
+                    &>* {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-around;
+                    }
+
+                    .members-img-container {
+                        display: flex;
+                        gap: em(2);
+
+                        .member-thumbnail {
+                            height: em(32);
+                            width: em(32);
+                            border-radius: 50%;
+                        }
+                    }
+
+
+                    .labels {
+                        display: flex;
+                        gap: em(4);
+
+                        .label {
+                            border-radius: 3px;
+                            padding: em(3) em(12)
+                        }
+                    }
+
+                    .date-container {
+
+                        .checkbox {
+                            margin: 0;
+                            margin-inline-end: em(6);
+                        }
+
+
+
+                    }
+
+                }
+
+                .description-container {
+                    display: flex;
+                    flex-direction: column;
+
+                    width: 512px;
+                    // height: 100px;
+                    place-self: center;
+
+                    .description-icon {
+                        left: em(-31);
+                        top: em(1);
+                        height: em(24);
+                        width: em(24);
+                    }
+                    
+                }
+
+                .activity-container {
+                    .activity-icon {
+                        left: em(-27);
+                        top: em(4);
+                        height: em(17);
+                        width: em(17);
+                    }
+                }
+
+            }
         }
 
+        .task-actions {
+            display: flex;
+            flex-direction: column;
+            padding: em(2) em(16) em(8) em(8);
+
+            .action {
+                display: block;
+                width: em(156);
+                font-size: em(14);
+                color: inherit;
+                background-color: rgba(161, 189, 217, 0.08);
+                text-align: start;
+                border-radius: 3px;
+                height: 2em;
+                margin-block-end: em(8);
+                max-width: em(300);
+                overflow: hidden;
+                padding: em(6) em(12);
+                text-overflow: ellipsis;
+                transition-duration: 85ms;
+                transition-property: background-color;
+                transition-timing-function: ease;
+                white-space: nowrap;
+
+                .icon {
+                    height: 1em;
+                    width: 1em;
+                    top:em(6.7,14);
+                }
+
+                span {
+                    padding-inline-start: em(24, 14);
+                }
+
+                &:hover {
+                    background-color: rgba(166, 197, 226, 0.16);
+                }
+            }
+
+
+        }
     }
 }

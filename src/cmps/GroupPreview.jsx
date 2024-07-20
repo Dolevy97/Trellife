@@ -41,7 +41,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
             }
             const savedBoard = await updateBoard(updatedBoard)
             setBoard(savedBoard)
-           console.log( newTask);
+            console.log(newTask)
         } catch (err) {
             console.error('Failed to add task:', err)
         }
@@ -69,12 +69,12 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
 
     return (
         <section className="group-preview-container">
-            <GroupPreviewHeader 
-                group={group} 
-                board={board} 
+            <GroupPreviewHeader
+                group={group}
+                board={board}
                 setBoard={setBoard}
-                openMenuGroupId={openMenuGroupId} 
-                setOpenMenuGroupId={setOpenMenuGroupId} 
+                openMenuGroupId={openMenuGroupId}
+                setOpenMenuGroupId={setOpenMenuGroupId}
             />
             <div className="group-preview-tasks">
                 {tasks.map(task => (
