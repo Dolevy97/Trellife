@@ -73,7 +73,7 @@
         justify-content: center;
         align-items: center;
         height: 32px;
-        margin-inline-end: 4px;
+        margin-inline: 4px 4px;
 
         padding: 0.375em;
         border: 0;
@@ -138,7 +138,7 @@
     }
 }
 
-.logo-wrapper:hover {
+.logo-wrapper:hover, .logo-wrapper.active {
     background-color: #A6C5E229;
 }
 
