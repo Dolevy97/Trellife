@@ -128,6 +128,11 @@
   padding-bottom: 20px;
   min-height: calc(100vh - 140px);
   align-items: flex-start;
+
+  .group-item.dragging {
+    opacity: .4;
+    rotate: 4deg;
+  }
 }
 
 .group-preview-container {

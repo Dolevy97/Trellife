@@ -95,7 +95,7 @@ export function BoardDetails() {
     }
   }
 
-  function handleOnDragEnd(result) {
+  async function handleOnDragEnd(result) {
     if (!result.destination) return;
 
     const updatedGroups = Array.from(board.groups);
@@ -105,12 +105,12 @@ export function BoardDetails() {
     const updatedBoard = { ...board, groups: updatedGroups };
     setBoard(updatedBoard);
 
-    updateBoard(updatedBoard)
-      .then(updatedBoardFromServer => setBoard(updatedBoardFromServer))
-      .catch(err => {
-        console.error('Failed to update board:', err);
-        // showErrorMsg('Failed to update board');
-      })
+    try {
+      const updatedBoardFromServer = await updateBoard(updatedBoard)
+      setBoard(updatedBoardFromServer)
+    } catch (err) {
+      console.error('Failed to update board:', err);
+    }
   }
 
   const groups = board?.groups || []
@@ -149,11 +149,16 @@ export function BoardDetails() {
                 <div className='group-container' {...provided.droppableProps} ref={provided.innerRef}>
                   {groups.map((group, index) => (
                     <Draggable key={group.id} draggableId={group.id.toString()} index={index}>
-                      {(provided) => (
+                      {(provided, snapshot) => (
                         <div
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
+                          className={`group-item ${snapshot.isDragging ? 'dragging' : ''}`}
+                          style={{
+                            ...provided.draggableProps.style,
+                            margin: 0
+                          }}
                         >
                           <GroupPreview
                             key={group.id}
@@ -167,7 +172,7 @@ export function BoardDetails() {
                     </Draggable>
                   ))}
                   {/* drag end point */}
-                    {provided.placeholder}
+                  {provided.placeholder}
                   {isAddingGroup ? (
                     <div className='addgroup-from-container' ref={addGroupRef}>
                       <form className='addgroup-form' onSubmit={(e) => e.preventDefault()}>
@@ -199,11 +204,11 @@ export function BoardDetails() {
                   )}
                 </div>
               ))
-              
+
             }
-                     
-            </Droppable>
-          </DragDropContext>
+
+          </Droppable>
+        </DragDropContext>
         <Outlet />
       </section>
     </section>
