@@ -55,7 +55,7 @@ function getEmptyTask() {
         dueDate: null,
         description: '',
         checklists: [{}],
-        memberIds: [],
+        membersIds: [],
         labelsIds: [],
         byMember: {},
         style: {}
