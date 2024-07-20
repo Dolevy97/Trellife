@@ -23,8 +23,9 @@ export function RootCmp() {
 						<HomePage />
 					</>} />
 					<Route element={<AppLayout isHomePage={false} />}>
-						<Route path="board" element={<BoardIndex />} />
-						<Route path="board/add" element={<BoardCreate />} />
+						<Route path="board" element={<BoardIndex />}>
+							<Route path="add" element={<BoardCreate />} />
+						</Route>
 						<Route path="board/:boardId" element={<BoardDetails />} />
 						<Route path="board/:boardId/:groupId/:taskId" element={<TaskDetails />} />
 					</Route>
