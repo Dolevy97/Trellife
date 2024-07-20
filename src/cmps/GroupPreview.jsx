@@ -89,12 +89,21 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                 {tasks.map(task => (
                     <div key={task.id} className="task-container" onClick={() => handleTaskClick(task.id)}>
                         <div className='task-preview'>
+                            <div className='task-container1'>
+                                {/* map -lables */}
+                                {/* <span>{task.labelsIds}</span> */}
+                                
+                            </div>
+
                             <span>{task.title}</span>
                             {task.description && task.description.trim() !== '' && (
                                 <span><img src="../../../src/assets/styles/imgs/Icones/description.svg" alt="description" /></span>
                             )}
                             <div className='pen-display'>
                                 <img src="../../../src\assets\imgs\Icones\pen.svg" />
+                            </div>
+                            <div className='task-container3'>
+
                             </div>
                         </div>
 
@@ -104,7 +113,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                 {isAddingTask && (
                     <div className='addtask-from-container' ref={addTaskRef}>
                         <form className='addtask-form' onSubmit={(e) => e.preventDefault()}>
-                        <textarea
+                            <textarea
                                 type="text"
                                 value={newTaskTitle}
                                 onChange={handleInputChange}
