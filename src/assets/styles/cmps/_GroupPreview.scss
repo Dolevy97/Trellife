@@ -1,5 +1,5 @@
 .group-preview-container {
-    background-color: #04120d;
+    background-color:$bgclr3;
     border-radius: 12px;
     width: 272px;
     display: flex;
@@ -25,7 +25,7 @@
         scrollbar-width: thin;
 
         .tasks-container {
-            background-color: #22272b;
+            background-color: $bgclr2;
             border-radius: 8px;
             box-shadow: 0 1px 0 rgba(9, 30, 66, .25);
             padding: 6px 8px;

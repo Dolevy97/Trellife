@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { boardService } from '../services/board/'
 import { updateBoard } from '../store/actions/board.actions'
@@ -7,11 +7,30 @@ import { GroupPreviewHeader } from './GroupPreviewHeader'
 export function GroupPreview({ group, boardId, board, setBoard }) {
     const tasks = group?.tasks || []
     const [openMenuGroupId, setOpenMenuGroupId] = useState(null)
+    const [isAddingTask, setIsAddingTask] = useState(false)
+    const [newTaskTitle, setNewTaskTitle] = useState('')
+    const addTaskRef = useRef(null)
 
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (addTaskRef.current && !addTaskRef.current.contains(event.target)) {
+                setIsAddingTask(false)
+                setNewTaskTitle('')
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside)
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside)
+        }
+    }, [addTaskRef])
 
     async function handleAddTask() {
+        if (!newTaskTitle.trim()) return
+
         try {
             const newTask = boardService.getEmptyTask()
+            newTask.title = newTaskTitle.trim()
             const updatedGroup = {
                 ...group,
                 tasks: [...group.tasks, newTask]
@@ -22,15 +41,41 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
             }
             const savedBoard = await updateBoard(updatedBoard)
             setBoard(savedBoard)
+           console.log( newTask);
         } catch (err) {
             console.error('Failed to add task:', err)
         }
     }
 
+    function handleInputChange(e) {
+        setNewTaskTitle(e.target.value)
+    }
+
+    function handleTitleKeyPress(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault()
+            handleAddTask()
+            setNewTaskTitle('')
+            if (addTaskRef.current) {
+                const input = addTaskRef.current.querySelector('input')
+                if (input) {
+                    setTimeout(() => {
+                        input.focus()
+                    }, 0)
+                }
+            }
+        }
+    }
+
     return (
         <section className="group-preview-container">
-            <GroupPreviewHeader group={group} board={board} setBoard={setBoard}
-             openMenuGroupId={openMenuGroupId} setOpenMenuGroupId={setOpenMenuGroupId}/>
+            <GroupPreviewHeader 
+                group={group} 
+                board={board} 
+                setBoard={setBoard}
+                openMenuGroupId={openMenuGroupId} 
+                setOpenMenuGroupId={setOpenMenuGroupId} 
+            />
             <div className="group-preview-tasks">
                 {tasks.map(task => (
                     <div key={task.id} className="tasks-container">
@@ -45,12 +90,36 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                     </div>
                 ))}
             </div>
-            <footer className='group-preview-footer'>
-                <span className="add-icon" onClick={handleAddTask}>
-                    <img src="../../../src/assets/styles/imgs/Icones/add.svg" alt="add" />
-                    Add a card
-                </span>
-            </footer>
+            {isAddingTask ? (
+                <div className='addtask-from-container' ref={addTaskRef}>
+                    <form className='addtask-form' onSubmit={(e) => e.preventDefault()}>
+                        <input
+                            type="text"
+                            value={newTaskTitle}
+                            onChange={handleInputChange}
+                            onKeyPress={handleTitleKeyPress}
+                            autoFocus
+                            placeholder="Enter a title for this card..."
+                        />
+                        <div className='addtask-btns'>
+                            <span onClick={handleAddTask}>Add card</span>
+                            <div className="close-btn-wrapper" onClick={() => {
+                                setIsAddingTask(false)
+                                setNewTaskTitle('')
+                            }}>
+                                <img src="../../../src/assets/styles/imgs/Icones/close.svg" alt="" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            ) : (
+                <footer className='group-preview-footer'>
+                    <span className="add-icon" onClick={() => setIsAddingTask(true)}>
+                        <img src="../../../src/assets/styles/imgs/Icones/add.svg" alt="add" />
+                        Add a card
+                    </span>
+                </footer>
+            )}
         </section>
     )
 }

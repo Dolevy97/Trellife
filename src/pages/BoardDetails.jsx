@@ -37,6 +37,7 @@ export function BoardDetails() {
     }
   }, [addGroupRef])
 
+
   async function handleAddGroup() {
     if (!newGroupTitle.trim()) return
 
@@ -49,8 +50,14 @@ export function BoardDetails() {
       }
       const savedBoard = await updateBoard(updatedBoard)
       setBoard(savedBoard)
-      setIsAddingGroup(false)
       setNewGroupTitle('')
+
+      if (addGroupRef.current) {
+        const input = addGroupRef.current.querySelector('input')
+        if (input) {
+          input.focus()
+        }
+      }
     } catch (err) {
       console.error('Failed to add group:', err)
     }
@@ -68,6 +75,7 @@ export function BoardDetails() {
     if (e.key === 'Enter') {
       e.preventDefault()
       handleAddGroup()
+      setNewGroupTitle('')
     }
   }
 
@@ -76,7 +84,7 @@ export function BoardDetails() {
 
   return (
     <section style={{ background: board.style.background }} >
- <header className='groups-header'>
+      <header className='groups-header'>
         <div className='groups-header-leftside'>
           <span className='groups-header-logo'>{board.title}</span>
           <img className='empty-star' src="../../../src/assets/styles/imgs/Icones/star.svg" alt="star" />
