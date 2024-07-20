@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { boardService } from '../services/board/'
 import { updateBoard } from '../store/actions/board.actions'
 import { GroupPreviewHeader } from './GroupPreviewHeader'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
 
 export function GroupPreview({ group, boardId, board, setBoard }) {
     const tasks = group?.tasks || []
@@ -147,7 +149,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                                 <img src="../../../src\assets\imgs\Icones\pen.svg" />
                             </div>
                             <div className='task-container3'>
-                            {task.description && task.description.trim() !== '' && (
+                                {task.description && task.description.trim() !== '' && (
                                     <span className='task-description'><img src="../../../src/assets/styles/imgs/Icones/description.svg" alt="description" /></span>
                                 )}
 
@@ -168,7 +170,6 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                             </div>
 
                         </div>
-
 
                     </div>
                 ))}
