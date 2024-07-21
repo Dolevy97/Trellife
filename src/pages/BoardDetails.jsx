@@ -10,10 +10,15 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 export function BoardDetails() {
   const { boardId } = useParams()
+  const [isEditing, setIsEditing] = useState(false)
+
   const boardFromStore = useSelector(storeState => storeState.boardModule.board)
   const [board, setBoard] = useState(boardFromStore)
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [newGroupTitle, setNewGroupTitle] = useState('')
+
+  const [newTitle, setNewTitle] = useState('')
+
   const addGroupRef = useRef(null)
 
   useEffect(() => {
@@ -22,6 +27,8 @@ export function BoardDetails() {
 
   useEffect(() => {
     setBoard(boardFromStore)
+    if (boardFromStore) { setNewTitle(boardFromStore.title) }
+
   }, [boardFromStore])
 
   useEffect(() => {
@@ -38,6 +45,39 @@ export function BoardDetails() {
     }
   }, [addGroupRef])
 
+
+  function handleTitleInputChange(event) {
+    setNewTitle(event.target.value)
+  }
+
+  async function handleTitleUpdate() {
+    let titleToSet = newTitle.trim()
+    if (titleToSet === '') {
+      titleToSet = board.title
+    }
+    const updatedBoard = {
+      ...board,
+      title: titleToSet
+    }
+    try {
+      const savedBoard = await updateBoard(updatedBoard)
+      setBoard(savedBoard)
+      setNewTitle(titleToSet)
+      setIsEditing(false)
+    } catch (error) {
+      console.error('Failed to update board title:', error)
+    }
+  }
+
+  async function handleBlur() {
+    await handleTitleUpdate()
+  }
+
+  async function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      await handleTitleUpdate()
+    }
+  }
 
   async function handleAddGroup() {
     if (!newGroupTitle.trim()) return
@@ -64,12 +104,9 @@ export function BoardDetails() {
     }
   }
 
-  function handleAddGroupClick() {
-    setIsAddingGroup(true)
-  }
-
   function handleInputChange(e) {
     setNewGroupTitle(e.target.value)
+
   }
 
   function handleTitleKeyPress(e) {
@@ -120,7 +157,19 @@ export function BoardDetails() {
     <section style={{ background: board.style.background }} >
       <header className='groups-header'>
         <div className='groups-header-leftside'>
-          <span className='groups-header-logo'>{board.title}</span>
+          {isEditing ? (
+            <input
+              type="text"
+              value={newTitle}
+              onChange={handleTitleInputChange}
+              onBlur={handleBlur}
+              onKeyPress={handleKeyPress}
+              autoFocus
+            />
+          ) : (
+
+            <span onClick={() => setIsEditing(true)} className='groups-header-logo'>{board.title}</span>
+          )}
           <div
             className='star-container'
             onClick={onClickStar}
@@ -175,7 +224,7 @@ export function BoardDetails() {
                         <input
                           type="text"
                           value={newGroupTitle}
-                          onChange={handleInputChange}
+                          onChange={(e)=> setNewGroupTitle(e.target.value)}
                           onKeyPress={handleTitleKeyPress}
                           autoFocus
                           placeholder="Enter list title..."
@@ -193,7 +242,7 @@ export function BoardDetails() {
                       </form>
                     </div>
                   ) : (
-                    <div className='add-group' onClick={handleAddGroupClick}>
+                    <div className='add-group' onClick={() => setIsAddingGroup(true)}>
                       <img src="../../../src/assets/imgs/Icons/add.svg" alt="add" />
                       <span>Add another list</span>
                     </div>
