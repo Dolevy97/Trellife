@@ -4,6 +4,7 @@ import { boardService } from '../services/board/'
 import { updateBoard } from '../store/actions/board.actions'
 import { GroupPreviewHeader } from './GroupPreviewHeader'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import autosize from 'autosize';
 
 
 export function GroupPreview({ group, boardId, board, setBoard }) {
@@ -13,6 +14,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const addTaskRef = useRef(null)
     const [taskToEdit, setTaskToEdit] = useState(null)
+    const textareaRef = useRef(null)
 
     const navigate = useNavigate()
 
@@ -29,6 +31,19 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
             document.removeEventListener("mousedown", handleClickOutside)
         }
     }, [addTaskRef])
+
+
+    useEffect(() => {
+        if (textareaRef.current) {
+            autosize(textareaRef.current);
+        }
+
+        return () => {
+            if (textareaRef.current) {
+                autosize.destroy(textareaRef.current);
+            }
+        }
+    }, [newTaskTitle])
 
 
     function handleTaskClick(taskId) {
@@ -60,9 +75,6 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
         }
     }
 
-    function handleInputChange(e) {
-        setNewTaskTitle(e.target.value)
-    }
 
     function handleTitleKeyPress(e) {
         if (e.key === 'Enter') {
@@ -159,10 +171,11 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                             <textarea
                                 type="text"
                                 value={newTaskTitle}
-                                onChange={handleInputChange}
+                                onChange={(e)=> setNewTaskTitle(e.target.value)}
                                 onKeyPress={handleTitleKeyPress}
                                 autoFocus
                                 placeholder="Enter a title for this card..."
+                                ref={textareaRef}
                             />
                             <div className='addtask-btns'>
                                 <span onClick={handleAddTask}>Add card</span>
