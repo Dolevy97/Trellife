@@ -19,7 +19,6 @@ export function BoardCreate({ setIsAdding }) {
         if (boardCreateRef.current && !boardCreateRef.current.contains(event.target)) {
             setIsBoardCreateOpen(false)
             if (setIsAdding) setIsAdding(false)
-            navigate('/board')
         }
     }
 
@@ -55,9 +54,9 @@ export function BoardCreate({ setIsAdding }) {
 
             return
         }
-        await addBoard(newBoard)
+        const addedBoard = await addBoard(newBoard)
         if (setIsAdding) setIsAdding(false)
-        else navigate(-1)
+        navigate(`board/${addedBoard._id}`)
     }
 
     const { title } = boardToAdd
