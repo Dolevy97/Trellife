@@ -136,7 +136,7 @@ export function BoardDetails() {
         <div className='groups-header-rightside'>
           <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img1.jpg" alt="user" />
           <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img2.jpg" alt="user" />
-          <span className='member-img'><span>DL</span></span>
+          <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img3.jpg" alt="user" />
         </div>
       </header>
 
