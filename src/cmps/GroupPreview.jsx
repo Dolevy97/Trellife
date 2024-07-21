@@ -51,7 +51,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                 groups: board.groups.map(g => g.id === group.id ? updatedGroup : g)
             }
             const savedBoard = await updateBoard(updatedBoard)
-            // setBoard(savedBoard)
+            setBoard(savedBoard)
             console.log(newTask)
             setNewTaskTitle('')
 
@@ -80,26 +80,6 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
         }
     }
 
-
-    // function setTask() {
-    //     setTaskToEdit(() => {
-    //         const group = board.groups.find(group => group.id === groupId)
-    //         setGroup(group)
-    //         // console.log(group)
-    //         const task = group.tasks.find(task => task.id === taskId)
-    //         return task
-    //     })
-    // }
-    // function handleChange({ target }) {
-    //     const { type, name: field } = target
-    //     let { value } = target
-    //     switch (type) {
-    //         case 'number':
-    //             value = +value || ''
-    //             break
-    //     }
-    //     setTaskToEdit({ ...taskToEdit, [field]: value })
-    // }
 
     function getMemberById(id) {
         return board.members.find(member => member._id === id)
