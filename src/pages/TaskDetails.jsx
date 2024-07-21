@@ -7,7 +7,7 @@ import { updateTask } from '../store/actions/task.actions';
 import { TaskAction } from '../cmps/TaskAction';
 import autosize from 'autosize';
 import { getRandomMember } from '../services/board/board-demo-data.service';
-import { makeId } from '../services/util.service';
+import { getFormattedTime, makeId } from '../services/util.service';
 
 export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
@@ -104,12 +104,12 @@ export function TaskDetails() {
     }
 
     function handleCommentChange({ target }) {
-        const { type, name: field } = target;
-        let { value } = target;
+        const { type, name: field } = target
+        let { value } = target
         if (type === 'number') {
-            value = +value || '';
+            value = +value || ''
         }
-        setCommentToEdit(value);
+        setCommentToEdit(value)
     }
 
     function getMemberById(id) {
@@ -153,7 +153,8 @@ export function TaskDetails() {
             task: taskToEdit,
             txt: commentToEdit,
             byMember: getRandomMember(),
-            title: 'add comment'
+            title: 'add comment',
+            createdAt: Date.now()
         }
         board.activities.unshift(newActivity)
         setIsAddingComment(false)
@@ -191,6 +192,15 @@ export function TaskDetails() {
     async function onChangeStatus({ target }) {
         taskToEdit.status = target.checked ? 'done' : 'inProgress';
         await updateTask(taskToEdit, groupId, group, board)
+    }
+
+    function getComments(groupId) {
+        let comments = board.activities.filter(activity => {
+            return activity.title === 'add comment' && activity.group.id === groupId
+        })
+        if (!comments) return []
+        comments = comments.sort((a, b) => b.createdAt - a.createdAt)
+        return comments
     }
 
     if (!taskToEdit || !group) return <section>Loading...</section>;
@@ -296,9 +306,7 @@ export function TaskDetails() {
                             <div className="activity-title">
                                 <img className="activity-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/activity.svg" alt="activity icon" />
                                 <span>Activity</span>
-                                {/* <button>Show details</button> */}
                             </div>
-                            {/* {console.log(board.activities)} */}
                             <div className="input-container">
                                 <img className='user-img-activity-input' src="../../../src/assets/imgs/user-imgs/user-img3.jpg" alt="user" />
                                 {isAddingComment ?
@@ -324,6 +332,15 @@ export function TaskDetails() {
                                         onClick={() => { setIsAddingComment(true) }}
                                     />
                                 }
+                            </div>
+                            <div className="comments-container">
+                                {getComments(group.id).map(comment =>
+                                    <div className="comment-container">
+                                        <img className='member-img-comment' src={comment.byMember.imgUrl} alt="" />
+                                        <h1>{comment.byMember.fullname} <span>{getFormattedTime(comment.createdAt)}</span></h1>
+                                        <h1 className='comment-txt'>{comment.txt}</h1>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </section>

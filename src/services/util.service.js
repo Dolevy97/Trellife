@@ -72,3 +72,14 @@ export function getRandomTimestamp() {
     return Math.floor(randomTimestamp);
 }
 
+export function getFormattedTime(time) {
+    const date = new Date(time);
+    const today = new Date();
+    const currYear = today.getFullYear();
+    const formatter = new Intl.DateTimeFormat('en-US', {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+    });
+
+    return formatter.format(date);
+}

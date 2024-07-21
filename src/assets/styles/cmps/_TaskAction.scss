@@ -58,6 +58,10 @@
         font-weight: 600;
         line-height: em(16, 14);
         margin-block-end: em(14, 14);
+        
+        button {
+            font-family: inherit;
+        }
     }
 
     .name {
