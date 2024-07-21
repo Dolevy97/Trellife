@@ -55,6 +55,8 @@
             flex-direction: column;
             min-height: em(32);
             padding: 1em em(52)em(8) em(56);
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
 
             .task-title {
                 font-size: em(20);
