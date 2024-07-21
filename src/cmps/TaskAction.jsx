@@ -92,6 +92,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         <section className="task-action" onClick={(ev) => ev.stopPropagation()}>
             <header className="action-header">
                 {action.charAt(0).toUpperCase() + action.substring(1, action.length)}
+           <div onClick={(ev)=>onSetAction(ev,true)} className="close-action-container"> <img className="close-action icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" /> </div>
             </header>
             {(action === 'members' || action === 'labels') && <input className="text" placeholder={`Search ${action}`} />}
             {action === 'members' &&
@@ -169,8 +170,8 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             }
             {action === 'attach' &&
                 <>
+                    <div className="attachment">
                     <span className="title">Attach a file from your computer</span>
-                    <div>
                         <input
                             className="input-file-upload"
                             type="file"
