@@ -86,10 +86,6 @@
         .task-container {
             display: flex;
 
-            &>*>* {
-                position: relative;
-            }
-
             .task-content {
                 position: relative;
 

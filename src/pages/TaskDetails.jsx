@@ -318,39 +318,57 @@ export function TaskDetails() {
 
                     <section className="task-actions">
                         <span className="add-to-card fs12">Add to card</span>
-                        <button className="action" name="members" onClick={onSetAction}>
-                            <img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" alt="members icon" />
-                            <span className="action-title">Members</span>
-                        </button>
-                        {action === 'members' && <TaskAction action="members" task={taskToEdit} board={board} group={group} getMemberById={getMemberById} />}
-                        <button className="action" name="labels" onClick={onSetAction}>
-                            <img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" alt="labels icon" />
-                            <span className="action-title">Labels</span>
-                        </button>
-                        {action === 'labels' && <TaskAction action="labels" task={taskToEdit} board={board} group={group} getLabelById={getLabelById} />}
-                        <button className="action" name="checklist" onClick={onSetAction}>
-                            <img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="checklist icon" />
-                            <span className="action-title">Checklist</span>
-                        </button>
-                        {action === 'checklist' && <TaskAction action="add checklist" task={taskToEdit} board={board} group={group} />}
-                        <button className="action" name="dates" onClick={onSetAction}>
-                            <img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" alt="dates icon" />
-                            <span className="action-title">Dates</span>
-                        </button>
-                        <button className="action" name="attachment" onClick={onSetAction}>
-                            <img className="attachment-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/attachment.svg" alt="attachment icon" />
-                            <span className="action-title">Attachment</span>
-                        </button>
-                        {action === 'attachment' && <TaskAction action="attach" task={taskToEdit} board={board} group={group} onSetAction={onSetAction} />}
-                        <button className="action" name="location" onClick={onSetAction}>
-                            <img className="location-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/location.svg" alt="location icon" />
-                            <span className="action-title">Location</span>
-                        </button>
-                        <button className="action" name="cover" onClick={onSetAction}>
-                            <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
-                            <span className="action-title">Cover</span>
+                        <div className="task-action-container">
+                            <button className="action" name="members" onClick={onSetAction}>
+                                <img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" alt="members icon" />
+                                <span className="action-title">Members</span>
+                            </button>
+                            {action === 'members' && <TaskAction action="members" task={taskToEdit} board={board} group={group} getMemberById={getMemberById} />}
+                        </div>
+                        <div className="task-action-container">
+                            <button className="action" name="labels" onClick={onSetAction}>
+                                <img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" alt="labels icon" />
+                                <span className="action-title">Labels</span>
+                            </button>
+                            {action === 'labels' && <TaskAction action="labels" task={taskToEdit} board={board} group={group} getLabelById={getLabelById} />}
+                        </div>
+                        <div className="task-action-container">
+                            <button className="action" name="checklist" onClick={onSetAction}>
+                                <img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="checklist icon" />
+                                <span className="action-title">Checklist</span>
+                            </button>
+                            {action === 'checklist' && <TaskAction action="add checklist" task={taskToEdit} board={board} group={group} />}
+                        </div>
+                        <div className="task-action-container">
+
+                            <button className="action" name="dates" onClick={onSetAction}>
+                                <img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" alt="dates icon" />
+                                <span className="action-title">Dates</span>
+                            </button>
+                            {/* Enter task action rendering for date */}
+                        </div>
+                        <div className="task-action-container">
+                            <button className="action" name="attachment" onClick={onSetAction}>
+                                <img className="attachment-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/attachment.svg" alt="attachment icon" />
+                                <span className="action-title">Attachment</span>
+                            </button>
+                            {action === 'attachment' && <TaskAction action="attach" task={taskToEdit} board={board} group={group} onSetAction={onSetAction} />}
+                        </div>
+                        <div className="task-action-container">
+                            <button className="action" name="location" onClick={onSetAction}>
+                                <img className="location-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/location.svg" alt="location icon" />
+                                <span className="action-title">Location</span>
+                            </button>
+                            {/* Enter location action rendering */}
+                        </div>
+                        <div className="task-action-container">
+                            <button className="action" name="cover" onClick={onSetAction}>
+                                <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
+                                <span className="action-title">Cover</span>
+                            </button>
                             {action === 'cover' && <TaskAction action="cover" task={taskToEdit} board={board} group={group} />}
-                        </button>
+                        </div>
+
                         <button className="action" name="custom" onClick={onSetAction}>
                             <img className="custom-fields-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/custom-fields.svg" alt="custom fields icon" />
                             <span className="action-title">Custom fields</span>
