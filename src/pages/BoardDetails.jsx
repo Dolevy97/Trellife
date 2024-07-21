@@ -141,7 +141,7 @@ export function BoardDetails() {
       </header>
 
 
-      <section className="group-list-container" style={{ background: board.style.background }} >
+      <section className="group-list-container" style={{ background: board.style.background, backgroundSize: 'cover' }} >
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId='groups' direction='horizontal'>
             {(provided) => (
