@@ -4,6 +4,7 @@ import { boardService } from '../services/board/'
 import { updateBoard } from '../store/actions/board.actions'
 import { GroupPreviewHeader } from './GroupPreviewHeader'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import autosize from 'autosize';
 
 
 export function GroupPreview({ group, boardId, board, setBoard }) {
@@ -13,6 +14,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const addTaskRef = useRef(null)
     const [taskToEdit, setTaskToEdit] = useState(null)
+    const textareaRef = useRef(null)
 
     const navigate = useNavigate()
 
@@ -29,6 +31,19 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
             document.removeEventListener("mousedown", handleClickOutside)
         }
     }, [addTaskRef])
+
+
+    useEffect(() => {
+        if (textareaRef.current) {
+            autosize(textareaRef.current);
+        }
+
+        return () => {
+            if (textareaRef.current) {
+                autosize.destroy(textareaRef.current);
+            }
+        }
+    }, [newTaskTitle])
 
 
     function handleTaskClick(taskId) {
@@ -51,7 +66,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                 groups: board.groups.map(g => g.id === group.id ? updatedGroup : g)
             }
             const savedBoard = await updateBoard(updatedBoard)
-            // setBoard(savedBoard)
+            setBoard(savedBoard)
             console.log(newTask)
             setNewTaskTitle('')
 
@@ -60,9 +75,6 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
         }
     }
 
-    function handleInputChange(e) {
-        setNewTaskTitle(e.target.value)
-    }
 
     function handleTitleKeyPress(e) {
         if (e.key === 'Enter') {
@@ -80,26 +92,6 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
         }
     }
 
-
-    // function setTask() {
-    //     setTaskToEdit(() => {
-    //         const group = board.groups.find(group => group.id === groupId)
-    //         setGroup(group)
-    //         // console.log(group)
-    //         const task = group.tasks.find(task => task.id === taskId)
-    //         return task
-    //     })
-    // }
-    // function handleChange({ target }) {
-    //     const { type, name: field } = target
-    //     let { value } = target
-    //     switch (type) {
-    //         case 'number':
-    //             value = +value || ''
-    //             break
-    //     }
-    //     setTaskToEdit({ ...taskToEdit, [field]: value })
-    // }
 
     function getMemberById(id) {
         return board.members.find(member => member._id === id)
@@ -179,10 +171,11 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                             <textarea
                                 type="text"
                                 value={newTaskTitle}
-                                onChange={handleInputChange}
+                                onChange={(e)=> setNewTaskTitle(e.target.value)}
                                 onKeyPress={handleTitleKeyPress}
                                 autoFocus
                                 placeholder="Enter a title for this card..."
+                                ref={textareaRef}
                             />
                             <div className='addtask-btns'>
                                 <span onClick={handleAddTask}>Add card</span>

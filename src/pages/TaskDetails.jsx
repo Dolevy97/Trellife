@@ -8,22 +8,27 @@ import { TaskAction } from '../cmps/TaskAction';
 import autosize from 'autosize';
 
 export function TaskDetails() {
+    const board = useSelector(storeState => storeState.boardModule.board)
+
     const textareaRef = useRef(null)
-    const board = useSelector(storeState => storeState.boardModule.board);
-    const [group, setGroup] = useState(null);
-    const [taskToEdit, setTaskToEdit] = useState(null);
-    const [action, setAction] = useState(null);
+    const dateInputRef = useRef(null)
+
+    const [group, setGroup] = useState(null)
+    const [taskToEdit, setTaskToEdit] = useState(null)
+    const [action, setAction] = useState(null)
     const [isSettingDescription, setIsSettingDescription] = useState(false)
-    const { taskId, groupId, boardId } = useParams();
-    const navigate = useNavigate();
+    const [tempDescription, setTempDescription] = useState('')
+
+    const { taskId, groupId, boardId } = useParams()
+    const navigate = useNavigate()
 
     useEffect(() => {
-        getBoard();
-    }, []);
+        getBoard()
+    }, [])
 
     useEffect(() => {
-        if (board) setTask();
-    }, [board]);
+        if (board) setTask()
+    }, [board])
 
     useEffect(() => {
         if (textareaRef.current) {
@@ -95,6 +100,35 @@ export function TaskDetails() {
         setAction(actionName);
     }
 
+    function startSetDescription() {
+        setTempDescription(taskToEdit.description)
+        setIsSettingDescription(true)
+    }
+
+    async function onSaveDescription() {
+        await updateTask(taskToEdit, groupId, group, board)
+        setIsSettingDescription(false)
+
+    }
+
+    function cancelSetDescription() {
+        taskToEdit.description = tempDescription
+        setIsSettingDescription(false)
+    }
+
+    function getDueDate(timeStamp) {
+        if (!timeStamp) return
+        const date = new Date(timeStamp)
+        const isoString = date.toISOString();
+        return isoString.slice(0, 16)
+    }
+
+    function onShowDatePicker() {
+        if (dateInputRef.current) {
+            dateInputRef.current.showPicker()
+        }
+    }
+
     if (!taskToEdit || !group) return <section>Loading...</section>;
 
     const { title, description, membersIds, labelsIds } = taskToEdit;
@@ -106,9 +140,9 @@ export function TaskDetails() {
                     <img className="card-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/card.svg" alt="card icon" />
                     <span className="task-title">{title}</span>
                     <span className="task-in-list fs12">in list <span>{group.title}</span></span>
-                    <img className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="close icon" />
+                    <img onClick={onBackdropClicked} className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="close icon" />
                 </header>
-                <main className="task-main">
+                <section className="task-container">
                     <section className="task-content">
                         <div className="members-labels-notifications-date-container">
                             {membersIds.length ? <div className="members-container">
@@ -131,31 +165,59 @@ export function TaskDetails() {
                                 </div>
                             </div> : ''}
 
-                            {board.dueDate && <div className="date-container">
+                            {taskToEdit.dueDate && <div className="date-container">
                                 <span className="fs12">Due date</span>
-                                <div className="date">
+                                <div onClick={onShowDatePicker} className="date">
                                     <input className="checkbox" type="checkbox" />
-                                    <input className="date" type="date" />
+                                    <input ref={dateInputRef} className="date-input" type="datetime-local" value={getDueDate(taskToEdit.dueDate)} />
+                                    <img className="arrow-down" src="../../../src/assets/imgs/TaskDetails-icons/arrow-down.svg" alt="description icon" />
                                 </div>
                             </div>}
                         </div>
                         <div className="description-container">
-                            <img className="description-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/description.svg" alt="description icon" />
-                            <span>Description</span>
-                            <textarea
-                                placeholder='Add a more detailed description...'
-                                className="description"
-                                onChange={handleChange}
-                                value={description}
-                                name="description"
-                                ref={textareaRef} />
+                            <div className="description-title">
+                                <img className="description-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/description.svg" alt="description icon" />
+                                <span>Description</span>
+                                {!isSettingDescription && description.length ? <button>Edit</button> : ''}
+                            </div>
+                            {isSettingDescription ?
+                                <>
+                                    <textarea
+                                        placeholder={`Pro tip: Hit 'Enter' for a line break.`}
+                                        className="description editing"
+                                        onChange={handleChange}
+                                        value={description}
+                                        name="description"
+                                        ref={textareaRef} />
+                                    <article className="btns">
+                                        <button onClick={onSaveDescription} className='btn-save'>Save</button>
+                                        <button onClick={cancelSetDescription} className='btn-cancel'>Cancel</button>
+                                    </article>
+                                </>
+                                :
+                                <textarea
+                                    placeholder='Add a more detailed description...'
+                                    className={`description ${description.length ? 'has-content' : ''}`}
+                                    value={description}
+                                    name="description"
+                                    ref={textareaRef}
+                                    onClick={startSetDescription}
+                                />
+                            }
                         </div>
+                        {taskToEdit.attachments ?
+                            <div className="attachments-container">
+                                <img className="attachments-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/paperclip.svg" alt="attachment icon" />
+                                <span>Attachments</span>
+                            </div>
+                            :
+                            ''}
                         <div className="activity-container">
                             <img className="activity-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/activity.svg" alt="activity icon" />
                             <span>Activity</span>
                         </div>
-                        <button>Submit</button>
                     </section>
+
                     <section className="task-actions">
                         <span className="add-to-card fs12">Add to card</span>
                         <button className="action" name="members" onClick={onSetAction}>
@@ -193,7 +255,7 @@ export function TaskDetails() {
                             <span className="action-title">Custom fields</span>
                         </button>
                     </section>
-                </main>
+                </section>
             </form>
         </div>
     );
