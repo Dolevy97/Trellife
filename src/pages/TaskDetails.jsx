@@ -11,12 +11,15 @@ export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
 
     const textareaRef = useRef(null)
+    const textareaCommentRef = useRef(null)
     const dateInputRef = useRef(null)
 
     const [group, setGroup] = useState(null)
     const [taskToEdit, setTaskToEdit] = useState(null)
     const [action, setAction] = useState(null)
     const [isSettingDescription, setIsSettingDescription] = useState(false)
+    const [isAddingComment, setIsAddingComment] = useState(false)
+    const [commentToEdit, setCommentToEdit] = useState('')
     const [tempDescription, setTempDescription] = useState('')
 
     const { taskId, groupId, boardId } = useParams()
@@ -40,7 +43,19 @@ export function TaskDetails() {
                 autosize.destroy(textareaRef.current);
             }
         }
-    }, [taskToEdit])
+    }, [taskToEdit, isSettingDescription])
+
+    useEffect(() => {
+        if (textareaCommentRef.current) {
+            autosize(textareaCommentRef.current);
+        }
+
+        return () => {
+            if (textareaCommentRef.current) {
+                autosize.destroy(textareaCommentRef.current);
+            }
+        }
+    }, [taskToEdit, isSettingDescription])
 
     async function getBoard() {
         try {
@@ -86,6 +101,15 @@ export function TaskDetails() {
         setTaskToEdit({ ...taskToEdit, [field]: value });
     }
 
+    function handleCommentChange({ target }) {
+        const { type, name: field } = target;
+        let { value } = target;
+        if (type === 'number') {
+            value = +value || '';
+        }
+        setCommentToEdit({ ...taskToEdit, [field]: value });
+    }
+
     function getMemberById(id) {
         return board.members.find(member => member._id === id);
     }
@@ -115,6 +139,11 @@ export function TaskDetails() {
         taskToEdit.description = tempDescription
         setIsSettingDescription(false)
     }
+    async function onSaveComment() {
+        console.log(board)
+        // await updateBoard(board)
+        setIsAddingComment(false)
+    }
 
     function getDueDate(timeStamp) {
         if (!timeStamp) return
@@ -129,14 +158,20 @@ export function TaskDetails() {
         }
     }
 
+    function handleCommentKeyUp(ev) {
+        if (ev.code === 'Escape') {
+            setIsAddingComment(false)
+        }
+    }
+
     if (!taskToEdit || !group) return <section>Loading...</section>;
 
-    const { title, description, membersIds, labelsIds } = taskToEdit;
+    const { title, description, membersIds, labelsIds, style:cover } = taskToEdit;
 
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
             <form className="task-details" onSubmit={onSubmit} onClick={onTaskDetailsClicked}>
-                <header className="task-header">
+                <header className="task-header" style={{ ...cover }}>
                     <img className="card-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/card.svg" alt="card icon" />
                     <span className="task-title">{title}</span>
                     <span className="task-in-list fs12">in list <span>{group.title}</span></span>
@@ -178,7 +213,7 @@ export function TaskDetails() {
                             <div className="description-title">
                                 <img className="description-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/description.svg" alt="description icon" />
                                 <span>Description</span>
-                                {!isSettingDescription && description.length ? <button>Edit</button> : ''}
+                                {!isSettingDescription && description.length ? <button onClick={startSetDescription}>Edit</button> : ''}
                             </div>
                             {isSettingDescription ?
                                 <>
@@ -201,6 +236,7 @@ export function TaskDetails() {
                                     value={description}
                                     name="description"
                                     ref={textareaRef}
+                                    readOnly
                                     onClick={startSetDescription}
                                 />
                             }
@@ -213,8 +249,38 @@ export function TaskDetails() {
                             :
                             ''}
                         <div className="activity-container">
-                            <img className="activity-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/activity.svg" alt="activity icon" />
-                            <span>Activity</span>
+                            <div className="activity-title">
+                                <img className="activity-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/activity.svg" alt="activity icon" />
+                                <span>Activity</span>
+                                {/* <button>Show details</button> */}
+                            </div>
+                            {/* {console.log(board.activities)} */}
+                            <div className="input-container">
+                                <img className='user-img-activity-input' src="../../../src/assets/imgs/user-imgs/user-img3.jpg" alt="user" />
+                                {isAddingComment ?
+                                    <>
+                                        <textarea
+                                            placeholder='Write a comment...'
+                                            className="comment editing"
+                                            onChange={handleCommentChange}
+                                            name="comment"
+                                            onKeyUp={handleCommentKeyUp}
+                                            ref={textareaCommentRef} />
+                                        <article className="btns">
+                                            <button onClick={onSaveDescription} className='btn-save'>Save</button>
+                                        </article>
+                                    </>
+                                    :
+                                    <textarea
+                                        placeholder='Write a comment...'
+                                        className={`comment`}
+                                        name="comment"
+                                        ref={textareaCommentRef}
+                                        readOnly
+                                        onClick={() => { setIsAddingComment(true) }}
+                                    />
+                                }
+                            </div>
                         </div>
                     </section>
 
@@ -223,12 +289,12 @@ export function TaskDetails() {
                         <button className="action" name="members" onClick={onSetAction}>
                             <img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" alt="members icon" />
                             <span className="action-title">Members</span>
-                            {action === 'members' && <TaskAction action="members" task={taskToEdit} board={board} getMemberById={getMemberById} group={group} />}
+                            {action === 'members' && <TaskAction action="members" task={taskToEdit} board={board} group={group} getMemberById={getMemberById} />}
                         </button>
                         <button className="action" name="labels" onClick={onSetAction}>
                             <img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" alt="labels icon" />
                             <span className="action-title">Labels</span>
-                            {action === 'labels' && <TaskAction action="labels" task={taskToEdit} board={board} getLabelById={getLabelById} group={group} />}
+                            {action === 'labels' && <TaskAction action="labels" task={taskToEdit} board={board} group={group} getLabelById={getLabelById} />}
                         </button>
                         <button className="action" name="checklist" onClick={onSetAction}>
                             <img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="checklist icon" />
@@ -249,6 +315,7 @@ export function TaskDetails() {
                         <button className="action" name="cover" onClick={onSetAction}>
                             <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
                             <span className="action-title">Cover</span>
+                            {action === 'cover' && <TaskAction action="cover" task={taskToEdit} board={board} group={group} />}
                         </button>
                         <button className="action" name="custom" onClick={onSetAction}>
                             <img className="custom-fields-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/custom-fields.svg" alt="custom fields icon" />

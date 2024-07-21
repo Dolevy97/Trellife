@@ -23,22 +23,28 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         await updateTask(task, group.id, group, board);
     }
 
-    async function onToggleLabel(ev,id) {
-        const {checked} = ev.target
+    async function onToggleLabel(ev, id) {
+        const { checked } = ev.target
         if (checked) {
             task.labelsIds.push(id)
-        } else{
-            task = {...task,labelsIds:task.labelsIds.filter(labelId => labelId !== id)}
+        } else {
+            task = { ...task, labelsIds: task.labelsIds.filter(labelId => labelId !== id) }
         }
         await updateTask(task, group.id, group, board);
     }
 
+    async function onUpdateCoverColor({target}){
+        const color = target.style.backgroundColor
+        task = { ...task, style: {backgroundColor: color} };
+        await updateTask(task, group.id, group, board);
+    }
+
     return (
-        <section className="task-action" onClick={(ev)=>ev.stopPropagation()}>
+        <section className="task-action" onClick={(ev) => ev.stopPropagation()}>
             <header className="action-header">
                 {action.charAt(0).toUpperCase() + action.substring(1, action.length)}
             </header>
-            <input className="text" placeholder={`Search ${action}`} />
+          {(action==='members' || action==='labels') && <input className="text" placeholder={`Search ${action}`} />}  
             {action === 'members' &&
                 <>
                     <div className="card-members">
@@ -46,7 +52,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                         {getTaskMembers().map(member => {
                             return (
                                 <div key={member._id} className="member card-member" onClick={() => onRemoveMember(member._id)}>
-                                    <img className="member-thumbnail" src='../../../src/assets/imgs/user-imgs/user-img1.jpg' title={member.fullname} />
+                                    <img className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
                                     <span className="name">{member.fullname}</span>
                                     <img className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" />
                                 </div>
@@ -58,7 +64,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                         {getBoardMembers().map(member => {
                             return (
                                 <div key={member._id} className="member" onClick={() => onAddMember(member._id)}>
-                                    <img className="member-thumbnail" src='../../../src/assets/imgs/user-imgs/user-img1.jpg' title={member.fullname} />
+                                    <img className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
                                     <span className="name">{member.fullname}</span>
                                 </div>
                             )
@@ -68,42 +74,42 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             }
             {action === 'labels' &&
                 <>
-                    <div className="card-labels">
+                    <div className="labels">
                         <span className="title">Labels</span>
                         {board.labels.map(label => {
                             return (
                                 <div key={label.id} className="label-container">
-                                    <input type="checkbox" checked={task.labelsIds.includes(label.id)} onChange={()=>onToggleLabel(event,label.id)}/>
+                                    <input className="label-checkbox" type="checkbox" checked={task.labelsIds.includes(label.id)} onChange={() => onToggleLabel(event, label.id)} />
                                     <div className="label" style={{ backgroundColor: label.color }}>{label.title}</div>
-                                    <img src="../../../src/assets/imgs/TaskDetails-icons/pen.svg"></img>
+                                    <div className="pen-icon-container"><img className="pen-icon" src="../../../src/assets/imgs/TaskDetails-icons/pen.svg"></img></div>
                                 </div>
                             )
                         })
 
                         }
-                        {/* {getTaskLabels().map(labels => {
-                            return (
-                                <div key={labels._id} className="labels card-labels" onClick={() => onRemoveLabels(labels._id)}>
-                                    <img className="labels-thumbnail" src='../../../src/assets/imgs/user-imgs/user-img1.jpg' title={labels.fullname} />
-                                    <span className="name">{labels.fullname}</span>
-                                    <img className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" />
-                                </div>
-                            )
-                        })}
                     </div>
-                    <div className="board-labelss">
-                        <span className="title">Board labelss</span>
-                        {getBoardLabels().map(labels => {
-                            return (
-                                <div key={labels._id} className="labels" onClick={() => onAddlabels(labels._id)}>
-                                    <img className="labels-thumbnail" src='../../../src/assets/imgs/user-imgs/user-img1.jpg' title={labels.fullname} />
-                                    <span className="name">{labels.fullname}</span>
-                                </div>
-                            )
-                        })} */}
+                </>
+            }
+            {action === 'cover' &&
+                <>
+                    <div className="cover">
+                    <span className="title">Colors</span>
+                        <div className="colors">
+                            <div className="color" style={{backgroundColor: '#206e4e'}} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{backgroundColor: '#7f5f02'}} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{backgroundColor: '#a64700'}} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{backgroundColor: '#ae2e24'}} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{backgroundColor: '#5e4db2'}} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{backgroundColor: '#0055cc'}} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{backgroundColor: '#1f6a83'}} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{backgroundColor: '#4d6b1f'}} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{backgroundColor: '#943d73'}} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{backgroundColor: '#596773'}} onClick={onUpdateCoverColor}></div>
+                        </div>
                     </div>
                 </>
             }
         </section>
     )
 }
+
