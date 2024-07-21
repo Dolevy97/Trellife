@@ -1,7 +1,9 @@
 .task-action {
-    position: fixed;
+    position: absolute;
     background-color: rgb(40, 46, 51);
-    translate: em(-12,14) em(14,14);
+    // translate: em(-12,14) em(14,14);
+    top:35px;
+    left: -1px;
     width: em(304);
     border-radius: 8px;
     z-index: 2;
