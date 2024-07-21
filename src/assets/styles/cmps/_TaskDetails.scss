@@ -40,7 +40,7 @@
 
         .fs12 {
             font-size: em(12);
-            margin-block-end: em(4,14);
+            margin-block-end: em(4, 14);
         }
 
         .icon {
@@ -108,7 +108,7 @@
                             width: em(32);
                             border-radius: 50%;
                             margin: 0 4px 4px 0;
-                            
+
                         }
                     }
 
@@ -121,7 +121,7 @@
                         .label {
                             border-radius: 3px;
                             padding: em(3) em(12);
-                            font-size:0.875em;
+                            font-size: 0.875em;
                             height: 32px;
                             font-weight: 500;
 
@@ -134,12 +134,12 @@
 
                     .date-container {
 
-                        div.date{
+                        div.date {
                             margin-block: auto;
                         }
 
                         .checkbox {
-                            vertical-align:middle;
+                            vertical-align: middle;
                             margin: auto;
                             margin-inline-end: em(6);
                         }
@@ -164,7 +164,32 @@
                         height: em(24);
                         width: em(24);
                     }
-                    
+
+                    .description {
+                        border: none;
+                        background-color: #A1BDD914;
+                        font-weight: 500;
+                        min-height: 40px;
+                        padding: 8px 12px;
+                        border-radius: 3px;
+                        color: $txtclr1;
+                        font-family: inherit;
+                        line-height: 1.25em;
+                        font-size: .875em;
+                        resize: none;
+
+                        overflow-y:auto;
+
+                        &::placeholder {
+                            color: $txtclr1;
+                        }
+
+                        &:hover {
+                            cursor: pointer;
+                        }
+                    }
+
+
                 }
 
                 .activity-container {
@@ -183,7 +208,7 @@
             display: flex;
             flex-direction: column;
             padding: em(2) em(16) em(8) em(8);
-            
+
 
             .action {
                 position: relative;
@@ -194,9 +219,9 @@
                 background-color: rgba(161, 189, 217, 0.08);
                 text-align: start;
                 border-radius: 3px;
-                height: em(32,14);
+                height: em(32, 14);
                 margin-block-end: em(8);
-                width: em(168,14);
+                width: em(168, 14);
                 // overflow: hidden;
                 padding: em(6) em(12);
                 text-overflow: ellipsis;
@@ -208,7 +233,7 @@
                 .icon {
                     height: 1em;
                     width: 1em;
-                    top:em(6.7,14);
+                    top: em(6.7, 14);
                 }
 
                 .action-title {

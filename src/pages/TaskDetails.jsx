@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { boardService } from '../services/board';
 import { updateBoard } from '../store/actions/board.actions';
 import { updateTask } from '../store/actions/task.actions';
 import { TaskAction } from '../cmps/TaskAction';
+import autosize from 'autosize';
 
 export function TaskDetails() {
+    const textareaRef = useRef(null)
     const board = useSelector(storeState => storeState.boardModule.board);
     const [group, setGroup] = useState(null);
     const [taskToEdit, setTaskToEdit] = useState(null);
     const [action, setAction] = useState(null);
-
+    const [isSettingDescription, setIsSettingDescription] = useState(false)
     const { taskId, groupId, boardId } = useParams();
     const navigate = useNavigate();
 
@@ -22,6 +24,18 @@ export function TaskDetails() {
     useEffect(() => {
         if (board) setTask();
     }, [board]);
+
+    useEffect(() => {
+        if (textareaRef.current) {
+            autosize(textareaRef.current);
+        }
+
+        return () => {
+            if (textareaRef.current) {
+                autosize.destroy(textareaRef.current);
+            }
+        }
+    }, [taskToEdit])
 
     async function getBoard() {
         try {
@@ -77,7 +91,7 @@ export function TaskDetails() {
 
     function onSetAction(ev) {
         ev.stopPropagation();
-        const actionName = action === ev.currentTarget.name ? null :ev.currentTarget.name;
+        const actionName = action === ev.currentTarget.name ? null : ev.currentTarget.name;
         setAction(actionName);
     }
 
@@ -97,7 +111,7 @@ export function TaskDetails() {
                 <main className="task-main">
                     <section className="task-content">
                         <div className="members-labels-notifications-date-container">
-                            <div className="members-container">
+                            {membersIds.length ? <div className="members-container">
                                 <span className="fs12">Members</span>
                                 <div className="members-img-container">
                                     {membersIds.map(id => {
@@ -106,8 +120,8 @@ export function TaskDetails() {
                                     }
                                     )}
                                 </div>
-                            </div>
-                            <div className="labels-container">
+                            </div> : ''}
+                            {labelsIds.length ? <div className="labels-container">
                                 <span className="fs12">Labels</span>
                                 <div className="labels">
                                     {labelsIds.map(id => {
@@ -115,7 +129,7 @@ export function TaskDetails() {
                                         return <span className="label" key={id} style={{ backgroundColor: label.color }}>{label.title}</span>;
                                     })}
                                 </div>
-                            </div>
+                            </div> : ''}
 
                             {board.dueDate && <div className="date-container">
                                 <span className="fs12">Due date</span>
@@ -128,7 +142,13 @@ export function TaskDetails() {
                         <div className="description-container">
                             <img className="description-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/description.svg" alt="description icon" />
                             <span>Description</span>
-                            <textarea className="description" onChange={handleChange} value={description} name="description" />
+                            <textarea
+                                placeholder='Add a more detailed description...'
+                                className="description"
+                                onChange={handleChange}
+                                value={description}
+                                name="description"
+                                ref={textareaRef} />
                         </div>
                         <div className="activity-container">
                             <img className="activity-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/activity.svg" alt="activity icon" />

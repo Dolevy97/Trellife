@@ -128,7 +128,7 @@ export function BoardDetails() {
           >
             <img
               className={`groupsheader-preview-star ${board.isStarred ? 'starred' : ''}`}
-              src={board.isStarred ? "../../../src/assets//imgs/Icons/fullstar.svg" : '../../../src/assets//imgs/Icons/star.svg'}
+              src={board.isStarred ? "../../../src/assets/imgs/Icons/fullstar.svg" : '../../../src/assets/imgs/Icons/star.svg'}
               alt="star icon"
             />
           </div>
@@ -186,7 +186,7 @@ export function BoardDetails() {
                             setIsAddingGroup(false)
                             setNewGroupTitle('')
                           }}>
-                            <img src="../../../src/assets//imgs/Icons/close.svg" alt="" />
+                            <img src="../../../src/assets/imgs/Icons/close.svg" alt="" />
                           </div>
 
                         </div>
@@ -194,7 +194,7 @@ export function BoardDetails() {
                     </div>
                   ) : (
                     <div className='add-group' onClick={handleAddGroupClick}>
-                      <img src="../../../src/assets//imgs/Icons/add.svg" alt="add" />
+                      <img src="../../../src/assets/imgs/Icons/add.svg" alt="add" />
                       <span>Add another list</span>
                     </div>
                   )}

@@ -150,7 +150,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                             </div>
                             <div className='task-container3'>
                                 {task.description && task.description.trim() !== '' && (
-                                    <span className='task-description'><img src="../../../src/assets//imgs/Icons/description.svg" alt="description" /></span>
+                                    <span className='task-description'><img src="../../../src/assets/imgs/Icons/description.svg" alt="description" /></span>
                                 )}
 
                                 <div className='members-container'>
@@ -190,7 +190,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                                     setIsAddingTask(false)
                                     setNewTaskTitle('')
                                 }}>
-                                    <img src="../../../src/assets//imgs/Icons/close.svg" alt="" />
+                                    <img src="../../../src/assets/imgs/Icons/close.svg" alt="" />
                                 </div>
                             </div>
                         </form>
@@ -199,7 +199,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
             {!isAddingTask && (
                 <footer className='group-preview-footer'>
                     <span className="add-icon" onClick={() => setIsAddingTask(true)}>
-                        <img src="../../../src/assets//imgs/Icons/add.svg" alt="add" />
+                        <img src="../../../src/assets/imgs/Icons/add.svg" alt="add" />
                         Add a card
                     </span>
                 </footer>
