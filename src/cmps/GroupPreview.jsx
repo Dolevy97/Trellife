@@ -51,7 +51,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                 groups: board.groups.map(g => g.id === group.id ? updatedGroup : g)
             }
             const savedBoard = await updateBoard(updatedBoard)
-            setBoard(savedBoard)
+            // setBoard(savedBoard)
             console.log(newTask)
             setNewTaskTitle('')
 

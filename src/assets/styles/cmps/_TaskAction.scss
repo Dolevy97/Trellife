@@ -54,11 +54,21 @@
         &::placeholder{
             color: inherit;
         }
+    }  
+
+    .card-member{
+        position: relative;
+        
+        .close-icon{
+            position: static;
+            margin-inline-start: auto;
+        }
     }
  
     .member {
         display: flex;
         padding: em(4,14) em(8,14) em(4,14) em(4,14);
+        border-radius: 4px;
         cursor: pointer;
 
         .member-thumbnail {
