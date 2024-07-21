@@ -115,7 +115,8 @@ export function TaskDetails() {
                                 <div className="members-img-container">
                                     {membersIds.map(id => {
                                         const member = getMemberById(id)
-                                        return <img key={member._id} className="member-thumbnail" src='../../../src/assets/imgs/user-imgs/user-img1.jpg' title={member.fullname} />
+                                        console.log(member)
+                                        return <img key={member._id} className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
                                     }
                                     )}
                                 </div>
@@ -131,13 +132,13 @@ export function TaskDetails() {
                                 </div>
                             </div>
 
-                            <div className="date-container">
+                            {board.dueDate && <div className="date-container">
                                 <span className="fs12">Due date</span>
                                 <div className="date">
                                     <input className="checkbox" type="checkbox" />
                                     <input className="date" type="date" />
                                 </div>
-                            </div>
+                            </div>}
                         </div>
 
                         <div className="description-container">
@@ -160,22 +161,22 @@ export function TaskDetails() {
                             Add to card
                         </span>
 
-                        <button className="action" onClick={()=>SetAction('members')}><img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" /><span className="action-title">Members</span>
-                        {action==='members' && <TaskAction action="members" task={taskToEdit} board={board} getMemberById={getMemberById} group={group}/>}
+                        <button className="action" onClick={() => SetAction('members')}><img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" /><span className="action-title">Members</span>
+                            {action === 'members' && <TaskAction action="members" task={taskToEdit} board={board} getMemberById={getMemberById} group={group} />}
                         </button>
-                        <button className="action" onClick={()=>SetAction()}><img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" /><span className="action-title">Labels</span>
+                        <button className="action" onClick={() => SetAction()}><img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" /><span className="action-title">Labels</span>
                         </button>
-                        <button className="action" onClick={()=>SetAction()}><img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" /><span className="action-title">Checklist</span>
+                        <button className="action" onClick={() => SetAction()}><img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" /><span className="action-title">Checklist</span>
                         </button>
-                        <button className="action" onClick={()=>SetAction()}><img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" /><span className="action-title">Dates</span>
+                        <button className="action" onClick={() => SetAction()}><img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" /><span className="action-title">Dates</span>
                         </button>
-                        <button className="action" onClick={()=>SetAction()}><img className="attachment-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/attachment.svg" /><span className="action-title">Attachment</span>
+                        <button className="action" onClick={() => SetAction()}><img className="attachment-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/attachment.svg" /><span className="action-title">Attachment</span>
                         </button>
-                        <button className="action" onClick={()=>SetAction()}><img className="location-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/location.svg" /><span className="action-title">Location</span>
+                        <button className="action" onClick={() => SetAction()}><img className="location-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/location.svg" /><span className="action-title">Location</span>
                         </button>
-                        <button className="action" onClick={()=>SetAction()}><img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" /><span className="action-title">Cover</span>
+                        <button className="action" onClick={() => SetAction()}><img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" /><span className="action-title">Cover</span>
                         </button>
-                        <button className="action" onClick={()=>SetAction()}><img className="custom-fields-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/custom-fields.svg" /><span className="action-title">Custom fields</span>
+                        <button className="action" onClick={() => SetAction()}><img className="custom-fields-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/custom-fields.svg" /><span className="action-title">Custom fields</span>
                         </button>
 
                     </section>

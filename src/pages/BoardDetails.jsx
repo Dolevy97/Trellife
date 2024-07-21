@@ -128,14 +128,14 @@ export function BoardDetails() {
           >
             <img
               className={`groupsheader-preview-star ${board.isStarred ? 'starred' : ''}`}
-              src={board.isStarred ? "../src/assets/styles/imgs/Icones/fullstar.svg" : '../src/assets/styles/imgs/Icones/star.svg'}
+              src={board.isStarred ? "../../../src/assets/styles/imgs/Icones/fullstar.svg" : '../../../src/assets/styles/imgs/Icones/star.svg'}
               alt="star icon"
             />
           </div>
         </div>
         <div className='groups-header-rightside'>
-          <img className='user-img' src="../../../src\assets\imgs\user-imgs\user-img1.jpg" alt="user" />
-          <img className='user-img' src="../../../src\assets\imgs\user-imgs\user-img2.jpeg" alt="user" />
+          <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img1.jpg" alt="user" />
+          <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img2.jpg" alt="user" />
           <span className='member-img'><span>DL</span></span>
         </div>
       </header>

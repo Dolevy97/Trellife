@@ -160,7 +160,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                                             <img
                                                 key={member._id}
                                                 className="member-thumbnail"
-                                                src='../../../src/assets/imgs/user-imgs/user-img1.jpg'
+                                                src={member.imgUrl}
                                                 title={member.fullname}
                                                 alt={member.fullname}
                                             />

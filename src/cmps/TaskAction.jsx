@@ -44,7 +44,7 @@ export function TaskAction({ action, board, task, getMemberById, group }) {
                 {getTaskMembers().map(member => {
                     return (
                         <div key={member._id} className="member" onClick={() => onRemoveMember(member._id)}>
-                            <img className="member-thumbnail" src='../../../src/assets/imgs/user-imgs/user-img1.jpg' title={member.fullname} />
+                            <img className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
                             <span className="name">{member.fullname}</span>
                         </div>
                     )
@@ -56,7 +56,7 @@ export function TaskAction({ action, board, task, getMemberById, group }) {
                 {getBoardMembers().map(member => {
                     return (
                         <div key={member._id} className="member" onClick={() => onAddMember(member._id)}>
-                            <img className="member-thumbnail" src='../../../src/assets/imgs/user-imgs/user-img1.jpg' title={member.fullname} />
+                            <img className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
                             <span className="name">{member.fullname}</span>
                         </div>
                     )

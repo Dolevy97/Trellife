@@ -107,17 +107,28 @@
                             height: em(32);
                             width: em(32);
                             border-radius: 50%;
+                            margin: 0 4px 4px 0;
+                            
                         }
                     }
 
 
                     .labels {
                         display: flex;
-                        gap: em(4);
+                        flex-wrap: wrap;
+                        gap: 4px;
 
                         .label {
                             border-radius: 3px;
-                            padding: em(3) em(12)
+                            padding: em(3) em(12);
+                            font-size:0.875em;
+                            height: 32px;
+                            font-weight: 500;
+
+
+                            &:hover {
+                                cursor: pointer;
+                            }
                         }
                     }
 

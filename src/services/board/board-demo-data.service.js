@@ -329,7 +329,7 @@ function _getRandomTaskName() {
 }
 
 function _getRandomMembers() {
-    const length = getRandomIntInclusive(2, 10)
+    const length = getRandomIntInclusive(2, 5)
     const members = []
     for (let i = 0; i < length; i++) {
         const member = getRandomMember()
@@ -342,7 +342,7 @@ export function getRandomMember() {
     const member = {
         _id: 'u' + makeId(),
         fullname: _getRandomFullName(),
-        imgUrl: `src/assets/imgs/user-img${getRandomIntInclusive(1,2)}.jpg`
+        imgUrl: `../../../src/assets/imgs/user-imgs/user-img${getRandomIntInclusive(1,3)}.jpg`
     }
     return member
 }
