@@ -81,7 +81,7 @@
             }
         }
 
-        .task-main {
+        .task-container {
             display: flex;
 
             &>*>* {
@@ -141,7 +141,7 @@
                     .date-container {
                         position: relative;
                         display: flex;
-                        
+
                         div.date {
                             display: flex;
                             align-items: center;
@@ -149,7 +149,7 @@
                             padding: 8px 12px;
                             border-radius: 3px;
                             margin-block: auto;
-                            
+
                             background-color: #A1BDD914;
 
                             &:hover {
@@ -183,11 +183,13 @@
                             font-size: .875em;
                             border: none;
                             outline: none;
+
                             &::-webkit-calendar-picker-indicator {
                                 display: none;
                                 appearance: none;
                                 -webkit-appearance: none;
                             }
+
                             &:hover {
                                 cursor: pointer;
                             }
@@ -239,7 +241,6 @@
 
                             &:hover {
                                 background-color: #A6C5E229;
-
                             }
                         }
                     }
@@ -251,7 +252,7 @@
 
                         border: none;
                         background-color: #A1BDD914;
-                        color: $txtclr1;
+                        color: '$txtclr1';
                         border-radius: 3px;
 
                         font-weight: 500;
@@ -259,16 +260,18 @@
                         font-family: inherit;
                         line-height: 1.25em;
 
+
                         &.editing {
                             box-shadow: 0 0 0 1px inset #738496;
                             background-color: #22272B;
-
+                            color: $txtclr1;
                             font-size: 0.875em;
                             line-height: 1.714;
                             font-weight: normal;
                             margin-top: 0.75rem;
                             margin-bottom: 0px;
                             letter-spacing: -0.005em;
+
 
                             &:hover {
                                 cursor: text;
@@ -284,12 +287,14 @@
                         }
 
                         &::placeholder {
-                            color: #8C9BAB;
+                            color: $txtclr1;
                         }
 
                         &.has-content {
                             background-color: rgb(50 57 64);
                             padding: 0;
+                            color: $txtclr1;
+                            font-weight: 400;
 
                             &:focus-visible {
                                 outline: none;
@@ -332,10 +337,11 @@
                 }
 
                 .attachments-container {
+                    position: relative;
+                    
                     display: flex;
                     align-items: center;
 
-                    position: relative;
                     margin-block-end: 24px;
 
                     .attachments-icon {
@@ -343,17 +349,28 @@
                         width: 24px;
                         height: 24px;
                     }
+
+                    span {
+                        font-size: 1em;
+                        line-height: 20px;
+                        font-weight: 600;
+                    }
                 }
 
                 .activity-container {
+                    position: relative;
+
                     display: flex;
                     align-items: center;
+
+                    margin-block-end: 24px;
+
 
                     .activity-icon {
                         left: -32px;
                     }
 
-                    & span {
+                    span {
                         font-size: 1em;
                         line-height: 20px;
                         font-weight: 600;
@@ -370,8 +387,10 @@
 
 
             .action {
+                display: flex;
+                align-items: center;
+
                 position: relative;
-                display: block;
                 width: em(156);
                 font-size: em(14);
                 color: inherit;
@@ -392,7 +411,7 @@
                 .icon {
                     height: 1em;
                     width: 1em;
-                    top: em(6.7, 14);
+                    // top: em(6.7, 14);
                 }
 
                 .action-title {
@@ -402,6 +421,7 @@
                 &:hover {
                     background-color: rgba(166, 197, 226, 0.16);
                 }
+
             }
 
 
