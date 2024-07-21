@@ -89,11 +89,11 @@ export function GroupPreviewHeader({ group, board, setBoard, setOpenMenuGroupId,
                 <span onClick={handleTitleClick}>{group.title}</span>
             )}
             <div className='header-svg-container'>
-                <img className='' src="../../../src/assets/styles/imgs/Icones/collapse.svg" alt="collapse" />
+                <img className='' src="../../../src/assets//imgs/Icons/collapse.svg" alt="collapse" />
                 <div onClick={toggleOptions} className='three-dots-btn-wrapper'>
                     <img
                         className='svg-size three-dots-open'
-                        src="../../../src/assets/styles/imgs/Icones/3dots.svg"
+                        src="../../../src/assets//imgs/Icons/3dots.svg"
                         alt="options"
                     />
                 </div>
@@ -103,7 +103,7 @@ export function GroupPreviewHeader({ group, board, setBoard, setOpenMenuGroupId,
                     <header className='options-menu-header'>
                         List actions
                         <div className="close-btn-wrapper" onClick={toggleOptions}>
-                            <img src="../../../src/assets/styles/imgs/Icones/close.svg" alt="" />
+                            <img src="../../../src/assets//imgs/Icons/close.svg" alt="" />
                         </div>
                     </header>
                     <p><span>Add card</span></p>

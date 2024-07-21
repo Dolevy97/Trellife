@@ -68,7 +68,7 @@ export function BoardCreate({ setIsAdding }) {
             </article>
             <div className="preview-container">
                 <div className="preview" style={{ background: background }}>
-                    <img src="../src\assets\styles\imgs\add-preview.svg" alt="" />
+                    <img src="../src\assets\imgs\add-preview.svg" alt="" />
                 </div>
             </div>
             <label htmlFor="bg-picker" className="bg-picker-label">Background</label>

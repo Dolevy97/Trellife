@@ -22,14 +22,14 @@ export function BoardPreview({ board }) {
 
                             className={`board-preview-star ${board.isStarred ? 'starred' : ''}`}
 
-                            src={board.isStarred ? "../src/assets/styles/imgs/Icones/fullstar.svg"
-                                : '../../../src/assets/styles/imgs/Icones/star.svg'}
+                            src={board.isStarred ? "../src/assets//imgs/Icons/fullstar.svg"
+                                : '../../../src/assets//imgs/Icons/star.svg'}
 
                             alt="star icon" />
 
                         <img onClick={onClickStar}
                             className='empty-starred'
-                            src="../../../src/assets/styles/imgs/Icones/star.svg"
+                            src="../../../src/assets//imgs/Icons/star.svg"
                             alt="star"
                             title='Click to unstar this board. It will be removed from your starred list.' />
                     </div>
