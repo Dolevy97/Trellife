@@ -1,15 +1,21 @@
 .task-action {
     position: fixed;
     background-color: rgb(40, 46, 51);
-    translate: em(-4) em(13);
-    height: 100px;
+    translate: em(-12,14) em(14,14);
     width: em(304);
     border-radius: 8px;
     z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    padding: em(12);
+    padding: em(12,14);
+    gap: em(28,14);
+    cursor: default;
+
+    &>*>* {
+        display: flex;
+        align-items: center;
+    }
 
     .action-header {
         position: relative;
@@ -17,18 +23,54 @@
         text-align: center;
     }
 
-    input.text{
+    .title {
+        font-size: em(12,14);
+        font-weight: 600;
+        line-height: em(16,14);
+        margin-block-end: em(14,14);
+    }
+
+    .name {
+        font-size: em(14, 14);
+    }
+
+    input.text {
         border: none;
         outline: none;
-        background-color: transparent;
         font-weight: 600;
-        font-size: 14px;
-        width:100%;
-        height: em(33,14);
-        border-radius: 4px;
+        font-size: em(14,14);
+        width: 100%;
+        height: em(33, 14);
+        border-radius: 2px;
         background-color: #23262a;
-        border: 2px solid #86b6f4;
-        text-align: center;
+        color: inherit;
+        padding: em(8,14) em(12,14);
+        font-weight: normal;
+
+        &:focus {
+            outline: 2px solid #86b6f4;
+        }
+
+        &::placeholder{
+            color: inherit;
+        }
+    }
+ 
+    .member {
+        display: flex;
+        padding: em(4,14) em(8,14) em(4,14) em(4,14);
+        cursor: pointer;
+
+        .member-thumbnail {
+            height: em(32,14);
+            width: em(32,14);
+            border-radius: 50%;
+            margin-inline-end: em(8);
+        }
+
+        &:hover{
+            background-color: #333b41;
+        }
     }
 
 }
