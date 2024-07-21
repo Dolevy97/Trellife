@@ -318,9 +318,8 @@ function _getRandomPriority() {
 }
 
 function _getRandomTaskStatus() {
-    const randNum = getRandomIntInclusive(1, 3)
-    if (randNum === 1) return 'toDo'
-    if (randNum === 2) return 'inProgress'
+    const randNum = getRandomIntInclusive(1, 2)
+    if (randNum === 1) return 'inProgress'
     return 'done'
 }
 

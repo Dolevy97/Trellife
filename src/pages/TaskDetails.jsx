@@ -141,8 +141,18 @@ export function TaskDetails() {
     }
     async function onSaveComment() {
         console.log(board)
+        console.log(commentToEdit)
         // await updateBoard(board)
         setIsAddingComment(false)
+    }
+
+    async function onChangeDueDate() {
+        const dateStr = dateInputRef.current.value
+        const dateObj = new Date(dateStr)
+        const timestamp = dateObj.getTime()
+        taskToEdit.dueDate = timestamp
+        await updateTask(taskToEdit, groupId, group, board)
+
     }
 
     function getDueDate(timeStamp) {
@@ -164,11 +174,16 @@ export function TaskDetails() {
         }
     }
 
+    async function onChangeStatus({ target }) {
+        taskToEdit.status = target.checked ? 'done' : 'inProgress';
+        await updateTask(taskToEdit, groupId, group, board)
+    }
+
     if (!taskToEdit || !group) return <section>Loading...</section>;
 
-    const { title, description, membersIds, labelsIds, style:cover } = taskToEdit;
+    const { title, description, membersIds, labelsIds, style: cover } = taskToEdit;
 
-    console.log(action)
+    // console.log(taskToEdit.status)
 
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
@@ -190,6 +205,7 @@ export function TaskDetails() {
                                         return <img key={member._id} className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
                                     }
                                     )}
+                                    <div name="members" onClick={onSetAction} className="add-member-thumbnail"><img src="../../../src/assets/imgs/TaskDetails-icons/add.svg" alt="add plus icon" /></div>
                                 </div>
                             </div> : ''}
                             {labelsIds.length ? <div className="labels-container">
@@ -205,8 +221,20 @@ export function TaskDetails() {
                             {taskToEdit.dueDate && <div className="date-container">
                                 <span className="fs12">Due date</span>
                                 <div onClick={onShowDatePicker} className="date">
-                                    <input className="checkbox" type="checkbox" />
-                                    <input ref={dateInputRef} className="date-input" type="datetime-local" value={getDueDate(taskToEdit.dueDate)} />
+                                    <input
+                                        onClick={(ev) => ev.stopPropagation()}
+                                        className="checkbox"
+                                        type="checkbox"
+                                        onChange={onChangeStatus}
+                                        checked={taskToEdit.status === 'inProgress' ? false : true}
+                                    />
+                                    <input
+                                        ref={dateInputRef}
+                                        className="date-input"
+                                        type="datetime-local"
+                                        value={getDueDate(taskToEdit.dueDate)}
+                                        onChange={onChangeDueDate}
+                                    />
                                     <img className="arrow-down" src="../../../src/assets/imgs/TaskDetails-icons/arrow-down.svg" alt="description icon" />
                                 </div>
                             </div>}
@@ -269,7 +297,7 @@ export function TaskDetails() {
                                             onKeyUp={handleCommentKeyUp}
                                             ref={textareaCommentRef} />
                                         <article className="btns">
-                                            <button onClick={onSaveDescription} className='btn-save'>Save</button>
+                                            <button onClick={onSaveComment} className='btn-save'>Save</button>
                                         </article>
                                     </>
                                     :

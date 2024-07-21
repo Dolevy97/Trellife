@@ -118,6 +118,28 @@
                             margin: 0 4px 4px 0;
 
                         }
+
+                        .add-member-thumbnail {
+                            position: relative;
+                            
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+
+                            height: 32px;
+                            width: 32px;
+                            border-radius: 50%;
+
+                            background-color: #A1BDD914;
+
+                            img {
+                                width: 16px;
+                                height: 16px;
+                            }
+                            &:hover {
+                                cursor: pointer;
+                            }
+                        }
                     }
 
 
