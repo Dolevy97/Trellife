@@ -101,6 +101,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
         return board.labels.find(label => label.id === id)
     }
 
+
     const labelsIds = taskToEdit?.labelsIds || []
 
     return (
@@ -116,66 +117,71 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                 {tasks.map(task => (
                     <div key={task.id} className="task-container" onClick={() => handleTaskClick(task.id)}>
                         <div className='task-preview'>
-                            <div className='task-cover-container'> 
+                            {task.style && (
+                                <section className='task-cover-container' style={{ ...task.style }}>
+                                </section>
+                            )}
 
-                            </div>
-                            <div className='task-container1'>
-                                {task.labelsIds && task.labelsIds.map(id => {
-                                    const label = getLabelById(id)
-                                    return label && (
-                                        <div
-                                            className="label-tab"
-                                            key={id}
-                                            style={{ backgroundColor: label.color }}
-                                            title={label.title}
-                                        >
-                                            <span className="label-title">{label.title}</span>
-                                        </div>
-                                    )
-                                })}
 
-                            </div>
+                            <section className='task-info-container'>
 
-                            <div className='task-container2'>
-                                <span>{task.title}</span>
-                            </div>
-
-                            <div className='pen-display'>
-                                <img src="../../../src\assets\imgs\Icons\pen.svg" />
-                            </div>
-                            <div className='task-container3'>
-                                <div className='container3-leftside'>
-                                    {task.description && task.description.trim() !== '' && (
-                                        <img src="../../../src/assets/imgs/Icons/description.svg" alt="description" />
-                                    )}
-                                    <div className='task-comment-container'>
-                                        <img src="../../../src\assets\imgs\Icons\comment.svg" />
-                                        <span className='task-comment'>1 </span>
-                                    </div>
-                                    <div className='task-checklist-container' >
-                                    <img src="../../../src\assets\imgs\Icons\checklist.svg" />
-                                    <span className='task-checklist'>0/1</span>
-                                    </div>
-                                </div>
-
-                                <div className='members-container'>
-                                    {task.membersIds && task.membersIds.map(id => {
-                                        const member = getMemberById(id)
-                                        return (
-                                            <img
-                                                key={member._id}
-                                                className="member-thumbnail"
-                                                src={member.imgUrl}
-                                                title={member.fullname}
-                                                alt={member.fullname}
-                                            />
+                                <div className='task-container1'>
+                                    {task.labelsIds && task.labelsIds.map(id => {
+                                        const label = getLabelById(id)
+                                        return label && (
+                                            <div
+                                                className="label-tab"
+                                                key={id}
+                                                style={{ backgroundColor: label.color }}
+                                                title={label.title}
+                                            >
+                                                <span className="label-title">{label.title}</span>
+                                            </div>
                                         )
                                     })}
+
                                 </div>
-                            </div>
 
+                                <div className='task-container2'>
+                                    <span>{task.title}</span>
+                                </div>
+
+                                <div className='pen-display'>
+                                    <img src="../../../src\assets\imgs\Icons\pen.svg" />
+                                </div>
+                                <div className='task-container3'>
+                                    <div className='container3-leftside'>
+                                        {task.description && task.description.trim() !== '' && (
+                                            <img src="../../../src/assets/imgs/Icons/description.svg" alt="description" />
+                                        )}
+                                        <div className='task-comment-container'>
+                                            <img src="../../../src\assets\imgs\Icons\comment.svg" />
+                                            <span className='task-comment'>1 </span>
+                                        </div>
+                                        <div className='task-checklist-container' >
+                                            <img src="../../../src\assets\imgs\Icons\checklist.svg" />
+                                            <span className='task-checklist'>0/1</span>
+                                        </div>
+                                    </div>
+
+                                    <div className='members-container'>
+                                        {task.membersIds && task.membersIds.map(id => {
+                                            const member = getMemberById(id)
+                                            return (
+                                                <img
+                                                    key={member._id}
+                                                    className="member-thumbnail"
+                                                    src={member.imgUrl}
+                                                    title={member.fullname}
+                                                    alt={member.fullname}
+                                                />
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+
+                            </section>
                         </div>
-
                     </div>
                 ))}
                 {isAddingTask && (
