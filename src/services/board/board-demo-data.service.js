@@ -335,7 +335,7 @@ function _getRandomTaskName() {
 }
 
 function _getRandomMembers() {
-    const length = getRandomIntInclusive(2, 5)
+    const length = getRandomIntInclusive(7, 7)
     const members = []
     for (let i = 0; i < length; i++) {
         const member = getRandomMember()

@@ -32,12 +32,13 @@
             border-radius: 8px;
             box-shadow: 0 1px 0 rgba(9, 30, 66, .25);
             // padding: 0px 6px;
-            padding: 8px 12px 4px;
+            // padding: 8px 12px 4px;
 
-            border: 2px solid transparent;
+        
 
             &:hover {
-                border-color: #86b6f4;
+                outline: 2px solid #86b6f4;
+               
                 cursor: pointer;
             }
 
@@ -83,116 +84,131 @@
                 flex-direction: column;
                 align-items: flex-start;
                 width: 100%;
+
                 // padding: 4px 0px;
-
-                span {
-                    font-size: 14px;
-                    font-weight: 400;
-                    color: $txtclr1;
-                    word-wrap: break-word;
+                .task-cover-container {
                     width: 100%;
-
-                }
-
-
-            }
-
-            .task-container1 {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 4px;
-                margin-bottom: 4px;
-
-                .label-tab {
-                    width: 40px;
-                    height: 8px;
-                    border-radius: 4px;
-                    margin-right: 4px;
-                    position: relative;
+                    height: 36px;
                     overflow: hidden;
-
-                    &:hover {
-                        box-shadow: inset 0 0 0 10000px rgba(0, 0, 0, 0.1);
-                    }
-
+                    border-top-left-radius: 8px;
+                    border-top-right-radius: 8px;
                 }
-            }
 
-            .task-container2 {
-                display: block;
-                margin-bottom: 4px;
-                width: 222.05px;
-                overflow: hidden;
-                overflow-wrap: break-word;
-                white-space: normal;
-            }
+                .task-info-container {
+                    padding: 8px 12px 4px;
 
-            .task-container3 {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                gap: 2px;
-                width: 100%;
+                    span {
+                        font-size: 14px;
+                        font-weight: 400;
+                        color: $txtclr1;
+                        word-wrap: break-word;
+                        width: 100%;
 
-                .container3-leftside {
-                    display: flex;
-                    gap: 4px;
-
-                    img {
-                        height: 16px;
-                        width: 16px;
                     }
 
-                    .task-comment-container {
+                    .task-container1 {
                         display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        gap: 2px;
+                        flex-wrap: wrap;
+                        gap: 4px;
+                        margin-bottom: 4px;
 
-                        img {
-                            height: 16px;
-                            width: 16px;
-                        }
+                        .label-tab {
+                            width: 40px;
+                            height: 8px;
+                            border-radius: 4px;
+                            margin-right: 4px;
+                            position: relative;
+                            overflow: hidden;
 
-                        .task-comment {
-                            font-size: 10px;
+                            &:hover {
+                                box-shadow: inset 0 0 0 10000px rgba(0, 0, 0, 0.1);
+                            }
+
                         }
                     }
 
-                    .task-checklist-container{
+                    .task-container2 {
+                        display: block;
+                        margin-bottom: 4px;
+                        width: 222.05px;
+                        overflow: hidden;
+                        overflow-wrap: break-word;
+                        white-space: normal;
+                    }
+
+                    .task-container3 {
                         display: flex;
-                        justify-content: center;
                         align-items: center;
+                        justify-content: space-between;
                         gap: 2px;
-                        span{
-                            font-size: 10px;
-                        }
-                        img{
-                            height: 16px;
-                            width: 16px;
+                        width: 100%;
+
+                        .container3-leftside {
+                            display: flex;
+                            gap: 4px;
+
+                            img {
+                                height: 16px;
+                                width: 16px;
+                            }
+
+                            .task-comment-container {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                gap: 2px;
+
+                                img {
+                                    height: 16px;
+                                    width: 16px;
+                                }
+
+                                .task-comment {
+                                    font-size: 10px;
+                                }
+                            }
+
+                            .task-checklist-container {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                gap: 2px;
+
+                                span {
+                                    font-size: 10px;
+                                }
+
+                                img {
+                                    height: 16px;
+                                    width: 16px;
+                                }
+
+                            }
                         }
 
+                        .members-container {
+                            display: flex;
+                            // flex-wrap: wrap;
+                            // justify-content: space-between;
+                            gap: 2px;
+
+                            .member-thumbnail {
+                                height: 24px;
+                                width: 24px;
+                                border-radius: 50%;
+
+                                img {
+
+                                    object-fit: cover;
+                                }
+                            }
+                        }
                     }
                 }
 
-                .members-container {
-                    display: flex;
-                    // flex-wrap: wrap;
-                    // justify-content: space-between;
-                    gap: 2px;
 
-                    .member-thumbnail {
-                        height: 24px;
-                        width: 24px;
-                        border-radius: 50%;
-
-                        img {
-
-                            object-fit: cover;
-                        }
-                    }
-                }
             }
+
 
         }
 
