@@ -1,83 +1,3 @@
-.groups-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  background: rgba(32, 32, 32, 0.13);
-  backdrop-filter: blur(7.1px);
-  -webkit-backdrop-filter: blur(7.1px);
-
-  padding: 10px 15px;
-  color: white;
-  font-weight: bold;
-
-  .groups-header-leftside {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-
-  }
-
-  .groups-header-rightside {
-    display: flex;
-    align-items: center;
-  }
-
-  .star-container {
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 4px;
-
-    &:hover {
-
-      background-color: $btnhoverclr;
-    }
-
-    img {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      width: 16px;
-      height: 16px;
-    }
-
-    .groupsheader-preview-star {
-
-      opacity: 1;
-
-    }
-
-    &:hover {
-      .groupsheader-preview-star {
-        opacity: 0;
-
-      }
-
-      &::after {
-        content: '';
-        position: absolute;
-        top: 8px;
-        left: 8px;
-        width: 16px;
-        height: 16px;
-        background-image: url('../src/assets/imgs/Icons/star.svg');
-        background-size: contain;
-        background-repeat: no-repeat;
-        opacity: 1;
-        transform: scale(1.2);
-      }
-
-    }
-
-  }
-
-}
-
 
 .group-list-container {
   display: flex;
@@ -95,7 +15,6 @@
   }
 
   .add-group {
-
     height: 40px;
     display: flex;
     align-items: center;
@@ -153,9 +72,6 @@
 .group-preview-container {
   flex: 0 0 272px;
 }
-
-
-
 
 .addgroup-from-container {
   background-color: $bgclr3;

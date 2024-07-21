@@ -116,6 +116,9 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                 {tasks.map(task => (
                     <div key={task.id} className="task-container" onClick={() => handleTaskClick(task.id)}>
                         <div className='task-preview'>
+                            <div className='task-cover-container'> 
+
+                            </div>
                             <div className='task-container1'>
                                 {task.labelsIds && task.labelsIds.map(id => {
                                     const label = getLabelById(id)
@@ -141,9 +144,19 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                                 <img src="../../../src\assets\imgs\Icons\pen.svg" />
                             </div>
                             <div className='task-container3'>
-                                {task.description && task.description.trim() !== '' && (
-                                    <span className='task-description'><img src="../../../src/assets/imgs/Icons/description.svg" alt="description" /></span>
-                                )}
+                                <div className='container3-leftside'>
+                                    {task.description && task.description.trim() !== '' && (
+                                        <img src="../../../src/assets/imgs/Icons/description.svg" alt="description" />
+                                    )}
+                                    <div className='task-comment-container'>
+                                        <img src="../../../src\assets\imgs\Icons\comment.svg" />
+                                        <span className='task-comment'>1 </span>
+                                    </div>
+                                    <div className='task-checklist-container' >
+                                    <img src="../../../src\assets\imgs\Icons\checklist.svg" />
+                                    <span className='task-checklist'>0/1</span>
+                                    </div>
+                                </div>
 
                                 <div className='members-container'>
                                     {task.membersIds && task.membersIds.map(id => {
@@ -171,7 +184,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                             <textarea
                                 type="text"
                                 value={newTaskTitle}
-                                onChange={(e)=> setNewTaskTitle(e.target.value)}
+                                onChange={(e) => setNewTaskTitle(e.target.value)}
                                 onKeyPress={handleTitleKeyPress}
                                 autoFocus
                                 placeholder="Enter a title for this card..."
