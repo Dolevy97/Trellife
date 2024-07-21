@@ -6,6 +6,8 @@ import { updateBoard } from '../store/actions/board.actions';
 import { updateTask } from '../store/actions/task.actions';
 import { TaskAction } from '../cmps/TaskAction';
 import autosize from 'autosize';
+import { getRandomMember } from '../services/board/board-demo-data.service';
+import { makeId } from '../services/util.service';
 
 export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
@@ -19,8 +21,8 @@ export function TaskDetails() {
     const [action, setAction] = useState(null)
     const [isSettingDescription, setIsSettingDescription] = useState(false)
     const [isAddingComment, setIsAddingComment] = useState(false)
-    const [commentToEdit, setCommentToEdit] = useState('')
     const [tempDescription, setTempDescription] = useState('')
+    const [commentToEdit, setCommentToEdit] = useState('')
 
     const { taskId, groupId, boardId } = useParams()
     const navigate = useNavigate()
@@ -107,7 +109,7 @@ export function TaskDetails() {
         if (type === 'number') {
             value = +value || '';
         }
-        setCommentToEdit({ ...taskToEdit, [field]: value });
+        setCommentToEdit(value);
     }
 
     function getMemberById(id) {
@@ -144,10 +146,17 @@ export function TaskDetails() {
         setIsSettingDescription(false)
     }
     async function onSaveComment() {
-        console.log(board)
-        console.log(commentToEdit)
-        // await updateBoard(board)
+        const newActivity = {
+            id: makeId(),
+            group: group,
+            task: taskToEdit,
+            txt: commentToEdit,
+            byMember: getRandomMember(),
+            title: 'add comment'
+        }
+        board.activities.unshift(newActivity)
         setIsAddingComment(false)
+        await updateBoard(board)
     }
 
     async function onChangeDueDate() {

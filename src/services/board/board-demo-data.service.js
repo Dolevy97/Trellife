@@ -26,7 +26,6 @@ function _createDemoBoard() {
         labels: _getRandomLabels(),
         members: _getRandomMembers(),
     }
-
     board.groups = _getRandomGroups(board)
     board.activities = _getRandomActivities(board)
     return board
@@ -51,6 +50,7 @@ function _getRandomActivity(board) {
         // task: _getRandomActivityTask(board)
     }
     activity.task = _getRandomActivityTask(activity.group)
+    if (activity.title === 'add comment') activity.txt = _getRandomComment()
     activity.group = { id: activity.group.id, title: activity.group.title }
     return activity
 }
@@ -63,6 +63,20 @@ function _getRandomActivityTask(group) {
         title: randTask.title
     }
     return task
+}
+
+function _getRandomComment() {
+    const words = ['amazing', 'great', 'fantastic', 'awesome', 'incredible', 'superb', 'wonderful', 'excellent', 'outstanding', 'marvelous']
+    const numOfWords = getRandomIntInclusive(1, 2)
+    let comment = ''
+
+    for (let i = 0; i < numOfWords; i++) {
+        const randomIndex = getRandomIntInclusive(0, words.length - 1)
+        comment += words[randomIndex] + ' '
+    }
+
+    comment = comment.trim()
+    return comment
 }
 
 
@@ -134,12 +148,12 @@ function _getRandomTask(board) {
     return task
 }
 
-function getRandomTaskStyle(){
-    const randNum = getRandomIntInclusive(1,3)
-    if (randNum > 1){
+function getRandomTaskStyle() {
+    const randNum = getRandomIntInclusive(1, 3)
+    if (randNum > 1) {
         return null
     }
-    return {backgroundColor: getRandomColor()}
+    return { backgroundColor: getRandomColor() }
 }
 
 function _getRandomTaskMember(board) {
@@ -348,7 +362,7 @@ export function getRandomMember() {
     const member = {
         _id: 'u' + makeId(),
         fullname: _getRandomFullName(),
-        imgUrl: `../../../src/assets/imgs/user-imgs/user-img${getRandomIntInclusive(1,3)}.jpg`
+        imgUrl: `../../../src/assets/imgs/user-imgs/user-img${getRandomIntInclusive(1, 3)}.jpg`
     }
     return member
 }
@@ -361,7 +375,7 @@ function _getRandomLabels() {
         'Imperative', 'Plain'
     ];
 
-    const numLabels = getRandomIntInclusive(0,7)
+    const numLabels = getRandomIntInclusive(0, 7)
     let randomLabels = [];
 
     while (randomLabels.length < numLabels) {
