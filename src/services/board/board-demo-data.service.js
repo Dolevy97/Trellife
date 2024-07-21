@@ -136,7 +136,7 @@ function _getRandomTask(board) {
 function getRandomTaskStyle(){
     const randNum = getRandomIntInclusive(1,3)
     if (randNum > 1){
-        return {}
+        return null
     }
     return {backgroundColor: getRandomColor()}
 }
