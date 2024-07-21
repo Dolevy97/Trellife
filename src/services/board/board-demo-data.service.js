@@ -342,7 +342,7 @@ export function getRandomMember() {
     const member = {
         _id: 'u' + makeId(),
         fullname: _getRandomFullName(),
-        imgUrl: '../src/assets/imgs/user-img1.JPG'
+        imgUrl: `src/assets/imgs/user-img${getRandomIntInclusive(1,2)}.jpg`
     }
     return member
 }

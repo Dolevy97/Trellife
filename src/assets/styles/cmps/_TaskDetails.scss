@@ -33,7 +33,7 @@
         display: flex;
         flex-direction: column;
         min-height: em(600, 16);
-        min-width: em(768, 16);
+        width: em(768, 16);
         background-color: rgb(50 57 64);
         border-radius: 8px;
         color: rgb(182, 194, 207);
@@ -172,6 +172,7 @@
             display: flex;
             flex-direction: column;
             padding: em(2) em(16) em(8) em(8);
+            
 
             .action {
                 position: relative;
@@ -182,9 +183,9 @@
                 background-color: rgba(161, 189, 217, 0.08);
                 text-align: start;
                 border-radius: 3px;
-                height: 2em;
+                height: em(32,14);
                 margin-block-end: em(8);
-                max-width: em(300);
+                width: em(168,14);
                 // overflow: hidden;
                 padding: em(6) em(12);
                 text-overflow: ellipsis;
@@ -199,7 +200,7 @@
                     top:em(6.7,14);
                 }
 
-                span {
+                .action-title {
                     padding-inline-start: em(24, 14);
                 }
 
