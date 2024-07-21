@@ -23,14 +23,6 @@ export function GroupPreviewHeader({ group, board, setBoard, setOpenMenuGroupId,
         }
     }, [setOpenMenuGroupId])
 
-    function handleTitleClick() {
-        setIsEditing(true)
-    }
-
-    function handleInputChange(event) {
-        setNewTitle(event.target.value)
-    }
-
     async function handleTitleUpdate() {
         let titleToSet = newTitle.trim()
         if (titleToSet === '') {
@@ -73,20 +65,19 @@ export function GroupPreviewHeader({ group, board, setBoard, setOpenMenuGroupId,
         setOpenMenuGroupId(null)
     }
 
-
     return (
         <header className='group-preview-header'>
             {isEditing ? (
                 <input
                     type="text"
                     value={newTitle}
-                    onChange={handleInputChange}
+                    onChange={(e)=> setNewTitle(e.target.value)}
                     onBlur={handleTitleBlur}
                     onKeyPress={handleTitleKeyPress}
                     autoFocus
                 />
             ) : (
-                <span onClick={handleTitleClick}>{group.title}</span>
+                <span onClick={()=>setIsEditing(true)}>{group.title}</span>
             )}
             <div className='header-svg-container'>
                 <img className='' src="../../../src/assets/imgs/Icons/collapse.svg" alt="collapse" />

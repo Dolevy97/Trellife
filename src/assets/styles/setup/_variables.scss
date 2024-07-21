@@ -10,7 +10,7 @@ $clr7: #222;
 // Board Index Colors
 $bgclr1: #1d2125;
 $txtclr1: #b6c2cf;
-$txtclr1hvr: darken(#b6c2cf, 18%);
+$txtclr1hvr: darken($txtclr1, 18%);
 //
 
 $gray1: #ddd;

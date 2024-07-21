@@ -104,11 +104,6 @@ export function BoardDetails() {
     }
   }
 
-  function handleInputChange(e) {
-    setNewGroupTitle(e.target.value)
-
-  }
-
   function handleTitleKeyPress(e) {
     if (e.key === 'Enter') {
       e.preventDefault()
@@ -155,6 +150,7 @@ export function BoardDetails() {
 
   return (
     <section style={{ background: board.style.background }} >
+      {/* <BoardDetailsHeader/> */}
       <header className='groups-header'>
         <div className='groups-header-leftside'>
           {isEditing ? (

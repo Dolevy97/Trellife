@@ -69,6 +69,10 @@
             .close-icon {
                 right: em(22);
                 top: em(22);
+
+                &:hover {
+                    cursor: pointer;
+                }
             }
 
             .card-icon {
@@ -135,9 +139,31 @@
                     }
 
                     .date-container {
-
+                        position: relative;
+                        display: flex;
+                        
                         div.date {
+                            display: flex;
+                            align-items: center;
+                            margin: 0 8px 8px 0;
+                            padding: 8px 12px;
+                            border-radius: 3px;
                             margin-block: auto;
+                            
+                            background-color: #A1BDD914;
+
+                            &:hover {
+                                cursor: pointer;
+                            }
+                        }
+
+
+                        .arrow-down {
+                            position: absolute;
+                            right: 13px;
+                            width: 16px;
+                            height: 16px;
+                            filter: invert(73%) sepia(21%) saturate(206%) hue-rotate(170deg) brightness(90%) contrast(90%);
                         }
 
                         .checkbox {
@@ -147,6 +173,25 @@
                         }
 
 
+                        .date-input {
+                            font-family: inherit;
+                            padding-inline: 0px 20px;
+                            width: 138px;
+
+                            background-color: transparent;
+                            color: $txtclr1;
+                            font-size: .875em;
+                            border: none;
+                            outline: none;
+                            &::-webkit-calendar-picker-indicator {
+                                display: none;
+                                appearance: none;
+                                -webkit-appearance: none;
+                            }
+                            &:hover {
+                                cursor: pointer;
+                            }
+                        }
 
                     }
 
@@ -159,6 +204,7 @@
                     width: 512px;
                     // height: 100px;
                     place-self: center;
+                    margin-block-end: 24px;
 
                     .description-title {
                         position: relative;
@@ -215,6 +261,14 @@
 
                         &.editing {
                             box-shadow: 0 0 0 1px inset #738496;
+                            background-color: #22272B;
+
+                            font-size: 0.875em;
+                            line-height: 1.714;
+                            font-weight: normal;
+                            margin-top: 0.75rem;
+                            margin-bottom: 0px;
+                            letter-spacing: -0.005em;
 
                             &:hover {
                                 cursor: text;
@@ -230,7 +284,7 @@
                         }
 
                         &::placeholder {
-                            color: $txtclr1;
+                            color: #8C9BAB;
                         }
 
                         &.has-content {
@@ -253,7 +307,7 @@
                     }
 
                     .btns {
-                        margin-block: 8px;
+                        margin-block-start: 8px;
 
                         button {
                             @include btn;
@@ -277,9 +331,24 @@
                     }
                 }
 
+                .attachments-container {
+                    display: flex;
+                    align-items: center;
+
+                    position: relative;
+                    margin-block-end: 24px;
+
+                    .attachments-icon {
+                        left: -36px;
+                        width: 24px;
+                        height: 24px;
+                    }
+                }
+
                 .activity-container {
                     display: flex;
                     align-items: center;
+
                     .activity-icon {
                         left: -32px;
                     }
