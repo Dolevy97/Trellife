@@ -160,23 +160,26 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             }
             {action === 'add checklist' &&
                 <>
-                    <div className="checklist"></div>
+                    <div className="checklist">
+                    <span className="title">Title</span>
                     <input className="text" value={checklistInputValue} onChange={(ev) => setChecklistInputValue(ev.target.value)} />
+                    </div>
                     <button className="add-checklist" onClick={onAddChecklist}>Add</button>
                 </>
             }
             {action === 'attach' &&
                 <>
                     <span className="title">Attach a file from your computer</span>
-                    <div className="file-upload">
+                    <div>
                         <input
+                            className="input-file-upload"
                             type="file"
                             id="fileInput"
                             style={{ display: 'none' }}
                             onChange={onAddAttachment}
                         />
-                        <button onClick={onUpload}>Upload file</button>
-                        {file && <p>Selected file: {file.name}</p>}
+                        <button className="btn-file-upload" onClick={onUpload}>Choose a file</button>
+                        {/* {file && <p>Selected file: {file.name}</p>} */}
                     </div>
                 </>
             }
