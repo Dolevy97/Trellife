@@ -57,7 +57,7 @@ function getEmptyTask() {
         membersIds: [],
         labelsIds: [],
         byMember: {},
-        style: {}
+        style: null
 
 
     }
