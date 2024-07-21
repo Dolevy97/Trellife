@@ -118,8 +118,12 @@ export function TaskDetails() {
         return board.labels.find(label => label.id === id);
     }
 
-    function onSetAction(ev) {
+    function onSetAction(ev,isNull=false) {
         ev.stopPropagation();
+        if (isNull)  {
+            setAction(null);
+            return
+        }
         const actionName = action === ev.currentTarget.name ? null : ev.currentTarget.name;
         setAction(actionName);
     }
@@ -310,6 +314,7 @@ export function TaskDetails() {
                         <button className="action" name="attachment" onClick={onSetAction}>
                             <img className="attachment-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/attachment.svg" alt="attachment icon" />
                             <span className="action-title">Attachment</span>
+                            {action === 'attachment' && <TaskAction action="attach" task={taskToEdit} board={board} group={group} onSetAction={onSetAction} />}
                         </button>
                         <button className="action" name="location" onClick={onSetAction}>
                             <img className="location-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/location.svg" alt="location icon" />

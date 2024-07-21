@@ -3,9 +3,10 @@ import { updateTask } from "../store/actions/task.actions"
 import { makeId } from "../services/util.service"
 
 
-export function TaskAction({ action, board, group, task, getMemberById, getLabelById }) {
+export function TaskAction({ action, board, group, task, getMemberById, getLabelById, onSetAction }) {
 
-    const [checklistInputValue,setChecklistInputValue] = useState('Checklist')
+    const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
+    const [file, setFile] = useState(null);
 
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -48,24 +49,51 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         await updateTask(task, group.id, group, board);
     }
 
-    async function onUpdateCoverColor({target}){
+    async function onUpdateCoverColor({ target }) {
         const color = target.style.backgroundColor
-        task = { ...task, style: {backgroundColor: color} };
+        task = { ...task, style: { backgroundColor: color } };
         await updateTask(task, group.id, group, board);
     }
 
-    async function onAddChecklist(){
-        task.checklists.push({id: 'cl' +makeId(), title:checklistInputValue, todos:[]})
+    async function onAddChecklist() {
+        task.checklists.push({ id: 'cl' + makeId(), title: checklistInputValue, todos: [] })
         await updateTask(task, group.id, group, board);
     }
 
+    async function onAddAttachment(ev) {
+        const { target } = ev
+        console.log(target.files[0])
+        const file = target.files[0]
+        const attachment = {
+            title: file.name,
+            createdAt: Date.now(),
+            type: file.type
+        }
+        task.attachments.push(attachment)
+        await updateTask(task, group.id, group, board)
+        onSetAction(ev, true)
+    };
+
+    function onUpload() {
+        document.getElementById('fileInput').click()
+    };
+
+    // function loadImageFromInput(ev, onImageReady) {
+    //     const reader = new FileReader()
+    //     reader.onload = function (event) {
+    //         let elImg = new Image()
+    //         elImg.src = event.target.result
+    //         elImg.onload = () => onImageReady(elImg)
+    //     }
+    //     reader.readAsDataURL(ev.target.files[0])
+    // }
 
     return (
         <section className="task-action" onClick={(ev) => ev.stopPropagation()}>
             <header className="action-header">
                 {action.charAt(0).toUpperCase() + action.substring(1, action.length)}
             </header>
-          {(action==='members' || action==='labels') && <input className="text" placeholder={`Search ${action}`} />}  
+            {(action === 'members' || action === 'labels') && <input className="text" placeholder={`Search ${action}`} />}
             {action === 'members' &&
                 <>
                     <div className="card-members">
@@ -114,28 +142,43 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             {action === 'cover' &&
                 <>
                     <div className="cover">
-                    <span className="title">Colors</span>
+                        <span className="title">Colors</span>
                         <div className="colors">
-                            <div className="color" style={{backgroundColor: '#206e4e'}} onClick={onUpdateCoverColor}></div>
-                            <div className="color" style={{backgroundColor: '#7f5f02'}} onClick={onUpdateCoverColor}></div>
-                            <div className="color" style={{backgroundColor: '#a64700'}} onClick={onUpdateCoverColor}></div>
-                            <div className="color" style={{backgroundColor: '#ae2e24'}} onClick={onUpdateCoverColor}></div>
-                            <div className="color" style={{backgroundColor: '#5e4db2'}} onClick={onUpdateCoverColor}></div>
-                            <div className="color" style={{backgroundColor: '#0055cc'}} onClick={onUpdateCoverColor}></div>
-                            <div className="color" style={{backgroundColor: '#1f6a83'}} onClick={onUpdateCoverColor}></div>
-                            <div className="color" style={{backgroundColor: '#4d6b1f'}} onClick={onUpdateCoverColor}></div>
-                            <div className="color" style={{backgroundColor: '#943d73'}} onClick={onUpdateCoverColor}></div>
-                            <div className="color" style={{backgroundColor: '#596773'}} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#206e4e' }} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#7f5f02' }} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#a64700' }} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#ae2e24' }} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#5e4db2' }} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#0055cc' }} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#1f6a83' }} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#4d6b1f' }} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#943d73' }} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#596773' }} onClick={onUpdateCoverColor}></div>
                         </div>
                     </div>
                 </>
             }
-            {action === 'add checklist' && 
-            <>
-                <div className="checklist"></div>
-                <input className="text" value={checklistInputValue} onChange={(ev)=>setChecklistInputValue(ev.target.value)}/>
-                <button className="add-checklist" onClick={onAddChecklist}>Add</button>
-            </>
+            {action === 'add checklist' &&
+                <>
+                    <div className="checklist"></div>
+                    <input className="text" value={checklistInputValue} onChange={(ev) => setChecklistInputValue(ev.target.value)} />
+                    <button className="add-checklist" onClick={onAddChecklist}>Add</button>
+                </>
+            }
+            {action === 'attach' &&
+                <>
+                    <span className="title">Attach a file from your computer</span>
+                    <div className="file-upload">
+                        <input
+                            type="file"
+                            id="fileInput"
+                            style={{ display: 'none' }}
+                            onChange={onAddAttachment}
+                        />
+                        <button onClick={onUpload}>Upload file</button>
+                        {file && <p>Selected file: {file.name}</p>}
+                    </div>
+                </>
             }
         </section>
     )
