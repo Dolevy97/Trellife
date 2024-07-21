@@ -168,15 +168,16 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             {action === 'attach' &&
                 <>
                     <span className="title">Attach a file from your computer</span>
-                    <div className="file-upload">
+                    <div>
                         <input
+                            className="input-file-upload"
                             type="file"
                             id="fileInput"
                             style={{ display: 'none' }}
                             onChange={onAddAttachment}
                         />
-                        <button onClick={onUpload}>Upload file</button>
-                        {file && <p>Selected file: {file.name}</p>}
+                        <button className="btn-file-upload" onClick={onUpload}>Choose a file</button>
+                        {/* {file && <p>Selected file: {file.name}</p>} */}
                     </div>
                 </>
             }

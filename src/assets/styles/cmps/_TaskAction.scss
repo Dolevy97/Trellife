@@ -17,10 +17,10 @@
     gap: em(28, 14);
     cursor: default;
 
-    &>*>* {
-        display: flex;
-        align-items: center;
-    }
+    // &>*>* {
+    //     display: flex;
+    //     align-items: center;
+    // }
 
     .action-header {
         position: relative;
@@ -72,6 +72,7 @@
 
     .member {
         display: flex;
+        align-items: center;
         padding: em(4, 14) em(8, 14) em(4, 14) em(4, 14);
         border-radius: 4px;
         cursor: pointer;
@@ -157,6 +158,17 @@
         &:hover{
             background-color: #85b8ff;
         }
+    }
+
+    .btn-file-upload{
+        background-color: #323940;
+        color: inherit;
+        text-align: center;
+        width: 100%;
+        border-radius: 3px;
+        font-size: em(14,16);
+        line-height: em(20,12);
+        // font-weight: 500;
     }
 
 }
