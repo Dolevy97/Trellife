@@ -128,7 +128,8 @@ function _getRandomTask(board) {
         membersIds: _getRandomTaskMembersIds(board),
         labelsIds: _getRandomTaskLabels(board),
         byMember: _getRandomTaskMember(board),
-        style: getRandomTaskStyle()
+        style: getRandomTaskStyle(),
+        attachments: []
     }
     return task
 }
