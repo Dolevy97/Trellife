@@ -23,14 +23,16 @@
         scrollbar-width: thin;
 
         .task-container {
+            display: flex;
+
+            position: relative;
+
             height: fit-content;
             background-color: $bgclr2;
             border-radius: 8px;
             box-shadow: 0 1px 0 rgba(9, 30, 66, .25);
-            padding: 0px 6px;
-            // min-height: 36px;
-            display: flex;
-            position: relative;
+            // padding: 0px 6px;
+            padding: 8px 12px 4px;
 
             border: 2px solid transparent;
 
@@ -56,13 +58,17 @@
                 z-index: 25;
                 opacity: 0;
 
+                padding: 6px 8px;
+
+                background-color: $bgclr2;
+
                 img {
                     height: 16px;
                     width: 16px;
                 }
 
                 &:hover {
-                    background-color: #ffffff6b;
+                    background-color: #282E33;
                 }
             }
 
@@ -77,17 +83,14 @@
                 flex-direction: column;
                 align-items: flex-start;
                 width: 100%;
-                padding: 4px 0px;
-
-
+                // padding: 4px 0px;
 
                 span {
                     font-size: 14px;
                     font-weight: 400;
-                    color: $textclr2;
+                    color: $txtclr1;
                     word-wrap: break-word;
                     width: 100%;
-
 
                 }
 
@@ -96,6 +99,9 @@
 
             .task-container1 {
                 display: flex;
+                flex-wrap: wrap;
+                gap: 4px;
+                margin-bottom: 4px;
 
                 .label-tab {
                     width: 40px;
@@ -113,12 +119,17 @@
             }
 
             .task-container2 {
-                // needs to Fix the Y
+                display: block;
+                margin-bottom: 4px;
+                width: 222.05px;
+                overflow: hidden;
+                overflow-wrap: break-word;
+                white-space: normal;
             }
 
             .task-container3 {
                 display: flex;
-              
+
                 gap: 2px;
 
                 .members-container {
@@ -127,13 +138,15 @@
                     // justify-content: space-between;
                     gap: 2px;
 
+
+
                     .member-thumbnail {
                         height: 24px;
                         width: 24px;
                         border-radius: 50%;
 
                         img {
-                            
+
                             object-fit: cover;
                         }
                     }
