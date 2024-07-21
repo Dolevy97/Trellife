@@ -160,8 +160,10 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             }
             {action === 'add checklist' &&
                 <>
-                    <div className="checklist"></div>
+                    <div className="checklist">
+                    <span className="title">Title</span>
                     <input className="text" value={checklistInputValue} onChange={(ev) => setChecklistInputValue(ev.target.value)} />
+                    </div>
                     <button className="add-checklist" onClick={onAddChecklist}>Add</button>
                 </>
             }
