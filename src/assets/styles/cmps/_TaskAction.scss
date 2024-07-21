@@ -1,15 +1,15 @@
 .task-action {
     position: fixed;
     background-color: rgb(40, 46, 51);
-    translate: em(-12,14) em(14,14);
+    translate: em(-12, 14) em(14, 14);
     width: em(304);
     border-radius: 8px;
     z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    padding: em(12,14);
-    gap: em(28,14);
+    padding: em(12, 14);
+    gap: em(28, 14);
     cursor: default;
 
     &>*>* {
@@ -24,10 +24,10 @@
     }
 
     .title {
-        font-size: em(12,14);
+        font-size: em(12, 14);
         font-weight: 600;
-        line-height: em(16,14);
-        margin-block-end: em(14,14);
+        line-height: em(16, 14);
+        margin-block-end: em(14, 14);
     }
 
     .name {
@@ -38,48 +38,94 @@
         border: none;
         outline: none;
         font-weight: 600;
-        font-size: em(14,14);
+        font-size: em(14, 14);
         width: 100%;
         height: em(33, 14);
         border-radius: 2px;
         background-color: #23262a;
         color: inherit;
-        padding: em(8,14) em(12,14);
+        padding: em(8, 14) em(12, 14);
         font-weight: normal;
 
         &:focus {
             outline: 2px solid #86b6f4;
         }
 
-        &::placeholder{
+        &::placeholder {
             color: inherit;
         }
-    }  
+    }
 
-    .card-member{
+    .card-member {
         position: relative;
-        
-        .close-icon{
+
+        .close-icon {
             position: static;
             margin-inline-start: auto;
         }
     }
- 
+
     .member {
         display: flex;
-        padding: em(4,14) em(8,14) em(4,14) em(4,14);
+        padding: em(4, 14) em(8, 14) em(4, 14) em(4, 14);
         border-radius: 4px;
         cursor: pointer;
 
         .member-thumbnail {
-            height: em(32,14);
-            width: em(32,14);
+            height: em(32, 14);
+            width: em(32, 14);
             border-radius: 50%;
             margin-inline-end: em(8);
         }
 
-        &:hover{
+        &:hover {
             background-color: #333b41;
+        }
+    }
+
+    .labels {
+
+        display: flex;
+        flex-direction: column;
+        gap: em(4, 14);
+
+        .label-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            // gap: em(10, 14);
+
+            .label {
+                font-size: em(14, 14);
+                font-weight: 500;
+                width: 100%;
+                line-height: em(14, 14);
+                padding: em(12);
+                border-radius: 3px;
+                margin-inline: em(12,14) em(4,14);
+            }
+
+            .pen-icon-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: em(9,14);
+                border-radius: 3px;
+                
+
+                &:hover {
+                    background-color: #3c474f;
+                    cursor: pointer;
+                }
+
+                .pen-icon {
+                    height: em(16, 14);
+                    width: em(16, 14);
+
+                }
+
+            }
+
         }
     }
 

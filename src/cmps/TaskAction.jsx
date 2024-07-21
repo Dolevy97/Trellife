@@ -46,7 +46,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                         {getTaskMembers().map(member => {
                             return (
                                 <div key={member._id} className="member card-member" onClick={() => onRemoveMember(member._id)}>
-                                    <img className="member-thumbnail" src='../../../src/assets/imgs/user-imgs/user-img1.jpg' title={member.fullname} />
+                                    <img className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
                                     <span className="name">{member.fullname}</span>
                                     <img className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" />
                                 </div>
@@ -58,7 +58,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                         {getBoardMembers().map(member => {
                             return (
                                 <div key={member._id} className="member" onClick={() => onAddMember(member._id)}>
-                                    <img className="member-thumbnail" src='../../../src/assets/imgs/user-imgs/user-img1.jpg' title={member.fullname} />
+                                    <img className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
                                     <span className="name">{member.fullname}</span>
                                 </div>
                             )
@@ -68,14 +68,14 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             }
             {action === 'labels' &&
                 <>
-                    <div className="card-labels">
+                    <div className="labels">
                         <span className="title">Labels</span>
                         {board.labels.map(label => {
                             return (
                                 <div key={label.id} className="label-container">
-                                    <input type="checkbox" checked={task.labelsIds.includes(label.id)} onChange={()=>onToggleLabel(event,label.id)}/>
+                                    <input className="label-checkbox" type="checkbox" checked={task.labelsIds.includes(label.id)} onChange={()=>onToggleLabel(event,label.id)}/>
                                     <div className="label" style={{ backgroundColor: label.color }}>{label.title}</div>
-                                    <img src="../../../src/assets/imgs/TaskDetails-icons/pen.svg"></img>
+                                    <div className="pen-icon-container"><img className="pen-icon" src="../../../src/assets/imgs/TaskDetails-icons/pen.svg"></img></div>
                                 </div>
                             )
                         })
