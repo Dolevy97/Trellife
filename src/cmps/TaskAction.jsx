@@ -7,6 +7,18 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
 
     const [checklistInputValue,setChecklistInputValue] = useState('Checklist')
 
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.keyCode === 32 || event.key === ' ') {
+                event.preventDefault()
+            }
+        }
+        window.addEventListener('keydown', handleKeyDown)
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown)
+        }
+    }, [])
+
     function getBoardMembers() {
         const boardMembers = board.members.filter(member => !task.membersIds.includes(member._id))
         return boardMembers

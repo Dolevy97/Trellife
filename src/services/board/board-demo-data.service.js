@@ -128,11 +128,17 @@ function _getRandomTask(board) {
         membersIds: _getRandomTaskMembersIds(board),
         labelsIds: _getRandomTaskLabels(board),
         byMember: _getRandomTaskMember(board),
-        style: {
-            backgroundColor: getRandomColor()
-        }
+        style: getRandomTaskStyle()
     }
     return task
+}
+
+function getRandomTaskStyle(){
+    const randNum = getRandomIntInclusive(1,3)
+    if (randNum > 1){
+        return {}
+    }
+    return {backgroundColor: getRandomColor()}
 }
 
 function _getRandomTaskMember(board) {
