@@ -138,6 +138,58 @@
     }
 }
 
+.homepage-form {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+
+    input {
+        display: block;
+        font-size: 1rem;
+        padding: 0.7rem 0.75rem 0.8rem;
+        border: 1px solid rgb(223, 225, 230);
+        border-radius: 0.3rem;
+        max-width: 300px;
+        transition: all 250ms ease-out 0s;
+        width: 376px;
+
+        &:focus-visible {
+            outline: 0px;
+            border: none;
+        }
+
+        &:focus {
+            outline: rgb(255, 255, 255) solid 2px;
+        }
+    }
+
+    button {
+        @include btn;
+        -webkit-box-align: center;
+        align-items: center;
+        border-radius: 0.3rem;
+        cursor: pointer;
+        display: inline-flex;
+        text-align: center;
+        transition: all 250ms ease-out 0s;
+        text-decoration: none;
+        background-color: rgb(0, 101, 255);
+        border: 1px solid rgb(0, 101, 255);
+        font-size: 1rem;
+        padding: 0.7rem 1rem 0.8rem;
+        color: rgb(255, 255, 255);
+
+        &:hover {
+            background-color: rgb(7, 71, 166);
+            border-color: rgb(7, 71, 166);
+        }
+
+    }
+}
+
 .spacer {
     height: 0.5rem;
 }
