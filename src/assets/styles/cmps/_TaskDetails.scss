@@ -194,9 +194,7 @@
                                 cursor: pointer;
                             }
                         }
-
                     }
-
                 }
 
                 .description-container {
@@ -338,7 +336,7 @@
 
                 .attachments-container {
                     position: relative;
-                    
+
                     display: flex;
                     align-items: center;
 
@@ -375,6 +373,10 @@
                         line-height: 20px;
                         font-weight: 600;
                     }
+
+                    & input {
+                        display: block;
+                    }
                 }
 
             }
@@ -391,7 +393,7 @@
                 align-items: center;
 
                 position: relative;
-                
+
                 width: em(156);
                 font-size: em(14);
                 color: inherit;
