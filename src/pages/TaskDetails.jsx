@@ -118,9 +118,9 @@ export function TaskDetails() {
         return board.labels.find(label => label.id === id);
     }
 
-    function onSetAction(ev,isNull=false) {
+    function onSetAction(ev, isNull = false) {
         ev.stopPropagation();
-        if (isNull)  {
+        if (isNull) {
             setAction(null);
             return
         }
@@ -186,8 +186,6 @@ export function TaskDetails() {
     if (!taskToEdit || !group) return <section>Loading...</section>;
 
     const { title, description, membersIds, labelsIds, style: cover } = taskToEdit;
-
-    // console.log(taskToEdit.status)
 
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
@@ -323,18 +321,18 @@ export function TaskDetails() {
                         <button className="action" name="members" onClick={onSetAction}>
                             <img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" alt="members icon" />
                             <span className="action-title">Members</span>
-                            {action === 'members' && <TaskAction action="members" task={taskToEdit} board={board} group={group} getMemberById={getMemberById} />}
                         </button>
+                        {action === 'members' && <TaskAction action="members" task={taskToEdit} board={board} group={group} getMemberById={getMemberById} />}
                         <button className="action" name="labels" onClick={onSetAction}>
                             <img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" alt="labels icon" />
                             <span className="action-title">Labels</span>
-                            {action === 'labels' && <TaskAction action="labels" task={taskToEdit} board={board} group={group} getLabelById={getLabelById} />}
                         </button>
+                        {action === 'labels' && <TaskAction action="labels" task={taskToEdit} board={board} group={group} getLabelById={getLabelById} />}
                         <button className="action" name="checklist" onClick={onSetAction}>
                             <img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="checklist icon" />
                             <span className="action-title">Checklist</span>
-                            {action === 'checklist' && <TaskAction action="add checklist" task={taskToEdit} board={board} group={group} />}
                         </button>
+                        {action === 'checklist' && <TaskAction action="add checklist" task={taskToEdit} board={board} group={group} />}
                         <button className="action" name="dates" onClick={onSetAction}>
                             <img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" alt="dates icon" />
                             <span className="action-title">Dates</span>
@@ -342,8 +340,8 @@ export function TaskDetails() {
                         <button className="action" name="attachment" onClick={onSetAction}>
                             <img className="attachment-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/attachment.svg" alt="attachment icon" />
                             <span className="action-title">Attachment</span>
-                            {action === 'attachment' && <TaskAction action="attach" task={taskToEdit} board={board} group={group} onSetAction={onSetAction} />}
                         </button>
+                        {action === 'attachment' && <TaskAction action="attach" task={taskToEdit} board={board} group={group} onSetAction={onSetAction} />}
                         <button className="action" name="location" onClick={onSetAction}>
                             <img className="location-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/location.svg" alt="location icon" />
                             <span className="action-title">Location</span>
