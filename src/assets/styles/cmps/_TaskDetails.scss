@@ -159,6 +159,7 @@
                     width: 512px;
                     // height: 100px;
                     place-self: center;
+                    margin-block-end: 24px;
 
                     .description-title {
                         position: relative;
@@ -215,6 +216,14 @@
 
                         &.editing {
                             box-shadow: 0 0 0 1px inset #738496;
+                            background-color: #22272B;
+
+                            font-size: 0.875em;
+                            line-height: 1.714;
+                            font-weight: normal;
+                            margin-top: 0.75rem;
+                            margin-bottom: 0px;
+                            letter-spacing: -0.005em;
 
                             &:hover {
                                 cursor: text;
@@ -230,7 +239,7 @@
                         }
 
                         &::placeholder {
-                            color: $txtclr1;
+                            color: #8C9BAB;
                         }
 
                         &.has-content {
@@ -253,7 +262,7 @@
                     }
 
                     .btns {
-                        margin-block: 8px;
+                        margin-block-start: 8px;
 
                         button {
                             @include btn;
