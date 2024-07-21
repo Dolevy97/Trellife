@@ -8,22 +8,26 @@ import { TaskAction } from '../cmps/TaskAction';
 import autosize from 'autosize';
 
 export function TaskDetails() {
+    const board = useSelector(storeState => storeState.boardModule.board)
+
     const textareaRef = useRef(null)
-    const board = useSelector(storeState => storeState.boardModule.board);
-    const [group, setGroup] = useState(null);
-    const [taskToEdit, setTaskToEdit] = useState(null);
-    const [action, setAction] = useState(null);
+
+    const [group, setGroup] = useState(null)
+    const [taskToEdit, setTaskToEdit] = useState(null)
+    const [action, setAction] = useState(null)
     const [isSettingDescription, setIsSettingDescription] = useState(false)
-    const { taskId, groupId, boardId } = useParams();
-    const navigate = useNavigate();
+    const [tempDescription, setTempDescription] = useState('')
+
+    const { taskId, groupId, boardId } = useParams()
+    const navigate = useNavigate()
 
     useEffect(() => {
-        getBoard();
-    }, []);
+        getBoard()
+    }, [])
 
     useEffect(() => {
-        if (board) setTask();
-    }, [board]);
+        if (board) setTask()
+    }, [board])
 
     useEffect(() => {
         if (textareaRef.current) {
@@ -95,6 +99,22 @@ export function TaskDetails() {
         setAction(actionName);
     }
 
+    function startSetDescription() {
+        setTempDescription(taskToEdit.description)
+        setIsSettingDescription(true)
+    }
+
+    async function onSaveDescription() {
+        await updateTask(taskToEdit, groupId, group, board)
+        setIsSettingDescription(false)
+
+    }
+
+    function cancelSetDescription() {
+        taskToEdit.description = tempDescription
+        setIsSettingDescription(false)
+    }
+
     if (!taskToEdit || !group) return <section>Loading...</section>;
 
     const { title, description, membersIds, labelsIds } = taskToEdit;
@@ -140,21 +160,40 @@ export function TaskDetails() {
                             </div>}
                         </div>
                         <div className="description-container">
-                            <img className="description-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/description.svg" alt="description icon" />
-                            <span>Description</span>
-                            <textarea
-                                placeholder='Add a more detailed description...'
-                                className="description"
-                                onChange={handleChange}
-                                value={description}
-                                name="description"
-                                ref={textareaRef} />
+                            <div className="description-title">
+                                <img className="description-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/description.svg" alt="description icon" />
+                                <span>Description</span>
+                                {!isSettingDescription && description.length? <button>Edit</button> : ''}
+                            </div>
+                            {isSettingDescription ?
+                                <>
+                                    <textarea
+                                        placeholder={`Pro tip: Hit 'Enter' for a line break.`}
+                                        className="description editing"
+                                        onChange={handleChange}
+                                        value={description}
+                                        name="description"
+                                        ref={textareaRef} />
+                                    <article className="btns">
+                                        <button onClick={onSaveDescription} className='btn-save'>Save</button>
+                                        <button onClick={cancelSetDescription} className='btn-cancel'>Cancel</button>
+                                    </article>
+                                </>
+                                :
+                                <textarea
+                                    placeholder='Add a more detailed description...'
+                                    className={`description ${description.length? 'has-content' : ''}`}
+                                    value={description}
+                                    name="description"
+                                    ref={textareaRef}
+                                    onClick={startSetDescription}
+                                />
+                            }
                         </div>
                         <div className="activity-container">
                             <img className="activity-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/activity.svg" alt="activity icon" />
                             <span>Activity</span>
                         </div>
-                        <button>Submit</button>
                     </section>
                     <section className="task-actions">
                         <span className="add-to-card fs12">Add to card</span>
