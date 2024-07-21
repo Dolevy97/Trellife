@@ -38,7 +38,7 @@
         justify-content: center;
         transition: background-color 0.1s ease;
         &:hover {
-            background-color: rgba(132, 153, 189, 0.34);
+            background-color: $btnhoverclr;
         }
     .three-dots-open {
         cursor: pointer;
@@ -81,7 +81,7 @@
         display: flex;
         flex-direction: column;
         padding: 0;
-        border: 1px rgba(132, 153, 189, 0.34) solid;
+        border: 1px $btnhoverclr solid;
 
         .options-menu-header {
             padding: 9px 12px;
@@ -107,7 +107,7 @@
                 cursor: pointer;
                 transition: background-color 0.1s ease;
                 &:hover {
-                    background-color: rgba(132, 153, 189, 0.34);
+                    background-color: $btnhoverclr;
                 }
     
                 img {
@@ -126,7 +126,7 @@
             color: $textclr2;
 
             &:hover {
-                background-color: rgba(132, 153, 189, 0.34);
+                background-color:$btnhoverclr;
             }
 
         }
@@ -136,14 +136,14 @@
             bottom: 0;
             width: 284px;
 
-            border-top: 1px solid rgba(132, 153, 189, 0.34);
+            border-top: 1px solid $btnhoverclr;
             margin: 0;
             padding: 4px 6px;
             margin-bottom: 8px;
             cursor: pointer;
 
             &:hover {
-                background-color: rgba(132, 153, 189, 0.34);
+                background-color:$btnhoverclr;
             }
 
             span {
