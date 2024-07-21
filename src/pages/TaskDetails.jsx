@@ -11,12 +11,15 @@ export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
 
     const textareaRef = useRef(null)
+    const textareaCommentRef = useRef(null)
     const dateInputRef = useRef(null)
 
     const [group, setGroup] = useState(null)
     const [taskToEdit, setTaskToEdit] = useState(null)
     const [action, setAction] = useState(null)
     const [isSettingDescription, setIsSettingDescription] = useState(false)
+    const [isAddingComment, setIsAddingComment] = useState(false)
+    const [commentToEdit, setCommentToEdit] = useState('')
     const [tempDescription, setTempDescription] = useState('')
 
     const { taskId, groupId, boardId } = useParams()
@@ -38,6 +41,18 @@ export function TaskDetails() {
         return () => {
             if (textareaRef.current) {
                 autosize.destroy(textareaRef.current);
+            }
+        }
+    }, [taskToEdit, isSettingDescription])
+
+    useEffect(() => {
+        if (textareaCommentRef.current) {
+            autosize(textareaCommentRef.current);
+        }
+
+        return () => {
+            if (textareaCommentRef.current) {
+                autosize.destroy(textareaCommentRef.current);
             }
         }
     }, [taskToEdit, isSettingDescription])
@@ -86,6 +101,15 @@ export function TaskDetails() {
         setTaskToEdit({ ...taskToEdit, [field]: value });
     }
 
+    function handleCommentChange({ target }) {
+        const { type, name: field } = target;
+        let { value } = target;
+        if (type === 'number') {
+            value = +value || '';
+        }
+        setCommentToEdit({ ...taskToEdit, [field]: value });
+    }
+
     function getMemberById(id) {
         return board.members.find(member => member._id === id);
     }
@@ -115,6 +139,11 @@ export function TaskDetails() {
         taskToEdit.description = tempDescription
         setIsSettingDescription(false)
     }
+    async function onSaveComment() {
+        console.log(board)
+        // await updateBoard(board)
+        setIsAddingComment(false)
+    }
 
     function getDueDate(timeStamp) {
         if (!timeStamp) return
@@ -126,6 +155,12 @@ export function TaskDetails() {
     function onShowDatePicker() {
         if (dateInputRef.current) {
             dateInputRef.current.showPicker()
+        }
+    }
+
+    function handleCommentKeyUp(ev) {
+        if (ev.code === 'Escape') {
+            setIsAddingComment(false)
         }
     }
 
@@ -217,9 +252,35 @@ export function TaskDetails() {
                             <div className="activity-title">
                                 <img className="activity-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/activity.svg" alt="activity icon" />
                                 <span>Activity</span>
-                                {/* {console.log(board.activities)} */}
+                                {/* <button>Show details</button> */}
                             </div>
-                            <input type="text"  placeholder='Write a comment...' />
+                            {/* {console.log(board.activities)} */}
+                            <div className="input-container">
+                                <img className='user-img-activity-input' src="../../../src/assets/imgs/user-imgs/user-img3.jpg" alt="user" />
+                                {isAddingComment ?
+                                    <>
+                                        <textarea
+                                            placeholder='Write a comment...'
+                                            className="comment editing"
+                                            onChange={handleCommentChange}
+                                            name="comment"
+                                            onKeyUp={handleCommentKeyUp}
+                                            ref={textareaCommentRef} />
+                                        <article className="btns">
+                                            <button onClick={onSaveDescription} className='btn-save'>Save</button>
+                                        </article>
+                                    </>
+                                    :
+                                    <textarea
+                                        placeholder='Write a comment...'
+                                        className={`comment`}
+                                        name="comment"
+                                        ref={textareaCommentRef}
+                                        readOnly
+                                        onClick={() => { setIsAddingComment(true) }}
+                                    />
+                                }
+                            </div>
                         </div>
                     </section>
 
