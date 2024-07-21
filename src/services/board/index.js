@@ -20,7 +20,6 @@ function getEmptyBoard() {
         activities: [],
         cmpsOrder: [],
     }
-
 }
 
 function getDefaultFilter() {
@@ -30,7 +29,7 @@ function getDefaultFilter() {
 }
 
 const service = VITE_LOCAL === 'true' ? local : remote
-export const boardService = { getEmptyTask,getEmptyGroup, getEmptyBoard, getDefaultFilter, ...service }
+export const boardService = { getEmptyTask, getEmptyGroup, getEmptyBoard, getDefaultFilter, ...service }
 
 // Easy access to this service from the dev tools console
 // when using script - dev / dev:local

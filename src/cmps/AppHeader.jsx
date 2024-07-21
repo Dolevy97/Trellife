@@ -13,7 +13,8 @@ export function AppHeader({ isHomePage }) {
 
 	function handleMenuChange(menu) {
 		if (menuToOpen === menu) {
-			setIsMenuOpen(!isMenuOpen)
+			setIsMenuOpen(false)
+			setMenuToOpen(null)
 		} else {
 			setIsMenuOpen(true)
 			setMenuToOpen(menu)
@@ -29,25 +30,25 @@ export function AppHeader({ isHomePage }) {
 						<span className='logo-text'>Trellife</span>
 					</div>
 					<section className={`header-links ${isHomePage ? 'homepage' : ''}`}>
-						<article className='logo-wrapper' onClick={() => {
+						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Boards' ? 'active' : ''}`} onClick={() => {
 							handleMenuChange('Boards')
 						}}>
 							<p className='header-link-text' title='Boards'>Boards</p>
 							<img src="../../../src\assets\styles\imgs\Icones\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
 						</article>
-						<article className='logo-wrapper' onClick={() => {
+						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Recent' ? 'active' : ''}`} onClick={() => {
 							handleMenuChange('Recent')
 						}}>
 							<p className='header-link-text' title='Recent'>Recent</p>
 							<img src="../../../src\assets\styles\imgs\Icones\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
 						</article>
-						<article className='logo-wrapper' onClick={() => {
+						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Starred' ? 'active' : ''}`} onClick={() => {
 							handleMenuChange('Starred')
 						}}>
 							<p className='header-link-text' title='Starred'>Starred</p>
 							<img src="../../../src\assets\styles\imgs\Icones\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
 						</article>
-						<article className='logo-wrapper' onClick={() => {
+						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Templates' ? 'active' : ''}`} onClick={() => {
 							handleMenuChange('Templates')
 						}}>
 							<p className='header-link-text' title='Templates'>Templates</p>

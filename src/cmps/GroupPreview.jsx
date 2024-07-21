@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { boardService } from '../services/board/'
 import { updateBoard } from '../store/actions/board.actions'
 import { GroupPreviewHeader } from './GroupPreviewHeader'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
 
 export function GroupPreview({ group, boardId, board, setBoard }) {
     const tasks = group?.tasks || []
@@ -10,6 +12,8 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
     const [isAddingTask, setIsAddingTask] = useState(false)
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const addTaskRef = useRef(null)
+    const [taskToEdit, setTaskToEdit] = useState(null)
+
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -76,6 +80,37 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
         }
     }
 
+
+    // function setTask() {
+    //     setTaskToEdit(() => {
+    //         const group = board.groups.find(group => group.id === groupId)
+    //         setGroup(group)
+    //         // console.log(group)
+    //         const task = group.tasks.find(task => task.id === taskId)
+    //         return task
+    //     })
+    // }
+    // function handleChange({ target }) {
+    //     const { type, name: field } = target
+    //     let { value } = target
+    //     switch (type) {
+    //         case 'number':
+    //             value = +value || ''
+    //             break
+    //     }
+    //     setTaskToEdit({ ...taskToEdit, [field]: value })
+    // }
+
+    function getMemberById(id) {
+        return board.members.find(member => member._id === id)
+    }
+
+    function getLabelById(id) {
+        return board.labels.find(label => label.id === id)
+    }
+
+    const labelsIds = taskToEdit?.labelsIds || []
+
     return (
         <section className="group-preview-container">
             <GroupPreviewHeader
@@ -89,22 +124,59 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                 {tasks.map(task => (
                     <div key={task.id} className="task-container" onClick={() => handleTaskClick(task.id)}>
                         <div className='task-preview'>
-                            <span>{task.title}</span>
-                            {task.description && task.description.trim() !== '' && (
-                                <span><img src="../../../src/assets/styles/imgs/Icones/description.svg" alt="description" /></span>
-                            )}
+                            <div className='task-container1'>
+                                {task.labelsIds && task.labelsIds.map(id => {
+                                    const label = getLabelById(id)
+                                    return label && (
+                                        <div
+                                            className="label-tab"
+                                            key={id}
+                                            style={{ backgroundColor: label.color }}
+                                            title={label.title}
+                                        >
+                                            <span className="label-title">{label.title}</span>
+                                        </div>
+                                    )
+                                })}
+
+                            </div>
+
+                            <div className='task-container2'>
+                                <span>{task.title}</span>
+                            </div>
+
                             <div className='pen-display'>
                                 <img src="../../../src\assets\imgs\Icones\pen.svg" />
                             </div>
-                        </div>
+                            <div className='task-container3'>
+                                {task.description && task.description.trim() !== '' && (
+                                    <span className='task-description'><img src="../../../src/assets/styles/imgs/Icones/description.svg" alt="description" /></span>
+                                )}
 
+                                <div className='members-container'>
+                                    {task.membersIds && task.membersIds.map(id => {
+                                        const member = getMemberById(id)
+                                        return (
+                                            <img
+                                                key={member._id}
+                                                className="member-thumbnail"
+                                                src='../../../src/assets/imgs/user-imgs/user-img1.jpg'
+                                                title={member.fullname}
+                                                alt={member.fullname}
+                                            />
+                                        )
+                                    })}
+                                </div>
+                            </div>
+
+                        </div>
 
                     </div>
                 ))}
                 {isAddingTask && (
                     <div className='addtask-from-container' ref={addTaskRef}>
                         <form className='addtask-form' onSubmit={(e) => e.preventDefault()}>
-                        <textarea
+                            <textarea
                                 type="text"
                                 value={newTaskTitle}
                                 onChange={handleInputChange}
