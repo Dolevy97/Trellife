@@ -86,10 +86,6 @@
         .task-container {
             display: flex;
 
-            &>*>* {
-                position: relative;
-            }
-
             .task-content {
                 position: relative;
 
@@ -117,6 +113,28 @@
                             border-radius: 50%;
                             margin: 0 4px 4px 0;
 
+                        }
+
+                        .add-member-thumbnail {
+                            position: relative;
+                            
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+
+                            height: 32px;
+                            width: 32px;
+                            border-radius: 50%;
+
+                            background-color: #A1BDD914;
+
+                            img {
+                                width: 16px;
+                                height: 16px;
+                            }
+                            &:hover {
+                                cursor: pointer;
+                            }
                         }
                     }
 
@@ -509,6 +527,8 @@
 
                 position: relative;
 
+                font-family: inherit;
+
                 width: em(156);
                 font-size: em(14);
                 color: inherit;
@@ -525,6 +545,7 @@
                 transition-property: background-color;
                 transition-timing-function: ease;
                 white-space: nowrap;
+                // font-family: inherit;
 
                 .icon {
                     height: 1em;

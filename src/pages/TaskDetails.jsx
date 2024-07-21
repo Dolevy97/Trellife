@@ -6,6 +6,8 @@ import { updateBoard } from '../store/actions/board.actions';
 import { updateTask } from '../store/actions/task.actions';
 import { TaskAction } from '../cmps/TaskAction';
 import autosize from 'autosize';
+import { getRandomMember } from '../services/board/board-demo-data.service';
+import { makeId } from '../services/util.service';
 
 export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
@@ -19,8 +21,8 @@ export function TaskDetails() {
     const [action, setAction] = useState(null)
     const [isSettingDescription, setIsSettingDescription] = useState(false)
     const [isAddingComment, setIsAddingComment] = useState(false)
-    const [commentToEdit, setCommentToEdit] = useState('')
     const [tempDescription, setTempDescription] = useState('')
+    const [commentToEdit, setCommentToEdit] = useState('')
 
     const { taskId, groupId, boardId } = useParams()
     const navigate = useNavigate()
@@ -107,7 +109,7 @@ export function TaskDetails() {
         if (type === 'number') {
             value = +value || '';
         }
-        setCommentToEdit({ ...taskToEdit, [field]: value });
+        setCommentToEdit(value);
     }
 
     function getMemberById(id) {
@@ -118,8 +120,12 @@ export function TaskDetails() {
         return board.labels.find(label => label.id === id);
     }
 
-    function onSetAction(ev) {
+    function onSetAction(ev, isNull = false) {
         ev.stopPropagation();
+        if (isNull) {
+            setAction(null);
+            return
+        }
         const actionName = action === ev.currentTarget.name ? null : ev.currentTarget.name;
         setAction(actionName);
     }
@@ -140,9 +146,26 @@ export function TaskDetails() {
         setIsSettingDescription(false)
     }
     async function onSaveComment() {
-        console.log(board)
-        // await updateBoard(board)
+        const newActivity = {
+            id: makeId(),
+            group: group,
+            task: taskToEdit,
+            txt: commentToEdit,
+            byMember: getRandomMember(),
+            title: 'add comment'
+        }
+        board.activities.unshift(newActivity)
         setIsAddingComment(false)
+        await updateBoard(board)
+    }
+
+    async function onChangeDueDate() {
+        const dateStr = dateInputRef.current.value
+        const dateObj = new Date(dateStr)
+        const timestamp = dateObj.getTime()
+        taskToEdit.dueDate = timestamp
+        await updateTask(taskToEdit, groupId, group, board)
+
     }
 
     function getDueDate(timeStamp) {
@@ -164,11 +187,14 @@ export function TaskDetails() {
         }
     }
 
+    async function onChangeStatus({ target }) {
+        taskToEdit.status = target.checked ? 'done' : 'inProgress';
+        await updateTask(taskToEdit, groupId, group, board)
+    }
+
     if (!taskToEdit || !group) return <section>Loading...</section>;
 
-    const { title, description, membersIds, labelsIds, style:cover } = taskToEdit;
-
-    console.log(action)
+    const { title, description, membersIds, labelsIds, style: cover } = taskToEdit;
 
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
@@ -190,6 +216,7 @@ export function TaskDetails() {
                                         return <img key={member._id} className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
                                     }
                                     )}
+                                    <div name="members" onClick={onSetAction} className="add-member-thumbnail"><img src="../../../src/assets/imgs/TaskDetails-icons/add.svg" alt="add plus icon" /></div>
                                 </div>
                             </div> : ''}
                             {labelsIds.length ? <div className="labels-container">
@@ -205,8 +232,20 @@ export function TaskDetails() {
                             {taskToEdit.dueDate && <div className="date-container">
                                 <span className="fs12">Due date</span>
                                 <div onClick={onShowDatePicker} className="date">
-                                    <input className="checkbox" type="checkbox" />
-                                    <input ref={dateInputRef} className="date-input" type="datetime-local" value={getDueDate(taskToEdit.dueDate)} />
+                                    <input
+                                        onClick={(ev) => ev.stopPropagation()}
+                                        className="checkbox"
+                                        type="checkbox"
+                                        onChange={onChangeStatus}
+                                        checked={taskToEdit.status === 'inProgress' ? false : true}
+                                    />
+                                    <input
+                                        ref={dateInputRef}
+                                        className="date-input"
+                                        type="datetime-local"
+                                        value={getDueDate(taskToEdit.dueDate)}
+                                        onChange={onChangeDueDate}
+                                    />
                                     <img className="arrow-down" src="../../../src/assets/imgs/TaskDetails-icons/arrow-down.svg" alt="description icon" />
                                 </div>
                             </div>}
@@ -269,7 +308,7 @@ export function TaskDetails() {
                                             onKeyUp={handleCommentKeyUp}
                                             ref={textareaCommentRef} />
                                         <article className="btns">
-                                            <button onClick={onSaveDescription} className='btn-save'>Save</button>
+                                            <button onClick={onSaveComment} className='btn-save'>Save</button>
                                         </article>
                                     </>
                                     :
@@ -288,38 +327,57 @@ export function TaskDetails() {
 
                     <section className="task-actions">
                         <span className="add-to-card fs12">Add to card</span>
-                        <button className="action" name="members" onClick={onSetAction}>
-                            <img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" alt="members icon" />
-                            <span className="action-title">Members</span>
+                        <div className="task-action-container">
+                            <button className="action" name="members" onClick={onSetAction}>
+                                <img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" alt="members icon" />
+                                <span className="action-title">Members</span>
+                            </button>
                             {action === 'members' && <TaskAction action="members" task={taskToEdit} board={board} group={group} getMemberById={getMemberById} />}
-                        </button>
-                        <button className="action" name="labels" onClick={onSetAction}>
-                            <img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" alt="labels icon" />
-                            <span className="action-title">Labels</span>
+                        </div>
+                        <div className="task-action-container">
+                            <button className="action" name="labels" onClick={onSetAction}>
+                                <img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" alt="labels icon" />
+                                <span className="action-title">Labels</span>
+                            </button>
                             {action === 'labels' && <TaskAction action="labels" task={taskToEdit} board={board} group={group} getLabelById={getLabelById} />}
-                        </button>
-                        <button className="action" name="checklist" onClick={onSetAction}>
-                            <img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="checklist icon" />
-                            <span className="action-title">Checklist</span>
+                        </div>
+                        <div className="task-action-container">
+                            <button className="action" name="checklist" onClick={onSetAction}>
+                                <img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="checklist icon" />
+                                <span className="action-title">Checklist</span>
+                            </button>
                             {action === 'checklist' && <TaskAction action="add checklist" task={taskToEdit} board={board} group={group} />}
-                        </button>
-                        <button className="action" name="dates" onClick={onSetAction}>
-                            <img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" alt="dates icon" />
-                            <span className="action-title">Dates</span>
-                        </button>
-                        <button className="action" name="attachment" onClick={onSetAction}>
-                            <img className="attachment-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/attachment.svg" alt="attachment icon" />
-                            <span className="action-title">Attachment</span>
-                        </button>
-                        <button className="action" name="location" onClick={onSetAction}>
-                            <img className="location-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/location.svg" alt="location icon" />
-                            <span className="action-title">Location</span>
-                        </button>
-                        <button className="action" name="cover" onClick={onSetAction}>
-                            <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
-                            <span className="action-title">Cover</span>
+                        </div>
+                        <div className="task-action-container">
+
+                            <button className="action" name="dates" onClick={onSetAction}>
+                                <img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" alt="dates icon" />
+                                <span className="action-title">Dates</span>
+                            </button>
+                            {/* Enter task action rendering for date */}
+                        </div>
+                        <div className="task-action-container">
+                            <button className="action" name="attachment" onClick={onSetAction}>
+                                <img className="attachment-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/attachment.svg" alt="attachment icon" />
+                                <span className="action-title">Attachment</span>
+                            </button>
+                            {action === 'attachment' && <TaskAction action="attach" task={taskToEdit} board={board} group={group} onSetAction={onSetAction} />}
+                        </div>
+                        <div className="task-action-container">
+                            <button className="action" name="location" onClick={onSetAction}>
+                                <img className="location-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/location.svg" alt="location icon" />
+                                <span className="action-title">Location</span>
+                            </button>
+                            {/* Enter location action rendering */}
+                        </div>
+                        <div className="task-action-container">
+                            <button className="action" name="cover" onClick={onSetAction}>
+                                <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
+                                <span className="action-title">Cover</span>
+                            </button>
                             {action === 'cover' && <TaskAction action="cover" task={taskToEdit} board={board} group={group} />}
-                        </button>
+                        </div>
+
                         <button className="action" name="custom" onClick={onSetAction}>
                             <img className="custom-fields-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/custom-fields.svg" alt="custom fields icon" />
                             <span className="action-title">Custom fields</span>
