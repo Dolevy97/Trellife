@@ -1,4 +1,4 @@
-import { getRandomColor, getRandomIntInclusive, makeId } from "../util.service";
+import { getRandomColor, getRandomIntInclusive, getRandomTimestamp, makeId } from "../util.service";
 
 
 export const boardDemoDataService = {
@@ -52,6 +52,7 @@ function _getRandomActivity(board) {
     activity.task = _getRandomActivityTask(activity.group)
     if (activity.title === 'add comment') activity.txt = _getRandomComment()
     activity.group = { id: activity.group.id, title: activity.group.title }
+    activity.createdAt = getRandomTimestamp()
     return activity
 }
 

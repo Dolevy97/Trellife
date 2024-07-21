@@ -50,10 +50,7 @@ export function BoardCreate({ setIsAdding }) {
 
     async function onAddBoard() {
         const newBoard = { ...boardToAdd, style: { background: background }, createdBy: getRandomMember() }
-        if (!newBoard.title) {
-
-            return
-        }
+        if (!newBoard.title) return
         const addedBoard = await addBoard(newBoard)
         if (setIsAdding) setIsAdding(false)
         navigate(`/board/${addedBoard._id}`)

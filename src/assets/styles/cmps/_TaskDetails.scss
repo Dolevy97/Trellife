@@ -117,7 +117,7 @@
 
                         .add-member-thumbnail {
                             position: relative;
-                            
+
                             display: flex;
                             align-items: center;
                             justify-content: center;
@@ -132,6 +132,7 @@
                                 width: 16px;
                                 height: 16px;
                             }
+
                             &:hover {
                                 cursor: pointer;
                             }
@@ -418,7 +419,7 @@
                             margin-top: 0.75rem;
                             margin-bottom: 0px;
                             letter-spacing: -0.005em;
-                            
+
                             &.editing {
                                 height: 64px;
                             }
@@ -442,12 +443,13 @@
 
                         .user-img-activity-input {
                             position: absolute;
-
-                            height: 28px;
-                            border-radius: 50%;
-
-                            left: -36px;
                             top: 17px;
+                            left: -40px;
+
+                            width: 32px;
+                            height: 32px;
+
+                            border-radius: 50%;
                         }
 
                         .btns {
@@ -564,6 +566,39 @@
             }
 
 
+        }
+    }
+}
+
+.comments-container {
+
+    .comment-container {
+        position: relative;
+
+        min-height: 32px;
+        padding: 8px 0;
+
+        width: 510px;
+
+        .member-img-comment {
+            position: absolute;
+            top: 8px;
+            left: -40px;
+
+            height: 32px;
+            width: 32px;
+
+            border-radius: 50%;
+        }
+
+        .comment-txt {
+            padding: 8px 12px;
+            background-color: #22272B;
+            border-radius: 8px;
+            margin: 4px 2px 4px 0;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 }
