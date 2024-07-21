@@ -23,8 +23,18 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         await updateTask(task, group.id, group, board);
     }
 
+    async function onToggleLabel(ev,id) {
+        const {checked} = ev.target
+        if (checked) {
+            task.labelsIds.push(id)
+        } else{
+            task = {...task,labelsIds:task.labelsIds.filter(labelId => labelId !== id)}
+        }
+        await updateTask(task, group.id, group, board);
+    }
+
     return (
-        <section className="task-action">
+        <section className="task-action" onClick={(ev)=>ev.stopPropagation()}>
             <header className="action-header">
                 {action.charAt(0).toUpperCase() + action.substring(1, action.length)}
             </header>
@@ -63,7 +73,9 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                         {board.labels.map(label => {
                             return (
                                 <div key={label.id} className="label-container">
-                                    
+                                    <input type="checkbox" checked={task.labelsIds.includes(label.id)} onChange={()=>onToggleLabel(event,label.id)}/>
+                                    <div className="label" style={{ backgroundColor: label.color }}>{label.title}</div>
+                                    <img src="../../../src/assets/imgs/TaskDetails-icons/pen.svg"></img>
                                 </div>
                             )
                         })

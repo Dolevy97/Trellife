@@ -124,7 +124,7 @@ export function TaskDetails() {
                             {labelsIds.length ? <div className="labels-container">
                                 <span className="fs12">Labels</span>
                                 <div className="labels">
-                                    {labelsIds.map(id => {
+                                    {labelsIds && labelsIds.map(id => {
                                         const label = getLabelById(id);
                                         return <span className="label" key={id} style={{ backgroundColor: label.color }}>{label.title}</span>;
                                     })}
