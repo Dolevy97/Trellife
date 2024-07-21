@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react"
 import { updateTask } from "../store/actions/task.actions"
+import { makeId } from "../services/util.service"
 
 
 export function TaskAction({ action, board, group, task, getMemberById, getLabelById }) {
+
+    const [checklistInputValue,setChecklistInputValue] = useState('Checklist')
 
     function getBoardMembers() {
         const boardMembers = board.members.filter(member => !task.membersIds.includes(member._id))
@@ -38,6 +41,12 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         task = { ...task, style: {backgroundColor: color} };
         await updateTask(task, group.id, group, board);
     }
+
+    async function onAddChecklist(){
+        task.checklists.push({id: 'cl' +makeId(), title:checklistInputValue, todos:[]})
+        await updateTask(task, group.id, group, board);
+    }
+
 
     return (
         <section className="task-action" onClick={(ev) => ev.stopPropagation()}>
@@ -108,6 +117,13 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                         </div>
                     </div>
                 </>
+            }
+            {action === 'add checklist' && 
+            <>
+                <div className="checklist"></div>
+                <input className="text" value={checklistInputValue} onChange={(ev)=>setChecklistInputValue(ev.target.value)}/>
+                <button className="add-checklist" onClick={onAddChecklist}>Add</button>
+            </>
             }
         </section>
     )

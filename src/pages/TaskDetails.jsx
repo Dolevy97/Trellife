@@ -133,6 +133,8 @@ export function TaskDetails() {
 
     const { title, description, membersIds, labelsIds, style:cover } = taskToEdit;
 
+    console.log(action)
+
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
             <form className="task-details" onSubmit={onSubmit} onClick={onTaskDetailsClicked}>
@@ -238,6 +240,7 @@ export function TaskDetails() {
                         <button className="action" name="checklist" onClick={onSetAction}>
                             <img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="checklist icon" />
                             <span className="action-title">Checklist</span>
+                            {action === 'checklist' && <TaskAction action="add checklist" task={taskToEdit} board={board} group={group} />}
                         </button>
                         <button className="action" name="dates" onClick={onSetAction}>
                             <img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" alt="dates icon" />

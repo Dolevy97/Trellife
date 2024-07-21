@@ -145,4 +145,15 @@
         }
     }
 
+    .add-checklist{
+        width:em(74,14);
+        color:rgb(40, 46, 51);
+        background-color: #579dff;
+        border-radius: 3px;
+
+        &:hover{
+            background-color: #85b8ff;
+        }
+    }
+
 }
