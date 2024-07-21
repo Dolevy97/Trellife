@@ -6,18 +6,15 @@ import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { loadBoard, addBoardMsg, updateBoard } from '../store/actions/board.actions'
 import { boardService } from '../services/board/'
 import { GroupPreview } from "../cmps/GroupPreview.jsx"
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import { BoardDetailsHeader } from '../cmps/BoardDetailsHeader.jsx'
 
 export function BoardDetails() {
   const { boardId } = useParams()
-  const [isEditing, setIsEditing] = useState(false)
-
   const boardFromStore = useSelector(storeState => storeState.boardModule.board)
   const [board, setBoard] = useState(boardFromStore)
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [newGroupTitle, setNewGroupTitle] = useState('')
-
-  const [newTitle, setNewTitle] = useState('')
 
   const addGroupRef = useRef(null)
 
@@ -27,8 +24,6 @@ export function BoardDetails() {
 
   useEffect(() => {
     setBoard(boardFromStore)
-    if (boardFromStore) { setNewTitle(boardFromStore.title) }
-
   }, [boardFromStore])
 
   useEffect(() => {
@@ -44,40 +39,6 @@ export function BoardDetails() {
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [addGroupRef])
-
-
-  function handleTitleInputChange(event) {
-    setNewTitle(event.target.value)
-  }
-
-  async function handleTitleUpdate() {
-    let titleToSet = newTitle.trim()
-    if (titleToSet === '') {
-      titleToSet = board.title
-    }
-    const updatedBoard = {
-      ...board,
-      title: titleToSet
-    }
-    try {
-      const savedBoard = await updateBoard(updatedBoard)
-      setBoard(savedBoard)
-      setNewTitle(titleToSet)
-      setIsEditing(false)
-    } catch (error) {
-      console.error('Failed to update board title:', error)
-    }
-  }
-
-  async function handleBlur() {
-    await handleTitleUpdate()
-  }
-
-  async function handleKeyPress(event) {
-    if (event.key === 'Enter') {
-      await handleTitleUpdate()
-    }
-  }
 
   async function handleAddGroup() {
     if (!newGroupTitle.trim()) return
@@ -104,29 +65,6 @@ export function BoardDetails() {
     }
   }
 
-  function handleTitleKeyPress(e) {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      handleAddGroup()
-      setNewGroupTitle('')
-    }
-  }
-
-  async function onClickStar(ev) {
-    ev.stopPropagation()
-    ev.preventDefault()
-
-    const updatedBoard = { ...board, isStarred: !board.isStarred }
-
-    try {
-      setBoard(updatedBoard)
-      await updateBoard(updatedBoard)
-    } catch (error) {
-      console.error('Failed to update board:', error)
-      setBoard(board)
-    }
-  }
-
   async function handleOnDragEnd(result) {
     if (!result.destination) return
 
@@ -149,44 +87,10 @@ export function BoardDetails() {
   if (!board) return null
 
   return (
-    <section style={{ background: board.style.background }} >
-      {/* <BoardDetailsHeader/> */}
-      <header className='groups-header'>
-        <div className='groups-header-leftside'>
-          {isEditing ? (
-            <input
-              type="text"
-              value={newTitle}
-              onChange={handleTitleInputChange}
-              onBlur={handleBlur}
-              onKeyPress={handleKeyPress}
-              autoFocus
-            />
-          ) : (
+    <section style={{ background: board.style.background }}>
+      <BoardDetailsHeader board={board} setBoard={setBoard} updateBoard={updateBoard} />
 
-            <span onClick={() => setIsEditing(true)} className='groups-header-logo'>{board.title}</span>
-          )}
-          <div
-            className='star-container'
-            onClick={onClickStar}
-            title='Click to star or unstar this board. Starred boards show up at the top of your boards list.'
-          >
-            <img
-              className={`groupsheader-preview-star ${board.isStarred ? 'starred' : ''}`}
-              src={board.isStarred ? "../../../src/assets/imgs/Icons/fullstar.svg" : '../../../src/assets/imgs/Icons/star.svg'}
-              alt="star icon"
-            />
-          </div>
-        </div>
-        <div className='groups-header-rightside'>
-          <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img1.jpg" alt="user" />
-          <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img2.jpg" alt="user" />
-          <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img3.jpg" alt="user" />
-        </div>
-      </header>
-
-
-      <section className="group-list-container" style={{ background: board.style.background, backgroundSize: 'cover' }} >
+      <section className="group-list-container" style={{ background: board.style.background, backgroundSize: 'cover' }}>
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId='groups' direction='horizontal'>
             {(provided) => (
@@ -220,8 +124,7 @@ export function BoardDetails() {
                         <input
                           type="text"
                           value={newGroupTitle}
-                          onChange={(e)=> setNewGroupTitle(e.target.value)}
-                          onKeyPress={handleTitleKeyPress}
+                          onChange={(e) => setNewGroupTitle(e.target.value)}
                           autoFocus
                           placeholder="Enter list title..."
                         />
@@ -233,7 +136,6 @@ export function BoardDetails() {
                           }}>
                             <img src="../../../src/assets/imgs/Icons/close.svg" alt="" />
                           </div>
-
                         </div>
                       </form>
                     </div>
@@ -244,10 +146,8 @@ export function BoardDetails() {
                     </div>
                   )}
                 </div>
-              ))
-
-            }
-
+              )
+            )}
           </Droppable>
         </DragDropContext>
         <Outlet />
