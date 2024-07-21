@@ -56,7 +56,7 @@ export function BoardCreate({ setIsAdding }) {
         }
         const addedBoard = await addBoard(newBoard)
         if (setIsAdding) setIsAdding(false)
-        navigate(`board/${addedBoard._id}`)
+        navigate(`/board/${addedBoard._id}`)
     }
 
     const { title } = boardToAdd

@@ -40,7 +40,7 @@ export function TaskDetails() {
                 autosize.destroy(textareaRef.current);
             }
         }
-    }, [taskToEdit])
+    }, [taskToEdit, isSettingDescription])
 
     async function getBoard() {
         try {
@@ -178,7 +178,7 @@ export function TaskDetails() {
                             <div className="description-title">
                                 <img className="description-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/description.svg" alt="description icon" />
                                 <span>Description</span>
-                                {!isSettingDescription && description.length ? <button>Edit</button> : ''}
+                                {!isSettingDescription && description.length ? <button onClick={startSetDescription}>Edit</button> : ''}
                             </div>
                             {isSettingDescription ?
                                 <>
@@ -201,6 +201,7 @@ export function TaskDetails() {
                                     value={description}
                                     name="description"
                                     ref={textareaRef}
+                                    readOnly
                                     onClick={startSetDescription}
                                 />
                             }
@@ -213,8 +214,12 @@ export function TaskDetails() {
                             :
                             ''}
                         <div className="activity-container">
-                            <img className="activity-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/activity.svg" alt="activity icon" />
-                            <span>Activity</span>
+                            <div className="activity-title">
+                                <img className="activity-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/activity.svg" alt="activity icon" />
+                                <span>Activity</span>
+                                {/* {console.log(board.activities)} */}
+                            </div>
+                            <input type="text"  placeholder='Write a comment...' />
                         </div>
                     </section>
 
