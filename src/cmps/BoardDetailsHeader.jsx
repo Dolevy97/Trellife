@@ -66,7 +66,7 @@ export function BoardDetailsHeader({ board, setBoard, updateBoard }) {
           <input
             type="text"
             value={newTitle}
-            onChange={(ev)=>  setNewTitle(ev.target.value)}
+            onChange={(ev) => setNewTitle(ev.target.value)}
             onBlur={handleBlur}
             onKeyPress={handleKeyPress}
             autoFocus
@@ -87,9 +87,16 @@ export function BoardDetailsHeader({ board, setBoard, updateBoard }) {
         </div>
       </div>
       <div className='groups-header-rightside'>
-        <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img1.jpg" alt="user" />
-        <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img2.jpg" alt="user" />
-        <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img3.jpg" alt="user" />
+        <div className='filter-container'>
+          <img src="../../../src\assets\imgs\Icons\filter.svg" />
+          <span>Filters</span>
+        </div>
+        <div className='members-container'>
+          <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img1.jpg" alt="user" />
+          <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img2.jpg" alt="user" />
+          <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img3.jpg" alt="user" />
+        </div>
+
       </div>
     </section>
   )
