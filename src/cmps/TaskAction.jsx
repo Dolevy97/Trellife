@@ -61,7 +61,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
 
     async function onUpdateCoverIsFull({ target }) {
         if (!task.style) return
-        const isFull = target.name
+        const isFull = JSON.parse(target.name)
         task = { ...task, style: { ...task.style, isFull } };
         await updateTask(task, group.id, group, board);
     }
@@ -164,8 +164,8 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                         <div className="size-container">
                             <span className="title">Size</span>
                             <div className="size-btns">
-                                <button className="head btn-size" name="head" onClick={onUpdateCoverIsFull}>Head</button>
-                                <button className="full btn-size" name="full" onClick={onUpdateCoverIsFull}>Full</button>
+                                <button className="head btn-size" name="false" onClick={onUpdateCoverIsFull}>Head</button>
+                                <button className="full btn-size" name="true" onClick={onUpdateCoverIsFull}>Full</button>
                             </div>
                             {task.style && <button className="remove-cover" onClick={onRemoveCover}>Remove cover</button>}
                         </div>
