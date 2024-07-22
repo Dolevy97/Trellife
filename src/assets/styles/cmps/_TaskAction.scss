@@ -5,14 +5,14 @@
 .task-action {
     position: fixed;
     width: em(304);
-    padding: em(12, 14);
+    padding: em(12);
     background-color: rgb(40, 46, 51);
     border-radius: 8px;
     
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: em(28, 14);
+    gap: em(28);
 
     cursor: default;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -37,7 +37,7 @@
         top:0;
         right: 0;
 
-        padding: em(12, 14);
+        padding: em(12);
         border-radius: 3px;
 
         display: flex;
@@ -53,16 +53,17 @@
     }
 
     .action-header {
+        font-size: em(14);
         position: relative;
         font-weight: 600;
         text-align: center;
     }
 
     .title {
-        font-size: em(12, 14);
+        font-size: em(12);
         font-weight: 600;
-        line-height: em(16, 14);
-        margin-block-end: em(14, 14);
+        line-height: em(16);
+        margin-block-end: em(14);
         
         
         button {
@@ -71,16 +72,15 @@
     }
 
     .name {
-        font-size: em(14, 14);
+        font-size: em(14);
     }
 
     input.text {
-        font-size: em(14, 14);
-        // font-weight: 600;
-        font-weight: normal;
+        font-size: em(14);
+        line-height: 3em;
         width: 100%;
-        height: em(33, 14);
-        padding: em(8, 14) em(12, 14);
+        height: em(33);
+        padding: em(8) em(12);
         color: inherit;
         background-color: #23262a;
         border: none;
@@ -101,12 +101,14 @@
 
         .close-icon {
             position: static;
+            height: 1em;
+            width: 1em;
             margin-inline-start: auto;
         }
     }
 
     .member {
-        padding: em(4, 14) em(8, 14) em(4, 14) em(4, 14);
+        padding: em(4) em(8) em(4) em(4);
         border-radius: 4px;
 
         display: flex;
@@ -115,8 +117,8 @@
         cursor: pointer;
 
         .member-thumbnail {
-            height: em(32, 14);
-            width: em(32, 14);
+            height: em(32);
+            width: em(32);
             border-radius: 50%;
             margin-inline-end: em(8);
         }
@@ -130,7 +132,7 @@
 
         display: flex;
         flex-direction: column;
-        gap: em(4, 14);
+        gap: em(4);
 
         .label-container {
             display: flex;
@@ -138,20 +140,20 @@
             align-items: center;
 
             .label {
-                font-size: em(14, 14);
+                font-size: em(14);
                 font-weight: 500;
                 width: 100%;
-                line-height: em(14, 14);
+                line-height: em(14);
                 padding: em(12);
                 border-radius: 3px;
-                margin-inline: em(12, 14) em(4, 14);
+                margin-inline: em(12) em(4);
             }
 
             .pen-icon-container {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                padding: em(9, 14);
+                padding: em(9);
                 border-radius: 3px;
 
 
@@ -161,8 +163,8 @@
                 }
 
                 .pen-icon {
-                    height: em(16, 14);
-                    width: em(16, 14);
+                    height: em(16);
+                    width: em(16);
 
                 }
 
