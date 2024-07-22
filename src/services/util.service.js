@@ -110,16 +110,77 @@ export function getFormattedShortTime(time) {
     }
 }
 
-// async function getAverageColor() {
+// export async function getAverageColorsFromImgsUrls(imgsUrls){
 
-//     const fac = new FastAverageColor()
-//     fac.getColorAsync(document.querySelector('img'))
-//         .then(color => {
-//             return color
+//     try {
+//         const avgColors = []
+//         imgsUrls.forEach(imgUrl=>{
+//             return await getAverageColorFromImgUrl(imgUrl)
 //         })
-//         .catch(e => {
-//             console.log(e)
-//             throw (e)
-//         })
+//     } catch (er) {
+//         console.log(er)
+//         throw (er)
+//     }
 
 // }
+
+export async function getAverageColorFromImgUrl(imgUrl) {
+
+    try {
+        const img = new Image()
+        img.crossOrigin = "Anonymous"
+        img.src = imgUrl
+        await new Promise((resolve) => {
+            img.onload = resolve
+        })
+
+        const fac = new FastAverageColor()
+        const color = await fac.getColorAsync(img)
+        return color.hexa
+    } catch (er) {
+        console.log(er)
+        throw (er)
+    }
+
+}
+
+export async function onDownloadUrl(url, filename) {
+    if (!url) {
+        console.error('Missing URL')
+        return
+    }
+
+    // Function to get file name from URL if filename is not provided
+    const getFileNameFromUrl = (url) => {
+        const parts = url.split('/')
+        return parts[parts.length - 1]
+    }
+
+    try {
+        // Start the download
+        const response = await fetch(url)
+        if (!response.ok) {
+            throw new Error('Network response was not ok')
+        }
+        
+        const blob = await response.blob()
+
+        // Create a temporary URL for the blob
+        const blobUrl = window.URL.createObjectURL(blob)
+
+        // Create a temporary anchor element and trigger the download
+        const a = document.createElement('a')
+        a.style.display = 'none'
+        a.href = blobUrl
+        a.download = filename || getFileNameFromUrl(url)
+        document.body.appendChild(a)
+        a.click()
+
+        // Clean up
+        window.URL.revokeObjectURL(blobUrl)
+        document.body.removeChild(a)
+    } catch (error) {
+        console.error('Error downloading the file:', error)
+        // Here you might want to show an error message to the user
+    }
+}

@@ -1,15 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { boardService } from '../services/board';
-import { updateBoard } from '../store/actions/board.actions';
-import { updateTask } from '../store/actions/task.actions';
-import { TaskAction } from '../cmps/TaskAction';
-import autosize from 'autosize';
-import { getRandomMember } from '../services/board/board-demo-data.service';
-import { getFormattedTime, makeId } from '../services/util.service';
-import { updateGroup } from '../store/actions/group.actions';
-import ms from 'ms';
+import { useEffect, useRef, useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { boardService } from '../services/board'
+import { updateBoard } from '../store/actions/board.actions'
+import { updateTask } from '../store/actions/task.actions'
+import { TaskAction } from '../cmps/TaskAction'
+import autosize from 'autosize'
+import { getRandomMember } from '../services/board/board-demo-data.service'
+import { getAverageColorFromImgUrl, getFormattedTime, makeId, onDownloadUrl } from '../services/util.service'
+import { updateGroup } from '../store/actions/group.actions'
+import ms from 'ms'
 
 export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
@@ -30,6 +30,7 @@ export function TaskDetails() {
     const [todoMenuPosition, setTodoMenuPosition] = useState({})
     const [tempDescription, setTempDescription] = useState('')
     const [commentToEdit, setCommentToEdit] = useState('')
+    const [averageColors, setAverageColors] = useState({})
 
     const { taskId, groupId, boardId } = useParams()
     const navigate = useNavigate()
@@ -40,62 +41,82 @@ export function TaskDetails() {
 
     useEffect(() => {
         if (textareaRef.current) {
-            autosize(textareaRef.current);
+            autosize(textareaRef.current)
         }
 
         return () => {
             if (textareaRef.current) {
-                autosize.destroy(textareaRef.current);
+                autosize.destroy(textareaRef.current)
             }
         }
     }, [taskToEdit, isSettingDescription])
 
     useEffect(() => {
         if (textareaCommentRef.current) {
-            autosize(textareaCommentRef.current);
+            autosize(textareaCommentRef.current)
         }
 
         return () => {
             if (textareaCommentRef.current) {
-                autosize.destroy(textareaCommentRef.current);
+                autosize.destroy(textareaCommentRef.current)
             }
         }
     }, [taskToEdit, isSettingDescription])
 
+    useEffect(() => {
+        if (!taskToEdit || !taskToEdit.attachments) return
+
+        const loadImages = async () => {
+            for (const attachment of taskToEdit.attachments) {
+                if (!averageColors[attachment.url]) {
+                    try {
+                        const color = await getAverageColorFromImgUrl(attachment.url)
+                        setAverageColors(prev => ({ ...prev, [attachment.url]: color }))
+                    } catch (error) {
+                        console.error("Error loading image or getting average color:", error)
+                    }
+                }
+            }
+        }
+
+        loadImages()
+    }, [taskToEdit, averageColors])
+
+
     function setTask() {
         setTaskToEdit(() => {
-            const group = board.groups.find(group => group.id === groupId);
-            setGroup(group);
-            const task = group.tasks.find(task => task.id === taskId);
-            return task;
-        });
+            const group = board.groups.find(group => group.id === groupId)
+            setGroup(group)
+            const task = group.tasks.find(task => task.id === taskId)
+            return task
+        })
     }
 
     function onBack() {
-        navigate(`/board/${boardId}`, { replace: true });
+        navigate(`/board/${boardId}`, { replace: true })
     }
 
     function onBackdropClicked() {
-        if (action) setAction(null);
-        else onBack();
+        if (action) setAction(null)
+        else onBack()
     }
 
     function onTaskDetailsClicked(ev) {
-        ev.stopPropagation();
-        setAction(null);
+        ev.stopPropagation()
+        setAction(null)
     }
 
     function onSubmit(ev) {
-        ev.preventDefault();
+        ev.preventDefault()
     }
 
     function handleChange({ target }) {
-        const { type, name: field } = target;
-        let { value } = target;
+        const { type, name: field } = target
+        let { value } = target
         if (type === 'number') {
-            value = +value || '';
+            value = +value || ''
         }
-        setTaskToEdit({ ...taskToEdit, [field]: value });
+        setTaskToEdit({ ...taskToEdit, [field]: value })
     }
 
     function handleCommentChange({ target }) {
@@ -108,21 +129,21 @@ export function TaskDetails() {
     }
 
     function getMemberById(id) {
-        return board.members.find(member => member._id === id);
+        return board.members.find(member => member._id === id)
     }
 
     function getLabelById(id) {
-        return board.labels.find(label => label.id === id);
+        return board.labels.find(label => label.id === id)
     }
 
     function onSetAction(ev, isNull = false) {
-        ev.stopPropagation();
+        ev.stopPropagation()
         if (isNull) {
-            setAction(null);
+            setAction(null)
             return
         }
-        const actionName = action === ev.currentTarget.name ? null : ev.currentTarget.name;
-        setAction(actionName);
+        const actionName = action === ev.currentTarget.name ? null : ev.currentTarget.name
+        setAction(actionName)
     }
 
     function startSetDescription() {
@@ -169,7 +190,7 @@ export function TaskDetails() {
     function getDueDate(timeStamp) {
         if (!timeStamp) return
         const date = new Date(timeStamp)
-        const isoString = date.toISOString();
+        const isoString = date.toISOString()
         return isoString.slice(0, 16)
     }
 
@@ -292,9 +313,26 @@ export function TaskDetails() {
         return 'Added ' + (ms(timestamp, { long: true })) + ' ago'
     }
 
+    function onFocusOnComment() {
+        setIsAddingComment(true)
+        textareaCommentRef.current.focus()
+        textareaCommentRef.current.setSelectionRange(textareaCommentRef.current.value.length, textareaCommentRef.current.value.length);
+    }
+
+    async function onRemoveAttachment(a, i) {
+        const attachments = [...taskToEdit.attachments]
+        attachments.splice(i, 1)
+        const activity = `deleted the ${a.title} from card (id: ${taskToEdit.id})`
+        updateTask({ ...taskToEdit, attachments }, group, board, activity)
+    }
+
+    function onAddAttachment(){
+
+    }
+
     if (!taskToEdit || !group) return <section>Loading...</section>
 
-    const { title, description, membersIds, labelsIds, style } = taskToEdit;
+    const { title, description, membersIds, labelsIds, style } = taskToEdit
 
     const taskActionProps = { task: taskToEdit, board, group, onSetAction }
 
@@ -330,8 +368,8 @@ export function TaskDetails() {
                                 <span className="fs12">Labels</span>
                                 <div className="labels">
                                     {labelsIds && labelsIds.map(id => {
-                                        const label = getLabelById(id);
-                                        return <span className="label" key={id} style={{ backgroundColor: label.color }}>{label.title}</span>;
+                                        const label = getLabelById(id)
+                                        return <span className="label" key={id} style={{ backgroundColor: label.color }}>{label.title}</span>
                                     })}
                                 </div>
                             </div> : ''}
@@ -396,15 +434,28 @@ export function TaskDetails() {
 
                         {taskToEdit.attachments && taskToEdit.attachments.length ?
                             <div className="attachments-container">
-                                <img className="attachments-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/paperclip.svg" alt="attachment icon" />
-                                <span className='attachments-title'>Attachments</span>
+
+                                <div className='attachments-title'>
+
+                                    <img className="attachments-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/paperclip.svg" alt="attachment icon" />
+                                    <span>Attachments</span>
+
+                                    <button onClick={onAddAttachment} style={{ cursor: 'not-allowed' }}>Add</button>
+                                </div>
                                 <div className="attachments">
-                                    {taskToEdit.attachments.map(a =>
-                                        <div className="attachment">
-                                            <img className="attachment-thumbnail" src={a.url} />
+                                    {taskToEdit.attachments.map((a, i) =>
+                                        <div key={makeId()} className="attachment">
+                                            <a
+                                                className="attachment-thumbnail"
+                                                href={a.url}
+                                                style={{
+                                                    backgroundImage: `url(${a.url})`,
+                                                    backgroundColor: averageColors[a.url] || 'transparent'
+                                                }}
+                                            />
                                             <div className="attachment-details">
                                                 <div className="attachment-header">
-                                                    <span className="attachment-url">{a.url}</span>
+                                                    <span className="attachment-title">{a.title}</span>
                                                     {/* ADD LINK ARROW HERE */}
                                                 </div>
                                                 <div className="attachment-main">
@@ -412,15 +463,15 @@ export function TaskDetails() {
                                                         {getAddedAt(a.createdAt)}
                                                     </span>
                                                     <ul className="attachment-links">
-                                                        <li className="attachment-link">Comment</li>
-                                                        <li className="attachment-link">Download</li>
-                                                        <li className="attachment-link">Delete</li>
-                                                        <li className="attachment-link">Edit</li>
+                                                        <li className="attachment-link" onClick={onFocusOnComment}>Comment</li>
+                                                        <li className="attachment-link" onClick={() => onDownloadUrl(a.url, a.title)}>Download</li>
+                                                        <li className="attachment-link" onClick={() => onRemoveAttachment(i)}>Delete</li>
+                                                        <li className="attachment-link" name="edit-attachment" onClick={onSetAction} style={{ cursor: 'not-allowed' }}>Edit</li>
                                                     </ul>
                                                 </div>
                                                 <div className="attachment-remove-cover">
                                                     <img className="attachment-remove-cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
-                                                    <span className="attachment-span-remove-cover"> Remove cover</span>
+                                                    <span className="attachment-span-remove-cover" style={{ cursor: 'not-allowed' }}> Remove cover</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -587,7 +638,7 @@ export function TaskDetails() {
                         </div>
                         <div className="task-action-container">
 
-                            <button className="action" name="dates" onClick={onSetAction}>
+                            <button className="action" name="dates" onClick={onSetAction} style={{ cursor: 'not-allowed' }}>
                                 <img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" alt="dates icon" />
                                 <span className="action-title">Dates</span>
                             </button>
@@ -601,7 +652,7 @@ export function TaskDetails() {
                             {action === 'attachment' && <TaskAction action="attach" {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
-                            <button className="action" name="location" onClick={onSetAction}>
+                            <button className="action" name="location" onClick={onSetAction} style={{ cursor: 'not-allowed' }}>
                                 <img className="location-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/location.svg" alt="location icon" />
                                 <span className="action-title">Location</span>
                             </button>
@@ -626,5 +677,5 @@ export function TaskDetails() {
                 </section>
             </form>
         </div >
-    );
+    )
 }
