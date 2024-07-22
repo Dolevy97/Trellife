@@ -7,6 +7,7 @@ import { boardService } from '../services/board/'
 import { GroupPreview } from "../cmps/GroupPreview.jsx"
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { BoardDetailsHeader } from '../cmps/BoardDetailsHeader.jsx'
+import { LeftNavBar } from '../cmps/LeftNavBar.jsx'
 
 export function BoardDetails() {
   const { boardId } = useParams()
@@ -92,6 +93,8 @@ export function BoardDetails() {
   if (!board) return null
 
   return (
+    // <section className="main-display-container">
+    // <LeftNavBar />
     <section style={{ background: board.style.background, backgroundSize: 'cover' }}>
       <BoardDetailsHeader />
       <section className="group-list-container" style={{ background: board.style.background, backgroundSize: 'cover' }}>
@@ -158,5 +161,6 @@ export function BoardDetails() {
         <Outlet />
       </section>
     </section>
+    // </section>
   )
 }
