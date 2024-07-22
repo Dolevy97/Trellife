@@ -21,6 +21,7 @@ export function BoardDetails() {
     loadBoard(boardId)
   }, [boardId])
 
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (addGroupRef.current && !addGroupRef.current.contains(event.target)) {
@@ -35,7 +36,7 @@ export function BoardDetails() {
     }
   }, [addGroupRef])
 
-  async function handleAddGroup() {
+  async function onAddGroup() {
     if (!newGroupTitle.trim()) return
 
     try {
@@ -78,7 +79,7 @@ export function BoardDetails() {
   function handleKeyPress(e) {
     if (e.key === 'Enter') {
       e.preventDefault()
-      handleAddGroup()
+      onAddGroup()
     }
   }
 
@@ -88,7 +89,6 @@ export function BoardDetails() {
   return (
     <section style={{ background: board.style.background, backgroundSize: 'cover' }}>
       <BoardDetailsHeader />
-
       <section className="group-list-container" style={{ background: board.style.background, backgroundSize: 'cover' }}>
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId='groups' direction='horizontal'>
@@ -125,10 +125,9 @@ export function BoardDetails() {
                           autoFocus
                           placeholder="Enter list title..."
                           onKeyPress={handleKeyPress}
-
                         />
                         <div className='addgroup-btns'>
-                          <span onClick={handleAddGroup}>Add list</span>
+                          <span onClick={onAddGroup}>Add list</span>
                           <div className="close-btn-wrapper" onClick={() => {
                             setIsAddingGroup(false)
                             setNewGroupTitle('')

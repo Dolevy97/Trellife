@@ -26,7 +26,7 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId 
         }
     }, [setOpenMenuGroupId])
 
-    async function handleTitleUpdate() {
+    async function TitleUpdate() {
         let titleToSet = newTitle.trim()
         if (titleToSet === '') {
             titleToSet = group.title
@@ -43,12 +43,12 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId 
     }
 
     async function handleTitleBlur() {
-        await handleTitleUpdate()
+        await TitleUpdate()
     }
 
     async function handleTitleKeyPress(event) {
         if (event.key === 'Enter') {
-            await handleTitleUpdate()
+            await TitleUpdate()
         }
     }
 
@@ -57,7 +57,7 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId 
         setOpenMenuGroupId(prevId => prevId === group.id ? null : group.id)
     }
 
-    async function handleDeleteGroup() {
+    async function onDeleteGroup() {
         const updatedBoard = {
             ...board,
             groups: board.groups.filter(g => g.id !== group.id)
@@ -101,7 +101,7 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId 
                     <p><span>Add card</span></p>
                     <p><span>Pick color</span></p>
                     <footer className='options-menu-footer'>
-                        <span onClick={handleDeleteGroup}>Delete</span>
+                        <span onClick={onDeleteGroup}>Delete</span>
                     </footer>
                 </div>
             )}

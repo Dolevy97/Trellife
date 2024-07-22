@@ -207,7 +207,7 @@ export function TaskDetails() {
 
     const { title, description, membersIds, labelsIds, style: cover } = taskToEdit;
 
-    const taskActionProps = {task:taskToEdit ,board ,group ,onSetAction}
+    const taskActionProps = { task: taskToEdit, board, group, onSetAction }
 
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
@@ -259,7 +259,7 @@ export function TaskDetails() {
                                         value={getDueDate(taskToEdit.dueDate)}
                                         onChange={onChangeDueDate}
                                     />
-                                    <span className='inside-input-status' style={taskToEdit.status === 'inProgress'? {backgroundColor: '#F5CD47'} : {backgroundColor: '#4BCE97'}}>{taskToEdit.status === 'done' ? 'Complete' : 'Due soon'}</span>
+                                    <span className='inside-input-status' style={taskToEdit.status === 'inProgress' ? { backgroundColor: '#F5CD47' } : { backgroundColor: '#4BCE97' }}>{taskToEdit.status === 'done' ? 'Complete' : 'Due soon'}</span>
                                     <img className="arrow-down" src="../../../src/assets/imgs/TaskDetails-icons/arrow-down.svg" alt="description icon" />
                                 </div>
                             </div>}
@@ -336,7 +336,7 @@ export function TaskDetails() {
                             </div>
                             <div className="comments-container">
                                 {getComments(group.id).map(comment =>
-                                    <div className="comment-container"  key={comment.id}>
+                                    <div className="comment-container" key={comment.id}>
                                         <img className='member-img-comment' src={comment.byMember.imgUrl} alt="" />
                                         <p>{comment.byMember.fullname} <span className='comment-timestamp'>{getFormattedTime(comment.createdAt)}</span></p>
                                         <h1 className='comment-txt'>{comment.txt}</h1>
@@ -353,14 +353,14 @@ export function TaskDetails() {
                                 <img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" alt="members icon" />
                                 <span className="action-title">Members</span>
                             </button>
-                            {action === 'members' && <TaskAction action="members" getMemberById={getMemberById} {...taskActionProps}/>}
+                            {action === 'members' && <TaskAction action="members" getMemberById={getMemberById} {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
                             <button className="action" name="labels" onClick={onSetAction}>
                                 <img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" alt="labels icon" />
                                 <span className="action-title">Labels</span>
                             </button>
-                            {action === 'labels' && <TaskAction action="labels" getLabelById={getLabelById} {...taskActionProps}/>}
+                            {action === 'labels' && <TaskAction action="labels" getLabelById={getLabelById} {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
                             <button className="action" name="checklist" onClick={onSetAction}>
@@ -403,6 +403,12 @@ export function TaskDetails() {
                             <img className="custom-fields-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/custom-fields.svg" alt="custom fields icon" />
                             <span className="action-title">Custom fields</span>
                         </button>
+
+                        <button className="action">
+                            <img className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="close icon" />
+                            <span className="action-title"> Delete</span>
+                        </button>
+
                     </section>
                 </section>
             </form>

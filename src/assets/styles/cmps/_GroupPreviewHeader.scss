@@ -7,7 +7,7 @@
     margin: 4px 4px 0;
     position: relative;
     align-items: center;
-   
+
     input {
         border: none;
         outline: none;
@@ -28,26 +28,26 @@
 
     }
 
-    .three-dots-btn-wrapper{
+    .three-dots-btn-wrapper {
         width: 28px;
         height: 28px;
-        border-radius:4px; 
+        border-radius: 4px;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
         transition: background-color 0.1s ease;
+
         &:hover {
             background-color: $btnhoverclr;
         }
-    .three-dots-open {
-        cursor: pointer;
-        height: 16px;
-        width: 16px;
-    }
-}
 
-    
+        .three-dots-open {
+            cursor: pointer;
+            height: 16px;
+            width: 16px;
+        }
+    }
 
     span {
         font-weight: 600;
@@ -61,12 +61,11 @@
         cursor: pointer;
     }
 
-   .header-svg-container{
+    .header-svg-container {
         display: flex;
         gap: 8px;
         align-items: center;
     }
-
 
     .header-options-menu {
         position: absolute;
@@ -76,7 +75,7 @@
         border-radius: 8px;
         box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25);
         width: 284px;
-            height: 350px;
+        height: 350px;
         z-index: 10;
         display: flex;
         flex-direction: column;
@@ -86,14 +85,14 @@
         .options-menu-header {
             padding: 9px 12px;
             position: relative;
-          
+
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 14px;
             font-weight: 600;
             color: $textclr2;
-            // margin-top: 8px;
+
             .close-btn-wrapper {
                 position: absolute;
                 right: 8px;
@@ -103,19 +102,19 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                border-radius:4px; 
+                border-radius: 4px;
                 cursor: pointer;
                 transition: background-color 0.1s ease;
+
                 &:hover {
                     background-color: $btnhoverclr;
                 }
-    
+
                 img {
                     height: 16px;
                     width: 16px;
                 }
             }
-
         }
 
         p {
@@ -126,11 +125,10 @@
             color: $textclr2;
 
             &:hover {
-                background-color:$btnhoverclr;
+                background-color: $btnhoverclr;
             }
-
         }
-   
+
         .options-menu-footer {
             position: absolute;
             bottom: 0;
@@ -143,7 +141,7 @@
             cursor: pointer;
 
             &:hover {
-                background-color:$btnhoverclr;
+                background-color: $btnhoverclr;
             }
 
             span {
@@ -152,5 +150,4 @@
             }
         }
     }
-
 }
