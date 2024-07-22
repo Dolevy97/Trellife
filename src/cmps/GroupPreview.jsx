@@ -152,21 +152,37 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                                 </div>
                                 <div className='task-container3'>
                                     <div className='container3-leftside'>
-                                        {/* {console.log(task)} */}
                                         {task.dueDate && (
-                                            <div className="task-timer-container">
-                                                <img src="../../../src/assets/imgs/Icons/clock.svg" alt="clock icon" />
-                                                <span>{getFormattedShortTime(task.dueDate)}</span>
+                                            <div
+                                                title={task.status === 'done' ? 'This task is complete.' : 'This task is due later.'}
+                                                className="task-timer-container"
+                                                style={task.status === 'inProgress' ? {} : { backgroundColor: '#4BCE97' }}
+                                            >
+                                                <img
+                                                    src="../../../src/assets/imgs/Icons/clock.svg"
+                                                    alt="clock icon"
+                                                    style={task.status === 'inProgress' ? {} : { filter: 'brightness(0) saturate(100%) invert(9%) sepia(13%) saturate(697%) hue-rotate(169deg) brightness(97%) contrast(91%)' }}
+                                                />
+                                                <span
+                                                    style={task.status === 'inProgress' ? {} : { color: '#1d2125' }}
+
+                                                >{getFormattedShortTime(task.dueDate)}</span>
                                             </div>
                                         )}
                                         {task.description && task.description.trim() !== '' && (
-                                            <img src="../../../src/assets/imgs/Icons/description.svg" alt="description" />
+                                            <img title='This card has a description.' src="../../../src/assets/imgs/Icons/description.svg" alt="description" />
                                         )}
-                                        <div className='task-comment-container'>
+                                        <div title='Comments' className='task-comment-container'>
                                             <img src="../../../src\assets\imgs\Icons\comment.svg" />
                                             <span className='task-comment'>1 </span>
                                         </div>
-                                        <div className='task-checklist-container' >
+
+                                        <div title='Attachments' className='task-attachment-container'>
+                                            <img src="../../../src\assets\imgs\TaskDetails-icons\attachment.svg" />
+                                            <span className='task-comment'>1</span>
+                                        </div>
+
+                                        <div title='Checklist items' className='task-checklist-container' >
                                             <img src="../../../src\assets\imgs\Icons\checklist.svg" />
                                             <span className='task-checklist'>0/1</span>
                                         </div>
