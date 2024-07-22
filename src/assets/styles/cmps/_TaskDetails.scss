@@ -315,7 +315,8 @@
                     position: relative;
 
                     display: flex;
-                    align-items: center;
+                    flex-direction: column;
+                    align-items: flex-start;
 
                     margin-block-end: 24px;
 
@@ -329,6 +330,32 @@
                         font-size: 1em;
                         line-height: 20px;
                         font-weight: 600;
+                    }
+
+                    .attachments {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+
+                        .attachment {
+                            .attachment-thumbnail {
+                                height: em(80);
+                            }
+
+                            .attachment-details {
+
+                                .attachment-header {
+                                   
+                                }
+                                .attachment-main{
+                                    
+                                }
+                                .attachment-remove-cover{
+
+                                }
+                                
+                            }
+                        }
                     }
                 }
 
@@ -720,6 +747,14 @@
 
             &:hover {
                 background-color: #A1BDD914;
+            }
+
+            .todo-actions {
+                display: none;
+            }
+
+            &:hover .todo-actions {
+                display: flex;
             }
 
             .todo-title {
