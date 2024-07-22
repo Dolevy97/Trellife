@@ -50,17 +50,17 @@
             top: em(22);
             height: em(24);
             width: em(24);
+            z-index: 3;
 
             &:hover {
                 cursor: pointer;
             }
         }
 
-        .cover {
+        .task-details-cover {
             height: em(116);
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
-            ;
         }
 
         .fs12 {

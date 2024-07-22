@@ -8,6 +8,7 @@ import { TaskAction } from '../cmps/TaskAction';
 import autosize from 'autosize';
 import { getRandomMember } from '../services/board/board-demo-data.service';
 import { getFormattedTime, makeId } from '../services/util.service';
+import { updateGroup } from '../store/actions/group.actions';
 
 export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
@@ -203,6 +204,15 @@ export function TaskDetails() {
         return comments
     }
 
+    async function onRemoveTask() {
+        const newTasks = group.tasks.filter(task => task.id !== taskToEdit.id)
+        const newGroup = {...group,tasks:newTasks}
+        const savedBoard = await updateGroup(newGroup.id, newGroup, board)
+        onBackdropClicked()
+        // console.log(savedBoard)
+
+    }
+
     if (!taskToEdit || !group) return <section>Loading...</section>;
 
     const { title, description, membersIds, labelsIds, style } = taskToEdit;
@@ -213,7 +223,7 @@ export function TaskDetails() {
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
             <form className="task-details" onSubmit={onSubmit} onClick={onTaskDetailsClicked}>
                 <img onClick={onBackdropClicked} className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close-white.svg" alt="close icon" />
-                {style && <div className="cover" style={{ backgroundColor: style.backgroundColor }}>
+                {style && <div className="task-details-cover" style={{ backgroundColor: style.backgroundColor }}>
 
                 </div>}
                 <header className="task-header">
@@ -409,8 +419,8 @@ export function TaskDetails() {
                             <span className="action-title">Custom fields</span>
                         </button>
 
-                        <button className="action">
-                            <img className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="close icon" />
+                        <button className="action remove-task" onClick={onRemoveTask}>
+                            <img className="icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="close icon" />
                             <span className="action-title"> Delete</span>
                         </button>
 
