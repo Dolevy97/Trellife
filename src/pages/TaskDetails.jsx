@@ -339,7 +339,7 @@ export function TaskDetails() {
                             </div>
                             <div className="comments-container">
                                 {getComments(group.id).map(comment =>
-                                    <div className="comment-container"  key={comment.id}>
+                                    <div className="comment-container" key={comment.id}>
                                         <img className='member-img-comment' src={comment.byMember.imgUrl} alt="" />
                                         <p>{comment.byMember.fullname} <span className='comment-timestamp'>{getFormattedTime(comment.createdAt)}</span></p>
                                         <h1 className='comment-txt'>{comment.txt}</h1>
@@ -406,6 +406,12 @@ export function TaskDetails() {
                             <img className="custom-fields-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/custom-fields.svg" alt="custom fields icon" />
                             <span className="action-title">Custom fields</span>
                         </button>
+
+                        <button className="action">
+                            <img className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="close icon" />
+                            <span className="action-title"> Delete</span>
+                        </button>
+
                     </section>
                 </section>
             </form>

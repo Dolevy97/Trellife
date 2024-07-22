@@ -4,7 +4,6 @@
   flex-direction: column;
   padding: 20px 20px 8px;
   background-color: $bgclr2;
-  // min-height: 100vh;
   overflow-x: auto;
   overflow-y: hidden;
 
@@ -41,16 +40,12 @@
 
       font-weight: 600;
       font-size: 14px;
-
-
     }
 
     &:hover {
       background-color: #828e9b66;
     }
-
   }
-
 }
 
 .group-container {
@@ -101,7 +96,6 @@
       border-radius: 5px;
       background-color: #23262a;
       border: 2px solid #86b6f4;
-
     }
 
     .addgroup-btns {
@@ -148,7 +142,6 @@
 
 //x scrollbar
 .group-list-container::-webkit-scrollbar {
-
   height: 12px;
 }
 

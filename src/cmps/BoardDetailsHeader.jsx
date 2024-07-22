@@ -13,7 +13,6 @@ export function BoardDetailsHeader() {
     }
   }, [board])
 
-
   async function handleTitleUpdate() {
     let titleToSet = newTitle.trim()
     if (titleToSet === '') {
@@ -24,7 +23,7 @@ export function BoardDetailsHeader() {
       title: titleToSet
     }
     try {
-      const savedBoard = await updateBoard(updatedBoard)
+      await updateBoard(updatedBoard)
       setNewTitle(titleToSet)
       setIsEditing(false)
     } catch (error) {
@@ -46,7 +45,6 @@ export function BoardDetailsHeader() {
   async function onClickStar(ev) {
     ev.stopPropagation()
     ev.preventDefault()
-
     const updatedBoard = { ...board, isStarred: !board.isStarred }
 
     try {

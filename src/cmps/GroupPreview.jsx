@@ -3,13 +3,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import { boardService } from '../services/board/'
 import { updateBoard } from '../store/actions/board.actions'
 import { GroupPreviewHeader } from './GroupPreviewHeader'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import autosize from 'autosize';
+import autosize from 'autosize'
 import { getFormattedShortTime } from '../services/util.service'
 import { useSelector } from 'react-redux'
 
 
-export function GroupPreview({ group, boardId}) {
+export function GroupPreview({ group, boardId }) {
     const tasks = group?.tasks || []
     const board = useSelector(storeState => storeState.boardModule.board)
 
@@ -36,7 +35,6 @@ export function GroupPreview({ group, boardId}) {
         }
     }, [addTaskRef])
 
-
     useEffect(() => {
         if (textareaRef.current) {
             autosize(textareaRef.current);
@@ -49,13 +47,12 @@ export function GroupPreview({ group, boardId}) {
         }
     }, [newTaskTitle])
 
-
     function handleTaskClick(taskId) {
         navigate(`/board/${boardId}/${group.id}/${taskId}`, { replace: true })
 
     }
 
-    async function handleAddTask() {
+    async function onAddTask() {
         if (!newTaskTitle.trim()) return
 
         try {
@@ -69,8 +66,7 @@ export function GroupPreview({ group, boardId}) {
                 ...board,
                 groups: board.groups.map(g => g.id === group.id ? updatedGroup : g)
             }
-            const savedBoard = await updateBoard(updatedBoard)
-            console.log(savedBoard)
+            await updateBoard(updatedBoard)
             setNewTaskTitle('')
 
         } catch (err) {
@@ -78,11 +74,10 @@ export function GroupPreview({ group, boardId}) {
         }
     }
 
-
     function handleTitleKeyPress(e) {
         if (e.key === 'Enter') {
             e.preventDefault()
-            handleAddTask()
+            onAddTask()
             setNewTaskTitle('')
             if (addTaskRef.current) {
                 const input = addTaskRef.current.querySelector('input')
@@ -95,7 +90,6 @@ export function GroupPreview({ group, boardId}) {
         }
     }
 
-
     function getMemberById(id) {
         return board.members.find(member => member._id === id)
     }
@@ -103,7 +97,6 @@ export function GroupPreview({ group, boardId}) {
     function getLabelById(id) {
         return board.labels.find(label => label.id === id)
     }
-
 
     const labelsIds = taskToEdit?.labelsIds || []
 
@@ -220,7 +213,7 @@ export function GroupPreview({ group, boardId}) {
                                 ref={textareaRef}
                             />
                             <div className='addtask-btns'>
-                                <span onClick={handleAddTask}>Add card</span>
+                                <span onClick={onAddTask}>Add card</span>
                                 <div className="close-btn-wrapper" onClick={() => {
                                     setIsAddingTask(false)
                                     setNewTaskTitle('')
