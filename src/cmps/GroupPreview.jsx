@@ -133,6 +133,7 @@ export function GroupPreview({ group, boardId }) {
         }).filter(checklist => checklist.todos.length > 0)
         return doneInChecklist
     }
+    
 
     const labelsIds = taskToEdit?.labelsIds || []
 
@@ -179,8 +180,8 @@ export function GroupPreview({ group, boardId }) {
                                 <div className='pen-display'>
                                     <img src="../../../src\assets\imgs\Icons\pen.svg" />
                                 </div>
-                                {console.log(task.style)}
-                                {task.style && !task.style.isFull && (
+                                {/* {console.log(task.style)} */}
+                                {task.style && !task.style?.isFull &&  (
                                 <div className='task-container3'>
                                     <div className='container3-leftside'>
                                         {task.dueDate && (
