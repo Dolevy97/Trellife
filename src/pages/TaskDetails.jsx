@@ -296,7 +296,7 @@ export function TaskDetails() {
                                 />
                             }
                         </div>
-                        {taskToEdit.attachments.length ?
+                        {taskToEdit.attachments && taskToEdit.attachments.length ?
                             <div className="attachments-container">
                                 <img className="attachments-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/paperclip.svg" alt="attachment icon" />
                                 <span>Attachments</span>

@@ -154,10 +154,19 @@
                             }
 
                             .task-comment-container {
+                                position: relative;
+
                                 display: flex;
-                                justify-content: center;
                                 align-items: center;
-                                gap: 2px;
+                                justify-content: center;
+
+                                width: fit-content;
+                                max-width: 100%;
+                                height: 24px;
+
+                                padding: 2px;
+
+                                border-radius: 3px;
 
                                 img {
                                     height: 16px;
@@ -165,18 +174,26 @@
                                 }
 
                                 .task-comment {
-                                    font-size: 10px;
+                                    font-size: 12px;
                                 }
                             }
 
                             .task-checklist-container {
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                                gap: 2px;
+                                position: relative;
 
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+
+                                width: fit-content;
+                                max-width: 100%;
+                                height: 24px;
+
+                                padding: 2px;
+
+                                border-radius: 3px;
                                 span {
-                                    font-size: 10px;
+                                    font-size: 12px;
                                 }
 
                                 img {
@@ -213,6 +230,34 @@
                                     text-overflow: ellipsis;
                                     white-space: nowrap;
                                     font-size: 1em;
+                                }
+                            }
+
+                            .task-attachment-container {
+                                position: relative;
+
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+
+                                width: fit-content;
+                                max-width: 100%;
+                                height: 24px;
+
+                                padding: 2px;
+
+                                border-radius: 3px;
+
+                                & img {
+                                    scale: .8;
+                                }
+
+                                & span {
+                                    padding-left: 2px;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    white-space: nowrap;
+                                    font-size: .75em;
                                 }
                             }
                         }
