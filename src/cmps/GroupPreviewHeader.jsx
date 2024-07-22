@@ -6,13 +6,16 @@ import { GroupAction } from '../cmps/GroupAction';
 export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId, onAddTaskClick }) {
     const board = useSelector(storeState => storeState.boardModule.board)
 
-
-
     const [isEditing, setIsEditing] = useState(false)
     const [newTitle, setNewTitle] = useState(group.title)
     const [isColorPickerOpen, setIsColorPickerOpen] = useState(false)
 
     const menuRef = useRef(null)
+    const colors = [
+        '#04120d', '#344563', '#0055cc',
+        '#7f5f01', '#a54800', '#ae2e24', '#206a83', '#5e4db2', '#216e4e', '#0055cc'
+    ]
+
 
     useEffect(() => {
         setNewTitle(group.title)
@@ -74,13 +77,20 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
     }
 
     async function handleColorChange(color) {
+        let updatedStyle = { ...group.style };
+        if (color === 'remove') {
+            delete updatedStyle.backgroundColor;
+        } else {
+            updatedStyle.backgroundColor = color;
+        }
+    
         const updatedGroup = {
             ...group,
-            style: { ...group.style, backgroundColor: color }
-        }
-      const newBoard =  await updateGroup(updatedGroup.id, updatedGroup, board)
-        setIsColorPickerOpen(false)
-        setOpenMenuGroupId(null)
+            style: updatedStyle
+        };
+        const newBoard = await updateGroup(updatedGroup.id, updatedGroup, board);
+        setIsColorPickerOpen(false);
+        setOpenMenuGroupId(null);
         console.log(newBoard);
     }
 
@@ -96,7 +106,7 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
                     autoFocus
                 />
             ) : (
-                <span onClick={() => setIsEditing(true)}>{group.title}</span>
+                <span className='header-title' onClick={() => setIsEditing(true)}>{group.title}</span>
             )}
             <div className='header-svg-container'>
                 <img className='' src="../../../src/assets/imgs/Icons/collapse.svg" alt="collapse" />
@@ -110,26 +120,39 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
             </div>
             {openMenuGroupId === group.id && (
                 <div ref={menuRef} className="header-options-menu">
-                    <header className='options-menu-header'>
+                    <header className='menu-header'>
                         List actions
                         <div className="close-btn-wrapper" onClick={toggleOptions}>
                             <img src="../../../src/assets/imgs/Icons/close.svg" alt="" />
                         </div>
                     </header>
+                    <div className='menu-info'>
                     <p><span onClick={onAddTaskClick}>Add task</span></p>
-                    <p><span onClick={() => {
-                        console.log("Color picker state before:", isColorPickerOpen);
-                        setIsColorPickerOpen(!isColorPickerOpen);
-                        console.log("Color picker state after:", !isColorPickerOpen);
-                    }}>Pick color</span></p>
-                    <GroupAction
-                        onColorChange={handleColorChange}
-                        isOpen={isColorPickerOpen}
-                        onClose={() => setIsColorPickerOpen(false)}
-                    />
+                    <div className="color-picker-accordion">
+                        <p className='color-picker-container' onClick={() => setIsColorPickerOpen(!isColorPickerOpen)}>
+                            <span className='color-picker-btn' >
+                                Change color list 
+                            </span>
+                            <span className='color-picker-arrow'>{isColorPickerOpen ? '▲' : '▼'}</span>
+                        </p>
+                        {isColorPickerOpen && (
+                            <div className="color-grid">
+                                {colors.map((color, index) => (
+                                    <div
+                                        key={index}
+                                        className="color-option"
+                                        style={{ backgroundColor: color }}
+                                        onClick={() => handleColorChange(color)}
+                                    />
+                                ))}
+                                <span className='remove-group-bgc' onClick={() => handleColorChange('remove')}>Remove Color</span>
+                            </div>
+                        )}
+                    </div>
                     <footer className='options-menu-footer'>
                         <span onClick={onDeleteGroup}>Delete</span>
                     </footer>
+                </div>
                 </div>
             )}
         </header>

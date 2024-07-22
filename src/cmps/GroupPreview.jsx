@@ -253,7 +253,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
                         ))}
                         {provided.placeholder}
                         {isAddingTask && (
-                            <div className='addtask-from-container' ref={addTaskRef}>
+                            <div className='addtask-from-container' ref={addTaskRef} style={group.style}>
                                 <form className='addtask-form' onSubmit={(e) => e.preventDefault()}>
                                     <textarea
                                         type="text"
