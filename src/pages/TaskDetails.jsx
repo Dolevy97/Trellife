@@ -250,6 +250,10 @@ export function TaskDetails() {
         await updateTask(taskToEdit, group, board)
     }
 
+    function getAddedAt(timestamp){
+
+    }
+
     if (!taskToEdit || !group) return <section>Loading...</section>
 
     const { title, description, membersIds, labelsIds, style } = taskToEdit;
@@ -357,7 +361,23 @@ export function TaskDetails() {
                                 <img className="attachments-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/paperclip.svg" alt="attachment icon" />
                                 <span>Attachments</span>
                                 <div className="attachments">
-                                    {taskToEdit.attachments.map(a => <img className="attachment" src={a.url} />)}
+                                    {taskToEdit.attachments.map(a => 
+                                    <div className="attachment">
+                                    <img className="attachment-thumbnail" src={a.url} />
+                                    <header className="attachment-header">
+                                        <span className="url">{a.url}</span>
+                                        {/* ADD LINK ARROW HERE */}
+                                    </header>
+                                    <main className="attachment-main">
+                                        <span>
+                                            {getAddedAt(a.createdAt)}
+                                        </span>
+                                    </main>
+                                    <div className="attachment-remove-cover">
+
+                                    </div>
+                                    </div>
+                                    )}
                                 </div>
                             </div>
                             :
