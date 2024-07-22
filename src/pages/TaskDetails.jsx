@@ -144,8 +144,9 @@ export function TaskDetails() {
             title: 'add comment',
             createdAt: Date.now()
         }
-        board.activities.unshift(newActivity)
-        await updateBoard(board)
+        const updatedBoard = {...board}
+        updatedBoard.activities.unshift(newActivity)
+        await updateBoard(updatedBoard)
         setIsAddingComment(false)
     }
 
@@ -154,7 +155,8 @@ export function TaskDetails() {
         const dateObj = new Date(dateStr)
         const timestamp = dateObj.getTime()
         taskToEdit.dueDate = timestamp
-        await updateTask(taskToEdit, group, board)
+        const activityTitle = `changed the due date of task (id: ${taskToEdit.id}) to ${dateStr}`
+        await updateTask(taskToEdit, group, board, activityTitle)
 
     }
 
@@ -179,7 +181,8 @@ export function TaskDetails() {
 
     async function onChangeIsDone({ target }) {
         taskToEdit.isDone = target.checked
-        await updateTask(taskToEdit, group, board)
+        const activityTitle = 'marked the due date ' + target.checked ? 'complete' : 'incomplete'
+        await updateTask(taskToEdit, group, board,activityTitle)
     }
 
     async function onChangeTodo({ target }, todo, checklist) {
@@ -203,6 +206,8 @@ export function TaskDetails() {
     async function onRemoveTask() {
         const newTasks = group.tasks.filter(task => task.id !== taskToEdit.id)
         const newGroup = { ...group, tasks: newTasks }
+        // const activityTitle = `removed task (id: ${taskToEdit.id})`
+        // NEED TO REFACTOR UPDATE GROUP SO IT UPDATES THE ACTIVITIES OF THE BOARD
         await updateGroup(newGroup.id, newGroup, board)
         onBackdropClicked()
     }
@@ -459,7 +464,7 @@ export function TaskDetails() {
                         </button>
 
                         <button className="action remove-task" onClick={onRemoveTask}>
-                            <img className="icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="close icon" />
+                            <img className="icon" src="../../../src/assets/imgs/TaskDetails-icons/trash.svg" alt="close icon" />
                             <span className="action-title">Remove task</span>
                         </button>
 
