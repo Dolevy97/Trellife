@@ -194,7 +194,7 @@ export function GroupPreview({ group, boardId }) {
                                                     style={!task.isDone ? {} : { filter: 'brightness(0) saturate(100%) invert(9%) sepia(13%) saturate(697%) hue-rotate(169deg) brightness(97%) contrast(91%)' }}
                                                 />
                                                 <span
-                                                    style={task.isDone ? {} : { color: '#1d2125' }}
+                                                    style={!task.isDone ? {} : { color: '#1d2125' }}
 
                                                 >{getFormattedShortTime(task.dueDate)}</span>
                                             </div>
