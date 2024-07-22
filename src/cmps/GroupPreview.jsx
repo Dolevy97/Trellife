@@ -7,9 +7,10 @@ import autosize from 'autosize'
 import { getFormattedShortTime } from '../services/util.service'
 import { useSelector } from 'react-redux'
 import { addTask } from "../store/actions/task.actions"
+import { Droppable, Draggable } from 'react-beautiful-dnd'
 
 
-export function GroupPreview({ group, boardId }) {
+export function GroupPreview({ group, boardId, handleOnDragEnd }) {
     const tasks = group?.tasks || []
     const board = useSelector(storeState => storeState.boardModule.board)
 
@@ -132,125 +133,149 @@ export function GroupPreview({ group, boardId }) {
                 openMenuGroupId={openMenuGroupId}
                 setOpenMenuGroupId={setOpenMenuGroupId}
                 onAddTaskClick={() => setIsAddingTask(true)}
-
             />
-            <div className="group-preview">
-                {tasks.map(task => (
-                    <div key={task.id} className="task-container" onClick={() => handleTaskClick(task.id)}>
-                        <div
-                            className='task-inner-container'
-                            style={task.style && task.style.isFull ? { backgroundColor: task.style.backgroundColor, borderRadius: '8px' } : {}}                        >
-                            {task.style && !task.style.isFull && (
-                                <section className='task-cover-container' style={{ ...task.style }}>
-                                </section>
-                            )}
-
-                            <section className='task-info-container'>
-                                {(!task.style || !task.style.isFull) && (
-                                    <div className='task-label-container'>
-                                        {task.labelsIds && task.labelsIds.map(id => {
-                                            const label = getLabelById(id)
-                                            return label && (
-                                                <div
-                                                    className="label-tab"
-                                                    key={id}
-                                                    style={{ backgroundColor: label.color }}
-                                                    title={label.title}
-                                                >
-                                                    <span className="label-title">{label.title}</span>
-                                                </div>
-                                            )
-                                        })}
-                                    </div>)}
-
-                                <div className='task-title-container'>
-                                    <span>{task.title}</span>
-                                </div>
-
-                                <div className='pen-display'>
-                                    <img src="../../../src\assets\imgs\Icons\pen.svg" />
-                                </div>
-                                {(!task.style || !task.style.isFull )&& (
-                                <div className='task-bottom-container'>
-                                    <div className='task-bottom-leftside'>
-                                        {task.dueDate && (
-                                            <div
-                                                title={task.isDone ? 'This task is complete.' : 'This task is due later.'}
-                                                className="task-bottom-container"
-                                                style={!task.isDone ? {} : { backgroundColor: '#4BCE97' }}
-                                            >
-                                                <img
-                                                    src="../../../src/assets/imgs/Icons/clock.svg"
-                                                    alt="clock icon"
-                                                    style={!task.isDone ? {} : { filter: 'brightness(0) saturate(100%) invert(9%) sepia(13%) saturate(697%) hue-rotate(169deg) brightness(97%) contrast(91%)' }}
-                                                />
-                                                <span
-                                                    style={!task.isDone ? {} : { color: '#1d2125' }}
-
-                                                    >{getFormattedShortTime(task.dueDate)}</span>
-                                                </div>
+            <Droppable droppableId={group.id} type="TASK">
+                {(provided) => (
+                    <div
+                        className="group-preview"
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                    >
+                        {tasks.map((task, index) => (
+                            <Draggable key={task.id} draggableId={task.id} index={index}>
+                                {(provided, snapshot) => (
+                                    <div
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                        className={`task-container ${snapshot.isDragging ? 'dragging' : ''}`}
+                                        onClick={() => handleTaskClick(task.id)}
+                                    >
+                                        <div
+                                            className='task-inner-container'
+                                            style={task.style && task.style.isFull ? { backgroundColor: task.style.backgroundColor, borderRadius: '8px' } : {}}
+                                        >
+                                            {task.style && !task.style.isFull && (
+                                                <section className='task-cover-container' style={{ ...task.style }}>
+                                                </section>
                                             )}
-                                            {task.description && task.description.trim() !== '' && (
-                                                <img title='This card has a description.' src="../../../src/assets/imgs/Icons/description.svg" alt="description" />
-                                            )}
-                                            {getComments(task.id).length ? <div title='Comments' className='task-comment-container'>
-                                                <img src="../../../src\assets\imgs\Icons\comment.svg" />
-                                                <span className='task-comment'>{getComments(task.id).length} </span>
-                                            </div> : ''}
-                                            {task.attachments.length ? <div title='Attachments' className='task-attachment-container'>
-                                                <img src="../../../src\assets\imgs\TaskDetails-icons\attachment.svg" />
-                                                <span className='task-comment'>1</span>
-                                            </div> : ''}
-                                            <div title='Checklist items' className='task-checklist-container' >
-                                                <img src="../../../src\assets\imgs\Icons\checklist.svg" />
-                                                <span className='task-checklist'>{getDoneInChecklist(task.id, group.id).length}/{getAllTodosInChecklist(task.id, group.id).length}</span>
-                                            </div>
-                                        </div>
 
-                                        <div className='members-container'>
-                                            {task.membersIds && task.membersIds.map(id => {
-                                                const member = getMemberById(id)
-                                                return (
-                                                    <img
-                                                        key={member._id}
-                                                        className="member-thumbnail"
-                                                        src={member.imgUrl}
-                                                        title={member.fullname}
-                                                        alt={member.fullname}
-                                                    />
-                                                )
-                                            })}
-                                        </div>
-                                    </div>)}
+                                            <section className='task-info-container'>
+                                                {(!task.style || !task.style.isFull) && (
+                                                    <div className='task-label-container'>
+                                                        {task.labelsIds && task.labelsIds.map(id => {
+                                                            const label = getLabelById(id)
+                                                            return label && (
+                                                                <div
+                                                                    className="label-tab"
+                                                                    key={id}
+                                                                    style={{ backgroundColor: label.color }}
+                                                                    title={label.title}
+                                                                >
+                                                                    <span className="label-title">{label.title}</span>
+                                                                </div>
+                                                            )
+                                                        })}
+                                                    </div>
+                                                )}
 
-                            </section>
-                        </div>
-                    </div>
-                ))}
-                {isAddingTask && (
-                    <div className='addtask-from-container' ref={addTaskRef}>
-                        <form className='addtask-form' onSubmit={(e) => e.preventDefault()}>
-                            <textarea
-                                type="text"
-                                value={newTaskTitle}
-                                onChange={(e) => setNewTaskTitle(e.target.value)}
-                                onKeyPress={handleTitleKeyPress}
-                                autoFocus
-                                placeholder="Enter a title for this card..."
-                                ref={textareaRef}
-                            />
-                            <div className='addtask-btns'>
-                                <span onClick={onAddTask}>Add card</span>
-                                <div className="close-btn-wrapper" onClick={() => {
-                                    setIsAddingTask(false)
-                                    setNewTaskTitle('')
-                                }}>
-                                    <img src="../../../src/assets/imgs/Icons/close.svg" alt="" />
-                                </div>
+                                                <div className='task-title-container'>
+                                                    <span>{task.title}</span>
+                                                </div>
+
+                                                <div className='pen-display'>
+                                                    <img src="../../../src\assets\imgs\Icons\pen.svg" />
+                                                </div>
+                                                {(!task.style || !task.style.isFull) && (
+                                                    <div className='task-bottom-container'>
+                                                        <div className='task-bottom-leftside'>
+                                                            {task.dueDate && (
+                                                                <div
+                                                                    title={task.isDone ? 'This task is complete.' : 'This task is due later.'}
+                                                                    className="task-timer-container"
+                                                                    style={!task.isDone ? {} : { backgroundColor: '#4BCE97' }}
+                                                                >
+                                                                    <img
+                                                                        src="../../../src/assets/imgs/Icons/clock.svg"
+                                                                        alt="clock icon"
+                                                                        style={!task.isDone ? {} : { filter: 'brightness(0) saturate(100%) invert(9%) sepia(13%) saturate(697%) hue-rotate(169deg) brightness(97%) contrast(91%)' }}
+                                                                    />
+                                                                    <span
+                                                                        style={!task.isDone ? {} : { color: '#1d2125' }}
+                                                                    >{getFormattedShortTime(task.dueDate)}</span>
+                                                                </div>
+                                                            )}
+                                                            {task.description && task.description.trim() !== '' && (
+                                                                <img title='This card has a description.' src="../../../src/assets/imgs/Icons/description.svg" alt="description" />
+                                                            )}
+                                                            {getComments(task.id).length ?
+                                                                <div title='Comments' className='task-comment-container'>
+                                                                    <img src="../../../src\assets\imgs\Icons\comment.svg" />
+                                                                    <span className='task-comment'>{getComments(task.id).length} </span>
+                                                                </div> : ''
+                                                            }
+                                                            {task.attachments.length ?
+                                                                <div title='Attachments' className='task-attachment-container'>
+                                                                    <img src="../../../src\assets\imgs\TaskDetails-icons\attachment.svg" />
+                                                                    <span className='task-comment'>1</span>
+                                                                </div> : ''
+                                                            }
+                                                            <div title='Checklist items' className='task-checklist-container' >
+                                                                <img src="../../../src\assets\imgs\Icons\checklist.svg" />
+                                                                <span className='task-checklist'>{getDoneInChecklist(task.id, group.id).length}/{getAllTodosInChecklist(task.id, group.id).length}</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className='members-container'>
+                                                            {task.membersIds && task.membersIds.map(id => {
+                                                                const member = getMemberById(id)
+                                                                return (
+                                                                    <img
+                                                                        key={member._id}
+                                                                        className="member-thumbnail"
+                                                                        src={member.imgUrl}
+                                                                        title={member.fullname}
+                                                                        alt={member.fullname}
+                                                                    />
+                                                                )
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </section>
+                                        </div>
+                                    </div>
+                                )}
+                            </Draggable>
+                        ))}
+                        {provided.placeholder}
+                        {isAddingTask && (
+                            <div className='addtask-from-container' ref={addTaskRef}>
+                                <form className='addtask-form' onSubmit={(e) => e.preventDefault()}>
+                                    <textarea
+                                        type="text"
+                                        value={newTaskTitle}
+                                        onChange={(e) => setNewTaskTitle(e.target.value)}
+                                        onKeyPress={handleTitleKeyPress}
+                                        autoFocus
+                                        placeholder="Enter a title for this card..."
+                                        ref={textareaRef}
+                                    />
+                                    <div className='addtask-btns'>
+                                        <span onClick={onAddTask}>Add card</span>
+                                        <div className="close-btn-wrapper" onClick={() => {
+                                            setIsAddingTask(false)
+                                            setNewTaskTitle('')
+                                        }}>
+                                            <img src="../../../src/assets/imgs/Icons/close.svg" alt="" />
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                        </form>
-                    </div>)}
-            </div>
+                        )}
+                    </div>
+                )}
+            </Droppable>
             {!isAddingTask && (
                 <footer className='group-preview-footer'>
                     <span className="add-icon" onClick={() => setIsAddingTask(true)}>
