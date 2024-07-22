@@ -127,7 +127,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
     const labelsIds = taskToEdit?.labelsIds || []
 
     return (
-        <section className="group-preview-container">
+        <section className="group-preview-container" style={group.style}>
             <GroupPreviewHeader
                 group={group}
                 openMenuGroupId={openMenuGroupId}
