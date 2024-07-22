@@ -1,7 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
 import { updateBoard } from '../store/actions/board.actions'
+import { useSelector } from 'react-redux'
 
-export function GroupPreviewHeader({ group, board, setBoard, setOpenMenuGroupId, openMenuGroupId }) {
+export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId }) {
+    const board = useSelector(storeState => storeState.boardModule.board)
+
     const [isEditing, setIsEditing] = useState(false)
     const [newTitle, setNewTitle] = useState(group.title)
     const menuRef = useRef(null)
@@ -34,8 +37,7 @@ export function GroupPreviewHeader({ group, board, setBoard, setOpenMenuGroupId,
                 g.id === group.id ? { ...g, title: titleToSet } : g
             )
         }
-        const savedBoard = await updateBoard(updatedBoard)
-        setBoard(savedBoard)
+        await updateBoard(updatedBoard)
         setNewTitle(titleToSet)
         setIsEditing(false)
     }
@@ -60,8 +62,7 @@ export function GroupPreviewHeader({ group, board, setBoard, setOpenMenuGroupId,
             ...board,
             groups: board.groups.filter(g => g.id !== group.id)
         }
-        const savedBoard = await updateBoard(updatedBoard)
-        setBoard(savedBoard)
+        await updateBoard(updatedBoard)
         setOpenMenuGroupId(null)
     }
 

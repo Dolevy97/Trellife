@@ -6,12 +6,12 @@ import { GroupPreviewHeader } from './GroupPreviewHeader'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import autosize from 'autosize';
 import { getFormattedShortTime } from '../services/util.service'
+import { useSelector } from 'react-redux'
 
 
-export function GroupPreview({ group, boardId, board, setBoard }) {
+export function GroupPreview({ group, boardId}) {
     const tasks = group?.tasks || []
-
-
+    const board = useSelector(storeState => storeState.boardModule.board)
 
     const [openMenuGroupId, setOpenMenuGroupId] = useState(null)
     const [isAddingTask, setIsAddingTask] = useState(false)
@@ -70,8 +70,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                 groups: board.groups.map(g => g.id === group.id ? updatedGroup : g)
             }
             const savedBoard = await updateBoard(updatedBoard)
-            setBoard(savedBoard)
-            console.log(newTask)
+            console.log(savedBoard)
             setNewTaskTitle('')
 
         } catch (err) {
@@ -112,8 +111,6 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
         <section className="group-preview-container">
             <GroupPreviewHeader
                 group={group}
-                board={board}
-                setBoard={setBoard}
                 openMenuGroupId={openMenuGroupId}
                 setOpenMenuGroupId={setOpenMenuGroupId}
             />
