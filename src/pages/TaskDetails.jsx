@@ -231,6 +231,13 @@ export function TaskDetails() {
         return todosLengthPercent.toFixed(0)
     }
 
+    function handleChecklistKeyDown(ev, checklist) {
+        if (ev.key === 'Enter') {
+            ev.preventDefault()
+            onAddItem(checklist)
+        }
+    }
+
     async function onAddItem(checklist) {
         if (!checklistItem.current.value) return
         const newTodo = {
@@ -433,7 +440,6 @@ export function TaskDetails() {
                                                 <button onClick={() => onDeleteChecklist(checklist.id)} className='btn-delete-checklist'>Delete</button>
                                             </div>
                                             <div className="checklist-progress">
-
                                                 <span className='progress-percentage'>{getDonePercentage(checklist)}%</span>
                                                 <div className="progress-bar">
                                                     <div
@@ -493,7 +499,11 @@ export function TaskDetails() {
                                             <div className="add-item-container">
                                                 {isAddingItem ?
                                                     <>
-                                                        <textarea className='new-checklist-item' ref={checklistItem}></textarea>
+                                                        <textarea className='new-checklist-item'
+                                                            ref={checklistItem}
+                                                            placeholder='Add an item'
+                                                            onKeyDown={(ev) => handleChecklistKeyDown(ev, checklist)}
+                                                        ></textarea>
                                                         <div className="checklist-add-controls">
                                                             <button onClick={() => onAddItem(checklist)} className='btn-add'>Add</button>
                                                             <button onClick={() => setIsAddingItem(false)} className='btn-cancel'>Cancel</button>
@@ -526,7 +536,7 @@ export function TaskDetails() {
                                             onKeyUp={handleCommentKeyUp}
                                             ref={textareaCommentRef} />
                                         <article className="btns">
-                                            <button onClick={onSaveComment} className='btn-save'>Save</button>
+                                            <button onClick={onSaveComment} className='btn-save' disabled={textareaCommentRef.current.value ? false : true}>Save</button>
                                         </article>
                                     </>
                                     :
