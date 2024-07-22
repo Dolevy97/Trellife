@@ -195,9 +195,9 @@ export function TaskDetails() {
         await updateTask(taskToEdit, groupId, group, board)
     }
 
-    function getComments(groupId) {
+    function getComments(taskId) {
         let comments = board.activities.filter(activity => {
-            return activity.title === 'add comment' && activity.group.id === groupId
+            return activity.title === 'add comment' && activity.task.id === taskId
         })
         if (!comments) return []
         comments = comments.sort((a, b) => b.createdAt - a.createdAt)
@@ -279,7 +279,9 @@ export function TaskDetails() {
                             <div className="description-title">
                                 <img className="description-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/description.svg" alt="description icon" />
                                 <span>Description</span>
-                                {!isSettingDescription && description.length ? <button onClick={startSetDescription}>Edit</button> : ''}
+                                {!isSettingDescription && description.length ?
+                                    <button onClick={startSetDescription}>Edit</button>
+                                    : ''}
                             </div>
                             {isSettingDescription ?
                                 <>
@@ -346,7 +348,7 @@ export function TaskDetails() {
                                 }
                             </div>
                             <div className="comments-container">
-                                {getComments(group.id).map(comment =>
+                                {getComments(taskToEdit.id).map(comment =>
                                     <div className="comment-container" key={comment.id}>
                                         <img className='member-img-comment' src={comment.byMember.imgUrl} alt="" />
                                         <p>{comment.byMember.fullname} <span className='comment-timestamp'>{getFormattedTime(comment.createdAt)}</span></p>
