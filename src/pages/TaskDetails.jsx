@@ -278,11 +278,11 @@ export function TaskDetails() {
 
         await updateTask(updatedTask, group, board)
         setIsTodoMenuOpen(false)
-
-        function getAddedAt(createdAt) {
-            const timestamp = (createdAt - Date.now()) * -1
-            return 'Added ' + (ms(timestamp, { long: true })) + ' ago'
-        }
+        
+    function getAddedAt(createdAt) {
+        const timestamp = (createdAt - Date.now()) * -1
+        return 'Added ' + (ms(timestamp, { long: true })) + ' ago'
+    }
 
         if (!taskToEdit || !group) return <section>Loading...</section>
 
