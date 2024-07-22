@@ -16,6 +16,7 @@ export function TaskDetails() {
     const textareaRef = useRef(null)
     const textareaCommentRef = useRef(null)
     const dateInputRef = useRef(null)
+    const checklistItem = useRef(null)
 
     const [group, setGroup] = useState(null)
     const [taskToEdit, setTaskToEdit] = useState(null)
@@ -135,6 +136,7 @@ export function TaskDetails() {
         taskToEdit.description = tempDescription
         setIsSettingDescription(false)
     }
+
     async function onSaveComment() {
         const newActivity = {
             id: makeId(),
@@ -194,7 +196,6 @@ export function TaskDetails() {
             const todoIndex = updatedTask.checklists[checklistIndex].todos.findIndex(t => t.id === todo.id)
 
             if (todoIndex !== -1) {
-                // Update the copy of the task
                 updatedTask.checklists[checklistIndex].todos[todoIndex].isDone = target.checked
             }
         }
@@ -227,8 +228,26 @@ export function TaskDetails() {
         return todosLengthPercent
     }
 
-    function onAddItem() {
-        console.log(add)
+    async function onAddItem(checklist) {
+
+        const newTodo = {
+            id: makeId(),
+            title: checklistItem.current.value,
+            isDone: false
+        }
+        const checklistIndex = taskToEdit.checklists.findIndex(check => check.id === checklist.id)
+
+        if (checklistIndex !== -1) {
+            taskToEdit.checklists[checklistIndex].todos.push(newTodo)
+        }
+        await updateTask(taskToEdit, group, board)
+        checklistItem.current.value = ''
+    }
+
+    async function onDeleteChecklist(checklistId) {
+        const checklistIndex = taskToEdit.checklists.findIndex(checklist => checklist.id === checklistId)
+        taskToEdit.checklists.splice(checklistIndex, 1)
+        await updateTask(taskToEdit, group, board)
     }
 
     if (!taskToEdit || !group) return <section>Loading...</section>
@@ -348,6 +367,7 @@ export function TaskDetails() {
                                             <div className="checklist-title-container">
                                                 <img className="checklists-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="attachment icon" />
                                                 <span className='checklist-title'>{checklist.title}</span>
+                                                <button onClick={() => onDeleteChecklist(checklist.id)} className='btn-delete-checklist'>Delete</button>
                                             </div>
                                             <div className="checklist-progress">
 
@@ -374,19 +394,28 @@ export function TaskDetails() {
                                                                     checked={todo.isDone}
                                                                     onChange={(ev) => { onChangeTodo(ev, todo, checklist) }} />
                                                             </div>
-                                                            <div className="checklist-item-details">
+                                                            <div
+                                                                className="checklist-item-details"
+                                                                style={todo.isDone ? { textDecoration: 'line-through' } : {}}
+                                                            >
                                                                 <span className='todo-title'>{todo.title}</span>
                                                             </div>
                                                         </div>)
                                                 }) : ''}
                                             </div>
+
                                             <div className="add-item-container">
-                                                <button style={{ display: 'none' }} onClick={() => setIsAddingItem(true)} className="btn-add-item">Add an item</button>
-                                                <textarea className='new-checklist-item'></textarea>
-                                                <div className="checklist-add-controls">
-                                                    <button onClick={onAddItem} className='btn-add'>Add</button>
-                                                    <button onClick={() => setIsAddingItem(false)} className='btn-cancel'>Cancel</button>
-                                                </div>
+                                                {isAddingItem ?
+                                                    <>
+                                                        <textarea className='new-checklist-item' ref={checklistItem}></textarea>
+                                                        <div className="checklist-add-controls">
+                                                            <button onClick={() => onAddItem(checklist)} className='btn-add'>Add</button>
+                                                            <button onClick={() => setIsAddingItem(false)} className='btn-cancel'>Cancel</button>
+                                                        </div>
+                                                    </>
+                                                    :
+                                                    <button onClick={() => setIsAddingItem(true)} className="btn-add-item">Add an item</button>
+                                                }
                                             </div>
                                         </div>
                                     )

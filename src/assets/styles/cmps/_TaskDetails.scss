@@ -87,6 +87,7 @@
 
             .task-in-list {
                 padding-inline-start: em(1);
+                color: $txtclr2;
             }
 
             .card-icon {
@@ -162,6 +163,7 @@
                             height: 32px;
                             border-radius: 3px;
                             padding: em(3) em(12);
+                            line-height: 2;
 
 
                             &:hover {
@@ -473,6 +475,10 @@
             padding: em(2) em(16) em(8) em(8);
 
 
+            .add-to-card {
+                color: $txtclr2;
+            }
+
             .action {
                 display: flex;
                 align-items: center;
@@ -712,6 +718,10 @@
             overflow-wrap: break-word;
             word-break: break-word;
 
+            &:hover {
+                background-color: #A1BDD914;
+            }
+
             .todo-title {
                 font-size: 0.875em;
                 align-self: center;
@@ -744,8 +754,24 @@
         margin-block-end: 24px;
 
         & .checklist-title-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
             padding: 8px 0;
             margin-block-end: 4px;
+
+            & .btn-delete-checklist {
+                @include btn;
+
+                background-color: #A1BDD914;
+                color: $txtclr1;
+                font-weight: 500;
+
+                &:hover {
+                    background-color: #A6C5E229;
+                }
+            }
         }
 
         .checklist-progress {
@@ -815,6 +841,7 @@
 
             border-radius: 3px;
 
+            font-family: inherit;
             font-weight: 500;
             line-height: 20px;
             transition-duration: 85ms;
@@ -827,7 +854,7 @@
             }
         }
 
-        
+
         textarea {
             height: 40px;
             padding: 8px 12px;
@@ -847,17 +874,30 @@
             box-shadow: 0 0 0 1px inset #738496;
             background-color: #22272B;
             color: $txtclr1;
+
             font-size: 0.875em;
             line-height: 1.714;
-            font-weight: normal;
             margin-top: 0.75rem;
             margin-bottom: 0px;
             letter-spacing: -0.005em;
+
+            &:hover {
+                cursor: text;
+            }
+
+            &:focus-visible {
+                outline: none;
+            }
+
+            &:focus-within {
+                box-shadow: 0 0 0 2px inset #579DFF;
+            }
         }
 
 
         .checklist-add-controls {
             display: flex;
+
             button {
                 @include btn;
                 width: fit-content;
