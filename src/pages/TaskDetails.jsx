@@ -9,6 +9,7 @@ import autosize from 'autosize';
 import { getRandomMember } from '../services/board/board-demo-data.service';
 import { getFormattedTime, makeId } from '../services/util.service';
 import { updateGroup } from '../store/actions/group.actions';
+import ms from 'ms';
 
 export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
@@ -263,10 +264,10 @@ export function TaskDetails() {
     async function onDeleteTodo(ev, checklist) {
         if (!todoMenuId) return
         ev.stopPropagation()
-    
+
         const updatedTask = { ...taskToEdit }
         const checklistIndex = updatedTask.checklists.findIndex(check => check.id === checklist.id)
-    
+
         if (checklistIndex !== -1) {
             updatedTask.checklists = [...updatedTask.checklists]
             updatedTask.checklists[checklistIndex] = {
@@ -274,332 +275,346 @@ export function TaskDetails() {
                 todos: updatedTask.checklists[checklistIndex].todos.filter(todo => todo.id !== todoMenuId)
             }
         }
-    
+
         await updateTask(updatedTask, group, board)
         setIsTodoMenuOpen(false)
-    }
 
-    if (!taskToEdit || !group) return <section>Loading...</section>
+        function getAddedAt(createdAt) {
+            const timestamp = (createdAt - Date.now()) * -1
+            return 'Added ' + (ms(timestamp, { long: true })) + ' ago'
+        }
 
-    const { title, description, membersIds, labelsIds, style } = taskToEdit;
+        if (!taskToEdit || !group) return <section>Loading...</section>
 
-    const taskActionProps = { task: taskToEdit, board, group, onSetAction }
+        const { title, description, membersIds, labelsIds, style } = taskToEdit;
 
-    return (
-        <div className="task-details-backdrop" onClick={onBackdropClicked}>
-            <form className="task-details" onSubmit={onSubmit} onClick={onTaskDetailsClicked}>
-                <img onClick={onBackdropClicked} className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close-white.svg" alt="close icon" />
-                {style && <div className="task-details-cover" style={{ backgroundColor: style.backgroundColor }}>
+        const taskActionProps = { task: taskToEdit, board, group, onSetAction }
 
-                </div>}
-                <header className="task-header">
-                    <img className="card-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/card.svg" alt="card icon" />
-                    <span className="task-title">{title}</span>
-                    <span className="task-in-list fs12">in list <span style={{ textDecoration: 'underline' }}>{group.title}</span></span>
-                </header>
-                <section className="task-container">
-                    <section className="task-content">
-                        <div className="members-labels-notifications-date-container">
+        return (
+            <div className="task-details-backdrop" onClick={onBackdropClicked}>
+                <form className="task-details" onSubmit={onSubmit} onClick={onTaskDetailsClicked}>
+                    <img onClick={onBackdropClicked} className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close-white.svg" alt="close icon" />
+                    {style && <div className="task-details-cover" style={{ backgroundColor: style.backgroundColor }}>
 
-                            {membersIds.length ? <div className="members-container">
-                                <span className="fs12">Members</span>
-                                <div className="members-img-container">
-                                    {membersIds.map(id => {
-                                        const member = getMemberById(id)
-                                        return <img key={member._id} className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
-                                    }
-                                    )}
-                                    <div name="members" onClick={onSetAction} className="add-member-thumbnail"><img src="../../../src/assets/imgs/TaskDetails-icons/add.svg" alt="add plus icon" /></div>
-                                </div>
-                            </div> : ''}
+                    </div>}
+                    <header className="task-header">
+                        <img className="card-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/card.svg" alt="card icon" />
+                        <span className="task-title">{title}</span>
+                        <span className="task-in-list fs12">in list <span style={{ textDecoration: 'underline' }}>{group.title}</span></span>
+                    </header>
+                    <section className="task-container">
+                        <section className="task-content">
+                            <div className="members-labels-notifications-date-container">
 
-                            {labelsIds.length ? <div className="labels-container">
-                                <span className="fs12">Labels</span>
-                                <div className="labels">
-                                    {labelsIds && labelsIds.map(id => {
-                                        const label = getLabelById(id);
-                                        return <span className="label" key={id} style={{ backgroundColor: label.color }}>{label.title}</span>;
-                                    })}
-                                </div>
-                            </div> : ''}
-
-                            {taskToEdit.dueDate && <div className="date-container">
-                                <span className="fs12">Due date</span>
-                                <div onClick={onShowDatePicker} className="date">
-                                    <input
-                                        onClick={(ev) => ev.stopPropagation()}
-                                        className="checkbox"
-                                        type="checkbox"
-                                        onChange={onChangeIsDone}
-                                        checked={taskToEdit.isDone}
-                                    />
-                                    <input
-                                        ref={dateInputRef}
-                                        className="date-input"
-                                        type="datetime-local"
-                                        value={getDueDate(taskToEdit.dueDate)}
-                                        onChange={onChangeDueDate}
-                                    />
-                                    <span className='inside-input-is-done' style={!taskToEdit.isDone ? { backgroundColor: '#F5CD47' } : { backgroundColor: '#4BCE97' }}>{taskToEdit.isDone ? 'Complete' : 'Due soon'}</span>
-                                    <img className="arrow-down" src="../../../src/assets/imgs/TaskDetails-icons/arrow-down.svg" alt="description icon" />
-                                </div>
-                            </div>}
-
-                        </div>
-                        <div className="description-container">
-                            <div className="description-title">
-                                <img className="description-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/description.svg" alt="description icon" />
-                                <span>Description</span>
-                                {!isSettingDescription && description.length ?
-                                    <button onClick={startSetDescription}>Edit</button>
-                                    : ''}
-                            </div>
-                            {isSettingDescription ?
-                                <>
-                                    <textarea
-                                        placeholder={`Pro tip: Hit 'Enter' for a line break.`}
-                                        className="description editing"
-                                        onChange={handleChange}
-                                        value={description}
-                                        name="description"
-                                        ref={textareaRef} />
-                                    <article className="btns">
-                                        <button onClick={onSaveDescription} className='btn-save'>Save</button>
-                                        <button onClick={cancelSetDescription} className='btn-cancel'>Cancel</button>
-                                    </article>
-                                </>
-                                :
-                                <textarea
-                                    placeholder='Add a more detailed description...'
-                                    className={`description ${description.length ? 'has-content' : ''}`}
-                                    value={description}
-                                    name="description"
-                                    ref={textareaRef}
-                                    readOnly
-                                    onClick={startSetDescription}
-                                />
-                            }
-                        </div>
-
-                        {taskToEdit.attachments && taskToEdit.attachments.length ?
-                            <div className="attachments-container">
-                                <img className="attachments-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/paperclip.svg" alt="attachment icon" />
-                                <span className='attachments-title'>Attachments</span>
-                                <div className="attachments">
-                                    {taskToEdit.attachments.map(a => 
-                                    <div className="attachment">
-                                    <img className="attachment-thumbnail" src={a.url} />
-                                    <header className="attachment-header">
-                                        <span className="url">{a.url}</span>
-                                        {/* ADD LINK ARROW HERE */}
-                                    </header>
-                                    <main className="attachment-main">
-                                        <span>
-                                            {getAddedAt(a.createdAt)}
-                                        </span>
-                                    </main>
-                                    <div className="attachment-remove-cover">
-
+                                {membersIds.length ? <div className="members-container">
+                                    <span className="fs12">Members</span>
+                                    <div className="members-img-container">
+                                        {membersIds.map(id => {
+                                            const member = getMemberById(id)
+                                            return <img key={member._id} className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
+                                        }
+                                        )}
+                                        <div name="members" onClick={onSetAction} className="add-member-thumbnail"><img src="../../../src/assets/imgs/TaskDetails-icons/add.svg" alt="add plus icon" /></div>
                                     </div>
+                                </div> : ''}
+
+                                {labelsIds.length ? <div className="labels-container">
+                                    <span className="fs12">Labels</span>
+                                    <div className="labels">
+                                        {labelsIds && labelsIds.map(id => {
+                                            const label = getLabelById(id);
+                                            return <span className="label" key={id} style={{ backgroundColor: label.color }}>{label.title}</span>;
+                                        })}
                                     </div>
-                                    )}
+                                </div> : ''}
+
+                                {taskToEdit.dueDate && <div className="date-container">
+                                    <span className="fs12">Due date</span>
+                                    <div onClick={onShowDatePicker} className="date">
+                                        <input
+                                            onClick={(ev) => ev.stopPropagation()}
+                                            className="checkbox"
+                                            type="checkbox"
+                                            onChange={onChangeIsDone}
+                                            checked={taskToEdit.isDone}
+                                        />
+                                        <input
+                                            ref={dateInputRef}
+                                            className="date-input"
+                                            type="datetime-local"
+                                            value={getDueDate(taskToEdit.dueDate)}
+                                            onChange={onChangeDueDate}
+                                        />
+                                        <span className='inside-input-is-done' style={!taskToEdit.isDone ? { backgroundColor: '#F5CD47' } : { backgroundColor: '#4BCE97' }}>{taskToEdit.isDone ? 'Complete' : 'Due soon'}</span>
+                                        <img className="arrow-down" src="../../../src/assets/imgs/TaskDetails-icons/arrow-down.svg" alt="description icon" />
+                                    </div>
+                                </div>}
+
+                            </div>
+                            <div className="description-container">
+                                <div className="description-title">
+                                    <img className="description-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/description.svg" alt="description icon" />
+                                    <span>Description</span>
+                                    {!isSettingDescription && description.length ?
+                                        <button onClick={startSetDescription}>Edit</button>
+                                        : ''}
                                 </div>
-                            </div>
-                            :
-                            ''}
-                        {taskToEdit.checklists && taskToEdit.checklists.length ?
-                            <div className="checklists-container">
-                                {taskToEdit.checklists.length ? taskToEdit.checklists.map(checklist => {
-                                    return (
-                                        <div className="checklist-container" key={checklist.id}>
-                                            <div className="checklist-title-container">
-                                                <img className="checklists-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="attachment icon" />
-                                                <span className='checklist-title'>{checklist.title}</span>
-                                                <button onClick={() => onDeleteChecklist(checklist.id)} className='btn-delete-checklist'>Delete</button>
-                                            </div>
-                                            <div className="checklist-progress">
-
-                                                <span className='progress-percentage'>{getDonePercentage(checklist)}%</span>
-                                                <div className="progress-bar">
-                                                    <div
-                                                        className="progress-bar-current"
-                                                        style={{
-                                                            width: `${getDonePercentage(checklist)}%`,
-                                                            backgroundColor: getDonePercentage(checklist) === 100 ? '#4BCE97' : undefined,
-                                                        }}
-                                                    ></div>
-                                                </div>
-                                            </div>
-                                            <div className="checklist-items">
-                                                {checklist.todos ? checklist.todos.map(todo => (
-                                                    <div className="checklist-item-container" key={todo.id}>
-                                                        <div className="checklist-item-checkbox">
-                                                            <input
-                                                                className='item-checkbox'
-                                                                type="checkbox"
-                                                                name="item-checklist"
-                                                                checked={todo.isDone}
-                                                                onChange={(ev) => { onChangeTodo(ev, todo, checklist) }} />
-                                                        </div>
-                                                        <div
-                                                            className="checklist-item-details"
-                                                            style={todo.isDone ? { textDecoration: 'line-through' } : {}}>
-                                                            <div className="todo-actions">
-                                                                <div className="action-container">
-                                                                    <img onClick={(ev) => onClickMenu(ev, todo.id)} src="../../../src/assets/imgs/TaskDetails-icons/3dots.svg" alt="" />
-                                                                </div>
-                                                            </div>
-                                                            <span className='todo-title'>{todo.title}</span>
-                                                        </div>
-                                                    </div>
-                                                )) : ''}
-
-                                                {isTodoMenuOpen && todoMenuPosition && (
-                                                    <article
-                                                        className="item-actions"
-                                                        style={{
-                                                            position: 'fixed',
-                                                            top: `${todoMenuPosition.top + 10}px`,
-                                                            left: `${todoMenuPosition.left - 5}px`,
-                                                            right: 'auto',
-                                                            bottom: 'auto'
-                                                        }}>
-                                                        <header className="item-actions-header">
-                                                            <h2>Item actions</h2>
-                                                            <button><img onClick={() => setIsTodoMenuOpen(false)} src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="" /></button>
-                                                        </header>
-                                                        <div className="item-actions-body">
-                                                            <button onClick={(ev) => onDeleteTodo(ev, checklist)} className='item-action'>Delete</button>
-                                                        </div>
-                                                    </article>
-                                                )}
-                                            </div>
-
-                                            <div className="add-item-container">
-                                                {isAddingItem ?
-                                                    <>
-                                                        <textarea className='new-checklist-item' ref={checklistItem}></textarea>
-                                                        <div className="checklist-add-controls">
-                                                            <button onClick={() => onAddItem(checklist)} className='btn-add'>Add</button>
-                                                            <button onClick={() => setIsAddingItem(false)} className='btn-cancel'>Cancel</button>
-                                                        </div>
-                                                    </>
-                                                    :
-                                                    <button onClick={() => setIsAddingItem(true)} className="btn-add-item">Add an item</button>
-                                                }
-                                            </div>
-                                        </div>
-                                    )
-                                }) : ''}
-                            </div>
-                            :
-                            ''}
-                        <div className="activity-container">
-                            <div className="activity-title">
-                                <img className="activity-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/activity.svg" alt="activity icon" />
-                                <span className='activity-title-text'>Activity</span>
-                            </div>
-                            <div className="input-container">
-                                <img className='user-img-activity-input' src="../../../src/assets/imgs/user-imgs/user-img3.jpg" alt="user" />
-                                {isAddingComment ?
+                                {isSettingDescription ?
                                     <>
                                         <textarea
-                                            placeholder='Write a comment...'
-                                            className="comment editing"
-                                            onChange={handleCommentChange}
-                                            name="comment"
-                                            onKeyUp={handleCommentKeyUp}
-                                            ref={textareaCommentRef} />
+                                            placeholder={`Pro tip: Hit 'Enter' for a line break.`}
+                                            className="description editing"
+                                            onChange={handleChange}
+                                            value={description}
+                                            name="description"
+                                            ref={textareaRef} />
                                         <article className="btns">
-                                            <button onClick={onSaveComment} className='btn-save'>Save</button>
+                                            <button onClick={onSaveDescription} className='btn-save'>Save</button>
+                                            <button onClick={cancelSetDescription} className='btn-cancel'>Cancel</button>
                                         </article>
                                     </>
                                     :
                                     <textarea
-                                        placeholder='Write a comment...'
-                                        className={`comment`}
-                                        name="comment"
-                                        ref={textareaCommentRef}
+                                        placeholder='Add a more detailed description...'
+                                        className={`description ${description.length ? 'has-content' : ''}`}
+                                        value={description}
+                                        name="description"
+                                        ref={textareaRef}
                                         readOnly
-                                        onClick={() => { setIsAddingComment(true) }}
+                                        onClick={startSetDescription}
                                     />
                                 }
                             </div>
-                            <div className="comments-container">
-                                {getComments(taskToEdit.id).map(comment =>
-                                    <div className="comment-container" key={comment.id}>
-                                        <img className='member-img-comment' src={comment.byMember.imgUrl} alt="" />
-                                        <p>{comment.byMember.fullname} <span className='comment-timestamp'>{getFormattedTime(comment.createdAt)}</span></p>
-                                        <h1 className='comment-txt'>{comment.txt}</h1>
+
+                            {taskToEdit.attachments && taskToEdit.attachments.length ?
+                                <div className="attachments-container">
+                                    <img className="attachments-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/paperclip.svg" alt="attachment icon" />
+                                    <span className='attachments-title'>Attachments</span>
+                                    <div className="attachments">
+                                        {taskToEdit.attachments.map(a =>
+                                            <div className="attachment">
+                                                <img className="attachment-thumbnail" src={a.url} />
+                                                <div className="attachment-details">
+                                                    <div className="attachment-header">
+                                                        <span className="attachment-url">{a.url}</span>
+                                                        {/* ADD LINK ARROW HERE */}
+                                                    </div>
+                                                    <div className="attachment-main">
+                                                        <span className="attachment-added-at">
+                                                            {getAddedAt(a.createdAt)}
+                                                        </span>
+                                                        <ul className="attachment-links">
+                                                            <li className="attachment-link">Comment</li>
+                                                            <li className="attachment-link">Download</li>
+                                                            <li className="attachment-link">Delete</li>
+                                                            <li className="attachment-link">Edit</li>
+                                                        </ul>
+                                                    </div>
+                                                    <div className="attachment-remove-cover">
+                                                        <img className="attachment-remove-cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
+                                                        <span className="attachment-span-remove-cover"> Remove cover</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
-                                )}
+                                </div>
+                                :
+                                ''}
+                            {taskToEdit.checklists && taskToEdit.checklists.length ?
+                                <div className="checklists-container">
+                                    {taskToEdit.checklists.length ? taskToEdit.checklists.map(checklist => {
+                                        return (
+                                            <div className="checklist-container" key={checklist.id}>
+                                                <div className="checklist-title-container">
+                                                    <img className="checklists-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="attachment icon" />
+                                                    <span className='checklist-title'>{checklist.title}</span>
+                                                    <button onClick={() => onDeleteChecklist(checklist.id)} className='btn-delete-checklist'>Delete</button>
+                                                </div>
+                                                <div className="checklist-progress">
+
+                                                    <span className='progress-percentage'>{getDonePercentage(checklist)}%</span>
+                                                    <div className="progress-bar">
+                                                        <div
+                                                            className="progress-bar-current"
+                                                            style={{
+                                                                width: `${getDonePercentage(checklist)}%`,
+                                                                backgroundColor: getDonePercentage(checklist) === 100 ? '#4BCE97' : undefined,
+                                                            }}
+                                                        ></div>
+                                                    </div>
+                                                </div>
+                                                <div className="checklist-items">
+                                                    {checklist.todos ? checklist.todos.map(todo => (
+                                                        <div className="checklist-item-container" key={todo.id}>
+                                                            <div className="checklist-item-checkbox">
+                                                                <input
+                                                                    className='item-checkbox'
+                                                                    type="checkbox"
+                                                                    name="item-checklist"
+                                                                    checked={todo.isDone}
+                                                                    onChange={(ev) => { onChangeTodo(ev, todo, checklist) }} />
+                                                            </div>
+                                                            <div
+                                                                className="checklist-item-details"
+                                                                style={todo.isDone ? { textDecoration: 'line-through' } : {}}>
+                                                                <div className="todo-actions">
+                                                                    <div className="action-container">
+                                                                        <img onClick={(ev) => onClickMenu(ev, todo.id)} src="../../../src/assets/imgs/TaskDetails-icons/3dots.svg" alt="" />
+                                                                    </div>
+                                                                </div>
+                                                                <span className='todo-title'>{todo.title}</span>
+                                                            </div>
+                                                        </div>
+                                                    )) : ''}
+
+                                                    {isTodoMenuOpen && todoMenuPosition && (
+                                                        <article
+                                                            className="item-actions"
+                                                            style={{
+                                                                position: 'fixed',
+                                                                top: `${todoMenuPosition.top + 10}px`,
+                                                                left: `${todoMenuPosition.left - 5}px`,
+                                                                right: 'auto',
+                                                                bottom: 'auto'
+                                                            }}>
+                                                            <header className="item-actions-header">
+                                                                <h2>Item actions</h2>
+                                                                <button><img onClick={() => setIsTodoMenuOpen(false)} src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="" /></button>
+                                                            </header>
+                                                            <div className="item-actions-body">
+                                                                <button onClick={(ev) => onDeleteTodo(ev, checklist)} className='item-action'>Delete</button>
+                                                            </div>
+                                                        </article>
+                                                    )}
+                                                </div>
+
+                                                <div className="add-item-container">
+                                                    {isAddingItem ?
+                                                        <>
+                                                            <textarea className='new-checklist-item' ref={checklistItem}></textarea>
+                                                            <div className="checklist-add-controls">
+                                                                <button onClick={() => onAddItem(checklist)} className='btn-add'>Add</button>
+                                                                <button onClick={() => setIsAddingItem(false)} className='btn-cancel'>Cancel</button>
+                                                            </div>
+                                                        </>
+                                                        :
+                                                        <button onClick={() => setIsAddingItem(true)} className="btn-add-item">Add an item</button>
+                                                    }
+                                                </div>
+                                            </div>
+                                        )
+                                    }) : ''}
+                                </div>
+                                :
+                                ''}
+                            <div className="activity-container">
+                                <div className="activity-title">
+                                    <img className="activity-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/activity.svg" alt="activity icon" />
+                                    <span className='activity-title-text'>Activity</span>
+                                </div>
+                                <div className="input-container">
+                                    <img className='user-img-activity-input' src="../../../src/assets/imgs/user-imgs/user-img3.jpg" alt="user" />
+                                    {isAddingComment ?
+                                        <>
+                                            <textarea
+                                                placeholder='Write a comment...'
+                                                className="comment editing"
+                                                onChange={handleCommentChange}
+                                                name="comment"
+                                                onKeyUp={handleCommentKeyUp}
+                                                ref={textareaCommentRef} />
+                                            <article className="btns">
+                                                <button onClick={onSaveComment} className='btn-save'>Save</button>
+                                            </article>
+                                        </>
+                                        :
+                                        <textarea
+                                            placeholder='Write a comment...'
+                                            className={`comment`}
+                                            name="comment"
+                                            ref={textareaCommentRef}
+                                            readOnly
+                                            onClick={() => { setIsAddingComment(true) }}
+                                        />
+                                    }
+                                </div>
+                                <div className="comments-container">
+                                    {getComments(taskToEdit.id).map(comment =>
+                                        <div className="comment-container" key={comment.id}>
+                                            <img className='member-img-comment' src={comment.byMember.imgUrl} alt="" />
+                                            <p>{comment.byMember.fullname} <span className='comment-timestamp'>{getFormattedTime(comment.createdAt)}</span></p>
+                                            <h1 className='comment-txt'>{comment.txt}</h1>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                        </div>
+                        </section>
+
+                        <section className="task-actions">
+                            <span className="add-to-card fs12">Add to card</span>
+                            <div className="task-action-container">
+                                <button className="action" name="members" onClick={onSetAction}>
+                                    <img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" alt="members icon" />
+                                    <span className="action-title">Members</span>
+                                </button>
+                                {action === 'members' && <TaskAction action="members" getMemberById={getMemberById} {...taskActionProps} />}
+                            </div>
+                            <div className="task-action-container">
+                                <button className="action" name="labels" onClick={onSetAction}>
+                                    <img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" alt="labels icon" />
+                                    <span className="action-title">Labels</span>
+                                </button>
+                                {action === 'labels' && <TaskAction action="labels" getLabelById={getLabelById} {...taskActionProps} />}
+                            </div>
+                            <div className="task-action-container">
+                                <button className="action" name="checklist" onClick={onSetAction}>
+                                    <img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="checklist icon" />
+                                    <span className="action-title">Checklist</span>
+                                </button>
+                                {action === 'checklist' && <TaskAction action="add checklist" {...taskActionProps} />}
+                            </div>
+                            <div className="task-action-container">
+
+                                <button className="action" name="dates" onClick={onSetAction}>
+                                    <img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" alt="dates icon" />
+                                    <span className="action-title">Dates</span>
+                                </button>
+                                {/* Enter task action rendering for date */}
+                            </div>
+                            <div className="task-action-container">
+                                <button className="action" name="attachment" onClick={onSetAction}>
+                                    <img className="attachment-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/attachment.svg" alt="attachment icon" />
+                                    <span className="action-title">Attachment</span>
+                                </button>
+                                {action === 'attachment' && <TaskAction action="attach" {...taskActionProps} />}
+                            </div>
+                            <div className="task-action-container">
+                                <button className="action" name="location" onClick={onSetAction}>
+                                    <img className="location-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/location.svg" alt="location icon" />
+                                    <span className="action-title">Location</span>
+                                </button>
+                                {/* Enter location action rendering */}
+                            </div>
+                            <div className="task-action-container">
+                                <button className="action" name="cover" onClick={onSetAction}>
+                                    <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
+                                    <span className="action-title">Cover</span>
+                                </button>
+                                {action === 'cover' && <TaskAction action="cover" {...taskActionProps} />}
+                            </div>
+
+                            <hr className='sidebar-hr' />
+
+                            <button className="action remove-task" onClick={onRemoveTask}>
+                                <img className="icon" src="../../../src/assets/imgs/TaskDetails-icons/trash.svg" alt="close icon" />
+                                <span className="action-title">Remove task</span>
+                            </button>
+
+                        </section>
                     </section>
-
-                    <section className="task-actions">
-                        <span className="add-to-card fs12">Add to card</span>
-                        <div className="task-action-container">
-                            <button className="action" name="members" onClick={onSetAction}>
-                                <img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" alt="members icon" />
-                                <span className="action-title">Members</span>
-                            </button>
-                            {action === 'members' && <TaskAction action="members" getMemberById={getMemberById} {...taskActionProps} />}
-                        </div>
-                        <div className="task-action-container">
-                            <button className="action" name="labels" onClick={onSetAction}>
-                                <img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" alt="labels icon" />
-                                <span className="action-title">Labels</span>
-                            </button>
-                            {action === 'labels' && <TaskAction action="labels" getLabelById={getLabelById} {...taskActionProps} />}
-                        </div>
-                        <div className="task-action-container">
-                            <button className="action" name="checklist" onClick={onSetAction}>
-                                <img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="checklist icon" />
-                                <span className="action-title">Checklist</span>
-                            </button>
-                            {action === 'checklist' && <TaskAction action="add checklist" {...taskActionProps} />}
-                        </div>
-                        <div className="task-action-container">
-
-                            <button className="action" name="dates" onClick={onSetAction}>
-                                <img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" alt="dates icon" />
-                                <span className="action-title">Dates</span>
-                            </button>
-                            {/* Enter task action rendering for date */}
-                        </div>
-                        <div className="task-action-container">
-                            <button className="action" name="attachment" onClick={onSetAction}>
-                                <img className="attachment-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/attachment.svg" alt="attachment icon" />
-                                <span className="action-title">Attachment</span>
-                            </button>
-                            {action === 'attachment' && <TaskAction action="attach" {...taskActionProps} />}
-                        </div>
-                        <div className="task-action-container">
-                            <button className="action" name="location" onClick={onSetAction}>
-                                <img className="location-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/location.svg" alt="location icon" />
-                                <span className="action-title">Location</span>
-                            </button>
-                            {/* Enter location action rendering */}
-                        </div>
-                        <div className="task-action-container">
-                            <button className="action" name="cover" onClick={onSetAction}>
-                                <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
-                                <span className="action-title">Cover</span>
-                            </button>
-                            {action === 'cover' && <TaskAction action="cover" {...taskActionProps} />}
-                        </div>
-
-                        <hr className='sidebar-hr' />
-
-                        <button className="action remove-task" onClick={onRemoveTask}>
-                            <img className="icon" src="../../../src/assets/imgs/TaskDetails-icons/trash.svg" alt="close icon" />
-                            <span className="action-title">Remove task</span>
-                        </button>
-
-                    </section>
-                </section>
-            </form>
-        </div >
-    );
+                </form>
+            </div >
+        );
+    }
 }

@@ -322,6 +322,7 @@
                     align-items: flex-start;
 
                     margin-block-end: 24px;
+                    gap: em(8);
 
                     .attachments-icon {
                         left: -36px;
@@ -341,26 +342,67 @@
                         align-items: flex-start;
 
                         .attachment {
+                            display: flex;
+                            align-items: center;
+                            font-size: em(14);
+                            width: em(512);
+
                             .attachment-thumbnail {
                                 height: em(80);
                             }
 
                             .attachment-details {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: flex-start;
+                                padding: em(8) em(8) em(8) em(16);
 
                                 .attachment-header {
-                                   
+                                    .attachment-url {
+                                        word-break: break-all;
+                                    }
                                 }
-                                .attachment-main{
-                                    
-                                }
-                                .attachment-remove-cover{
+
+                                .attachment-main {
+                                    display: flex;
+                                    align-items: center;
+                                    flex-wrap: wrap;
+
+                                    .attachment-added-at {}
+
+                                    .attachment-links {
+                                        list-style: revert;
+                                        padding-inline-start: em(22);
+                                        display: flex;
+                                        align-items: center;
+                                        gap: em(22);
+                                        margin: 0;
+
+                                        .attachment-link {
+                                            text-decoration: underline;
+
+                                            &:hover {
+                                                cursor: pointer;
+                                            }
+                                        }
+                                    }
 
                                 }
-                                
+
+                                .attachment-remove-cover {
+                                    .attachment-remove-cover-icon {
+                                        position: static;
+                                    }
+
+                                    .attachment-span-remove-cover {}
+                                }
+
                             }
                         }
                     }
                 }
+
+
 
                 .activity-container {
                     position: relative;
