@@ -181,7 +181,7 @@
 
                         .arrow-down {
                             position: absolute;
-                            right: 13px;
+                            right: 20px;
                             width: 16px;
                             height: 16px;
                             filter: invert(73%) sepia(21%) saturate(206%) hue-rotate(170deg) brightness(90%) contrast(90%);
@@ -190,14 +190,13 @@
                         .checkbox {
                             vertical-align: middle;
                             margin: auto;
-                            margin-inline-end: em(6);
                         }
 
 
                         .date-input {
                             font-family: inherit;
-                            padding-inline: 0px 20px;
-                            width: 138px;
+                            padding-inline-end: 6px;
+                            width: 132px;
 
                             background-color: transparent;
                             color: $txtclr1;
@@ -214,6 +213,16 @@
                             &:hover {
                                 cursor: pointer;
                             }
+                        }
+
+                        .inside-input-status {
+                            color: $bgclr1;
+                            margin: auto 20px auto 0px;
+                            padding: 0 4px;
+                            font-size: 12px;
+                            line-height: 16px;
+
+                            border-radius: 2px;
                         }
                     }
                 }
@@ -443,7 +452,7 @@
 
                         .user-img-activity-input {
                             position: absolute;
-                            top: 17px;
+                            top: 16px;
                             left: -40px;
 
                             width: 32px;
@@ -474,19 +483,16 @@
                         flex-direction: column;
                         padding: 8px 0;
 
-                        span {
+                        .activity-title-text {
+                            font-size: 1em;
+                            line-height: 20px;
+                            font-weight: 600;
                             margin-block-end: 4px;
                         }
                     }
 
                     .activity-icon {
                         left: -32px;
-                    }
-
-                    span {
-                        font-size: 1em;
-                        line-height: 20px;
-                        font-weight: 600;
                     }
 
                     & input {
@@ -580,6 +586,19 @@
         padding: 8px 0;
 
         width: 510px;
+
+        p {
+            font-size: .875em;
+            font-weight: 700;
+            margin: 0;
+
+        }
+
+        .comment-timestamp {
+            font-size: .75rem;
+            color: #9FADBC;
+            font-weight: 400;
+        }
 
         .member-img-comment {
             position: absolute;

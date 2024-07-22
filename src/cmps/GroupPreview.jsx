@@ -5,6 +5,7 @@ import { updateBoard } from '../store/actions/board.actions'
 import { GroupPreviewHeader } from './GroupPreviewHeader'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import autosize from 'autosize';
+import { getFormattedShortTime } from '../services/util.service'
 
 
 export function GroupPreview({ group, boardId, board, setBoard }) {
@@ -151,6 +152,13 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                                 </div>
                                 <div className='task-container3'>
                                     <div className='container3-leftside'>
+                                        {console.log(task)}
+                                        {task.dueDate && (
+                                            <div className="task-timer-container">
+                                                <img src="../../../src/assets/imgs/Icons/clock.svg" alt="clock icon" />
+                                                <span>{getFormattedShortTime(task.dueDate)}</span>
+                                            </div>
+                                        )}
                                         {task.description && task.description.trim() !== '' && (
                                             <img src="../../../src/assets/imgs/Icons/description.svg" alt="description" />
                                         )}

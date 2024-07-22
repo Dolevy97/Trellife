@@ -206,6 +206,8 @@ export function TaskDetails() {
 
     const { title, description, membersIds, labelsIds, style: cover } = taskToEdit;
 
+    console.log(taskToEdit)
+
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
             <form className="task-details" onSubmit={onSubmit} onClick={onTaskDetailsClicked}>
@@ -256,6 +258,7 @@ export function TaskDetails() {
                                         value={getDueDate(taskToEdit.dueDate)}
                                         onChange={onChangeDueDate}
                                     />
+                                    <span className='inside-input-status' style={taskToEdit.status === 'inProgress'? {backgroundColor: '#F5CD47'} : {backgroundColor: '#4BCE97'}}>{taskToEdit.status === 'done' ? 'Complete' : 'Due soon'}</span>
                                     <img className="arrow-down" src="../../../src/assets/imgs/TaskDetails-icons/arrow-down.svg" alt="description icon" />
                                 </div>
                             </div>}
@@ -292,7 +295,7 @@ export function TaskDetails() {
                                 />
                             }
                         </div>
-                        {taskToEdit.attachments ?
+                        {taskToEdit.attachments.length ?
                             <div className="attachments-container">
                                 <img className="attachments-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/paperclip.svg" alt="attachment icon" />
                                 <span>Attachments</span>
@@ -302,7 +305,7 @@ export function TaskDetails() {
                         <div className="activity-container">
                             <div className="activity-title">
                                 <img className="activity-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/activity.svg" alt="activity icon" />
-                                <span>Activity</span>
+                                <span className='activity-title-text'>Activity</span>
                             </div>
                             <div className="input-container">
                                 <img className='user-img-activity-input' src="../../../src/assets/imgs/user-imgs/user-img3.jpg" alt="user" />
@@ -334,7 +337,7 @@ export function TaskDetails() {
                                 {getComments(group.id).map(comment =>
                                     <div className="comment-container">
                                         <img className='member-img-comment' src={comment.byMember.imgUrl} alt="" />
-                                        <h1>{comment.byMember.fullname} <span>{getFormattedTime(comment.createdAt)}</span></h1>
+                                        <p>{comment.byMember.fullname} <span className='comment-timestamp'>{getFormattedTime(comment.createdAt)}</span></p>
                                         <h1 className='comment-txt'>{comment.txt}</h1>
                                     </div>
                                 )}

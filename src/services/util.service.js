@@ -83,3 +83,27 @@ export function getFormattedTime(time) {
 
     return formatter.format(date);
 }
+
+export function getFormattedShortTime(time) {
+    const date = new Date(time)
+    const today = new Date()
+    const currYear = today.getFullYear()
+    const dateYear = date.getFullYear()
+
+    const formatterWithoutYear = new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+        day: 'numeric',
+    })
+
+    const formatterWithYear = new Intl.DateTimeFormat('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+    })
+
+    if (dateYear === currYear) {
+        return formatterWithoutYear.format(date)
+    } else {
+        return formatterWithYear.format(date)
+    }
+}
