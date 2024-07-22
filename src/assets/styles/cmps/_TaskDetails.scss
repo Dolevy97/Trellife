@@ -50,17 +50,17 @@
             top: em(22);
             height: em(24);
             width: em(24);
+            z-index: 3;
 
             &:hover {
                 cursor: pointer;
             }
         }
 
-        .cover {
+        .task-details-cover {
             height: em(116);
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
-            ;
         }
 
         .fs12 {
@@ -284,72 +284,6 @@
                             &:hover {
                                 background-color: #A6C5E229;
                             }
-                        }
-                    }
-
-                    .description {
-                        min-height: 40px;
-                        padding: 8px 12px;
-                        resize: none;
-
-                        border: none;
-                        background-color: #A1BDD914;
-                        color: '$txtclr1';
-                        border-radius: 3px;
-
-                        font-weight: 500;
-                        font-size: .875em;
-                        font-family: inherit;
-                        line-height: 1.25em;
-
-
-                        &.editing {
-                            box-shadow: 0 0 0 1px inset #738496;
-                            background-color: #22272B;
-                            color: $txtclr1;
-                            font-size: 0.875em;
-                            line-height: 1.714;
-                            font-weight: normal;
-                            margin-top: 0.75rem;
-                            margin-bottom: 0px;
-                            letter-spacing: -0.005em;
-
-
-                            &:hover {
-                                cursor: text;
-                            }
-
-                            &:focus-visible {
-                                outline: none;
-                            }
-
-                            &:focus-within {
-                                box-shadow: 0 0 0 2px inset #579DFF;
-                            }
-                        }
-
-                        &::placeholder {
-                            color: $txtclr1;
-                        }
-
-                        &.has-content {
-                            background-color: rgb(50 57 64);
-                            padding: 0;
-                            color: $txtclr1;
-                            font-weight: 400;
-
-                            &:focus-visible {
-                                outline: none;
-                            }
-                        }
-
-                        &:not(.has-content):hover {
-                            cursor: pointer;
-                            background-color: #A6C5E229;
-                        }
-
-                        &:hover {
-                            cursor: pointer;
                         }
                     }
 
@@ -616,7 +550,7 @@
 
         .member-img-comment {
             position: absolute;
-            top: 8px;
+            top: 12px;
             left: -40px;
 
             height: 32px;
@@ -633,6 +567,74 @@
             max-width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+    }
+}
+
+.description-container {
+    .description {
+        min-height: 40px;
+        padding: 8px 12px;
+        resize: none;
+
+        border: none;
+        background-color: #A1BDD914;
+        color: '$txtclr1';
+        border-radius: 3px;
+
+        font-weight: 500;
+        font-size: .875em;
+        font-family: inherit;
+        line-height: 1.25em;
+
+
+        &.editing {
+            box-shadow: 0 0 0 1px inset #738496;
+            background-color: #22272B;
+            color: $txtclr1;
+            font-size: 0.875em;
+            line-height: 1.714;
+            font-weight: normal;
+            margin-top: 0.75rem;
+            margin-bottom: 0px;
+            letter-spacing: -0.005em;
+
+
+            &:hover {
+                cursor: text;
+            }
+
+            &:focus-visible {
+                outline: none;
+            }
+
+            &:focus-within {
+                box-shadow: 0 0 0 2px inset #579DFF;
+            }
+        }
+
+        &::placeholder {
+            color: $txtclr1;
+        }
+
+        &.has-content {
+            background-color: rgb(50 57 64);
+            padding: 0;
+            color: $txtclr1;
+            font-weight: 400;
+
+            &:focus-visible {
+                outline: none;
+            }
+        }
+
+        &:not(.has-content):not(.editing):hover {
+            cursor: pointer;
+            background-color: #A6C5E229;
+        }
+
+        &:hover {
+            cursor: pointer;
         }
     }
 }

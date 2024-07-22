@@ -8,6 +8,7 @@ import { TaskAction } from '../cmps/TaskAction';
 import autosize from 'autosize';
 import { getRandomMember } from '../services/board/board-demo-data.service';
 import { getFormattedTime, makeId } from '../services/util.service';
+import { updateGroup } from '../store/actions/group.actions';
 
 export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
@@ -194,13 +195,22 @@ export function TaskDetails() {
         await updateTask(taskToEdit, groupId, group, board)
     }
 
-    function getComments(groupId) {
+    function getComments(taskId) {
         let comments = board.activities.filter(activity => {
-            return activity.title === 'add comment' && activity.group.id === groupId
+            return activity.title === 'add comment' && activity.task.id === taskId
         })
         if (!comments) return []
         comments = comments.sort((a, b) => b.createdAt - a.createdAt)
         return comments
+    }
+
+    async function onRemoveTask() {
+        const newTasks = group.tasks.filter(task => task.id !== taskToEdit.id)
+        const newGroup = {...group,tasks:newTasks}
+        const savedBoard = await updateGroup(newGroup.id, newGroup, board)
+        onBackdropClicked()
+        // console.log(savedBoard)
+
     }
 
     if (!taskToEdit || !group) return <section>Loading...</section>;
@@ -212,8 +222,8 @@ export function TaskDetails() {
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
             <form className="task-details" onSubmit={onSubmit} onClick={onTaskDetailsClicked}>
-            <img onClick={onBackdropClicked} className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close-white.svg" alt="close icon" />
-                {style && <div className="cover" style={{ backgroundColor: style.backgroundColor }}>
+                <img onClick={onBackdropClicked} className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close-white.svg" alt="close icon" />
+                {style && <div className="task-details-cover" style={{ backgroundColor: style.backgroundColor }}>
 
                 </div>}
                 <header className="task-header">
@@ -271,7 +281,9 @@ export function TaskDetails() {
                             <div className="description-title">
                                 <img className="description-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/description.svg" alt="description icon" />
                                 <span>Description</span>
-                                {!isSettingDescription && description.length ? <button onClick={startSetDescription}>Edit</button> : ''}
+                                {!isSettingDescription && description.length ?
+                                    <button onClick={startSetDescription}>Edit</button>
+                                    : ''}
                             </div>
                             {isSettingDescription ?
                                 <>
@@ -338,7 +350,7 @@ export function TaskDetails() {
                                 }
                             </div>
                             <div className="comments-container">
-                                {getComments(group.id).map(comment =>
+                                {getComments(taskToEdit.id).map(comment =>
                                     <div className="comment-container" key={comment.id}>
                                         <img className='member-img-comment' src={comment.byMember.imgUrl} alt="" />
                                         <p>{comment.byMember.fullname} <span className='comment-timestamp'>{getFormattedTime(comment.createdAt)}</span></p>
@@ -407,8 +419,8 @@ export function TaskDetails() {
                             <span className="action-title">Custom fields</span>
                         </button>
 
-                        <button className="action">
-                            <img className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="close icon" />
+                        <button className="action remove-task" onClick={onRemoveTask}>
+                            <img className="icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="close icon" />
                             <span className="action-title"> Delete</span>
                         </button>
 

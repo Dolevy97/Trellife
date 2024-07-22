@@ -51,13 +51,23 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
 
     async function onUpdateCoverColor({ target }) {
         const backgroundColor = target.style.backgroundColor
-        task = { ...task, style: { ...task.style, backgroundColor } };
+        if (!target.style) {
+            task = { ...task, style: { size: 'head', backgroundColor } };
+        } else {
+            task = { ...task, style: { ...task.style, backgroundColor } };
+        }
         await updateTask(task, group.id, group, board);
     }
 
     async function onUpdateCoverSize({ target }) {
+        if (!task.style) return
         const size = target.name
         task = { ...task, style: { ...task.style, size } };
+        await updateTask(task, group.id, group, board);
+    }
+
+    async function onRemoveCover() {
+        task = { ...task, style: null };
         await updateTask(task, group.id, group, board);
     }
 
@@ -84,6 +94,8 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         document.getElementById('fileInput').click()
     };
 
+
+    // USE TO RENDER THE IMG ATTACHMENT LATER
     // function loadImageFromInput(ev, onImageReady) {
     //     const reader = new FileReader()
     //     reader.onload = function (event) {
@@ -155,7 +167,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                                 <button className="head btn-size" name="head" onClick={onUpdateCoverSize}>Head</button>
                                 <button className="full btn-size" name="full" onClick={onUpdateCoverSize}>Full</button>
                             </div>
-                            {/* <button>Remove cover</button> */}
+                            {task.style && <button className="remove-cover" onClick={onRemoveCover}>Remove cover</button>}
                         </div>
                         <div className="colors-container">
                             <span className="title">Colors</span>
@@ -196,7 +208,6 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                             onChange={onAddAttachment}
                         />
                         <button className="btn-file-upload" onClick={onUpload}>Choose a file</button>
-                        {/* {file && <p>Selected file: {file.name}</p>} */}
                     </div>
                 </>
             }

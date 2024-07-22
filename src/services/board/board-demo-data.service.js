@@ -175,7 +175,7 @@ function _getRandomTaskLabels(board) {
 function _getRandomTaskMembersIds(board) {
     const boardMembersIds = board.members.map(member => member._id)
     const taskMembersIds = []
-    const length = getRandomIntInclusive(0, boardMembersIds.length)
+    const length = getRandomIntInclusive(0, 3)
     for (let i = 0; i < length; i++) {
         const id = boardMembersIds.splice(getRandomIntInclusive(0, boardMembersIds.length - 1), 1)[0]
         taskMembersIds.push(id)
