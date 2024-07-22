@@ -94,6 +94,8 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         document.getElementById('fileInput').click()
     };
 
+
+    // USE TO RENDER THE IMG ATTACHMENT LATER
     // function loadImageFromInput(ev, onImageReady) {
     //     const reader = new FileReader()
     //     reader.onload = function (event) {
@@ -206,7 +208,6 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                             onChange={onAddAttachment}
                         />
                         <button className="btn-file-upload" onClick={onUpload}>Choose a file</button>
-                        {/* {file && <p>Selected file: {file.name}</p>} */}
                     </div>
                 </>
             }
