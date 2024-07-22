@@ -1,3 +1,5 @@
+import { FastAverageColor } from "fast-average-color"
+
 export function makeId(length = 6) {
     var txt = ''
     var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -107,3 +109,17 @@ export function getFormattedShortTime(time) {
         return formatterWithYear.format(date)
     }
 }
+
+// async function getAverageColor() {
+
+//     const fac = new FastAverageColor()
+//     fac.getColorAsync(document.querySelector('img'))
+//         .then(color => {
+//             return color
+//         })
+//         .catch(e => {
+//             console.log(e)
+//             throw (e)
+//         })
+
+// }
