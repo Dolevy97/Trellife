@@ -1,6 +1,7 @@
 import { loadBoard, updateBoard } from "./board.actions"
 
-export async function updateTask(taskToEdit, groupId, group, board) {
+// export async function updateTask(taskToEdit, groupId, group, board) {
+export async function updateTask(taskToEdit, group, board) {
 
     let tasks = group.tasks
     tasks = tasks.map(task => {
@@ -9,9 +10,9 @@ export async function updateTask(taskToEdit, groupId, group, board) {
     })
 
     let groups = board.groups
-    groups = groups.map(group => {
-        if (group.id !== groupId) return group
-        return { ...group, tasks }
+    groups = groups.map(g => {
+        if (g.id !== group.id) return g
+        return { ...g, tasks }
     })
 
     const boardToSave = { ...board, groups }

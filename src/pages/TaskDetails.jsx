@@ -138,7 +138,7 @@ export function TaskDetails() {
     }
 
     async function onSaveDescription() {
-        await updateTask(taskToEdit, groupId, group, board)
+        await updateTask(taskToEdit, group, board)
         setIsSettingDescription(false)
 
     }
@@ -167,7 +167,7 @@ export function TaskDetails() {
         const dateObj = new Date(dateStr)
         const timestamp = dateObj.getTime()
         taskToEdit.dueDate = timestamp
-        await updateTask(taskToEdit, groupId, group, board)
+        await updateTask(taskToEdit, group, board)
 
     }
 
@@ -192,7 +192,7 @@ export function TaskDetails() {
 
     async function onChangeStatus({ target }) {
         taskToEdit.status = target.checked ? 'done' : 'inProgress';
-        await updateTask(taskToEdit, groupId, group, board)
+        await updateTask(taskToEdit, group, board)
     }
 
     function getComments(taskId) {

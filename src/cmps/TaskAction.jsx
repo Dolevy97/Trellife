@@ -31,12 +31,12 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
 
     async function onAddMember(id) {
         task.membersIds.push(id)
-        await updateTask(task, group.id, group, board)
+        await updateTask(task, group, board)
     }
 
     async function onRemoveMember(id) {
         task = { ...task, membersIds: task.membersIds.filter(mId => mId !== id) };
-        await updateTask(task, group.id, group, board);
+        await updateTask(task, group, board)
     }
 
     async function onToggleLabel(ev, id) {
@@ -46,7 +46,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         } else {
             task = { ...task, labelsIds: task.labelsIds.filter(labelId => labelId !== id) }
         }
-        await updateTask(task, group.id, group, board);
+        await updateTask(task, group, board)
     }
 
     async function onUpdateCoverColor({ target }) {
@@ -56,24 +56,24 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         } else {
             task = { ...task, style: { ...task.style, backgroundColor } };
         }
-        await updateTask(task, group.id, group, board);
+        await updateTask(task, group, board)
     }
 
     async function onUpdateCoverIsFull({ target }) {
         if (!task.style) return
         const isFull = JSON.parse(target.name)
         task = { ...task, style: { ...task.style, isFull } };
-        await updateTask(task, group.id, group, board);
+        await updateTask(task, group, board)
     }
 
     async function onRemoveCover() {
         task = { ...task, style: null };
-        await updateTask(task, group.id, group, board);
+        await updateTask(task, group, board)
     }
 
     async function onAddChecklist() {
         task.checklists.push({ id: 'cl' + makeId(), title: checklistInputValue, todos: [] })
-        await updateTask(task, group.id, group, board);
+        await updateTask(task, group, board)
     }
 
     async function onAddAttachment(ev) {
@@ -86,7 +86,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             type: file.type
         }
         task.attachments.push(attachment)
-        await updateTask(task, group.id, group, board)
+        await updateTask(task, group, board)
         onSetAction(ev, true)
     };
 
