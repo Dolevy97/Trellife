@@ -749,6 +749,14 @@
                 background-color: #A1BDD914;
             }
 
+            .todo-actions {
+                display: none;
+            }
+
+            &:hover .todo-actions {
+                display: flex;
+            }
+
             .todo-title {
                 font-size: 0.875em;
                 align-self: center;
