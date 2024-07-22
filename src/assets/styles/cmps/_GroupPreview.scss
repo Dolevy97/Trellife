@@ -97,6 +97,7 @@
                 .task-info-container {
                     // padding: 8px 12px 4px;
                     padding: 8px 12px;
+                    width: 100%;
 
                     span {
                         font-size: 14px;
@@ -131,7 +132,6 @@
                     .task-title-container {
                         display: block;
                         margin-bottom: 4px;
-                        width: 222.05px;
                         overflow: hidden;
                         overflow-wrap: break-word;
                         white-space: normal;
@@ -143,6 +143,7 @@
                         justify-content: space-between;
                         gap: 2px;
                         width: 100%;
+                        flex-wrap: wrap;
 
                         .task-bottom-leftside {
                             display: flex;
@@ -269,8 +270,7 @@
 
                         .members-container {
                             display: flex;
-                            // flex-wrap: wrap;
-                            // justify-content: space-between;
+                            margin-left: auto;
                             gap: 2px;
 
                             .member-thumbnail {

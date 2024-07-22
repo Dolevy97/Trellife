@@ -266,7 +266,7 @@ export function TaskDetails() {
                 <header className="task-header">
                     <img className="card-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/card.svg" alt="card icon" />
                     <span className="task-title">{title}</span>
-                    <span className="task-in-list fs12">in list <span>{group.title}</span></span>
+                    <span className="task-in-list fs12">in list <span style={{ textDecoration: 'underline' }}>{group.title}</span></span>
                 </header>
                 <section className="task-container">
                     <section className="task-content">
