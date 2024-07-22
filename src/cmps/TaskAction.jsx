@@ -6,7 +6,7 @@ import { makeId } from "../services/util.service"
 export function TaskAction({ action, board, group, task, getMemberById, getLabelById, onSetAction }) {
 
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
-    const [file, setFile] = useState(null);
+    const [file, setFile] = useState(null)
 
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -32,14 +32,15 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
     async function onAddMember(id) {
         const updatedTask = {...task}
         updatedTask.membersIds.push(id)
-        await updateTask(updatedTask, group, board)
+        const activityTitle = `added member (id: ${id}) to task (id: ${task.id})`
+        await updateTask(updatedTask, group, board, activityTitle)
     }
-
+    
     async function onRemoveMember(id) {
-        task = { ...task, membersIds: task.membersIds.filter(mId => mId !== id) };
+        task = { ...task, membersIds: task.membersIds.filter(mId => mId !== id) }
         await updateTask(task, group, board)
     }
-
+    
     async function onToggleLabel(ev, id) {
         const { checked } = ev.target
         let updatedTask = {...task}
@@ -54,9 +55,9 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
     async function onUpdateCoverColor({ target }) {
         const backgroundColor = target.style.backgroundColor
         if (!target.style) {
-            task = { ...task, style: { isFull: false, backgroundColor } };
+            task = { ...task, style: { isFull: false, backgroundColor } }
         } else {
-            task = { ...task, style: { ...task.style, backgroundColor } };
+            task = { ...task, style: { ...task.style, backgroundColor } }
         }
         await updateTask(task, group, board)
     }
@@ -64,21 +65,22 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
     async function onUpdateCoverIsFull({ target }) {
         if (!task.style) return
         const isFull = JSON.parse(target.name)
-        task = { ...task, style: { ...task.style, isFull } };
+        task = { ...task, style: { ...task.style, isFull } }
         await updateTask(task, group, board)
     }
 
     async function onRemoveCover() {
-        task = { ...task, style: null };
+        task = { ...task, style: null }
         await updateTask(task, group, board)
     }
 
     async function onAddChecklist() {
         const updatedTask = {...task}
         updatedTask.checklists.push({ id: 'cl' + makeId(), title: checklistInputValue, todos: [] })
-        await updateTask(updatedTask, group, board)
+        const activityTitle = `added ${checklistInputValue} to this card`
+        await updateTask(updatedTask, group, board, activityTitle)
     }
-
+    
     async function onAddAttachment(ev) {
         const { target } = ev
         console.log(target.files[0])
@@ -90,13 +92,14 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         }
         const updatedTask = {...task}
         updatedTask.attachments.push(attachment)
-        await updateTask(updatedTask, group, board)
+        const activityTitle = `attached ${file.name} to this card`
+        await updateTask(updatedTask, group, board, activityTitle)
         onSetAction(ev, true)
-    };
+    }
 
     function onUpload() {
-        document.getElementById('fileInput').click()
-    };
+        document.querySelector('.input-file-upload').click()
+    }
 
 
     // USE TO RENDER THE IMG ATTACHMENT LATER
@@ -207,7 +210,6 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                         <input
                             className="input-file-upload"
                             type="file"
-                            id="fileInput"
                             style={{ display: 'none' }}
                             onChange={onAddAttachment}
                         />

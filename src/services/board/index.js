@@ -49,7 +49,7 @@ function getEmptyTask() {
     return {
         id: 't' + makeId(),
         title: '',
-        status: '',
+        isDone: false,
         priority: '',
         dueDate: null,
         description: '',

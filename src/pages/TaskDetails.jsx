@@ -177,8 +177,8 @@ export function TaskDetails() {
         }
     }
 
-    async function onChangeStatus({ target }) {
-        taskToEdit.status = target.checked ? 'done' : 'inProgress';
+    async function onChangeIsDone({ target }) {
+        taskToEdit.isDone = target.checked
         await updateTask(taskToEdit, group, board)
     }
 
@@ -249,8 +249,8 @@ export function TaskDetails() {
                                         onClick={(ev) => ev.stopPropagation()}
                                         className="checkbox"
                                         type="checkbox"
-                                        onChange={onChangeStatus}
-                                        checked={taskToEdit.status === 'inProgress' ? false : true}
+                                        onChange={onChangeIsDone}
+                                        checked={taskToEdit.isDone}
                                     />
                                     <input
                                         ref={dateInputRef}
@@ -259,7 +259,7 @@ export function TaskDetails() {
                                         value={getDueDate(taskToEdit.dueDate)}
                                         onChange={onChangeDueDate}
                                     />
-                                    <span className='inside-input-status' style={taskToEdit.status === 'inProgress' ? { backgroundColor: '#F5CD47' } : { backgroundColor: '#4BCE97' }}>{taskToEdit.status === 'done' ? 'Complete' : 'Due soon'}</span>
+                                    <span className='inside-input-is-done' style={!taskToEdit.isDone ? { backgroundColor: '#F5CD47' } : { backgroundColor: '#4BCE97' }}>{taskToEdit.isDone ? 'Complete' : 'Due soon'}</span>
                                     <img className="arrow-down" src="../../../src/assets/imgs/TaskDetails-icons/arrow-down.svg" alt="description icon" />
                                 </div>
                             </div>}
@@ -307,7 +307,7 @@ export function TaskDetails() {
                             </div>
                             :
                             ''}
-                        {console.log(taskToEdit.checklists)}
+                        {/* {console.log(taskToEdit.checklists)} */}
                         {/* {taskToEdit.checklists && taskToEdit.checklists.length ?
                             <div className="checklists-container">
                                 {taskToEdit.checklists.map(checklist => {

@@ -184,17 +184,17 @@ export function GroupPreview({ group, boardId }) {
                                     <div className='container3-leftside'>
                                         {task.dueDate && (
                                             <div
-                                                title={task.status === 'done' ? 'This task is complete.' : 'This task is due later.'}
+                                                title={task.isDone ? 'This task is complete.' : 'This task is due later.'}
                                                 className="task-timer-container"
-                                                style={task.status === 'inProgress' ? {} : { backgroundColor: '#4BCE97' }}
+                                                style={!task.isDone ? {} : { backgroundColor: '#4BCE97' }}
                                             >
                                                 <img
                                                     src="../../../src/assets/imgs/Icons/clock.svg"
                                                     alt="clock icon"
-                                                    style={task.status === 'inProgress' ? {} : { filter: 'brightness(0) saturate(100%) invert(9%) sepia(13%) saturate(697%) hue-rotate(169deg) brightness(97%) contrast(91%)' }}
+                                                    style={!task.isDone ? {} : { filter: 'brightness(0) saturate(100%) invert(9%) sepia(13%) saturate(697%) hue-rotate(169deg) brightness(97%) contrast(91%)' }}
                                                 />
                                                 <span
-                                                    style={task.status === 'inProgress' ? {} : { color: '#1d2125' }}
+                                                    style={task.isDone ? {} : { color: '#1d2125' }}
 
                                                 >{getFormattedShortTime(task.dueDate)}</span>
                                             </div>

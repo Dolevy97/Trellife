@@ -49,6 +49,7 @@ function _getRandomActivity(board) {
         group: _getRandomActivityGroup(board),
         // task: _getRandomActivityTask(board)
     }
+
     activity.task = _getRandomActivityTask(activity.group)
     if (activity.title === 'add comment') activity.txt = _getRandomComment()
     activity.group = { id: activity.group.id, title: activity.group.title }
@@ -59,11 +60,11 @@ function _getRandomActivity(board) {
 function _getRandomActivityTask(group) {
     const tasks = group.tasks
     const randTask = tasks[getRandomIntInclusive(0, tasks.length - 1)]
-    const task = {
-        id: randTask.id,
-        title: randTask.title
-    }
-    return task
+    // const task = {
+    //     id: randTask.id,
+    //     title: randTask.title
+    // }
+    return randTask
 }
 
 function _getRandomComment() {
@@ -135,7 +136,7 @@ function _getRandomTask(board) {
     const task = {
         id: 't' + makeId(),
         title: _getRandomTaskName(),
-        status: _getRandomTaskStatus(),
+        isDone: _getRandomTaskIsDone(),
         priority: _getRandomPriority(),
         dueDate: _getRandomDueDate(),
         description: _getRandomTaskDescription(),
@@ -333,10 +334,10 @@ function _getRandomPriority() {
     return 'low'
 }
 
-function _getRandomTaskStatus() {
+function _getRandomTaskIsDone() {
     const randNum = getRandomIntInclusive(1, 2)
-    if (randNum === 1) return 'inProgress'
-    return 'done'
+    if (randNum === 1) return false
+    return true
 }
 
 function _getRandomTaskName() {
