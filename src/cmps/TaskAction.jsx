@@ -30,8 +30,9 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
     }
 
     async function onAddMember(id) {
-        task.membersIds.push(id)
-        await updateTask(task, group, board)
+        const updatedTask = {...task}
+        updatedTask.membersIds.push(id)
+        await updateTask(updatedTask, group, board)
     }
 
     async function onRemoveMember(id) {
@@ -41,13 +42,13 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
 
     async function onToggleLabel(ev, id) {
         const { checked } = ev.target
-        const updatedTask = {...task}
+        let updatedTask = {...task}
         if (checked) {
             updatedTask.labelsIds.push(id)
         } else {
             updatedTask = { ...updatedTask, labelsIds: updatedTask.labelsIds.filter(labelId => labelId !== id) }
         }
-        await updateTask(task, group, board)
+        await updateTask(updatedTask, group, board)
     }
 
     async function onUpdateCoverColor({ target }) {
