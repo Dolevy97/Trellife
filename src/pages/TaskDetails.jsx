@@ -182,6 +182,15 @@ export function TaskDetails() {
         await updateTask(taskToEdit, group, board)
     }
 
+    async function onChangeTodo({ target }, todo, checklist) {
+        console.log(target.checked)
+        console.log(todo)
+        console.log(checklist)
+        const checklistToEdit = taskToEdit.checklists.find(check => check.id === checklist.id)
+        // taskToEdit.status = target.checked ? 'done' : 'inProgress';
+        // await updateTask(taskToEdit, group, board)
+    }
+
     function getComments(taskId) {
         let comments = board.activities.filter(activity => {
             return activity.title === 'add comment' && activity.task.id === taskId
@@ -308,17 +317,46 @@ export function TaskDetails() {
                             :
                             ''}
                         {console.log(taskToEdit.checklists)}
-                        {/* {taskToEdit.checklists && taskToEdit.checklists.length ?
+                        {taskToEdit.checklists && taskToEdit.checklists.length ?
                             <div className="checklists-container">
-                                {taskToEdit.checklists.map(checklist => {
-                                    return (<div className="checklist-container">
-                                        <img className="checklists-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="attachment icon" />
-                                        <span>{checklist.title}</span>
-                                    </div>)
-                                })}
+                                {console.log(taskToEdit)}
+                                {taskToEdit.checklists.length ? taskToEdit.checklists.map(checklist => {
+                                    return (
+                                        <div className="checklist-container" key={checklist.id}>
+                                            <div className="checklist-title-container">
+                                                <img className="checklists-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="attachment icon" />
+                                                <span className='checklist-title'>{checklist.title}</span>
+                                            </div>
+                                            <div className="checklist-progress">
+                                                <span className='progress-percentage'>0%</span>
+                                                <div className="progress-bar">
+                                                    <div className="progress-bar-current"></div>
+                                                </div>
+                                            </div>
+                                            <div className="checklist-items">
+                                                {checklist.todos ? checklist.todos.map(todo => {
+                                                    return (
+                                                        <div className="checklist-item-container" key={todo.id}>
+                                                            <div className="checklist-item-checkbox">
+                                                                <input
+                                                                    className='item-checkbox'
+                                                                    type="checkbox"
+                                                                    name="item-checklist"
+                                                                    value={todo.isDone}
+                                                                    onChange={(ev) => { onChangeTodo(ev, todo, checklist) }} />
+                                                            </div>
+                                                            <div className="checklist-item-details">
+                                                                <span className='todo-title'>{todo.title}</span>
+                                                            </div>
+                                                        </div>)
+                                                }) : ''}
+                                            </div>
+                                        </div>
+                                    )
+                                }) : ''}
                             </div>
                             :
-                            ''} */}
+                            ''}
                         <div className="activity-container">
                             <div className="activity-title">
                                 <img className="activity-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/activity.svg" alt="activity icon" />
