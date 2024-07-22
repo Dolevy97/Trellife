@@ -52,17 +52,17 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
     async function onUpdateCoverColor({ target }) {
         const backgroundColor = target.style.backgroundColor
         if (!target.style) {
-            task = { ...task, style: { size: 'head', backgroundColor } };
+            task = { ...task, style: { isFull: 'head', backgroundColor } };
         } else {
             task = { ...task, style: { ...task.style, backgroundColor } };
         }
         await updateTask(task, group.id, group, board);
     }
 
-    async function onUpdateCoverSize({ target }) {
+    async function onUpdateCoverIsFull({ target }) {
         if (!task.style) return
-        const size = target.name
-        task = { ...task, style: { ...task.style, size } };
+        const isFull = JSON.parse(target.name)
+        task = { ...task, style: { ...task.style, isFull } };
         await updateTask(task, group.id, group, board);
     }
 
@@ -164,8 +164,8 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                         <div className="size-container">
                             <span className="title">Size</span>
                             <div className="size-btns">
-                                <button className="head btn-size" name="head" onClick={onUpdateCoverSize}>Head</button>
-                                <button className="full btn-size" name="full" onClick={onUpdateCoverSize}>Full</button>
+                                <button className="head btn-size" name="false" onClick={onUpdateCoverIsFull}>Head</button>
+                                <button className="full btn-size" name="true" onClick={onUpdateCoverIsFull}>Full</button>
                             </div>
                             {task.style && <button className="remove-cover" onClick={onRemoveCover}>Remove cover</button>}
                         </div>
