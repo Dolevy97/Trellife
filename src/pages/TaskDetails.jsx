@@ -422,7 +422,7 @@ export function TaskDetails() {
 
                         <button className="action remove-task" onClick={onRemoveTask}>
                             <img className="icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="close icon" />
-                            <span className="action-title"> Delete</span>
+                            <span className="action-title">Remove task</span>
                         </button>
 
                     </section>
