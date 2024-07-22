@@ -22,6 +22,7 @@ export function TaskDetails() {
     const [action, setAction] = useState(null)
     const [isSettingDescription, setIsSettingDescription] = useState(false)
     const [isAddingComment, setIsAddingComment] = useState(false)
+    const [isAddingItem, setIsAddingItem] = useState(false)
     const [tempDescription, setTempDescription] = useState('')
     const [commentToEdit, setCommentToEdit] = useState('')
 
@@ -144,7 +145,7 @@ export function TaskDetails() {
             title: 'add comment',
             createdAt: Date.now()
         }
-        const updatedBoard = {...board}
+        const updatedBoard = { ...board }
         updatedBoard.activities.unshift(newActivity)
         await updateBoard(updatedBoard)
         setIsAddingComment(false)
@@ -182,7 +183,7 @@ export function TaskDetails() {
     async function onChangeIsDone({ target }) {
         taskToEdit.isDone = target.checked
         const activityTitle = 'marked the due date ' + target.checked ? 'complete' : 'incomplete'
-        await updateTask(taskToEdit, group, board,activityTitle)
+        await updateTask(taskToEdit, group, board, activityTitle)
     }
 
     async function onChangeTodo({ target }, todo, checklist) {
@@ -222,7 +223,12 @@ export function TaskDetails() {
     function getDonePercentage(checklist) {
         const completedTodos = checklist.todos.filter(todo => todo.isDone).length
         const todosLengthPercent = (completedTodos / checklist.todos.length) * 100
+        if (isNaN(todosLengthPercent)) return 0
         return todosLengthPercent
+    }
+
+    function onAddItem() {
+        console.log(add)
     }
 
     if (!taskToEdit || !group) return <section>Loading...</section>
@@ -374,6 +380,14 @@ export function TaskDetails() {
                                                         </div>)
                                                 }) : ''}
                                             </div>
+                                            <div className="add-item-container">
+                                                <button style={{ display: 'none' }} onClick={() => setIsAddingItem(true)} className="btn-add-item">Add an item</button>
+                                                <textarea className='new-checklist-item'></textarea>
+                                                <div className="checklist-add-controls">
+                                                    <button onClick={onAddItem} className='btn-add'>Add</button>
+                                                    <button onClick={() => setIsAddingItem(false)} className='btn-cancel'>Cancel</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     )
                                 }) : ''}
@@ -477,7 +491,7 @@ export function TaskDetails() {
                         </div>
 
                         <hr className='sidebar-hr' />
-                        
+
                         <button className="action remove-task" onClick={onRemoveTask}>
                             <img className="icon" src="../../../src/assets/imgs/TaskDetails-icons/trash.svg" alt="close icon" />
                             <span className="action-title">Remove task</span>
