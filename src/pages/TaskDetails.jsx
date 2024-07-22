@@ -205,18 +205,21 @@ export function TaskDetails() {
 
     if (!taskToEdit || !group) return <section>Loading...</section>;
 
-    const { title, description, membersIds, labelsIds, style: cover } = taskToEdit;
+    const { title, description, membersIds, labelsIds, style } = taskToEdit;
 
     const taskActionProps = { task: taskToEdit, board, group, onSetAction }
 
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
             <form className="task-details" onSubmit={onSubmit} onClick={onTaskDetailsClicked}>
-                <header className="task-header" style={{ ...cover }}>
+            <img onClick={onBackdropClicked} className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close-white.svg" alt="close icon" />
+                {style && <div className="cover" style={{ backgroundColor: style.backgroundColor }}>
+
+                </div>}
+                <header className="task-header">
                     <img className="card-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/card.svg" alt="card icon" />
                     <span className="task-title">{title}</span>
                     <span className="task-in-list fs12">in list <span>{group.title}</span></span>
-                    <img onClick={onBackdropClicked} className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="close icon" />
                 </header>
                 <section className="task-container">
                     <section className="task-content">
