@@ -1,12 +1,17 @@
 import { useState, useEffect, useRef } from 'react'
 import { updateBoard } from '../store/actions/board.actions'
 import { useSelector } from 'react-redux'
-
-export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,onAddTaskClick }) {
+import { updateGroup } from '../store/actions/group.actions'
+import { GroupAction } from '../cmps/GroupAction';
+export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId, onAddTaskClick }) {
     const board = useSelector(storeState => storeState.boardModule.board)
+
+
 
     const [isEditing, setIsEditing] = useState(false)
     const [newTitle, setNewTitle] = useState(group.title)
+    const [isColorPickerOpen, setIsColorPickerOpen] = useState(false)
+
     const menuRef = useRef(null)
 
     useEffect(() => {
@@ -55,6 +60,8 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
     function toggleOptions(event) {
         event.stopPropagation()
         setOpenMenuGroupId(prevId => prevId === group.id ? null : group.id)
+        setIsColorPickerOpen(false)
+
     }
 
     async function onDeleteGroup() {
@@ -66,19 +73,30 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
         setOpenMenuGroupId(null)
     }
 
+    async function handleColorChange(color) {
+        const updatedGroup = {
+            ...group,
+            style: { ...group.style, backgroundColor: color }
+        }
+      const newBoard =  await updateGroup(updatedGroup.id, updatedGroup, board)
+        setIsColorPickerOpen(false)
+        setOpenMenuGroupId(null)
+        console.log(newBoard);
+    }
+
     return (
-        <header className='group-preview-header'>
+        <header className='group-preview-header' >
             {isEditing ? (
                 <input
                     type="text"
                     value={newTitle}
-                    onChange={(e)=> setNewTitle(e.target.value)}
+                    onChange={(e) => setNewTitle(e.target.value)}
                     onBlur={handleTitleBlur}
                     onKeyPress={handleTitleKeyPress}
                     autoFocus
                 />
             ) : (
-                <span onClick={()=>setIsEditing(true)}>{group.title}</span>
+                <span onClick={() => setIsEditing(true)}>{group.title}</span>
             )}
             <div className='header-svg-container'>
                 <img className='' src="../../../src/assets/imgs/Icons/collapse.svg" alt="collapse" />
@@ -99,7 +117,16 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
                         </div>
                     </header>
                     <p><span onClick={onAddTaskClick}>Add task</span></p>
-                    <p><span>Pick color</span></p>
+                    <p><span onClick={() => {
+                        console.log("Color picker state before:", isColorPickerOpen);
+                        setIsColorPickerOpen(!isColorPickerOpen);
+                        console.log("Color picker state after:", !isColorPickerOpen);
+                    }}>Pick color</span></p>
+                    <GroupAction
+                        onColorChange={handleColorChange}
+                        isOpen={isColorPickerOpen}
+                        onClose={() => setIsColorPickerOpen(false)}
+                    />
                     <footer className='options-menu-footer'>
                         <span onClick={onDeleteGroup}>Delete</span>
                     </footer>
