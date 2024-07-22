@@ -50,8 +50,14 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
     }
 
     async function onUpdateCoverColor({ target }) {
-        const color = target.style.backgroundColor
-        task = { ...task, style: { backgroundColor: color } };
+        const backgroundColor = target.style.backgroundColor
+        task = { ...task, style: { ...task.style, backgroundColor } };
+        await updateTask(task, group.id, group, board);
+    }
+
+    async function onUpdateCoverSize({ target }) {
+        const size = target.name
+        task = { ...task, style: { ...task.style, size } };
         await updateTask(task, group.id, group, board);
     }
 
@@ -92,7 +98,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         <section className="task-action" onClick={(ev) => ev.stopPropagation()}>
             <header className="action-header">
                 {action.charAt(0).toUpperCase() + action.substring(1, action.length)}
-           <div onClick={(ev)=>onSetAction(ev,true)} className="close-action-container"> <img className="close-action icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" /> </div>
+                <div onClick={(ev) => onSetAction(ev, true)} className="close-action-container"> <img className="close-action icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" /> </div>
             </header>
             {(action === 'members' || action === 'labels') && <input className="text" placeholder={`Search ${action}`} />}
             {action === 'members' &&
@@ -143,18 +149,28 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             {action === 'cover' &&
                 <>
                     <div className="cover">
-                        <span className="title">Colors</span>
-                        <div className="colors">
-                            <div className="color" style={{ backgroundColor: '#206e4e' }} onClick={onUpdateCoverColor}></div>
-                            <div className="color" style={{ backgroundColor: '#7f5f02' }} onClick={onUpdateCoverColor}></div>
-                            <div className="color" style={{ backgroundColor: '#a64700' }} onClick={onUpdateCoverColor}></div>
-                            <div className="color" style={{ backgroundColor: '#ae2e24' }} onClick={onUpdateCoverColor}></div>
-                            <div className="color" style={{ backgroundColor: '#5e4db2' }} onClick={onUpdateCoverColor}></div>
-                            <div className="color" style={{ backgroundColor: '#0055cc' }} onClick={onUpdateCoverColor}></div>
-                            <div className="color" style={{ backgroundColor: '#1f6a83' }} onClick={onUpdateCoverColor}></div>
-                            <div className="color" style={{ backgroundColor: '#4d6b1f' }} onClick={onUpdateCoverColor}></div>
-                            <div className="color" style={{ backgroundColor: '#943d73' }} onClick={onUpdateCoverColor}></div>
-                            <div className="color" style={{ backgroundColor: '#596773' }} onClick={onUpdateCoverColor}></div>
+                        <div className="size-container">
+                            <span className="title">Size</span>
+                            <div className="size-btns">
+                                <button className="head btn-size" name="head" onClick={onUpdateCoverSize}>Head</button>
+                                <button className="full btn-size" name="full" onClick={onUpdateCoverSize}>Full</button>
+                            </div>
+                            {/* <button>Remove cover</button> */}
+                        </div>
+                        <div className="colors-container">
+                            <span className="title">Colors</span>
+                            <div className="colors">
+                                <div className="color" style={{ backgroundColor: '#206e4e' }} onClick={onUpdateCoverColor}></div>
+                                <div className="color" style={{ backgroundColor: '#7f5f02' }} onClick={onUpdateCoverColor}></div>
+                                <div className="color" style={{ backgroundColor: '#a64700' }} onClick={onUpdateCoverColor}></div>
+                                <div className="color" style={{ backgroundColor: '#ae2e24' }} onClick={onUpdateCoverColor}></div>
+                                <div className="color" style={{ backgroundColor: '#5e4db2' }} onClick={onUpdateCoverColor}></div>
+                                <div className="color" style={{ backgroundColor: '#0055cc' }} onClick={onUpdateCoverColor}></div>
+                                <div className="color" style={{ backgroundColor: '#1f6a83' }} onClick={onUpdateCoverColor}></div>
+                                <div className="color" style={{ backgroundColor: '#4d6b1f' }} onClick={onUpdateCoverColor}></div>
+                                <div className="color" style={{ backgroundColor: '#943d73' }} onClick={onUpdateCoverColor}></div>
+                                <div className="color" style={{ backgroundColor: '#596773' }} onClick={onUpdateCoverColor}></div>
+                            </div>
                         </div>
                     </div>
                 </>
@@ -162,8 +178,8 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             {action === 'add checklist' &&
                 <>
                     <div className="checklist">
-                    <span className="title">Title</span>
-                    <input className="text" value={checklistInputValue} onChange={(ev) => setChecklistInputValue(ev.target.value)} />
+                        <span className="title">Title</span>
+                        <input className="text" value={checklistInputValue} onChange={(ev) => setChecklistInputValue(ev.target.value)} />
                     </div>
                     <button className="add-checklist" onClick={onAddChecklist}>Add</button>
                 </>
@@ -171,7 +187,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             {action === 'attach' &&
                 <>
                     <div className="attachment">
-                    <span className="title">Attach a file from your computer</span>
+                        <span className="title">Attach a file from your computer</span>
                         <input
                             className="input-file-upload"
                             type="file"
