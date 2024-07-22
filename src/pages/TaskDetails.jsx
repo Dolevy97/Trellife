@@ -24,6 +24,9 @@ export function TaskDetails() {
     const [isSettingDescription, setIsSettingDescription] = useState(false)
     const [isAddingComment, setIsAddingComment] = useState(false)
     const [isAddingItem, setIsAddingItem] = useState(false)
+    const [isTodoMenuOpen, setIsTodoMenuOpen] = useState(false)
+    const [todoMenuId, setTodoMenuId] = useState(null)
+    const [todoMenuPosition, setTodoMenuPosition] = useState({})
     const [tempDescription, setTempDescription] = useState('')
     const [commentToEdit, setCommentToEdit] = useState('')
 
@@ -129,7 +132,6 @@ export function TaskDetails() {
     async function onSaveDescription() {
         await updateTask(taskToEdit, group, board)
         setIsSettingDescription(false)
-
     }
 
     function cancelSetDescription() {
@@ -225,11 +227,11 @@ export function TaskDetails() {
         const completedTodos = checklist.todos.filter(todo => todo.isDone).length
         const todosLengthPercent = (completedTodos / checklist.todos.length) * 100
         if (isNaN(todosLengthPercent)) return 0
-        return todosLengthPercent
+        return todosLengthPercent.toFixed(0)
     }
 
     async function onAddItem(checklist) {
-
+        if (!checklistItem.current.value) return
         const newTodo = {
             id: makeId(),
             title: checklistItem.current.value,
@@ -248,6 +250,33 @@ export function TaskDetails() {
         const checklistIndex = taskToEdit.checklists.findIndex(checklist => checklist.id === checklistId)
         taskToEdit.checklists.splice(checklistIndex, 1)
         await updateTask(taskToEdit, group, board)
+    }
+
+    function onClickMenu(ev, taskId) {
+        ev.stopPropagation()
+        const rect = ev.target.getBoundingClientRect()
+        setTodoMenuPosition({ top: rect.bottom, left: rect.left })
+        setTodoMenuId(taskId)
+        setIsTodoMenuOpen(true)
+    }
+
+    async function onDeleteTodo(ev, checklist) {
+        if (!todoMenuId) return
+        ev.stopPropagation()
+    
+        const updatedTask = { ...taskToEdit }
+        const checklistIndex = updatedTask.checklists.findIndex(check => check.id === checklist.id)
+    
+        if (checklistIndex !== -1) {
+            updatedTask.checklists = [...updatedTask.checklists]
+            updatedTask.checklists[checklistIndex] = {
+                ...updatedTask.checklists[checklistIndex],
+                todos: updatedTask.checklists[checklistIndex].todos.filter(todo => todo.id !== todoMenuId)
+            }
+        }
+    
+        await updateTask(updatedTask, group, board)
+        setIsTodoMenuOpen(false)
     }
 
     if (!taskToEdit || !group) return <section>Loading...</section>
@@ -355,7 +384,7 @@ export function TaskDetails() {
                         {taskToEdit.attachments && taskToEdit.attachments.length ?
                             <div className="attachments-container">
                                 <img className="attachments-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/paperclip.svg" alt="attachment icon" />
-                                <span>Attachments</span>
+                                <span className='attachments-title'>Attachments</span>
                                 <div className="attachments">
                                     {taskToEdit.attachments.map(a => <img className="attachment" src={a.url} />)}
                                 </div>
@@ -386,25 +415,48 @@ export function TaskDetails() {
                                                 </div>
                                             </div>
                                             <div className="checklist-items">
-                                                {checklist.todos ? checklist.todos.map(todo => {
-                                                    return (
-                                                        <div className="checklist-item-container" key={todo.id}>
-                                                            <div className="checklist-item-checkbox">
-                                                                <input
-                                                                    className='item-checkbox'
-                                                                    type="checkbox"
-                                                                    name="item-checklist"
-                                                                    checked={todo.isDone}
-                                                                    onChange={(ev) => { onChangeTodo(ev, todo, checklist) }} />
+                                                {checklist.todos ? checklist.todos.map(todo => (
+                                                    <div className="checklist-item-container" key={todo.id}>
+                                                        <div className="checklist-item-checkbox">
+                                                            <input
+                                                                className='item-checkbox'
+                                                                type="checkbox"
+                                                                name="item-checklist"
+                                                                checked={todo.isDone}
+                                                                onChange={(ev) => { onChangeTodo(ev, todo, checklist) }} />
+                                                        </div>
+                                                        <div
+                                                            className="checklist-item-details"
+                                                            style={todo.isDone ? { textDecoration: 'line-through' } : {}}>
+                                                            <div className="todo-actions">
+                                                                <div className="action-container">
+                                                                    <img onClick={(ev) => onClickMenu(ev, todo.id)} src="../../../src/assets/imgs/TaskDetails-icons/3dots.svg" alt="" />
+                                                                </div>
                                                             </div>
-                                                            <div
-                                                                className="checklist-item-details"
-                                                                style={todo.isDone ? { textDecoration: 'line-through' } : {}}
-                                                            >
-                                                                <span className='todo-title'>{todo.title}</span>
-                                                            </div>
-                                                        </div>)
-                                                }) : ''}
+                                                            <span className='todo-title'>{todo.title}</span>
+                                                        </div>
+                                                    </div>
+                                                )) : ''}
+
+                                                {isTodoMenuOpen && todoMenuPosition && (
+                                                    <article
+                                                        className="item-actions"
+                                                        style={{
+                                                            position: 'fixed',
+                                                            top: `${todoMenuPosition.top + 10}px`,
+                                                            left: `${todoMenuPosition.left - 5}px`,
+                                                            right: 'auto',
+                                                            bottom: 'auto'
+                                                        }}>
+                                                        <header className="item-actions-header">
+                                                            <h2>Item actions</h2>
+                                                            <button><img onClick={() => setIsTodoMenuOpen(false)} src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="" /></button>
+                                                        </header>
+                                                        <div className="item-actions-body">
+                                                            <button onClick={(ev) => onDeleteTodo(ev, checklist)} className='item-action'>Delete</button>
+                                                        </div>
+                                                    </article>
+                                                )}
                                             </div>
 
                                             <div className="add-item-container">

@@ -25,6 +25,9 @@
 
 
     .task-details {
+        button {
+            font-family: inherit;
+        }
         position: relative;
         min-height: em(600, 16);
         width: em(768, 16);
@@ -326,7 +329,7 @@
                         height: 24px;
                     }
 
-                    span {
+                    .attachments-title {
                         font-size: 1em;
                         line-height: 20px;
                         font-weight: 600;
@@ -348,9 +351,8 @@
 
                                     .link-icon {}
                                 }
-                                .attachment-main{
-                                    
-                                }
+
+                                .attachment-main {}
                             }
                         }
                     }
@@ -663,6 +665,8 @@
 }
 
 .checklist-items {
+    position: relative;
+
 
     & .checklist-item-container {
         position: relative;
@@ -731,8 +735,10 @@
         }
 
         & .checklist-item-details {
+            position: relative;
+
             display: inline-flex;
-            width: 100%;
+            width: 101.5%;
 
             margin: 0 0 0 -8px;
             padding: 6px 8px;
@@ -744,6 +750,7 @@
 
             &:hover {
                 background-color: #A1BDD914;
+                cursor: pointer;
             }
 
             .todo-actions {
@@ -752,6 +759,38 @@
 
             &:hover .todo-actions {
                 display: flex;
+                align-items: center;
+
+                position: absolute;
+                right: 9px;
+                top: 4px;
+
+                .action-container {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    width: 26px;
+                    height: 26px;
+                    border-radius: 50%;
+
+                    background-color: #434E57;
+
+                    &:hover {
+                        background-color: #4D5964;
+                    }
+                }
+
+                img {
+                    position: relative;
+
+                    height: 20px;
+                    width: 20px;
+
+                    font-size: 16px;
+                    line-height: 20px;
+                }
+
             }
 
             .todo-title {
@@ -948,6 +987,99 @@
                         background-color: #A6C5E229;
                     }
                 }
+            }
+        }
+    }
+}
+
+.item-actions {
+    width: 304px;
+
+    color: $txtclr1;
+    background-color: #282E33;
+    box-shadow: 0px 8px 12px #091e4226, 0px 0px 1px #091e424f;
+    border-radius: 8px;
+
+    z-index: 10;
+
+    .item-actions-header {
+        display: grid;
+        position: relative;
+        grid-template-columns: 32px 1fr 32px;
+        align-items: center;
+        padding: 4px 8px;
+        text-align: center;
+
+        h2 {
+            display: block;
+            position: relative;
+            grid-column: 1 / span 3;
+            grid-row: 1;
+            height: 40px;
+            margin: 0;
+            padding: 0 32px;
+            overflow: hidden;
+            color: $txtclr2;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: -0.003em;
+            line-height: 40px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        button {
+            @include btn;
+            background-color: transparent;
+            grid-column: 3;
+            grid-row: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+
+            &:hover {
+                background-color: #A6C5E229;
+                cursor: pointer;
+            }
+
+            img {
+                width: 16px;
+                height: 16px;
+                filter: brightness(0) saturate(100%) invert(68%) sepia(28%) saturate(212%) hue-rotate(170deg) brightness(86%) contrast(81%);
+            }
+        }
+    }
+
+    .item-actions-body {
+        max-height: 1162px;
+
+        .item-action {
+            @include btn; 
+            
+            display: block;
+            position: relative;
+            width: 100%;
+            margin: unset;
+            padding: 6px 12px;
+            background-color: unset;
+            font-weight: normal;
+            text-align: left;
+
+            color: $txtclr1;
+            font-size: 14px;
+            cursor: pointer;
+
+            transition: background-color 0s;
+
+            &:last-child {
+                margin-block-end: 8px;
+            }
+
+            &:hover {
+                background-color :#A6C5E229;
             }
         }
     }
