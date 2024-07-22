@@ -154,7 +154,7 @@ function getRandomTaskStyle() {
     if (randNum > 1) {
         return null
     }
-    return { backgroundColor: getRandomColor() }
+    return { backgroundColor: getRandomColor(), size: getRandomIntInclusive(1, 2) === 1 ? 'full' : 'head' }
 }
 
 function _getRandomTaskMember(board) {
