@@ -213,7 +213,7 @@ export function TaskDetails() {
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
             <form className="task-details" onSubmit={onSubmit} onClick={onTaskDetailsClicked}>
             <img onClick={onBackdropClicked} className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close-white.svg" alt="close icon" />
-                {style && <div className="cover" style={{ backgroundColor: style.backgroundColor }}>
+                {style && <div className="task-details-cover" style={{ backgroundColor: style.backgroundColor }}>
 
                 </div>}
                 <header className="task-header">
