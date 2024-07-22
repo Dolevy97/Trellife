@@ -61,15 +61,21 @@ export function BoardDetails() {
 
   async function handleOnDragEnd(result) {
     if (!result.destination) return
-
+    const { source, destination, type } = result
     const updatedGroups = Array.from(board.groups)
-    const [reorderedItem] = updatedGroups.splice(result.source.index, 1)
-    updatedGroups.splice(result.destination.index, 0, reorderedItem)
-
-    const updatedBoard = { ...board, groups: updatedGroups }
-
+  
+    if (type === 'GROUP') {
+      const [reorderedGroup] = updatedGroups.splice(source.index, 1)
+      updatedGroups.splice(destination.index, 0, reorderedGroup)
+    } else if (type === 'TASK') {
+      const sourceGroup = updatedGroups.find(g => g.id === source.droppableId)
+      const destGroup = updatedGroups.find(g => g.id === destination.droppableId)
+      const [movedTask] = sourceGroup.tasks.splice(source.index, 1)
+      destGroup.tasks.splice(destination.index, 0, movedTask)
+    }
+  
     try {
-      await updateBoard(updatedBoard)
+      await updateBoard({ ...board, groups: updatedGroups })
     } catch (err) {
       console.error('Failed to update board:', err)
     }
@@ -90,12 +96,12 @@ export function BoardDetails() {
       <BoardDetailsHeader />
       <section className="group-list-container" style={{ background: board.style.background, backgroundSize: 'cover' }}>
         <DragDropContext onDragEnd={handleOnDragEnd}>
-          <Droppable droppableId='groups' direction='horizontal'>
+          <Droppable droppableId='groups' direction='horizontal'  type='GROUP'>
             {(provided) => (
               board && (
                 <div className='group-container' {...provided.droppableProps} ref={provided.innerRef}>
                   {groups.map((group, index) => (
-                    <Draggable key={group.id} draggableId={group.id.toString()} index={index}>
+                    <Draggable key={group.id} draggableId={group.id.toString()} index={index}  type='GROUP'>
                       {(provided, snapshot) => (
                         <div
                           ref={provided.innerRef}
@@ -107,6 +113,8 @@ export function BoardDetails() {
                             key={group.id}
                             boardId={boardId}
                             group={group}
+                            handleOnDragEnd={handleOnDragEnd}
+
                           />
                         </div>
                       )}
