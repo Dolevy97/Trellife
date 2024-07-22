@@ -26,3 +26,28 @@ export async function updateTask(taskToEdit, group, board) {
         console.log('err: ' + er)
     }
 }
+
+
+export async function addTask(newTaskTitle, group, board) {
+    try {
+        const newTask = boardService.getEmptyTask()
+        newTask.title = newTaskTitle.trim()
+
+        const updatedGroup = {
+            ...group,
+            tasks: [...group.tasks, newTask]
+        }
+
+        const updatedBoard = {
+            ...board,
+            groups: board.groups.map(g => g.id === group.id ? updatedGroup : g)
+        }
+
+        await updateBoard(updatedBoard)
+        const newBoard = await loadBoard(updatedBoard._id)
+
+        return newBoard
+    } catch (error) {
+        console.error('Failed to add task:', error)
+    }
+}

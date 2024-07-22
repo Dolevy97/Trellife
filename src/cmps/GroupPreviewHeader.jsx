@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { updateBoard } from '../store/actions/board.actions'
 import { useSelector } from 'react-redux'
 
-export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId }) {
+export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,onAddTaskClick }) {
     const board = useSelector(storeState => storeState.boardModule.board)
 
     const [isEditing, setIsEditing] = useState(false)
@@ -98,7 +98,7 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId 
                             <img src="../../../src/assets/imgs/Icons/close.svg" alt="" />
                         </div>
                     </header>
-                    <p><span>Add card</span></p>
+                    <p><span onClick={onAddTaskClick}>Add task</span></p>
                     <p><span>Pick color</span></p>
                     <footer className='options-menu-footer'>
                         <span onClick={onDeleteGroup}>Delete</span>
