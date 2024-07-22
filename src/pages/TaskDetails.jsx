@@ -209,8 +209,6 @@ export function TaskDetails() {
         const newGroup = {...group,tasks:newTasks}
         const savedBoard = await updateGroup(newGroup.id, newGroup, board)
         onBackdropClicked()
-        // console.log(savedBoard)
-
     }
 
     if (!taskToEdit || !group) return <section>Loading...</section>;

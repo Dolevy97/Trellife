@@ -123,6 +123,9 @@ export function GroupPreview({ group, boardId }) {
         const group = board.groups.find(group => group.id === groupId);
         const task = group.tasks.find(task => task.id === taskId);
         const doneInChecklist = task.checklists.map(checklist => {
+            if (!Array.isArray(checklist.todos)) {
+                return { ...checklist, todos: [] }
+            }
             return {
                 ...checklist,
                 todos: checklist.todos.filter(todo => todo.isDone)
