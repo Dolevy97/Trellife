@@ -7,7 +7,7 @@
     max-height: calc(100vh - 201px);
     box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
 
-    .group-preview-tasks {
+    .group-preview {
         display: flex;
         z-index: 1;
         flex: 1 1 auto;
@@ -79,7 +79,7 @@
                 display: flex;
             }
 
-            .task-preview {
+            .task-inner-container {
                 display: flex;
                 flex-direction: column;
                 align-items: flex-start;
@@ -106,7 +106,7 @@
 
                     }
 
-                    .task-container1 {
+                    .task-label-container {
                         display: flex;
                         flex-wrap: wrap;
                         gap: 4px;
@@ -127,7 +127,7 @@
                         }
                     }
 
-                    .task-container2 {
+                    .task-title-container {
                         display: block;
                         margin-bottom: 4px;
                         width: 222.05px;
@@ -136,7 +136,7 @@
                         white-space: normal;
                     }
 
-                    .task-container3 {
+                    .task-bottom-container {
                         display: flex;
                         align-items: center;
                         justify-content: space-between;

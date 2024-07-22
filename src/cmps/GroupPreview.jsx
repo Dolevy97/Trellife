@@ -143,11 +143,11 @@ export function GroupPreview({ group, boardId }) {
                 openMenuGroupId={openMenuGroupId}
                 setOpenMenuGroupId={setOpenMenuGroupId}
             />
-            <div className="group-preview-tasks">
+            <div className="group-preview">
                 {tasks.map(task => (
                     <div key={task.id} className="task-container" onClick={() => handleTaskClick(task.id)}>
                         <div
-                            className='task-preview'
+                            className='task-inner-container'
                             style={task.style && task.style.isFull ? { backgroundColor: task.style.backgroundColor, borderRadius: '8px' } : {}}                        >
                              {task.style && !task.style.isFull && (
                                 <section className='task-cover-container' style={{ ...task.style }}>
@@ -156,7 +156,7 @@ export function GroupPreview({ group, boardId }) {
 
                             <section className='task-info-container'>
                             {(!task.style || !task.style.isFull )&& (
-                                <div className='task-container1'>
+                                <div className='task-label-container'>
                                     {task.labelsIds && task.labelsIds.map(id => {
                                         const label = getLabelById(id)
                                         return label && (
@@ -172,7 +172,7 @@ export function GroupPreview({ group, boardId }) {
                                     })}
                                 </div>)}
 
-                                <div className='task-container2'>
+                                <div className='task-title-container'>
                                     <span>{task.title}</span>
                                 </div>
 
@@ -180,7 +180,7 @@ export function GroupPreview({ group, boardId }) {
                                     <img src="../../../src\assets\imgs\Icons\pen.svg" />
                                 </div>
                                 {(!task.style || !task.style.isFull )&& (
-                                <div className='task-container3'>
+                                <div className='task-bottom-container'>
                                     <div className='container3-leftside'>
                                         {task.dueDate && (
                                             <div
