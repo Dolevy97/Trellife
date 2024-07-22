@@ -50,7 +50,7 @@
         }
     }
 
-    span {
+    .header-title {
         font-weight: 600;
         font-size: 14px;
         color: $textclr2;
@@ -72,18 +72,20 @@
         position: absolute;
         top: 40px;
         left: 235px;
+
+        display: flex;
+        flex-direction: column;
+
         background-color: #222a2b;
         border-radius: 8px;
         box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25);
-        width: 284px;
-        height: 142px;
-        z-index: 10;
-        display: flex;
-        flex-direction: column;
-        padding: 0;
         border: 1px $btnhoverclr solid;
 
-        .options-menu-header {
+        width: 284px;
+        padding-bottom: 2em;
+        z-index: 10;
+
+        .menu-header {
             padding: 9px 12px;
             position: relative;
 
@@ -118,37 +120,104 @@
             }
         }
 
-        p {
-            margin: 0;
-            padding: 4px 6px;
-            cursor: pointer;
-            font-size: 14px;
-            color: $textclr2;
+        .menu-info {
 
-            &:hover {
-                background-color: $btnhoverclr;
-            }
-        }
-
-        .options-menu-footer {
-            position: absolute;
-            bottom: 0;
-            width: 284px;
-
-            border-top: 1px solid $btnhoverclr;
-            margin: 0;
-            padding: 4px 9px;
-            margin-bottom: 8px;
-            cursor: pointer;
-
-            &:hover {
-                background-color: $btnhoverclr;
-            }
-
-            span {
+            >p {
+                margin: 0;
+                padding: 4px 8px;
+                cursor: pointer;
                 font-size: 14px;
                 color: $textclr2;
+
+                &:hover {
+                    background-color: $btnhoverclr;
+                }
+            }
+
+            .color-picker-accordion {
+                margin-bottom: 10px;
+
+                .color-picker-container {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    cursor: pointer;
+                    padding: 4px 8px;
+                    margin-block-end: 0em;
+
+                    &:hover{
+                        color: rgba(255, 255, 255, 0.776);
+                    }
+                    .color-picker-btn {
+                        font-size: 12px;
+                        color: $textclr2;
+                      
+                    }
+
+                    .color-picker-arrow {
+                        padding-right: 10px;
+                    }
+                }
+
+                .color-grid {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 4px;
+                    padding: 4px 8px;
+
+                    .color-option {
+                        width: calc(20% - 4px); // 5 colors per row
+                        height: 36px;
+                        border-radius: 3px;
+                        cursor: pointer;
+
+                        &:hover {
+                            opacity: 0.7;
+                        }
+                    }
+
+                    .remove-group-bgc {
+                        width: 100%;
+                        height: 32px;
+                        margin: 4px 0px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        background-color: rgba(132, 153, 189, 0.08);
+                        border-radius: 3px;
+                        font-size: 14px;
+                        color: $textclr2;
+
+                        &:hover {
+                            background-color: lighten( rgba(132, 153, 189, 0.08), 30%)
+                        }
+                    }
+                }
+            }
+
+            .options-menu-footer {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                border-top: 1px solid $btnhoverclr;
+                padding: 4px 8px;
+                margin-bottom: 8px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: $btnhoverclr;
+                }
+
+                span {
+                    font-size: 14px;
+                    color: $textclr2;
+                }
             }
         }
+
+
     }
 }
