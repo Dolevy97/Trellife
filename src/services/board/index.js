@@ -49,11 +49,11 @@ function getEmptyTask() {
     return {
         id: 't' + makeId(),
         title: '',
-        status: '',
+        isDone: false,
         priority: '',
         dueDate: null,
         description: '',
-        checklists: [{}],
+        checklists: [],
         membersIds: [],
         labelsIds: [],
         byMember: {},

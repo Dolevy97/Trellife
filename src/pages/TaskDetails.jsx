@@ -177,9 +177,18 @@ export function TaskDetails() {
         }
     }
 
-    async function onChangeStatus({ target }) {
-        taskToEdit.status = target.checked ? 'done' : 'inProgress';
+    async function onChangeIsDone({ target }) {
+        taskToEdit.isDone = target.checked
         await updateTask(taskToEdit, group, board)
+    }
+
+    async function onChangeTodo({ target }, todo, checklist) {
+        console.log(target.checked)
+        console.log(todo)
+        console.log(checklist)
+        const checklistToEdit = taskToEdit.checklists.find(check => check.id === checklist.id)
+        // taskToEdit.status = target.checked ? 'done' : 'inProgress';
+        // await updateTask(taskToEdit, group, board)
     }
 
     function getComments(taskId) {
@@ -249,8 +258,8 @@ export function TaskDetails() {
                                         onClick={(ev) => ev.stopPropagation()}
                                         className="checkbox"
                                         type="checkbox"
-                                        onChange={onChangeStatus}
-                                        checked={taskToEdit.status === 'inProgress' ? false : true}
+                                        onChange={onChangeIsDone}
+                                        checked={taskToEdit.isDone}
                                     />
                                     <input
                                         ref={dateInputRef}
@@ -259,7 +268,7 @@ export function TaskDetails() {
                                         value={getDueDate(taskToEdit.dueDate)}
                                         onChange={onChangeDueDate}
                                     />
-                                    <span className='inside-input-status' style={taskToEdit.status === 'inProgress' ? { backgroundColor: '#F5CD47' } : { backgroundColor: '#4BCE97' }}>{taskToEdit.status === 'done' ? 'Complete' : 'Due soon'}</span>
+                                    <span className='inside-input-is-done' style={!taskToEdit.isDone ? { backgroundColor: '#F5CD47' } : { backgroundColor: '#4BCE97' }}>{taskToEdit.isDone ? 'Complete' : 'Due soon'}</span>
                                     <img className="arrow-down" src="../../../src/assets/imgs/TaskDetails-icons/arrow-down.svg" alt="description icon" />
                                 </div>
                             </div>}
@@ -308,17 +317,46 @@ export function TaskDetails() {
                             :
                             ''}
                         {console.log(taskToEdit.checklists)}
-                        {/* {taskToEdit.checklists && taskToEdit.checklists.length ?
+                        {taskToEdit.checklists && taskToEdit.checklists.length ?
                             <div className="checklists-container">
-                                {taskToEdit.checklists.map(checklist => {
-                                    return (<div className="checklist-container">
-                                        <img className="checklists-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="attachment icon" />
-                                        <span>{checklist.title}</span>
-                                    </div>)
-                                })}
+                                {console.log(taskToEdit)}
+                                {taskToEdit.checklists.length ? taskToEdit.checklists.map(checklist => {
+                                    return (
+                                        <div className="checklist-container" key={checklist.id}>
+                                            <div className="checklist-title-container">
+                                                <img className="checklists-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="attachment icon" />
+                                                <span className='checklist-title'>{checklist.title}</span>
+                                            </div>
+                                            <div className="checklist-progress">
+                                                <span className='progress-percentage'>0%</span>
+                                                <div className="progress-bar">
+                                                    <div className="progress-bar-current"></div>
+                                                </div>
+                                            </div>
+                                            <div className="checklist-items">
+                                                {checklist.todos ? checklist.todos.map(todo => {
+                                                    return (
+                                                        <div className="checklist-item-container" key={todo.id}>
+                                                            <div className="checklist-item-checkbox">
+                                                                <input
+                                                                    className='item-checkbox'
+                                                                    type="checkbox"
+                                                                    name="item-checklist"
+                                                                    value={todo.isDone}
+                                                                    onChange={(ev) => { onChangeTodo(ev, todo, checklist) }} />
+                                                            </div>
+                                                            <div className="checklist-item-details">
+                                                                <span className='todo-title'>{todo.title}</span>
+                                                            </div>
+                                                        </div>)
+                                                }) : ''}
+                                            </div>
+                                        </div>
+                                    )
+                                }) : ''}
                             </div>
                             :
-                            ''} */}
+                            ''}
                         <div className="activity-container">
                             <div className="activity-title">
                                 <img className="activity-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/activity.svg" alt="activity icon" />
