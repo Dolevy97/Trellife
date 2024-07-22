@@ -11,8 +11,7 @@ import { BoardDetailsHeader } from '../cmps/BoardDetailsHeader.jsx'
 
 export function BoardDetails() {
   const { boardId } = useParams()
-  const boardFromStore = useSelector(storeState => storeState.boardModule.board)
-  const [board, setBoard] = useState(boardFromStore)
+  const board = useSelector(storeState => storeState.boardModule.board)
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [newGroupTitle, setNewGroupTitle] = useState('')
 
@@ -22,9 +21,9 @@ export function BoardDetails() {
     loadBoard(boardId)
   }, [boardId])
 
-  useEffect(() => {
-    setBoard(boardFromStore)
-  }, [boardFromStore])
+  // useEffect(() => {
+  //   setBoard(boardFromStore)
+  // }, [boardFromStore])
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -51,7 +50,6 @@ export function BoardDetails() {
         groups: [...board.groups, newGroup]
       }
       const savedBoard = await updateBoard(updatedBoard)
-      setBoard(savedBoard)
       setNewGroupTitle('')
 
       if (addGroupRef.current) {
@@ -73,11 +71,9 @@ export function BoardDetails() {
     updatedGroups.splice(result.destination.index, 0, reorderedItem)
 
     const updatedBoard = { ...board, groups: updatedGroups }
-    setBoard(updatedBoard)
 
     try {
       const updatedBoardFromServer = await updateBoard(updatedBoard)
-      setBoard(updatedBoardFromServer)
     } catch (err) {
       console.error('Failed to update board:', err)
     }
@@ -94,8 +90,8 @@ export function BoardDetails() {
   if (!board) return null
 
   return (
-    <section style={{ background: board.style.background }}>
-      <BoardDetailsHeader board={board} setBoard={setBoard} updateBoard={updateBoard} />
+    <section style={{ background: board.style.background, backgroundSize: 'cover' }}>
+      <BoardDetailsHeader  />
 
       <section className="group-list-container" style={{ background: board.style.background, backgroundSize: 'cover' }}>
         <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -116,8 +112,6 @@ export function BoardDetails() {
                             key={group.id}
                             boardId={boardId}
                             group={group}
-                            board={board}
-                            setBoard={setBoard}
                           />
                         </div>
                       )}

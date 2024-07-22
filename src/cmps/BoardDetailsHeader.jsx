@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
+import { updateBoard } from '../store/actions/board.actions'
+import { useSelector } from 'react-redux'
 
-export function BoardDetailsHeader({ board, setBoard, updateBoard }) {
+export function BoardDetailsHeader() {
+  const board = useSelector(storeState => storeState.boardModule.board)
   const [isEditing, setIsEditing] = useState(false)
   const [newTitle, setNewTitle] = useState(board.title)
 
@@ -10,9 +13,6 @@ export function BoardDetailsHeader({ board, setBoard, updateBoard }) {
     }
   }, [board])
 
-  function handleTitleInputChange(event) {
-    setNewTitle(event.target.value)
-  }
 
   async function handleTitleUpdate() {
     let titleToSet = newTitle.trim()
@@ -25,7 +25,6 @@ export function BoardDetailsHeader({ board, setBoard, updateBoard }) {
     }
     try {
       const savedBoard = await updateBoard(updatedBoard)
-      setBoard(savedBoard)
       setNewTitle(titleToSet)
       setIsEditing(false)
     } catch (error) {
@@ -51,11 +50,9 @@ export function BoardDetailsHeader({ board, setBoard, updateBoard }) {
     const updatedBoard = { ...board, isStarred: !board.isStarred }
 
     try {
-      setBoard(updatedBoard)
       await updateBoard(updatedBoard)
     } catch (error) {
       console.error('Failed to update board:', error)
-      setBoard(board)
     }
   }
 

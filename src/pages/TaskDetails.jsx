@@ -339,7 +339,7 @@ export function TaskDetails() {
                             </div>
                             <div className="comments-container">
                                 {getComments(group.id).map(comment =>
-                                    <div className="comment-container">
+                                    <div className="comment-container"  key={comment.id}>
                                         <img className='member-img-comment' src={comment.byMember.imgUrl} alt="" />
                                         <p>{comment.byMember.fullname} <span className='comment-timestamp'>{getFormattedTime(comment.createdAt)}</span></p>
                                         <h1 className='comment-txt'>{comment.txt}</h1>
