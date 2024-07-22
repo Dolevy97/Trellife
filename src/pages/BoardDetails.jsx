@@ -83,6 +83,13 @@ export function BoardDetails() {
     }
   }
 
+  function handleKeyPress(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleAddGroup()
+    }
+  }
+
   const groups = board?.groups || []
   if (!board) return null
 
@@ -127,6 +134,8 @@ export function BoardDetails() {
                           onChange={(e) => setNewGroupTitle(e.target.value)}
                           autoFocus
                           placeholder="Enter list title..."
+                          onKeyPress={handleKeyPress}
+
                         />
                         <div className='addgroup-btns'>
                           <span onClick={handleAddGroup}>Add list</span>

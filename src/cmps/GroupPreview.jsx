@@ -152,7 +152,7 @@ export function GroupPreview({ group, boardId, board, setBoard }) {
                                 </div>
                                 <div className='task-container3'>
                                     <div className='container3-leftside'>
-                                        {console.log(task)}
+                                        {/* {console.log(task)} */}
                                         {task.dueDate && (
                                             <div className="task-timer-container">
                                                 <img src="../../../src/assets/imgs/Icons/clock.svg" alt="clock icon" />
