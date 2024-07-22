@@ -146,14 +146,16 @@ export function GroupPreview({ group, boardId }) {
             <div className="group-preview-tasks">
                 {tasks.map(task => (
                     <div key={task.id} className="task-container" onClick={() => handleTaskClick(task.id)}>
-                        <div className='task-preview'>
-                            {task.style && (
+                        <div
+                            className='task-preview'
+                            style={task.style && task.style.isFull ? { backgroundColor: task.style.backgroundColor, borderRadius: '8px' } : {}}                        >
+                             {task.style && !task.style.isFull && (
                                 <section className='task-cover-container' style={{ ...task.style }}>
                                 </section>
                             )}
 
                             <section className='task-info-container'>
-
+                            {task.style && !task.style.isFull && (
                                 <div className='task-container1'>
                                     {task.labelsIds && task.labelsIds.map(id => {
                                         const label = getLabelById(id)
@@ -168,8 +170,7 @@ export function GroupPreview({ group, boardId }) {
                                             </div>
                                         )
                                     })}
-
-                                </div>
+                                </div>)}
 
                                 <div className='task-container2'>
                                     <span>{task.title}</span>
@@ -178,6 +179,8 @@ export function GroupPreview({ group, boardId }) {
                                 <div className='pen-display'>
                                     <img src="../../../src\assets\imgs\Icons\pen.svg" />
                                 </div>
+                                {console.log(task.style)}
+                                {task.style && !task.style.isFull && (
                                 <div className='task-container3'>
                                     <div className='container3-leftside'>
                                         {task.dueDate && (
@@ -228,7 +231,7 @@ export function GroupPreview({ group, boardId }) {
                                             )
                                         })}
                                     </div>
-                                </div>
+                                </div>)}
 
                             </section>
                         </div>
