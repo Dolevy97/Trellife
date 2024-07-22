@@ -140,7 +140,7 @@ export function BoardDetails() {
                   ) : (
                     <div className='add-group' onClick={() => setIsAddingGroup(true)}>
                       <img src="../../../src/assets/imgs/Icons/add.svg" alt="add" />
-                      <span>Add another list</span>
+                      <span>Add another group</span>
                     </div>
                   )}
                 </div>

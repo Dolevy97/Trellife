@@ -155,7 +155,7 @@ export function GroupPreview({ group, boardId }) {
                             )}
 
                             <section className='task-info-container'>
-                            {task.style && !task.style.isFull && (
+                            {(!task.style || !task.style.isFull )&& (
                                 <div className='task-container1'>
                                     {task.labelsIds && task.labelsIds.map(id => {
                                         const label = getLabelById(id)
@@ -180,7 +180,7 @@ export function GroupPreview({ group, boardId }) {
                                     <img src="../../../src\assets\imgs\Icons\pen.svg" />
                                 </div>
                                 {console.log(task.style)}
-                                {task.style && !task.style.isFull && (
+                                {(!task.style || !task.style.isFull )&& (
                                 <div className='task-container3'>
                                     <div className='container3-leftside'>
                                         {task.dueDate && (
@@ -265,7 +265,7 @@ export function GroupPreview({ group, boardId }) {
                 <footer className='group-preview-footer'>
                     <span className="add-icon" onClick={() => setIsAddingTask(true)}>
                         <img src="../../../src/assets/imgs/Icons/add.svg" alt="add" />
-                        Add a card
+                        Add a task
                     </span>
                 </footer>
             )}
