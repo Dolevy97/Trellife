@@ -471,11 +471,8 @@ export function TaskDetails() {
                             {action === 'cover' && <TaskAction action="cover" {...taskActionProps} />}
                         </div>
 
-                        <button className="action" name="custom" onClick={onSetAction}>
-                            <img className="custom-fields-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/custom-fields.svg" alt="custom fields icon" />
-                            <span className="action-title">Custom fields</span>
-                        </button>
-
+                        <hr className='sidebar-hr' />
+                        
                         <button className="action remove-task" onClick={onRemoveTask}>
                             <img className="icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="close icon" />
                             <span className="action-title">Remove task</span>
