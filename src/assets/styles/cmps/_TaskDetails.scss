@@ -330,6 +330,27 @@
                     }
                 }
 
+                .checklists-container {
+                    position: relative;
+
+                    display: flex;
+                    align-items: center;
+
+                    margin-block-end: 24px;
+
+                    .checklists-icon {
+                        left: -36px;
+                        width: 24px;
+                        height: 24px;
+                    }
+
+                    span {
+                        font-size: 1em;
+                        line-height: 20px;
+                        font-weight: 600;
+                    }
+                }
+
                 .activity-container {
                     position: relative;
 
