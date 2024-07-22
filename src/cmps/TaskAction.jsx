@@ -52,7 +52,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
     async function onUpdateCoverColor({ target }) {
         const backgroundColor = target.style.backgroundColor
         if (!target.style) {
-            task = { ...task, style: { isFull: 'head', backgroundColor } };
+            task = { ...task, style: { isFull: false, backgroundColor } };
         } else {
             task = { ...task, style: { ...task.style, backgroundColor } };
         }
