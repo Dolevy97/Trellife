@@ -10,46 +10,46 @@
     @return $pixels / $context * 1em;
 }
 
-
-@mixin task-gtc {
-    display: grid;
-    grid-template-columns: auto minmax(auto, 512px) auto;
-}
-
 .task-details-backdrop {
     position: fixed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     inset: 0;
     width: 100%;
     height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     background-color: rgba(0, 0, 0, 0.75);
     z-index: 2;
 
 
     .task-details {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         position: relative;
-        display: flex;
-        flex-direction: column;
         min-height: em(600, 16);
         width: em(768, 16);
+
+        display: flex;
+        flex-direction: column;
+
         background-color: rgb(50 57 64);
-        border-radius: 8px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         color: rgb(182, 194, 207);
+        border-radius: 8px;
 
         .icon {
+            position: absolute;
             height: em(20);
             width: em(20);
-            position: absolute;
         }
 
         .close-icon {
             right: em(22);
             top: em(22);
+
             height: em(24);
             width: em(24);
+
             z-index: 3;
 
             &:hover {
@@ -68,14 +68,14 @@
             margin-block-end: em(4, 14);
         }
 
-
-
         .task-header {
             position: relative;
-            display: flex;
-            flex-direction: column;
             min-height: em(32);
             padding: 1em em(52)em(8) em(56);
+
+            display: flex;
+            flex-direction: column;
+
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
 
@@ -88,8 +88,6 @@
             .task-in-list {
                 padding-inline-start: em(1);
             }
-
-
 
             .card-icon {
                 left: em(26);
@@ -114,7 +112,6 @@
                     &>* {
                         display: flex;
                         flex-direction: column;
-                        // justify-content: space-around;
                     }
 
                     .members-img-container {
@@ -160,11 +157,11 @@
                         gap: 4px;
 
                         .label {
+                            font-size: 0.875em;
+                            font-weight: 500;
+                            height: 32px;
                             border-radius: 3px;
                             padding: em(3) em(12);
-                            font-size: 0.875em;
-                            height: 32px;
-                            font-weight: 500;
 
 
                             &:hover {
@@ -242,11 +239,11 @@
                 }
 
                 .description-container {
+                    width: 512px;
+                    
                     display: flex;
                     flex-direction: column;
 
-                    width: 512px;
-                    // height: 100px;
                     place-self: center;
                     margin-block-end: 24px;
 
@@ -346,7 +343,6 @@
                     .input-container {
                         display: flex;
                         flex-direction: column;
-                        // align-items: center;
 
                         position: relative;
 
@@ -495,19 +491,16 @@
                 height: em(32, 14);
                 margin-block-end: em(8);
                 width: em(168, 14);
-                // overflow: hidden;
                 padding: em(6) em(12);
                 text-overflow: ellipsis;
                 transition-duration: 85ms;
                 transition-property: background-color;
                 transition-timing-function: ease;
                 white-space: nowrap;
-                // font-family: inherit;
 
                 .icon {
                     height: 1em;
                     width: 1em;
-                    // top: em(6.7, 14);
                 }
 
                 .action-title {
