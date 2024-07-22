@@ -136,9 +136,9 @@
           cursor: pointer;
           transition: background-color 0.1s ease;
 
-          &:hover {
-            background-color: $btnhoverclr;
-          }
+        &:hover {
+          background-color: $btnhoverclr;
+        }
 
           img {
             height: 20px;
@@ -164,6 +164,11 @@
     border: 3px solid rgba(255, 255, 255, 0.1);
   }
 
-  .group-list-container::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(255, 255, 255, 0.5);
-  }
+.group-list-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.dragging {
+  opacity: .4;
+  rotate: 4deg;
+}
