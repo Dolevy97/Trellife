@@ -377,10 +377,10 @@ function _getRandomLabels() {
         'Imperative', 'Plain'
     ];
 
-    const numLabels = getRandomIntInclusive(0, 7)
+    // const numLabels = getRandomIntInclusive(0, 7)
     let randomLabels = [];
 
-    while (randomLabels.length < numLabels) {
+    while (randomLabels.length < 6) {
         const randomIndex = Math.floor(Math.random() * labels.length);
         const label = labels[randomIndex];
         if (!randomLabels.includes(label)) {
