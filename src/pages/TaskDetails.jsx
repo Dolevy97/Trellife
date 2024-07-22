@@ -183,12 +183,19 @@ export function TaskDetails() {
     }
 
     async function onChangeTodo({ target }, todo, checklist) {
-        console.log(target.checked)
-        console.log(todo)
-        console.log(checklist)
-        const checklistToEdit = taskToEdit.checklists.find(check => check.id === checklist.id)
-        // taskToEdit.status = target.checked ? 'done' : 'inProgress';
-        // await updateTask(taskToEdit, group, board)
+        const updatedTask = { ...taskToEdit }
+        const checklistIndex = updatedTask.checklists.findIndex(check => check.id === checklist.id)
+
+        if (checklistIndex !== -1) {
+            const todoIndex = updatedTask.checklists[checklistIndex].todos.findIndex(t => t.id === todo.id)
+
+            if (todoIndex !== -1) {
+                // Update the copy of the task
+                updatedTask.checklists[checklistIndex].todos[todoIndex].isDone = target.checked
+            }
+        }
+
+        await updateTask(updatedTask, group, board)
     }
 
     function getComments(taskId) {
@@ -207,7 +214,13 @@ export function TaskDetails() {
         onBackdropClicked()
     }
 
-    if (!taskToEdit || !group) return <section>Loading...</section>;
+    function getDonePercentage(checklist) {
+        const completedTodos = checklist.todos.filter(todo => todo.isDone).length
+        const todosLengthPercent = (completedTodos / checklist.todos.length) * 100
+        return todosLengthPercent
+    }
+
+    if (!taskToEdit || !group) return <section>Loading...</section>
 
     const { title, description, membersIds, labelsIds, style } = taskToEdit;
 
@@ -316,10 +329,8 @@ export function TaskDetails() {
                             </div>
                             :
                             ''}
-                        {console.log(taskToEdit.checklists)}
                         {taskToEdit.checklists && taskToEdit.checklists.length ?
                             <div className="checklists-container">
-                                {console.log(taskToEdit)}
                                 {taskToEdit.checklists.length ? taskToEdit.checklists.map(checklist => {
                                     return (
                                         <div className="checklist-container" key={checklist.id}>
@@ -328,9 +339,16 @@ export function TaskDetails() {
                                                 <span className='checklist-title'>{checklist.title}</span>
                                             </div>
                                             <div className="checklist-progress">
-                                                <span className='progress-percentage'>0%</span>
+
+                                                <span className='progress-percentage'>{getDonePercentage(checklist)}%</span>
                                                 <div className="progress-bar">
-                                                    <div className="progress-bar-current"></div>
+                                                    <div
+                                                        className="progress-bar-current"
+                                                        style={{
+                                                            width: `${getDonePercentage(checklist)}%`,
+                                                            backgroundColor: getDonePercentage(checklist) === 100 ? '#4BCE97' : undefined,
+                                                        }}
+                                                    ></div>
                                                 </div>
                                             </div>
                                             <div className="checklist-items">
@@ -342,7 +360,7 @@ export function TaskDetails() {
                                                                     className='item-checkbox'
                                                                     type="checkbox"
                                                                     name="item-checklist"
-                                                                    value={todo.isDone}
+                                                                    checked={todo.isDone}
                                                                     onChange={(ev) => { onChangeTodo(ev, todo, checklist) }} />
                                                             </div>
                                                             <div className="checklist-item-details">
@@ -453,11 +471,8 @@ export function TaskDetails() {
                             {action === 'cover' && <TaskAction action="cover" {...taskActionProps} />}
                         </div>
 
-                        <button className="action" name="custom" onClick={onSetAction}>
-                            <img className="custom-fields-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/custom-fields.svg" alt="custom fields icon" />
-                            <span className="action-title">Custom fields</span>
-                        </button>
-
+                        <hr className='sidebar-hr' />
+                        
                         <button className="action remove-task" onClick={onRemoveTask}>
                             <img className="icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="close icon" />
                             <span className="action-title">Remove task</span>
@@ -466,6 +481,6 @@ export function TaskDetails() {
                     </section>
                 </section>
             </form>
-        </div>
+        </div >
     );
 }

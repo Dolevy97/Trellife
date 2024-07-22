@@ -192,7 +192,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
                                                             {task.dueDate && (
                                                                 <div
                                                                     title={task.isDone ? 'This task is complete.' : 'This task is due later.'}
-                                                                    className="task-bottom-container"
+                                                                    className="task-timer-container"
                                                                     style={!task.isDone ? {} : { backgroundColor: '#4BCE97' }}
                                                                 >
                                                                     <img
