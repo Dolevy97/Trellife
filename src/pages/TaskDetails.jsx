@@ -207,10 +207,8 @@ export function TaskDetails() {
     async function onRemoveTask() {
         const newTasks = group.tasks.filter(task => task.id !== taskToEdit.id)
         const newGroup = {...group,tasks:newTasks}
-        const savedBoard = await updateGroup(newGroup.id, newGroup, board)
+        await updateGroup(newGroup.id, newGroup, board)
         onBackdropClicked()
-        // console.log(savedBoard)
-
     }
 
     if (!taskToEdit || !group) return <section>Loading...</section>;
