@@ -155,7 +155,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                             return (
                                 <div key={label.id} className="label-container">
                                     <input className="label-checkbox" type="checkbox" checked={task.labelsIds.includes(label.id)} onChange={() => onToggleLabel(event, label.id)} />
-                                    <div className="label" style={{ backgroundColor: label.color }}>{label.title}</div>
+                                    <div className="label" style={{ backgroundColor: label.color }} >{label.title}</div>
                                     <div className="pen-icon-container"><img className="pen-icon" src="../../../src/assets/imgs/TaskDetails-icons/pen.svg"></img></div>
                                 </div>
                             )
