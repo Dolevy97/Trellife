@@ -35,7 +35,7 @@
         background-color: rgb(50 57 64);
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         color: rgb(182, 194, 207);
-        border-radius: 8px;
+        border-radius: 12px;
 
         .icon {
             position: absolute;
@@ -59,8 +59,8 @@
 
         .task-details-cover {
             height: em(116);
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
         }
 
         .fs12 {
@@ -76,8 +76,8 @@
             display: flex;
             flex-direction: column;
 
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
 
             .task-title {
                 font-size: em(20);
