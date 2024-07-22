@@ -973,10 +973,12 @@
 
 
         .new-checklist-item {
-            height: 40px;
+            overflow: hidden;
+            overflow-wrap: break-word;
+            
             padding: 8px 12px;
-            resize: none;
             width: 512px;
+            height: 56px;
 
             border: none;
             background-color: #A1BDD914;
@@ -994,7 +996,7 @@
 
             font-size: 0.875em;
             line-height: 1.714;
-            margin-top: 0.75rem;
+            margin-top: 4px;
             margin-bottom: 0px;
             letter-spacing: -0.005em;
 
