@@ -98,6 +98,39 @@ export function GroupPreview({ group, boardId }) {
         return board.labels.find(label => label.id === id)
     }
 
+    function getComments(taskId) {
+        let comments = board.activities.filter(activity => {
+            return activity.title === 'add comment' && activity.task.id === taskId
+        })
+        if (!comments) return []
+        comments = comments.sort((a, b) => b.createdAt - a.createdAt)
+        return comments
+    }
+
+    function getAllTodosInChecklist(taskId, groupId) {
+        const group = board.groups.find(group => group.id === groupId);
+        const task = group.tasks.find(task => task.id === taskId);
+        const allTodos = task.checklists.map(checklist => {
+            return {
+                ...checklist,
+                todos: checklist.todos
+            }
+        })
+        return allTodos
+    }
+
+    function getDoneInChecklist(taskId, groupId) {
+        const group = board.groups.find(group => group.id === groupId);
+        const task = group.tasks.find(task => task.id === taskId);
+        const doneInChecklist = task.checklists.map(checklist => {
+            return {
+                ...checklist,
+                todos: checklist.todos.filter(todo => todo.isDone)
+            }
+        }).filter(checklist => checklist.todos.length > 0)
+        return doneInChecklist
+    }
+
     const labelsIds = taskToEdit?.labelsIds || []
 
     return (
@@ -164,19 +197,17 @@ export function GroupPreview({ group, boardId }) {
                                         {task.description && task.description.trim() !== '' && (
                                             <img title='This card has a description.' src="../../../src/assets/imgs/Icons/description.svg" alt="description" />
                                         )}
-                                        <div title='Comments' className='task-comment-container'>
+                                        {getComments(task.id).length ? <div title='Comments' className='task-comment-container'>
                                             <img src="../../../src\assets\imgs\Icons\comment.svg" />
-                                            <span className='task-comment'>1 </span>
-                                        </div>
-
-                                        <div title='Attachments' className='task-attachment-container'>
+                                            <span className='task-comment'>{getComments(task.id).length} </span>
+                                        </div> : ''}
+                                        {task.attachments.length ? <div title='Attachments' className='task-attachment-container'>
                                             <img src="../../../src\assets\imgs\TaskDetails-icons\attachment.svg" />
                                             <span className='task-comment'>1</span>
-                                        </div>
-
+                                        </div> : ''}
                                         <div title='Checklist items' className='task-checklist-container' >
                                             <img src="../../../src\assets\imgs\Icons\checklist.svg" />
-                                            <span className='task-checklist'>0/1</span>
+                                            <span className='task-checklist'>{getDoneInChecklist(task.id, group.id).length}/{getAllTodosInChecklist(task.id, group.id).length}</span>
                                         </div>
                                     </div>
 
