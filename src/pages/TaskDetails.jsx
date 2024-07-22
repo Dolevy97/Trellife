@@ -29,11 +29,7 @@ export function TaskDetails() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        getBoard()
-    }, [])
-
-    useEffect(() => {
-        if (board) setTask()
+        setTask()
     }, [board])
 
     useEffect(() => {
@@ -59,14 +55,6 @@ export function TaskDetails() {
             }
         }
     }, [taskToEdit, isSettingDescription])
-
-    async function getBoard() {
-        try {
-            await boardService.getById(boardId);
-        } catch (er) {
-            console.log('err: ' + er);
-        }
-    }
 
     function setTask() {
         setTaskToEdit(() => {
@@ -123,7 +111,6 @@ export function TaskDetails() {
 
     function onSetAction(ev, isNull = false) {
         ev.stopPropagation();
-        console.log('hi');
         if (isNull) {
             setAction(null);
             return
@@ -138,7 +125,7 @@ export function TaskDetails() {
     }
 
     async function onSaveDescription() {
-        await updateTask(taskToEdit, groupId, group, board)
+        await updateTask(taskToEdit, group, board)
         setIsSettingDescription(false)
 
     }
@@ -158,8 +145,8 @@ export function TaskDetails() {
             createdAt: Date.now()
         }
         board.activities.unshift(newActivity)
-        setIsAddingComment(false)
         await updateBoard(board)
+        setIsAddingComment(false)
     }
 
     async function onChangeDueDate() {
@@ -167,7 +154,7 @@ export function TaskDetails() {
         const dateObj = new Date(dateStr)
         const timestamp = dateObj.getTime()
         taskToEdit.dueDate = timestamp
-        await updateTask(taskToEdit, groupId, group, board)
+        await updateTask(taskToEdit, group, board)
 
     }
 
@@ -192,7 +179,7 @@ export function TaskDetails() {
 
     async function onChangeStatus({ target }) {
         taskToEdit.status = target.checked ? 'done' : 'inProgress';
-        await updateTask(taskToEdit, groupId, group, board)
+        await updateTask(taskToEdit, group, board)
     }
 
     function getComments(taskId) {
