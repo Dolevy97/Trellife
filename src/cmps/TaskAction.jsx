@@ -41,10 +41,11 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
 
     async function onToggleLabel(ev, id) {
         const { checked } = ev.target
+        const updatedTask = {...task}
         if (checked) {
-            task.labelsIds.push(id)
+            updatedTask.labelsIds.push(id)
         } else {
-            task = { ...task, labelsIds: task.labelsIds.filter(labelId => labelId !== id) }
+            updatedTask = { ...updatedTask, labelsIds: updatedTask.labelsIds.filter(labelId => labelId !== id) }
         }
         await updateTask(task, group, board)
     }
@@ -72,8 +73,9 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
     }
 
     async function onAddChecklist() {
-        task.checklists.push({ id: 'cl' + makeId(), title: checklistInputValue, todos: [] })
-        await updateTask(task, group, board)
+        const updatedTask = {...task}
+        updatedTask.checklists.push({ id: 'cl' + makeId(), title: checklistInputValue, todos: [] })
+        await updateTask(updatedTask, group, board)
     }
 
     async function onAddAttachment(ev) {
@@ -85,8 +87,9 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             createdAt: Date.now(),
             type: file.type
         }
-        task.attachments.push(attachment)
-        await updateTask(task, group, board)
+        const updatedTask = {...task}
+        updatedTask.attachments.push(attachment)
+        await updateTask(updatedTask, group, board)
         onSetAction(ev, true)
     };
 
