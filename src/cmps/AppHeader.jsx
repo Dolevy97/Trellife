@@ -60,7 +60,7 @@ export function AppHeader({ isHomePage }) {
 						{isAdding && <BoardCreate setIsAdding={setIsAdding} />}
 					</section>
 				</div>
-				<Link to={'/board'}>Board</Link>
+				{isHomePage && <Link to={'/board'}>Board</Link>}
 				<nav>
 					<section className={`homepage-links ${isHomePage ? 'homepage' : ''}`}>
 						<article className="btn-login">
