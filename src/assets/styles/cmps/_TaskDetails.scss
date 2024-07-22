@@ -330,75 +330,6 @@
                     }
                 }
 
-                .checklists-container {
-                    position: relative;
-
-                    margin-block-end: 24px;
-
-                    .checklist-container {
-
-                        margin-block-end: 24px;
-
-                        & .checklist-title-container {
-                            padding: 8px 0;
-                            margin-block-end: 4px;
-                        }
-
-                        .checklist-progress {
-                            position: relative;
-                            margin-block-end: 6px;
-
-                            & .progress-percentage {
-                                position: absolute;
-                                top: -1px;
-                                left: -40px;
-
-                                color: $txtclr1;
-
-                                text-align: center;
-                                font-size: 11px;
-                                line-height: 10px;
-                                width: 32px;
-                            }
-
-                            & .progress-bar {
-                                position: relative;
-
-                                background: #A1BDD914;
-                                border-radius: 4px;
-                                height: 8px;
-                                overflow: hidden;
-
-                                width: 512px;
-
-                                & .progress-bar-current {
-                                    position: absolute;
-                                    top: 0;
-                                    bottom: 0;
-                                    left: 0;
-
-                                    background-color: #0055CC;
-                                    transition-duration: .14s;
-                                    transition-property: width, background-color;
-                                    transition-timing-function: ease-in;
-                                }
-                            }
-                        }
-                    }
-
-                    .checklists-icon {
-                        left: -36px;
-                        width: 24px;
-                        height: 24px;
-                    }
-
-                    .checklist-title {
-                        font-size: 1em;
-                        line-height: 20px;
-                        font-weight: 600;
-                    }
-                }
-
                 .activity-container {
                     position: relative;
 
@@ -760,7 +691,7 @@
 
                         top: 50%;
                         left: 50%;
-                        
+
                         transform: translate(-50%, -50%);
                         font-size: 14px;
                         line-height: 1;
@@ -797,8 +728,155 @@
 
     height: 1px;
     width: 100%;
-    
+
     margin-block: 0 8px;
     border: 0;
     padding: 0;
+}
+
+.checklists-container {
+    position: relative;
+
+    margin-block-end: 24px;
+
+    .checklist-container {
+
+        margin-block-end: 24px;
+
+        & .checklist-title-container {
+            padding: 8px 0;
+            margin-block-end: 4px;
+        }
+
+        .checklist-progress {
+            position: relative;
+            margin-block-end: 6px;
+
+            & .progress-percentage {
+                position: absolute;
+                top: -1px;
+                left: -40px;
+
+                color: $txtclr1;
+
+                text-align: center;
+                font-size: 11px;
+                line-height: 10px;
+                width: 32px;
+            }
+
+            & .progress-bar {
+                position: relative;
+
+                background: #A1BDD914;
+                border-radius: 4px;
+                height: 8px;
+                overflow: hidden;
+
+                width: 512px;
+
+                & .progress-bar-current {
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+
+                    background-color: #0055CC;
+                    transition-duration: .14s;
+                    transition-property: width, background-color;
+                    transition-timing-function: ease-in;
+                }
+            }
+        }
+    }
+
+    .checklists-icon {
+        left: -36px;
+        width: 24px;
+        height: 24px;
+    }
+
+    .checklist-title {
+        font-size: 1em;
+        line-height: 20px;
+        font-weight: 600;
+    }
+
+    .add-item-container {
+        .btn-add-item {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+
+            margin-block-start: 8px;
+
+            background-color: #A1BDD914;
+            color: $txtclr1;
+
+            border-radius: 3px;
+
+            font-weight: 500;
+            line-height: 20px;
+            transition-duration: 85ms;
+            transition-property: background-color, border-color, box-shadow;
+            transition-timing-function: ease;
+            white-space: normal;
+
+            &:hover {
+                background-color: #A6C5E229;
+            }
+        }
+
+        
+        textarea {
+            height: 40px;
+            padding: 8px 12px;
+            resize: none;
+            width: 512px;
+
+            border: none;
+            background-color: #A1BDD914;
+            color: '$txtclr1';
+            border-radius: 3px;
+
+            font-weight: 500;
+            font-size: .875em;
+            font-family: inherit;
+            line-height: 1.25em;
+
+            box-shadow: 0 0 0 1px inset #738496;
+            background-color: #22272B;
+            color: $txtclr1;
+            font-size: 0.875em;
+            line-height: 1.714;
+            font-weight: normal;
+            margin-top: 0.75rem;
+            margin-bottom: 0px;
+            letter-spacing: -0.005em;
+        }
+
+
+        .checklist-add-controls {
+            display: flex;
+            button {
+                @include btn;
+                width: fit-content;
+
+                margin-inline-end: 6px;
+
+                &.btn-add:hover {
+                    background-color: #85B8FF;
+                }
+
+                &.btn-cancel {
+                    background-color: transparent;
+                    color: $txtclr1;
+
+                    &:hover {
+                        background-color: #A6C5E229;
+                    }
+                }
+            }
+        }
+    }
 }
