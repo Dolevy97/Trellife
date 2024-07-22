@@ -280,7 +280,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
                 <footer className='group-preview-footer'>
                     <span className="add-icon" onClick={() => setIsAddingTask(true)}>
                         <img src="../../../src/assets/imgs/Icons/add.svg" alt="add" />
-                        Add a task
+                        Add a card
                     </span>
                 </footer>
             )}
