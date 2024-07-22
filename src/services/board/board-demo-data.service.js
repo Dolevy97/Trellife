@@ -165,7 +165,7 @@ function _getRandomTaskMember(board) {
 function _getRandomTaskLabels(board) {
     const boardLabelids = board.labels.map(label => label.id)
     const taskLabelIds = []
-    const length = getRandomIntInclusive(0, boardLabelids.length)
+    const length = getRandomIntInclusive(0, 3)
     for (let i = 0; i < length; i++) {
         const id = boardLabelids.splice(getRandomIntInclusive(0, boardLabelids.length - 1), 1)[0]
         taskLabelIds.push(id)
@@ -377,10 +377,10 @@ function _getRandomLabels() {
         'Imperative', 'Plain'
     ];
 
-    const numLabels = getRandomIntInclusive(0, 7)
+    // const numLabels = getRandomIntInclusive(0, 7)
     let randomLabels = [];
 
-    while (randomLabels.length < numLabels) {
+    while (randomLabels.length < 6) {
         const randomIndex = Math.floor(Math.random() * labels.length);
         const label = labels[randomIndex];
         if (!randomLabels.includes(label)) {

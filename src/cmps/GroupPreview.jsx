@@ -220,10 +220,13 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
                                                                     <span className='task-comment'>1</span>
                                                                 </div> : ''
                                                             }
-                                                            <div title='Checklist items' className='task-checklist-container' >
-                                                                <img src="../../../src\assets\imgs\Icons\checklist.svg" />
-                                                                <span className='task-checklist'>{getDoneInChecklist(task.id, group.id).length}/{getAllTodosInChecklist(task.id, group.id).length}</span>
-                                                            </div>
+                                                            {task.checklists.length ?
+                                                                <div title='Checklist items' className='task-checklist-container' >
+                                                                    <img src="../../../src\assets\imgs\Icons\checklist.svg" />
+                                                                    <span className='task-checklist'>{getDoneInChecklist(task.id, group.id).length}/{getAllTodosInChecklist(task.id, group.id).length}</span>
+                                                                </div>
+                                                                :
+                                                                ''}
                                                         </div>
 
                                                         <div className='members-container'>

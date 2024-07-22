@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { updateTask } from "../store/actions/task.actions"
 import { makeId } from "../services/util.service"
+import { cloudinaryService } from "../services/cloudinary.service"
 
 
 export function TaskAction({ action, board, group, task, getMemberById, getLabelById, onSetAction }) {
@@ -79,14 +80,19 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         updatedTask.checklists.push({ id: 'cl' + makeId(), title: checklistInputValue, todos: [] })
         const activityTitle = `added ${checklistInputValue} to this card`
         await updateTask(updatedTask, group, board, activityTitle)
+        onSetAction(ev, true)
     }
     
     async function onAddAttachment(ev) {
-        const { target } = ev
-        console.log(target.files[0])
-        const file = target.files[0]
+        const url = await cloudinaryService.uploadImg(ev)
+        // const { target } = ev
+        // console.log(target.files[0])
+        console.log(url)
+        const file = ev.target.files[0]
+        
         const attachment = {
             title: file.name,
+            url,
             createdAt: Date.now(),
             type: file.type
         }
