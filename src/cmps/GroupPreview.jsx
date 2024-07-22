@@ -4,12 +4,12 @@ import { boardService } from '../services/board/'
 import { updateBoard } from '../store/actions/board.actions'
 import { GroupPreviewHeader } from './GroupPreviewHeader'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import autosize from 'autosize';
+import autosize from 'autosize'
 import { getFormattedShortTime } from '../services/util.service'
 import { useSelector } from 'react-redux'
 
 
-export function GroupPreview({ group, boardId}) {
+export function GroupPreview({ group, boardId }) {
     const tasks = group?.tasks || []
     const board = useSelector(storeState => storeState.boardModule.board)
 
@@ -36,7 +36,6 @@ export function GroupPreview({ group, boardId}) {
         }
     }, [addTaskRef])
 
-
     useEffect(() => {
         if (textareaRef.current) {
             autosize(textareaRef.current);
@@ -48,7 +47,6 @@ export function GroupPreview({ group, boardId}) {
             }
         }
     }, [newTaskTitle])
-
 
     function handleTaskClick(taskId) {
         navigate(`/board/${boardId}/${group.id}/${taskId}`, { replace: true })
@@ -78,7 +76,6 @@ export function GroupPreview({ group, boardId}) {
         }
     }
 
-
     function handleTitleKeyPress(e) {
         if (e.key === 'Enter') {
             e.preventDefault()
@@ -94,7 +91,6 @@ export function GroupPreview({ group, boardId}) {
             }
         }
     }
-
 
     function getMemberById(id) {
         return board.members.find(member => member._id === id)

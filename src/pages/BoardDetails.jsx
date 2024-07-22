@@ -21,10 +21,6 @@ export function BoardDetails() {
     loadBoard(boardId)
   }, [boardId])
 
-  // useEffect(() => {
-  //   setBoard(boardFromStore)
-  // }, [boardFromStore])
-
   useEffect(() => {
     function handleClickOutside(event) {
       if (addGroupRef.current && !addGroupRef.current.contains(event.target)) {
@@ -73,7 +69,7 @@ export function BoardDetails() {
     const updatedBoard = { ...board, groups: updatedGroups }
 
     try {
-      const updatedBoardFromServer = await updateBoard(updatedBoard)
+      await updateBoard(updatedBoard)
     } catch (err) {
       console.error('Failed to update board:', err)
     }
@@ -91,7 +87,7 @@ export function BoardDetails() {
 
   return (
     <section style={{ background: board.style.background, backgroundSize: 'cover' }}>
-      <BoardDetailsHeader  />
+      <BoardDetailsHeader />
 
       <section className="group-list-container" style={{ background: board.style.background, backgroundSize: 'cover' }}>
         <DragDropContext onDragEnd={handleOnDragEnd}>
