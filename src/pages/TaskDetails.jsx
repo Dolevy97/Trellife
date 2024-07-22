@@ -9,6 +9,7 @@ import autosize from 'autosize';
 import { getRandomMember } from '../services/board/board-demo-data.service';
 import { getFormattedTime, makeId } from '../services/util.service';
 import { updateGroup } from '../store/actions/group.actions';
+import ms from 'ms';
 
 export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
@@ -250,8 +251,9 @@ export function TaskDetails() {
         await updateTask(taskToEdit, group, board)
     }
 
-    function getAddedAt(timestamp){
-
+    function getAddedAt(createdAt) {
+        const timestamp = (createdAt - Date.now()) * -1
+        return 'Added ' + (ms(timestamp, { long: true })) + ' ago'
     }
 
     if (!taskToEdit || !group) return <section>Loading...</section>
@@ -361,22 +363,31 @@ export function TaskDetails() {
                                 <img className="attachments-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/paperclip.svg" alt="attachment icon" />
                                 <span>Attachments</span>
                                 <div className="attachments">
-                                    {taskToEdit.attachments.map(a => 
-                                    <div className="attachment">
-                                    <img className="attachment-thumbnail" src={a.url} />
-                                    <header className="attachment-header">
-                                        <span className="url">{a.url}</span>
-                                        {/* ADD LINK ARROW HERE */}
-                                    </header>
-                                    <main className="attachment-main">
-                                        <span>
-                                            {getAddedAt(a.createdAt)}
-                                        </span>
-                                    </main>
-                                    <div className="attachment-remove-cover">
-
-                                    </div>
-                                    </div>
+                                    {taskToEdit.attachments.map(a =>
+                                        <div className="attachment">
+                                            <img className="attachment-thumbnail" src={a.url} />
+                                            <div className="attachment-details">
+                                                <div className="attachment-header">
+                                                    <span className="attachment-url">{a.url}</span>
+                                                    {/* ADD LINK ARROW HERE */}
+                                                </div>
+                                                <div className="attachment-main">
+                                                    <span className="attachment-added-at">
+                                                        {getAddedAt(a.createdAt)}
+                                                    </span>
+                                                    <ul className="attachment-links">
+                                                        <li className="attachment-link">Comment</li>
+                                                        <li className="attachment-link">Download</li>
+                                                        <li className="attachment-link">Delete</li>
+                                                        <li className="attachment-link">Edit</li>
+                                                    </ul>
+                                                </div>
+                                                <div className="attachment-remove-cover">
+                                                    <img className="attachment-remove-cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
+                                                    <span className="attachment-span-remove-cover"> Remove cover</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
                             </div>
