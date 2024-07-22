@@ -105,7 +105,7 @@
             }
 
             .card-icon {
-                left: em(26);
+                left: em(24);
                 top: em(22);
             }
         }
@@ -1033,7 +1033,8 @@
         .new-checklist-item {
             overflow: hidden;
             overflow-wrap: break-word;
-
+            resize: vertical;
+            
             padding: 8px 12px;
             width: 512px;
             height: 56px;
