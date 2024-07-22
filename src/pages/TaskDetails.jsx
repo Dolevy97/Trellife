@@ -193,7 +193,7 @@ export function TaskDetails() {
 
     async function onRemoveTask() {
         const newTasks = group.tasks.filter(task => task.id !== taskToEdit.id)
-        const newGroup = {...group,tasks:newTasks}
+        const newGroup = { ...group, tasks: newTasks }
         await updateGroup(newGroup.id, newGroup, board)
         onBackdropClicked()
     }
@@ -219,6 +219,7 @@ export function TaskDetails() {
                 <section className="task-container">
                     <section className="task-content">
                         <div className="members-labels-notifications-date-container">
+
                             {membersIds.length ? <div className="members-container">
                                 <span className="fs12">Members</span>
                                 <div className="members-img-container">
@@ -230,6 +231,7 @@ export function TaskDetails() {
                                     <div name="members" onClick={onSetAction} className="add-member-thumbnail"><img src="../../../src/assets/imgs/TaskDetails-icons/add.svg" alt="add plus icon" /></div>
                                 </div>
                             </div> : ''}
+
                             {labelsIds.length ? <div className="labels-container">
                                 <span className="fs12">Labels</span>
                                 <div className="labels">
@@ -261,6 +263,7 @@ export function TaskDetails() {
                                     <img className="arrow-down" src="../../../src/assets/imgs/TaskDetails-icons/arrow-down.svg" alt="description icon" />
                                 </div>
                             </div>}
+
                         </div>
                         <div className="description-container">
                             <div className="description-title">
@@ -296,6 +299,7 @@ export function TaskDetails() {
                                 />
                             }
                         </div>
+
                         {taskToEdit.attachments && taskToEdit.attachments.length ?
                             <div className="attachments-container">
                                 <img className="attachments-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/paperclip.svg" alt="attachment icon" />
@@ -303,6 +307,18 @@ export function TaskDetails() {
                             </div>
                             :
                             ''}
+                        {console.log(taskToEdit.checklists)}
+                        {/* {taskToEdit.checklists && taskToEdit.checklists.length ?
+                            <div className="checklists-container">
+                                {taskToEdit.checklists.map(checklist => {
+                                    return (<div className="checklist-container">
+                                        <img className="checklists-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="attachment icon" />
+                                        <span>{checklist.title}</span>
+                                    </div>)
+                                })}
+                            </div>
+                            :
+                            ''} */}
                         <div className="activity-container">
                             <div className="activity-title">
                                 <img className="activity-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/activity.svg" alt="activity icon" />
