@@ -356,6 +356,9 @@ export function TaskDetails() {
                             <div className="attachments-container">
                                 <img className="attachments-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/paperclip.svg" alt="attachment icon" />
                                 <span>Attachments</span>
+                                <div className="attachments">
+                                    {taskToEdit.attachments.map(a => <img className="attachment" src={a.url} />)}
+                                </div>
                             </div>
                             :
                             ''}

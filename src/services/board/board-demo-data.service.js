@@ -115,7 +115,7 @@ function _getRandomGroups(board) {
 function _getRandomGroup(board) {
     const group = {
         id: 'g' + makeId(),
-        title: 'Group ' + getRandomIntInclusive(1, 99),
+        title: 'List ' + getRandomIntInclusive(1, 99),
         archivedAt: getRandomIntInclusive(0, 9) < 3 ? _getRandomTimestamp() : null,
         tasks: _getRandomTasks(board),
         style: {}
