@@ -122,6 +122,7 @@ export function TaskDetails() {
 
     function onSetAction(ev, isNull = false) {
         ev.stopPropagation();
+        console.log('hi');
         if (isNull) {
             setAction(null);
             return
@@ -206,7 +207,7 @@ export function TaskDetails() {
 
     const { title, description, membersIds, labelsIds, style: cover } = taskToEdit;
 
-    console.log(taskToEdit)
+    const taskActionProps = {task:taskToEdit ,board ,group ,onSetAction}
 
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
@@ -352,21 +353,21 @@ export function TaskDetails() {
                                 <img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" alt="members icon" />
                                 <span className="action-title">Members</span>
                             </button>
-                            {action === 'members' && <TaskAction action="members" task={taskToEdit} board={board} group={group} getMemberById={getMemberById} />}
+                            {action === 'members' && <TaskAction action="members" getMemberById={getMemberById} {...taskActionProps}/>}
                         </div>
                         <div className="task-action-container">
                             <button className="action" name="labels" onClick={onSetAction}>
                                 <img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" alt="labels icon" />
                                 <span className="action-title">Labels</span>
                             </button>
-                            {action === 'labels' && <TaskAction action="labels" task={taskToEdit} board={board} group={group} getLabelById={getLabelById} />}
+                            {action === 'labels' && <TaskAction action="labels" getLabelById={getLabelById} {...taskActionProps}/>}
                         </div>
                         <div className="task-action-container">
                             <button className="action" name="checklist" onClick={onSetAction}>
                                 <img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="checklist icon" />
                                 <span className="action-title">Checklist</span>
                             </button>
-                            {action === 'checklist' && <TaskAction action="add checklist" task={taskToEdit} board={board} group={group} />}
+                            {action === 'checklist' && <TaskAction action="add checklist" {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
 
@@ -381,7 +382,7 @@ export function TaskDetails() {
                                 <img className="attachment-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/attachment.svg" alt="attachment icon" />
                                 <span className="action-title">Attachment</span>
                             </button>
-                            {action === 'attachment' && <TaskAction action="attach" task={taskToEdit} board={board} group={group} onSetAction={onSetAction} />}
+                            {action === 'attachment' && <TaskAction action="attach" {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
                             <button className="action" name="location" onClick={onSetAction}>
@@ -395,7 +396,7 @@ export function TaskDetails() {
                                 <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
                                 <span className="action-title">Cover</span>
                             </button>
-                            {action === 'cover' && <TaskAction action="cover" task={taskToEdit} board={board} group={group} />}
+                            {action === 'cover' && <TaskAction action="cover" {...taskActionProps} />}
                         </div>
 
                         <button className="action" name="custom" onClick={onSetAction}>
