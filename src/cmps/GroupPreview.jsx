@@ -160,7 +160,13 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
                                                 </section>
                                             )}
 
-                                            <section className='task-info-container'>
+                                            <section className='task-info-container'
+                                            style={{padding: task.style?.isFull ? '8px 8px 8px 12px' : '8px 12px',
+                                                minHeight: task.style?.isFull ? '40px' : '',
+                                                marginTop: task.style?.isFull ? '15px' : ''
+                                            }}
+
+                                            >
                                                 {(!task.style || !task.style.isFull) && (
                                                     <div className='task-label-container'>
                                                         {task.labelsIds && task.labelsIds.map(id => {
@@ -179,8 +185,13 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
                                                     </div>
                                                 )}
 
-                                                <div className='task-title-container'>
-                                                    <span>{task.title}</span>
+                                                <div className='task-title-container'
+                                                 style={{ marginBlockEnd: task.style?.isFull ? '0' : '4px' }}
+                                                >
+                                                    <span style={{ fontWeight: task.style?.isFull ? '500' : 'normal',
+                                                    fontSize: task.style?.isFull ? '1em' : ''
+
+                                                     }}>{task.title}</span>
                                                 </div>
 
                                                 <div className='pen-display'>
