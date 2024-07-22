@@ -6,6 +6,7 @@ import { GroupPreviewHeader } from './GroupPreviewHeader'
 import autosize from 'autosize'
 import { getFormattedShortTime } from '../services/util.service'
 import { useSelector } from 'react-redux'
+import { addTask } from "../store/actions/task.actions"
 
 
 export function GroupPreview({ group, boardId }) {
@@ -37,12 +38,12 @@ export function GroupPreview({ group, boardId }) {
 
     useEffect(() => {
         if (textareaRef.current) {
-            autosize(textareaRef.current);
+            autosize(textareaRef.current)
         }
 
         return () => {
             if (textareaRef.current) {
-                autosize.destroy(textareaRef.current);
+                autosize.destroy(textareaRef.current)
             }
         }
     }, [newTaskTitle])
@@ -55,22 +56,10 @@ export function GroupPreview({ group, boardId }) {
     async function onAddTask() {
         if (!newTaskTitle.trim()) return
 
-        try {
-            const newTask = boardService.getEmptyTask()
-            newTask.title = newTaskTitle.trim()
-            const updatedGroup = {
-                ...group,
-                tasks: [...group.tasks, newTask]
-            }
-            const updatedBoard = {
-                ...board,
-                groups: board.groups.map(g => g.id === group.id ? updatedGroup : g)
-            }
-            await updateBoard(updatedBoard)
+        const newBoard = await addTask(newTaskTitle, group, board)
+        if (newBoard) {
+            setIsAddingTask(false)
             setNewTaskTitle('')
-
-        } catch (err) {
-            console.error('Failed to add task:', err)
         }
     }
 
@@ -108,8 +97,8 @@ export function GroupPreview({ group, boardId }) {
     }
 
     function getAllTodosInChecklist(taskId, groupId) {
-        const group = board.groups.find(group => group.id === groupId);
-        const task = group.tasks.find(task => task.id === taskId);
+        const group = board.groups.find(group => group.id === groupId)
+        const task = group.tasks.find(task => task.id === taskId)
         const allTodos = task.checklists.map(checklist => {
             return {
                 ...checklist,
@@ -120,8 +109,8 @@ export function GroupPreview({ group, boardId }) {
     }
 
     function getDoneInChecklist(taskId, groupId) {
-        const group = board.groups.find(group => group.id === groupId);
-        const task = group.tasks.find(task => task.id === taskId);
+        const group = board.groups.find(group => group.id === groupId)
+        const task = group.tasks.find(task => task.id === taskId)
         const doneInChecklist = task.checklists.map(checklist => {
             if (!Array.isArray(checklist.todos)) {
                 return { ...checklist, todos: [] }
@@ -142,37 +131,39 @@ export function GroupPreview({ group, boardId }) {
                 group={group}
                 openMenuGroupId={openMenuGroupId}
                 setOpenMenuGroupId={setOpenMenuGroupId}
+                onAddTaskClick={() => setIsAddingTask(true)}
+
             />
-            <div className="group-preview-tasks">
+            <div className="group-preview">
                 {tasks.map(task => (
                     <div key={task.id} className="task-container" onClick={() => handleTaskClick(task.id)}>
                         <div
-                            className='task-preview'
+                            className='task-inner-container'
                             style={task.style && task.style.isFull ? { backgroundColor: task.style.backgroundColor, borderRadius: '8px' } : {}}                        >
-                             {task.style && !task.style.isFull && (
+                            {task.style && !task.style.isFull && (
                                 <section className='task-cover-container' style={{ ...task.style }}>
                                 </section>
                             )}
 
                             <section className='task-info-container'>
-                            {(!task.style || !task.style.isFull )&& (
-                                <div className='task-container1'>
-                                    {task.labelsIds && task.labelsIds.map(id => {
-                                        const label = getLabelById(id)
-                                        return label && (
-                                            <div
-                                                className="label-tab"
-                                                key={id}
-                                                style={{ backgroundColor: label.color }}
-                                                title={label.title}
-                                            >
-                                                <span className="label-title">{label.title}</span>
-                                            </div>
-                                        )
-                                    })}
-                                </div>)}
+                                {(!task.style || !task.style.isFull) && (
+                                    <div className='task-label-container'>
+                                        {task.labelsIds && task.labelsIds.map(id => {
+                                            const label = getLabelById(id)
+                                            return label && (
+                                                <div
+                                                    className="label-tab"
+                                                    key={id}
+                                                    style={{ backgroundColor: label.color }}
+                                                    title={label.title}
+                                                >
+                                                    <span className="label-title">{label.title}</span>
+                                                </div>
+                                            )
+                                        })}
+                                    </div>)}
 
-                                <div className='task-container2'>
+                                <div className='task-title-container'>
                                     <span>{task.title}</span>
                                 </div>
 
@@ -180,12 +171,12 @@ export function GroupPreview({ group, boardId }) {
                                     <img src="../../../src\assets\imgs\Icons\pen.svg" />
                                 </div>
                                 {(!task.style || !task.style.isFull )&& (
-                                <div className='task-container3'>
-                                    <div className='container3-leftside'>
+                                <div className='task-bottom-container'>
+                                    <div className='task-bottom-leftside'>
                                         {task.dueDate && (
                                             <div
                                                 title={task.isDone ? 'This task is complete.' : 'This task is due later.'}
-                                                className="task-timer-container"
+                                                className="task-bottom-container"
                                                 style={!task.isDone ? {} : { backgroundColor: '#4BCE97' }}
                                             >
                                                 <img
@@ -196,41 +187,41 @@ export function GroupPreview({ group, boardId }) {
                                                 <span
                                                     style={!task.isDone ? {} : { color: '#1d2125' }}
 
-                                                >{getFormattedShortTime(task.dueDate)}</span>
+                                                    >{getFormattedShortTime(task.dueDate)}</span>
+                                                </div>
+                                            )}
+                                            {task.description && task.description.trim() !== '' && (
+                                                <img title='This card has a description.' src="../../../src/assets/imgs/Icons/description.svg" alt="description" />
+                                            )}
+                                            {getComments(task.id).length ? <div title='Comments' className='task-comment-container'>
+                                                <img src="../../../src\assets\imgs\Icons\comment.svg" />
+                                                <span className='task-comment'>{getComments(task.id).length} </span>
+                                            </div> : ''}
+                                            {task.attachments.length ? <div title='Attachments' className='task-attachment-container'>
+                                                <img src="../../../src\assets\imgs\TaskDetails-icons\attachment.svg" />
+                                                <span className='task-comment'>1</span>
+                                            </div> : ''}
+                                            <div title='Checklist items' className='task-checklist-container' >
+                                                <img src="../../../src\assets\imgs\Icons\checklist.svg" />
+                                                <span className='task-checklist'>{getDoneInChecklist(task.id, group.id).length}/{getAllTodosInChecklist(task.id, group.id).length}</span>
                                             </div>
-                                        )}
-                                        {task.description && task.description.trim() !== '' && (
-                                            <img title='This card has a description.' src="../../../src/assets/imgs/Icons/description.svg" alt="description" />
-                                        )}
-                                        {getComments(task.id).length ? <div title='Comments' className='task-comment-container'>
-                                            <img src="../../../src\assets\imgs\Icons\comment.svg" />
-                                            <span className='task-comment'>{getComments(task.id).length} </span>
-                                        </div> : ''}
-                                        {task.attachments.length ? <div title='Attachments' className='task-attachment-container'>
-                                            <img src="../../../src\assets\imgs\TaskDetails-icons\attachment.svg" />
-                                            <span className='task-comment'>1</span>
-                                        </div> : ''}
-                                        <div title='Checklist items' className='task-checklist-container' >
-                                            <img src="../../../src\assets\imgs\Icons\checklist.svg" />
-                                            <span className='task-checklist'>{getDoneInChecklist(task.id, group.id).length}/{getAllTodosInChecklist(task.id, group.id).length}</span>
                                         </div>
-                                    </div>
 
-                                    <div className='members-container'>
-                                        {task.membersIds && task.membersIds.map(id => {
-                                            const member = getMemberById(id)
-                                            return (
-                                                <img
-                                                    key={member._id}
-                                                    className="member-thumbnail"
-                                                    src={member.imgUrl}
-                                                    title={member.fullname}
-                                                    alt={member.fullname}
-                                                />
-                                            )
-                                        })}
-                                    </div>
-                                </div>)}
+                                        <div className='members-container'>
+                                            {task.membersIds && task.membersIds.map(id => {
+                                                const member = getMemberById(id)
+                                                return (
+                                                    <img
+                                                        key={member._id}
+                                                        className="member-thumbnail"
+                                                        src={member.imgUrl}
+                                                        title={member.fullname}
+                                                        alt={member.fullname}
+                                                    />
+                                                )
+                                            })}
+                                        </div>
+                                    </div>)}
 
                             </section>
                         </div>

@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { Link, Outlet } from 'react-router-dom'
-import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
-import { loadBoard, addBoardMsg, updateBoard } from '../store/actions/board.actions'
+import { Outlet } from 'react-router-dom'
+import { loadBoard, updateBoard } from '../store/actions/board.actions'
 import { boardService } from '../services/board/'
 import { GroupPreview } from "../cmps/GroupPreview.jsx"
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
