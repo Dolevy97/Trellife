@@ -1,4 +1,4 @@
-import { getRandomColor, getRandomIntInclusive, getRandomTimestamp, makeId } from "../util.service";
+import { getRandomColor, getRandomIntInclusive, getRandomTimestamp, makeId } from "../util.service"
 
 
 export const boardDemoDataService = {
@@ -47,7 +47,6 @@ function _getRandomActivity(board) {
         title: _getRandomActivityTitle(),
         byMember: _getRandomActivityMember(board),
         group: _getRandomActivityGroup(board),
-        // task: _getRandomActivityTask(board)
     }
 
     activity.task = _getRandomActivityTask(activity.group)
@@ -115,12 +114,50 @@ function _getRandomGroups(board) {
 function _getRandomGroup(board) {
     const group = {
         id: 'g' + makeId(),
-        title: 'List ' + getRandomIntInclusive(1, 99),
+        title: getRandomGroupTitle(),
         archivedAt: getRandomIntInclusive(0, 9) < 3 ? _getRandomTimestamp() : null,
         tasks: _getRandomTasks(board),
         style: {}
     }
     return group
+}
+
+function getRandomGroupTitle() {
+    const groupTitles = [
+        "To Do",
+        "In Progress",
+        "Completed",
+        "Backlog",
+        "Upcoming Tasks",
+        "Urgent",
+        "Ideas",
+        "On Hold",
+        "Review",
+        "Research",
+        "High Priority",
+        "Low Priority",
+        "Waiting for Approval",
+        "Needs Clarification",
+        "Resources",
+        "Brainstorming",
+        "Daily Tasks",
+        "Weekly Goals",
+        "Monthly Goals",
+        "Team Feedback",
+        "Milestones",
+        "Personal Tasks",
+        "Work Tasks",
+        "Done",
+        "Client Requests",
+        "Bug Tracking",
+        "Sprint Planning",
+        "QA Testing",
+        "Product Launch",
+        "Follow Up"
+    ]
+
+    const randomIndex = Math.floor(Math.random() * groupTitles.length)
+    return groupTitles[randomIndex]
 }
 
 function _getRandomTasks(board) {
@@ -277,7 +314,7 @@ function _getRandomChecklistTitle() {
         "Performance Review Preparation"
     ];
 
-    const randomIndex = Math.floor(Math.random() * titles.length);
+    const randomIndex = Math.floor(Math.random() * titles.length)
     return titles[randomIndex];
 }
 
@@ -308,23 +345,23 @@ function _getRandomTaskDescription() {
         "Draft a thorough competitive analysis report that evaluates the strengths and weaknesses of our primary competitors. This report should cover market positioning, product offerings, pricing strategies, marketing approaches, customer reviews, and potential threats to our market share. Include actionable recommendations for how we can improve our competitive edge."
     ];
 
-    const randomIndex = Math.floor(Math.random() * descriptions.length);
-    return getRandomIntInclusive(1, 10) > 3 ? '' : descriptions[randomIndex];
+    const randomIndex = Math.floor(Math.random() * descriptions.length)
+    return getRandomIntInclusive(1, 10) > 3 ? '' : descriptions[randomIndex]
 }
 
 function _getRandomDueDate() {
-    const currentDate = new Date();
-    const lastWeek = new Date(currentDate);
-    lastWeek.setDate(lastWeek.getDate() - 7);
+    const currentDate = new Date()
+    const lastWeek = new Date(currentDate)
+    lastWeek.setDate(lastWeek.getDate() - 7)
 
-    const nextMonth = new Date(currentDate);
-    nextMonth.setMonth(nextMonth.getMonth() + 1);
+    const nextMonth = new Date(currentDate)
+    nextMonth.setMonth(nextMonth.getMonth() + 1)
 
     const randomTimestamp = Math.floor(
         lastWeek.getTime() + Math.random() * (nextMonth.getTime() - lastWeek.getTime())
-    );
+    )
 
-    return randomTimestamp;
+    return randomTimestamp
 }
 
 function _getRandomPriority() {
@@ -341,13 +378,13 @@ function _getRandomTaskIsDone() {
 }
 
 function _getRandomTaskName() {
-    const verbs = ['Implement', 'Debug', 'Optimize', 'Refactor', 'Test', 'Design', 'Review', 'Update'];
-    const nouns = ['Algorithm', 'Database', 'API', 'UI', 'Module', 'Function', 'Component', 'Framework'];
+    const verbs = ['Implement', 'Debug', 'Optimize', 'Refactor', 'Test', 'Design', 'Review', 'Update']
+    const nouns = ['Algorithm', 'Database', 'API', 'UI', 'Module', 'Function', 'Component', 'Framework']
 
-    const randomVerb = verbs[Math.floor(Math.random() * verbs.length)];
-    const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+    const randomVerb = verbs[Math.floor(Math.random() * verbs.length)]
+    const randomNoun = nouns[Math.floor(Math.random() * nouns.length)]
 
-    return `${randomVerb} ${randomNoun}`;
+    return `${randomVerb} ${randomNoun}`
 }
 
 function _getRandomMembers() {
@@ -375,49 +412,49 @@ function _getRandomLabels() {
         'Manageable', 'High Priority', 'Basic', 'Vital', 'Effortless', 'Significant',
         'Uncomplicated', 'Crucial', 'Elementary', 'Major', 'Smooth', 'Paramount', 'Clear-Cut',
         'Imperative', 'Plain'
-    ];
+    ]
 
     // const numLabels = getRandomIntInclusive(0, 7)
-    let randomLabels = [];
+    let randomLabels = []
 
     while (randomLabels.length < 6) {
-        const randomIndex = Math.floor(Math.random() * labels.length);
-        const label = labels[randomIndex];
+        const randomIndex = Math.floor(Math.random() * labels.length)
+        const label = labels[randomIndex]
         if (!randomLabels.includes(label)) {
-            randomLabels.push(label);
+            randomLabels.push(label)
         }
     }
     randomLabels = randomLabels.map(label => ({ id: 'l' + makeId(), title: label, color: getRandomColor() }))
-    return randomLabels;
+    return randomLabels
 }
 
 function _getRandomFullName() {
-    const firstNames = ['John', 'Emma', 'Michael', 'Sophia', 'William', 'Olivia', 'James', 'Ava', 'Robert', 'Isabella'];
-    const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez'];
+    const firstNames = ['John', 'Emma', 'Michael', 'Sophia', 'William', 'Olivia', 'James', 'Ava', 'Robert', 'Isabella']
+    const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez']
 
-    const randomFirstName = firstNames[Math.floor(Math.random() * firstNames.length)];
-    const randomLastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+    const randomFirstName = firstNames[Math.floor(Math.random() * firstNames.length)]
+    const randomLastName = lastNames[Math.floor(Math.random() * lastNames.length)]
 
-    return `${randomFirstName} ${randomLastName}`;
+    return `${randomFirstName} ${randomLastName}`
 }
 
 function _getRandomTimestamp() {
-    const now = new Date();
-    const twoYearsAgo = new Date(now.getFullYear() - 2, now.getMonth(), now.getDate());
+    const now = new Date()
+    const twoYearsAgo = new Date(now.getFullYear() - 2, now.getMonth(), now.getDate())
 
-    const randomTimestamp = twoYearsAgo.getTime() + Math.random() * (now.getTime() - twoYearsAgo.getTime());
+    const randomTimestamp = twoYearsAgo.getTime() + Math.random() * (now.getTime() - twoYearsAgo.getTime())
 
-    return Math.floor(randomTimestamp);
+    return Math.floor(randomTimestamp)
 }
 
 function _getProjectTitle() {
-    const adjectives = ['Innovative', 'Dynamic', 'Advanced', 'Intelligent', 'Sustainable', 'Futuristic', 'Efficient', 'Streamlined'];
-    const nouns = ['Solution', 'System', 'Platform', 'Framework', 'Application', 'Network', 'Interface', 'Engine'];
-    const domains = ['AI', 'IoT', 'Blockchain', 'Cloud', 'Data', 'Security', 'Mobile', 'Web'];
+    const adjectives = ['Innovative', 'Dynamic', 'Advanced', 'Intelligent', 'Sustainable', 'Futuristic', 'Efficient', 'Streamlined']
+    const nouns = ['Solution', 'System', 'Platform', 'Framework', 'Application', 'Network', 'Interface', 'Engine']
+    const domains = ['AI', 'IoT', 'Blockchain', 'Cloud', 'Data', 'Security', 'Mobile', 'Web']
 
-    const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-    const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
-    const randomDomain = domains[Math.floor(Math.random() * domains.length)];
+    const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)]
+    const randomNoun = nouns[Math.floor(Math.random() * nouns.length)]
+    const randomDomain = domains[Math.floor(Math.random() * domains.length)]
 
-    return `${randomAdjective} ${randomDomain} ${randomNoun}`;
+    return `${randomAdjective} ${randomDomain} ${randomNoun}`
 }

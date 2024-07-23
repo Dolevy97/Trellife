@@ -24,14 +24,14 @@ async function uploadImg(ev) {
         body: FORM_DATA,
       })
       const { url } = await res.json()
-      console.log(url)
+      // console.log(url)
       return url
     //   console.log('url:', url)
     //   const elImg = document.createElement('img')
     //   elImg.src = url
     //   document.body.append(elImg)
     } catch (err) {
-        console.log(err)
+        // console.log(err)
       console.error(err)
       throw err
     }
