@@ -29,6 +29,7 @@ function _createDemoBoard() {
     }
     board.groups = _getRandomGroups(board)
     board.activities = _getRandomActivities(board)
+    // board.activities.forEach(a=>console.log(a.task))
     return board
 }
 
@@ -74,6 +75,7 @@ function _getRandomActivities(board) {
     const activities = []
     for (let i = 0; i < length; i++) {
         const activity = _getRandomActivity(board)
+        if (!activity) continue
         activities.push(activity)
     }
     return activities
@@ -88,6 +90,7 @@ function _getRandomActivity(board) {
     }
 
     activity.task = _getRandomActivityTask(activity.group)
+    if (!activity.task) return null
     if (activity.title === 'add comment') activity.txt = _getRandomComment()
     activity.group = { id: activity.group.id, title: activity.group.title }
     activity.createdAt = getRandomTimestamp()
@@ -96,6 +99,7 @@ function _getRandomActivity(board) {
 
 function _getRandomActivityTask(group) {
     const tasks = group.tasks
+    if (!tasks.length) return null
     const randTask = tasks[getRandomIntInclusive(0, tasks.length - 1)]
     // const task = {
     //     id: randTask.id,

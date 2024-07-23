@@ -92,6 +92,8 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
 
     function getComments(taskId) {
         let comments = board.activities.filter(activity => {
+            // console.log(activity)
+            // console.log(activity.task)
             return activity.title === 'add comment' && activity.task.id === taskId
         })
         if (!comments) return []
