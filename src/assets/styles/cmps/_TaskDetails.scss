@@ -428,21 +428,13 @@
                                 .attachment-main {
                                     display: flex;
                                     align-items: center;
+                                    flex-wrap: wrap;
 
 
                                     .attachment-added-at {
-                                        // height: 23px; //placeholder
                                         white-space: nowrap;
                                     }
 
-                                    // .attachment-links {
-                                    //     display: flex;
-                                    //     align-items: center;
-                                    //     // flex-wrap: wrap;
-
-                                    //     margin: 0;
-                                    //     color: #9FADBC;
-                                    //     word-wrap: break-word;
 
                                     .attachment-link {
                                         display: flex;
