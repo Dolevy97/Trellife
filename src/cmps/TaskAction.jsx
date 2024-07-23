@@ -18,20 +18,20 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
     }
 
     async function onAddMember(id) {
-        const updatedTask = {...task}
+        const updatedTask = { ...task }
         updatedTask.membersIds.push(id)
         const activityTitle = `added member (id: ${id}) to task (id: ${task.id})`
         await updateTask(updatedTask, group, board, activityTitle)
     }
-    
+
     async function onRemoveMember(id) {
         task = { ...task, membersIds: task.membersIds.filter(mId => mId !== id) }
         await updateTask(task, group, board)
     }
-    
+
     async function onToggleLabel(ev, id) {
         const { checked } = ev.target
-        let updatedTask = {...task}
+        let updatedTask = { ...task }
         if (checked) {
             updatedTask.labelsIds.push(id)
         } else {
@@ -63,29 +63,35 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
     }
 
     async function onAddChecklist(ev) {
-        const updatedTask = {...task}
+        const updatedTask = { ...task }
         updatedTask.checklists.push({ id: 'cl' + makeId(), title: checklistInputValue, todos: [] })
         const activityTitle = `added ${checklistInputValue} to this card`
         await updateTask(updatedTask, group, board, activityTitle)
         onSetAction(ev, true)
     }
-    
+
+
+    // REFACTOR UPLOADING AND DOWNLOADING FILES WHICH TYPE IS NOT IMAGE
     async function onAddAttachment(ev) {
-        const url = await cloudinaryService.uploadImg(ev)
-        const file = ev.target.files[0]
-        
-        const attachment = {
-            title: file.name,
-            url,
-            createdAt: Date.now(),
-            type: file.type
+        const files = ev.target.files
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i]
+            const url = await cloudinaryService.uploadImg(file)
+            const attachment = {
+                title: file.name,
+                url,
+                createdAt: Date.now(),
+                type: file.type
+            }
+
+            const updatedTask = { ...task }
+            updatedTask.attachments.push(attachment)
+            const activityTitle = `attached ${file.name} to this card`
+
+            await updateTask(updatedTask, group, board, activityTitle)
         }
-        
-        const updatedTask = {...task}
-        updatedTask.attachments.push(attachment)
-        const activityTitle = `attached ${file.name} to this card`
-        
-        await updateTask(updatedTask, group, board, activityTitle)
+
         onSetAction(ev, true)
     }
 
@@ -204,6 +210,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                             type="file"
                             style={{ display: 'none' }}
                             onChange={onAddAttachment}
+                            multiple
                         />
                         <button className="btn-file-upload" onClick={onUpload}>Choose a file</button>
                     </div>
