@@ -310,7 +310,7 @@ export function TaskDetails() {
 
     function getAddedAt(createdAt) {
         const timestamp = (createdAt - Date.now()) * -1
-        return 'Added ' + (ms(timestamp, { long: true })) + ' ago'
+        return 'Addeddddddddddddddddd ' + (ms(timestamp, { long: true })) + ' ago'
     }
 
     function onFocusOnComment() {
@@ -467,12 +467,12 @@ export function TaskDetails() {
                                                     <span className="attachment-added-at">
                                                         {getAddedAt(a.createdAt)}
                                                     </span>
-                                                    <section className="attachment-links">
+                                                    {/* <section className="attachment-links"> */}
                                                         <article className="attachment-link" onClick={onFocusOnComment}><span className='attachment-link-text'>Comment</span></article>
                                                         <article className="attachment-link" onClick={() => onDownloadUrl(a.url, a.title)}><span className='attachment-link-text'>Download</span></article>
                                                         <article className="attachment-link" onClick={() => onRemoveAttachment(a)}><span className='attachment-link-text'>Delete</span></article>
                                                         <article className="attachment-link" name="edit-attachment" onClick={onSetAction} style={{ cursor: 'not-allowed' }}><span className='attachment-link-text'>Edit</span></article>
-                                                    </section>
+                                                    {/* </section> */}
                                                 </div>
                                                 <div className="attachment-remove-cover">
                                                     <img className="attachment-remove-cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />

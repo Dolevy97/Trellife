@@ -115,7 +115,7 @@
 
             .task-content {
                 position: relative;
-
+                width: 576px;
                 padding: 0 8px 8px 57px;
 
                 .members-labels-notifications-date-container {
@@ -333,7 +333,7 @@
                     align-items: flex-start;
 
                     margin-block-end: 24px;
-                    gap: em(8);
+                    // gap: em(8);
 
                     .attachments-icon {
                         left: -36px;
@@ -395,6 +395,7 @@
                                 text-decoration: none;
                                 padding-inline: 25px;
                                 width: 112px;
+                                border-radius: 3px;
                             }
 
                             .attachment-thumbnail {
@@ -403,6 +404,8 @@
                                 background-position: 50%;
                                 background-repeat: no-repeat;
                                 background-size: contain;
+                                border-radius: 3px;
+
 
                                 // flex-grow: 1;
                             }
@@ -412,6 +415,7 @@
                                 flex-direction: column;
                                 align-items: flex-start;
                                 padding: em(8) em(8) em(8) em(16);
+                                width: 400px;
                                 // flex-shrink: 1;
 
                                 .attachment-header {
@@ -426,33 +430,40 @@
                                     align-items: center;
                                     flex-wrap: wrap;
 
-                                    .attachment-added-at {}
 
-                                    .attachment-links {
-                                        // padding-inline-start: em(22);
+                                    .attachment-added-at {
+                                        // height: 23px; //placeholder
+                                        white-space: nowrap;
+                                    }
+
+                                    // .attachment-links {
+                                    //     display: flex;
+                                    //     align-items: center;
+                                    //     // flex-wrap: wrap;
+
+                                    //     margin: 0;
+                                    //     color: #9FADBC;
+                                    //     word-wrap: break-word;
+
+                                    .attachment-link {
                                         display: flex;
-                                        align-items: center;
-                                        margin: 0;
-                                        color: #9FADBC;
 
-                                        .attachment-link {
-                                            display: flex;
+                                        .attachment-link-text {
+                                            text-decoration: underline;
+                                        }
 
-                                            .attachment-link-text {
-                                                text-decoration: underline;
-                                            }
+                                        &:hover {
+                                            cursor: pointer;
+                                        }
 
-                                            &:hover {
-                                                cursor: pointer;
-                                            }
-
-                                            &::before {
-                                                content: " • ";
-                                                padding-inline: 4px;
-                                                height: 19px;
-                                            }
+                                        &::before {
+                                            content: " • ";
+                                            padding-inline: 4px;
+                                            height: 19px;
                                         }
                                     }
+
+                                    // }
 
                                 }
 
@@ -460,6 +471,7 @@
                                     display: flex;
                                     align-items: center;
                                     gap: 8px;
+
                                     .attachment-remove-cover-icon {
                                         position: static;
                                         height: 16px;
