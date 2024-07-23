@@ -329,7 +329,7 @@ export function TaskDetails() {
 
     }
 
-    if (!taskToEdit || !group) return <section>Loading...</section>
+    if (!taskToEdit || !group) return null
 
     const { title, description, membersIds, labelsIds, style } = taskToEdit
 
