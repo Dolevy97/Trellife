@@ -240,7 +240,7 @@ export function TaskDetails() {
         const newTasks = group.tasks.filter(task => task.id !== taskToEdit.id)
         const newGroup = { ...group, tasks: newTasks }
         // const activityTitle = `removed task (id: ${taskToEdit.id})`
-        // NEED TO REFACTOR UPDATE GROUP SO IT UPDATES THE ACTIVITIES OF THE BOARD
+        // NEED TO REFACTOR updateGroup SO IT UPDATES THE ACTIVITIES OF THE BOARD
         await updateGroup(newGroup.id, newGroup, board)
         onBackdropClicked()
     }
