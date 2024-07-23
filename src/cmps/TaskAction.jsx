@@ -7,19 +7,6 @@ import { cloudinaryService } from "../services/cloudinary.service"
 export function TaskAction({ action, board, group, task, getMemberById, getLabelById, onSetAction }) {
 
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
-    const [file, setFile] = useState(null)
-
-    useEffect(() => {
-        const handleKeyDown = (event) => {
-            if (event.keyCode === 32 || event.key === ' ') {
-                event.preventDefault()
-            }
-        }
-        window.addEventListener('keydown', handleKeyDown)
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown)
-        }
-    }, [])
 
     function getBoardMembers() {
         const boardMembers = board.members.filter(member => !task.membersIds.includes(member._id))

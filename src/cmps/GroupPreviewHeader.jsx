@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import { updateBoard } from '../store/actions/board.actions'
 import { useSelector } from 'react-redux'
 import { updateGroup } from '../store/actions/group.actions'
-import { GroupAction } from '../cmps/GroupAction';
 export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId, onAddTaskClick }) {
     const board = useSelector(storeState => storeState.boardModule.board)
 
@@ -83,7 +82,7 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
         } else {
             updatedStyle.backgroundColor = color;
         }
-    
+
         const updatedGroup = {
             ...group,
             style: updatedStyle
@@ -125,33 +124,36 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
                             <img src="../../../src/assets/imgs/Icons/close.svg" alt="" />
                         </div>
                     </header>
+
                     <div className='menu-info'>
-                    <p><span onClick={onAddTaskClick}>Add task</span></p>
-                    <div className="color-picker-accordion">
-                        <p className='color-picker-container' onClick={() => setIsColorPickerOpen(!isColorPickerOpen)}>
-                            <span className='color-picker-btn' >
-                                Change color list 
-                            </span>
-                            <span className='color-picker-arrow'>{isColorPickerOpen ? '▲' : '▼'}</span>
-                        </p>
-                        {isColorPickerOpen && (
-                            <div className="color-grid">
-                                {colors.map((color, index) => (
-                                    <div
-                                        key={index}
-                                        className="color-option"
-                                        style={{ backgroundColor: color }}
-                                        onClick={() => handleColorChange(color)}
-                                    />
-                                ))}
-                                <span className='remove-group-bgc' onClick={() => handleColorChange('remove')}>Remove Color</span>
-                            </div>
-                        )}
+                        <p><span onClick={onAddTaskClick}>Add task</span></p>
+                        <hr className='menu-header-hr' />
+                        <div className="color-picker-accordion">
+                            <p className='color-picker-container' onClick={() => setIsColorPickerOpen(!isColorPickerOpen)}>
+                                <span className='color-picker-btn' >
+                                    Change color list
+                                </span>
+                                <span className='color-picker-arrow'>{isColorPickerOpen ? '▲' : '▼'}</span>
+                            </p>
+                            {isColorPickerOpen && (
+                                <div className="colors-grid">
+                                    {colors.map((color, index) => (
+                                        <div
+                                            key={index}
+                                            className="color-option"
+                                            style={{ backgroundColor: color }}
+                                            onClick={() => handleColorChange(color)}
+                                        />
+                                    ))}
+                                    <span className='remove-group-bgc' onClick={() => handleColorChange('remove')}>Remove Color</span>
+                                </div>
+                            )}
+                        </div>
+                        <hr className='menu-header-hr' />
+                        <footer className='menu-footer'>
+                            <span onClick={onDeleteGroup}>Delete</span>
+                        </footer>
                     </div>
-                    <footer className='options-menu-footer'>
-                        <span onClick={onDeleteGroup}>Delete</span>
-                    </footer>
-                </div>
                 </div>
             )}
         </header>
