@@ -12,7 +12,7 @@ import { updateGroup } from '../store/actions/group.actions'
 import ms from 'ms'
 
 export function TaskDetails() {
-    const board = useSelector(storeState => storeState.boardModule.board)    
+    const board = useSelector(storeState => storeState.boardModule.board) 
     const textareaRef = useRef(null)
     const textareaCommentRef = useRef(null)
     const dateInputRef = useRef(null)
