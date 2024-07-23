@@ -212,7 +212,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             {action === 'attach' &&
                 <>
                     <div className="attachment">
-                        <span className="title">Attach a file from your computer</span>
+                        <span className="sub-title">Attach a file from your computer</span>
                         <input
                             className="input-file-upload"
                             type="file"
