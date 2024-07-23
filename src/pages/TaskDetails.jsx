@@ -12,9 +12,7 @@ import { updateGroup } from '../store/actions/group.actions'
 import ms from 'ms'
 
 export function TaskDetails() {
-    const board = useSelector(storeState => storeState.boardModule.board)
-    const boards = useSelector(storeState => storeState.boardModule.boards)
-
+    const board = useSelector(storeState => storeState.boardModule.board)    
     const textareaRef = useRef(null)
     const textareaCommentRef = useRef(null)
     const dateInputRef = useRef(null)
@@ -33,7 +31,7 @@ export function TaskDetails() {
     const [todoMenuPosition, setTodoMenuPosition] = useState({})
     const [tempDescription, setTempDescription] = useState('')
     const [commentToEdit, setCommentToEdit] = useState('')
-    const [averageColors, setAverageColors] = useState({})
+    // const [averageColors, setAverageColors] = useState({})
 
     const { taskId, groupId, boardId } = useParams()
     const navigate = useNavigate()
@@ -66,24 +64,24 @@ export function TaskDetails() {
         }
     }, [taskToEdit, isSettingDescription])
 
-    useEffect(() => {
-        if (!taskToEdit || !taskToEdit.attachments) return
+    // useEffect(() => {
+    //     if (!taskToEdit || !taskToEdit.attachments) return
 
-        const loadImages = async () => {
-            for (const attachment of taskToEdit.attachments) {
-                if (!averageColors[attachment.url]) {
-                    try {
-                        const color = await getAverageColorFromAttachment(attachment)
-                        setAverageColors(prev => ({ ...prev, [attachment.url]: color }))
-                    } catch (error) {
-                        console.error("Error loading image or getting average color:", error)
-                    }
-                }
-            }
-        }
+    //     const loadImages = async () => {
+    //         for (const attachment of taskToEdit.attachments) {
+    //             if (!averageColors[attachment.url]) {
+    //                 try {
+    //                     const color = await getAverageColorFromAttachment(attachment)
+    //                     setAverageColors(prev => ({ ...prev, [attachment.url]: color }))
+    //                 } catch (error) {
+    //                     console.error("Error loading image or getting average color:", error)
+    //                 }
+    //             }
+    //         }
+    //     }
 
-        loadImages()
-    }, [taskToEdit, averageColors])
+    //     loadImages()
+    // }, [taskToEdit, averageColors])
 
 
     function setTask() {
@@ -328,13 +326,26 @@ export function TaskDetails() {
     }
 
     async function onRemoveAttachment(attachment) {
-        const attachments = taskToEdit.attachments.filter(a => a.url !== attachment.url)
-        const activity = `deleted the ${attachment.title} from card (id: ${taskToEdit.id})`
-        updateTask({ ...taskToEdit, attachments }, group, board, activity)
+        const updatedTask = {...taskToEdit}
+        const coverImg = updatedTask.style?.backgroundImage
+        if (coverImg && coverImg.substring(4)===attachment.url) updatedTask.style = null
+        const attachments = updatedTask.attachments.filter(a=>a.url!==attachment.url)
+        const activity = `deleted the ${attachment.title} from card (id: ${updatedTask.id})`
+        updateTask({ ...updatedTask, attachments }, group, board, activity)
     }
 
     function onAddAttachment() {
 
+    }
+
+    async function onRemoveCover() {
+        const task = { ...taskToEdit, style: null }
+        await updateTask(task, group, board)
+    }
+
+    async function onRemoveCover() {
+        const task = { ...taskToEdit, style: null }
+        await updateTask(task, group, board)
     }
 
     function toggleAddingItem(checklistId) {
@@ -363,8 +374,8 @@ export function TaskDetails() {
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
             <form className="task-details" onSubmit={onSubmit} onClick={onTaskDetailsClicked}>
                 <img onClick={onBackdropClicked} className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close-white.svg" alt="close icon" />
-                {style && <div className="task-details-cover" style={{ backgroundColor: style.backgroundColor }}>
-
+                {style && <div className="task-details-cover" style={{ ...style ,height: style.backgroundImage? '160px' : ''}}>
+        
                 </div>}
                 <header className="task-header">
                     <img className="card-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/card.svg" alt="card icon" />
@@ -476,7 +487,7 @@ export function TaskDetails() {
                                                     className="attachment-thumbnail"
                                                     style={{
                                                         backgroundImage: `url(${a.url})`,
-                                                        backgroundColor: averageColors[a.url] || 'transparent'
+                                                        backgroundColor: a.backgroundColor || 'transparent'
                                                     }}
                                                 />
                                                 :
@@ -500,7 +511,7 @@ export function TaskDetails() {
                                                 </div>
                                                 <div className="attachment-remove-cover">
                                                     <img className="attachment-remove-cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
-                                                    <span className="attachment-span-remove-cover" style={{ cursor: 'not-allowed' }}> Remove cover</span>
+                                                    <span className="attachment-span-remove-cover" onClick={onRemoveCover}> Remove cover</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -695,7 +706,7 @@ export function TaskDetails() {
                                 <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
                                 <span className="action-title">Cover</span>
                             </button>
-                            {action === 'cover' && <TaskAction action="cover" {...taskActionProps} />}
+                            {action === 'cover' && <TaskAction action="cover" onRemoveCover={onRemoveCover} {...taskActionProps} />}
                         </div>
 
                         <hr className='sidebar-hr' />

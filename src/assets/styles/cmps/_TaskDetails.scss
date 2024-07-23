@@ -72,9 +72,12 @@
         }
 
         .task-details-cover {
-            height: em(116);
+            height: 7.25em;
             border-top-left-radius: 12px;
             border-top-right-radius: 12px;
+            background-position: 50%;
+            background-repeat: no-repeat;
+            background-size: contain;
         }
 
         .fs12 {

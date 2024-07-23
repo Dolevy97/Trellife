@@ -1,19 +1,19 @@
-import { getRandomColor, getRandomIntInclusive, getRandomTimestamp, makeId } from "../util.service"
+import { getAverageColorFromAttachment, getRandomColor, getRandomIntInclusive, getRandomTimestamp, makeId } from "../util.service"
 
 
 export const boardDemoDataService = {
     createDemoBoards
 }
 
-function createDemoBoards(length = 20) {
+async function createDemoBoards(length = 20) {
     const boards = []
     for (let i = 0; i < length; i++) {
-        boards.push(_createDemoBoard())
+        boards.push(await _createDemoBoard())
     }
     return boards
 }
 
-function _createDemoBoard() {
+async function _createDemoBoard() {
     const board = {
         _id: makeId(),
         title: _getProjectTitle(),
@@ -27,7 +27,7 @@ function _createDemoBoard() {
         labels: _getRandomLabels(),
         members: _getRandomMembers(),
     }
-    board.groups = _getRandomGroups(board)
+    board.groups = await _getRandomGroups(board)
     board.activities = _getRandomActivities(board)
     return board
 }
@@ -139,22 +139,22 @@ function _getRandomActivityTitle() {
     return activities[getRandomIntInclusive(0, activities.length - 1)]
 }
 
-function _getRandomGroups(board) {
+async function _getRandomGroups(board) {
     const length = getRandomIntInclusive(4, 6)
     const groups = []
     for (let i = 0; i < length; i++) {
-        const group = _getRandomGroup(board)
+        const group = await _getRandomGroup(board)
         groups.push(group)
     }
     return groups
 }
 
-function _getRandomGroup(board) {
+async function _getRandomGroup(board) {
     const group = {
         id: 'g' + makeId(),
         title: getRandomGroupTitle(),
         archivedAt: getRandomIntInclusive(0, 9) < 3 ? _getRandomTimestamp() : null,
-        tasks: _getRandomTasks(board),
+        tasks: await _getRandomTasks(board),
         style: getRandomIntInclusive(1, 3) === 1 ? { backgroundColor: getRandomColor() } : null
     }
     return group
@@ -198,16 +198,16 @@ function getRandomGroupTitle() {
     return groupTitles[randomIndex]
 }
 
-function _getRandomTasks(board) {
+async function _getRandomTasks(board) {
     const length = getRandomIntInclusive(0, 20)
     const tasks = []
     for (let i = 0; i < length; i++) {
-        tasks.push(_getRandomTask(board))
+        tasks.push(await _getRandomTask(board))
     }
     return tasks
 }
 
-function _getRandomTask(board) {
+async function _getRandomTask(board) {
     const task = {
         id: 't' + makeId(),
         title: getRandomIntInclusive(1, 4) > 1 ? _getRandomTaskName() : '',
@@ -220,12 +220,14 @@ function _getRandomTask(board) {
         labelsIds: _getRandomTaskLabels(board),
         byMember: _getRandomTaskMember(board),
         style: getRandomTaskStyle(),
-        attachments: getRandomIntInclusive(1, 4) > 1 ? [] : _getRandomAttachments()
+        // attachments: getRandomIntInclusive(1, 4) > 1 ? [] : _getRandomAttachments()
+        attachments: await _getRandomAttachments()
     }
+    console.log(task)
     return task
 }
 
-function _getRandomAttachments() {
+async function _getRandomAttachments() {
     const demoAttachments = [
         {
             title: "openart-image_NCjT4BO6_1721211304700_raw.jpg",
@@ -274,6 +276,7 @@ function _getRandomAttachments() {
     const attachments = []
     for (let i = 0; i<length; i++){
         const attachment = {...demoAttachments.splice(getRandomIntInclusive(0,demoAttachments.length-1),1)[0]}
+        attachment.backgroundColor = await getAverageColorFromAttachment(attachment)
         attachments.push(attachment)
     }
     return attachments

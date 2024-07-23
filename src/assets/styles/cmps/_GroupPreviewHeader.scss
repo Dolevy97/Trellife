@@ -23,30 +23,30 @@
         overflow: hidden;
         border-radius: 8px;
         background-color: #23262a;
-        cursor: pointer;
         border: 2px solid #86b6f4;
         line-height: 3em;
+        cursor: pointer;
 
     }
 
     .three-dots-btn-wrapper {
-        width: 28px;
-        height: 28px;
-        border-radius: 4px;
-        cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
+        width: 28px;
+        height: 28px;
         transition: background-color 0.1s ease;
+        border-radius: 4px;
+        cursor: pointer;
 
         &:hover {
             background-color: $btnhoverclr;
         }
 
         .three-dots-open {
-            cursor: pointer;
             height: 16px;
             width: 16px;
+            cursor: pointer;
         }
     }
 
@@ -132,11 +132,13 @@
         .menu-info {
 
             >p {
-                margin: 0;
-                padding: 4px 8px;
-                cursor: pointer;
                 font-size: 14px;
                 color: $textclr2;
+                
+                padding: 4px 8px;
+                margin: 0;
+                margin-bottom: 5px;
+                cursor: pointer;
 
                 &:hover {
                     background-color: $btnhoverclr;
@@ -151,12 +153,12 @@
                     justify-content: space-between;
                     align-items: center;
 
-                    cursor: pointer;
                     padding: 4px 8px;
                     margin-block-end: 0em;
-
+                    
                     color: $textclr2;
-
+                    cursor: pointer;
+                    
                     .color-picker-btn {
                         font-size: 12px;
 
@@ -203,17 +205,20 @@
                     }
 
                     .remove-group-bgc {
-                        width: 100%;
-                        height: 32px;
-                        margin: 4px 0px;
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        cursor: pointer;
+
+                        width: 100%;
+                        height: 32px;
+                        margin: 4px 0px;
+
                         background-color: rgba(132, 153, 189, 0.08);
                         border-radius: 3px;
                         font-size: 14px;
+
                         color: $textclr2;
+                        cursor: pointer;
 
                         &:hover {
                             background-color: lighten(rgba(132, 153, 189, 0.08), 30%)
@@ -227,6 +232,7 @@
                 bottom: 0;
                 left: 0;
                 width: 100%;
+
                 padding: 4px 8px;
                 margin-bottom: 8px;
                 cursor: pointer;

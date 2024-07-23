@@ -256,6 +256,21 @@
         }
     }
 
+    .cover-attachment {
+        margin: 0;
+        border-radius: 3px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        box-shadow: none;
+        width: 88px;
+        height: 48px;
+
+        &:hover{
+            cursor: pointer;
+        }
+    }
+
 
 }
 
