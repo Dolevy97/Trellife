@@ -91,7 +91,6 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
         const newBoard = await updateGroup(updatedGroup.id, updatedGroup, board);
         setIsColorPickerOpen(false);
         setOpenMenuGroupId(null);
-        console.log(newBoard);
     }
 
     return (
