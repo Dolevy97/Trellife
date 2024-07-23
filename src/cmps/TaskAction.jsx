@@ -192,7 +192,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                         {task.attachments && task.attachments.length &&
                             <div className="cover-attachments-container">
                                 <span className="title">Attachments</span>
-                                <div className="cover-attachmnets">
+                                <div className="cover-attachments">
                                     {task.attachments.map(a =>
                                         <div
                                             key={a.url}
