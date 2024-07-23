@@ -11,8 +11,14 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
 
     const menuRef = useRef(null)
     const colors = [
-        '#04120d', '#344563', '#0055cc',
-        '#7f5f01', '#a54800', '#ae2e24', '#206a83', '#5e4db2', '#216e4e', '#0055cc'
+        '#04120d', '#344563',   '#1A6ED8',  // Refined blue
+        '#a37d1f',  // Softer gold
+        '#C26A3E',  // Muted orange
+        '#B84A45',  // Softened red
+        '#3A8CA0',  // Calmer teal
+        '#7B6CC1',  // Lighter purple
+        '#216e4e',  // Brighter green
+        '#3B7AC5'  
     ]
 
 

@@ -10,7 +10,7 @@ import { addTask } from "../store/actions/task.actions"
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 
 
-export function GroupPreview({ group, boardId, handleOnDragEnd }) {
+export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpansion,areLabelsExpanded}) {
     const tasks = group?.tasks || []
     const board = useSelector(storeState => storeState.boardModule.board)
 
@@ -20,6 +20,8 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
     const addTaskRef = useRef(null)
     const [taskToEdit, setTaskToEdit] = useState(null)
     const textareaRef = useRef(null)
+    const [expandedLabelTaskId, setExpandedLabelTaskId] = useState(null)
+
 
     const navigate = useNavigate()
 
@@ -87,6 +89,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
         return board.labels.find(label => label.id === id)
     }
 
+
     function getComments(taskId) {
         let comments = board.activities.filter(activity => {
             return activity.title === 'add comment' && activity.task.id === taskId
@@ -153,21 +156,23 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
                                                     padding: task.style?.isFull ? '8px 8px 8px 12px' : '8px 12px',
                                                     minHeight: task.style?.isFull ? '40px' : '',
                                                     marginTop: task.style?.isFull ? '15px' : ''
-                                                }}
-
-                                            >
+                                                }}>
                                                 {(!task.style || !task.style.isFull) && (
                                                     <div className='task-label-container'>
                                                         {task.labelsIds && task.labelsIds.map(id => {
                                                             const label = getLabelById(id)
                                                             return label && (
                                                                 <div
-                                                                    className="label-tab"
                                                                     key={id}
-                                                                    style={{ backgroundColor: label.color }}
-                                                                    title={label.title}
-                                                                >
-                                                                    <span className="label-title">{label.title}</span>
+                                                                    className={`label-tab ${areLabelsExpanded ? 'expanded' : ''}`}
+                                                                    onClick={toggleLabelExpansion}
+                                                                    title={label.title}>
+                                                                    <div
+                                                                        className="label-color"
+                                                                        style={{ backgroundColor: label.color }}
+                                                                    >
+                                                                        {areLabelsExpanded && <span className="label-title">{label.title}</span>}
+                                                                    </div>
                                                                 </div>
                                                             )
                                                         })}
