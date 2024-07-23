@@ -10,7 +10,7 @@ import { addTask } from "../store/actions/task.actions"
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 
 
-export function GroupPreview({ group, boardId, handleOnDragEnd }) {
+export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpansion,areLabelsExpanded}) {
     const tasks = group?.tasks || []
     const board = useSelector(storeState => storeState.boardModule.board)
 
@@ -89,10 +89,6 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
         return board.labels.find(label => label.id === id)
     }
 
-    const toggleLabelExpansion = (taskId, event) => {
-        event.stopPropagation()
-        setExpandedLabelTaskId(prevId => prevId === taskId ? null : taskId)
-    }
 
     function getComments(taskId) {
         let comments = board.activities.filter(activity => {
@@ -165,18 +161,17 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
                                                     <div className='task-label-container'>
                                                         {task.labelsIds && task.labelsIds.map(id => {
                                                             const label = getLabelById(id)
-                                                            const isExpanded = expandedLabelTaskId === task.id
                                                             return label && (
                                                                 <div
                                                                     key={id}
-                                                                    className={`label-tab ${isExpanded ? 'expanded' : ''}`}
-                                                                    onClick={(e) => toggleLabelExpansion(task.id, e)}
+                                                                    className={`label-tab ${areLabelsExpanded ? 'expanded' : ''}`}
+                                                                    onClick={toggleLabelExpansion}
                                                                     title={label.title}>
                                                                     <div
                                                                         className="label-color"
                                                                         style={{ backgroundColor: label.color }}
                                                                     >
-                                                                        {isExpanded && <span className="label-title">{label.title}</span>}
+                                                                        {areLabelsExpanded && <span className="label-title">{label.title}</span>}
                                                                     </div>
                                                                 </div>
                                                             )
