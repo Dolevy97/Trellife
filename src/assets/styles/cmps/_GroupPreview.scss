@@ -4,7 +4,7 @@
     width: 272px;
     display: flex;
     flex-direction: column;
-    max-height: calc(100vh - 201px);
+    max-height: calc(100vh - 143px);
     box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
 
     .group-preview {
@@ -102,7 +102,6 @@
                     span {
                         font-size: 14px;
                         font-weight: 400;
-                        color: $txtclr1;
                         word-wrap: break-word;
                         width: 100%;
 

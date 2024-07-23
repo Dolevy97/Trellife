@@ -13,8 +13,8 @@ export function HomePage() {
                                 <div className="spacer"></div>
                             </div>
                             <form className="homepage-form">
-                                <input type="email" name="" id="" />
-                                <button>Sign up - It's free!</button>
+                                {/* <input type="email" name="" id="" /> */}
+                                <button>Get started!</button>
                             </form>
                         </div>
                         <div className="right-container">

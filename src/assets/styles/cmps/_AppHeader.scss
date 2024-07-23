@@ -7,6 +7,7 @@
 
         z-index: 100;
 
+        background-color: $bgclr1;
         transition: background-color 0.5s ease 0s, box-shadow 0.5s ease 0s;
 
         &:hover {
@@ -36,7 +37,7 @@
 
         height: 60px;
         margin: 0px auto;
-        // max-width: 1320px;
+        max-width: 1320px;
         align-items: stretch;
         padding: 0;
 
@@ -127,7 +128,7 @@
 
     .svg-arrow-down {
         width: 14px;
-        filter: invert(73%) sepia(21%) saturate(206%) hue-rotate(170deg) brightness(90%) contrast(90%);
+        filter: brightness(0) saturate(100%) invert(73%) sepia(21%) saturate(206%) hue-rotate(170deg) brightness(90%) contrast(90%);
     }
 
     .logo-text {
