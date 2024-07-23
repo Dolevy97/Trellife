@@ -310,7 +310,7 @@ export function TaskDetails() {
 
     function getAddedAt(createdAt) {
         const timestamp = (createdAt - Date.now()) * -1
-        return 'Addeddddddddddddddddd ' + (ms(timestamp, { long: true })) + ' ago'
+        return 'Added ' + (ms(timestamp, { long: true })) + ' ago'
     }
 
     function onFocusOnComment() {
