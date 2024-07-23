@@ -20,8 +20,6 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
     const addTaskRef = useRef(null)
     const [taskToEdit, setTaskToEdit] = useState(null)
     const textareaRef = useRef(null)
-    const [expandedLabelTaskId, setExpandedLabelTaskId] = useState(null)
-
 
     const navigate = useNavigate()
 
@@ -58,7 +56,6 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
 
     async function onAddTask() {
         if (!newTaskTitle.trim()) return
-
         const newBoard = await addTask(newTaskTitle, group, board)
         if (newBoard) {
             setNewTaskTitle('')
@@ -92,8 +89,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
 
     function getComments(taskId) {
         let comments = board.activities.filter(activity => {
-            // console.log(activity)
-            // console.log(activity.task)
+
             return activity.title === 'add comment' && activity.task.id === taskId
         })
         if (!comments) return []

@@ -158,7 +158,7 @@ function _getRandomGroup(board) {
         id: 'g' + makeId(),
         title: getRandomGroupTitle(),
         archivedAt: getRandomIntInclusive(0, 9) < 3 ? _getRandomTimestamp() : null,
-        tasks:_getRandomTasks(board),
+        tasks: _getRandomTasks(board),
         style: getRandomIntInclusive(1, 3) === 1 ? { backgroundColor: getRandomColor() } : null
     }
     return group
@@ -223,9 +223,9 @@ function _getRandomTask(board) {
         membersIds: _getRandomTaskMembersIds(board),
         labelsIds: _getRandomTaskLabels(board),
         byMember: _getRandomTaskMember(board),
-        style: getRandomTaskStyle(),
         attachments: getRandomIntInclusive(1, 4) > 1 ? [] : _getRandomAttachments()
     }
+    task.style = _getRandomTaskStyle(task.attachments)
     return task
 }
 
@@ -236,7 +236,7 @@ function _getRandomAttachments() {
             url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721739547/jypeggdpogvfaoz0xbn6.jpg",
             createdAt: 1721739548198,
             type: "image/jpeg",
-            backgroundColor:  _rgb(229, 229, 226)
+            backgroundColor: _rgb(229, 229, 226)
         },
         {
             title: "openart-image_R3VI1CMG_1721209766848_raw.jpg",
@@ -281,10 +281,10 @@ function _getRandomAttachments() {
             backgroundColor: _rgb(63, 67, 50)
         }
     ]
-    const length = getRandomIntInclusive(1,3)
+    const length = getRandomIntInclusive(1, 3)
     const attachments = []
-    for (let i = 0; i<length; i++){
-        const attachment = {...demoAttachments.splice(getRandomIntInclusive(0,demoAttachments.length-1),1)[0]}
+    for (let i = 0; i < length; i++) {
+        const attachment = { ...demoAttachments.splice(getRandomIntInclusive(0, demoAttachments.length - 1), 1)[0] }
         attachments.push(attachment)
     }
     return attachments
@@ -299,9 +299,12 @@ function _rgb(r, g, b) {
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
-function getRandomTaskStyle() {
+function _getRandomTaskStyle(attachments) {
     const randNum = getRandomIntInclusive(1, 3)
-    if (randNum > 1) {
+    if (attachments?.length) {
+        const attachment = attachments[getRandomIntInclusive(0, attachments.length - 1)]
+        return { backgroundColor:attachment.backgroundColor, backgroundImage:`url(${attachment.url})`, isFull: (getRandomIntInclusive(1, 2) === 1) }
+    } else if (randNum > 1) {
         return null
     }
     return { backgroundColor: getRandomColor(), isFull: (getRandomIntInclusive(1, 2) === 1) }
