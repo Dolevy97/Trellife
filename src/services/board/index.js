@@ -18,7 +18,6 @@ function getEmptyBoard() {
         members: [],
         groups: [],
         activities: [],
-        cmpsOrder: [],
     }
 }
 
