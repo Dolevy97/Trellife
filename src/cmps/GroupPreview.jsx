@@ -59,7 +59,6 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
 
         const newBoard = await addTask(newTaskTitle, group, board)
         if (newBoard) {
-            setIsAddingTask(false)
             setNewTaskTitle('')
         }
     }
@@ -70,10 +69,10 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
             onAddTask()
             setNewTaskTitle('')
             if (addTaskRef.current) {
-                const input = addTaskRef.current.querySelector('input')
-                if (input) {
+                const textarea = addTaskRef.current.querySelector('textarea')
+                if (textarea) {
                     setTimeout(() => {
-                        input.focus()
+                        textarea.focus()
                     }, 0)
                 }
             }
@@ -97,31 +96,20 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
         return comments
     }
 
-    function getAllTodosInChecklist(taskId, groupId) {
-        const group = board.groups.find(group => group.id === groupId)
-        const task = group.tasks.find(task => task.id === taskId)
-        const allTodos = task.checklists.map(checklist => {
-            return {
-                ...checklist,
-                todos: checklist.todos
-            }
-        })
-        return allTodos
-    }
-
     function getDoneInChecklist(taskId, groupId) {
         const group = board.groups.find(group => group.id === groupId)
         const task = group.tasks.find(task => task.id === taskId)
-        const doneInChecklist = task.checklists.map(checklist => {
-            if (!Array.isArray(checklist.todos)) {
-                return { ...checklist, todos: [] }
-            }
-            return {
-                ...checklist,
-                todos: checklist.todos.filter(todo => todo.isDone)
-            }
-        }).filter(checklist => checklist.todos.length > 0)
-        return doneInChecklist
+        return task.checklists.reduce((total, checklist) => {
+            return total + (Array.isArray(checklist.todos) ? checklist.todos.filter(todo => todo.isDone).length : 0)
+        }, 0)
+    }
+
+    function getAllTodosInChecklist(taskId, groupId) {
+        const group = board.groups.find(group => group.id === groupId)
+        const task = group.tasks.find(task => task.id === taskId)
+        return task.checklists.reduce((total, checklist) => {
+            return total + (Array.isArray(checklist.todos) ? checklist.todos.length : 0)
+        }, 0)
     }
 
     const labelsIds = taskToEdit?.labelsIds || []
@@ -161,10 +149,11 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
                                             )}
 
                                             <section className='task-info-container'
-                                            style={{padding: task.style?.isFull ? '8px 8px 8px 12px' : '8px 12px',
-                                                minHeight: task.style?.isFull ? '40px' : '',
-                                                marginTop: task.style?.isFull ? '15px' : ''
-                                            }}
+                                                style={{
+                                                    padding: task.style?.isFull ? '8px 8px 8px 12px' : '8px 12px',
+                                                    minHeight: task.style?.isFull ? '40px' : '',
+                                                    marginTop: task.style?.isFull ? '15px' : ''
+                                                }}
 
                                             >
                                                 {(!task.style || !task.style.isFull) && (
@@ -186,12 +175,13 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
                                                 )}
 
                                                 <div className='task-title-container'
-                                                 style={{ marginBlockEnd: task.style?.isFull ? '0' : '4px' }}
+                                                    style={{ marginBlockEnd: task.style?.isFull ? '0' : '4px' }}
                                                 >
-                                                    <span style={{ fontWeight: task.style?.isFull ? '500' : 'normal',
-                                                    fontSize: task.style?.isFull ? '1em' : ''
+                                                    <span style={{
+                                                        fontWeight: task.style?.isFull ? '500' : 'normal',
+                                                        fontSize: task.style?.isFull ? '1em' : ''
 
-                                                     }}>{task.title}</span>
+                                                    }}>{task.title}</span>
                                                 </div>
 
                                                 <div className='pen-display'>
@@ -231,13 +221,35 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
                                                                     <span className='task-comment'>{task.attachments.length}</span>
                                                                 </div> : ''
                                                             }
-                                                            {task.checklists.length ?
-                                                                <div title='Checklist items' className='task-checklist-container' >
-                                                                    <img src="../../../src\assets\imgs\Icons\checklist.svg" />
-                                                                    <span className='task-checklist'>{getDoneInChecklist(task.id, group.id).length}/{getAllTodosInChecklist(task.id, group.id).length}</span>
+                                                            {task.checklists.length ? (
+                                                                <div
+                                                                    title='Checklist items'
+                                                                    className='task-checklist-container'
+                                                                    style={{
+                                                                        backgroundColor: getDoneInChecklist(task.id, group.id) === getAllTodosInChecklist(task.id, group.id) ? '#4BCE97' : '',
+                                                                        color: getDoneInChecklist(task.id, group.id) === getAllTodosInChecklist(task.id, group.id) ? '#1d2125' : '',
+                                                                        padding: '2px 4px',
+                                                                        borderRadius: '3px'
+                                                                    }}
+                                                                >
+                                                                    <img
+                                                                        src="../../../src\assets\imgs\Icons\checklist.svg"
+                                                                        style={{
+                                                                            filter: getDoneInChecklist(task.id, group.id) === getAllTodosInChecklist(task.id, group.id)
+                                                                                ? 'brightness(0) saturate(100%) invert(9%) sepia(13%) saturate(697%) hue-rotate(169deg) brightness(97%) contrast(91%)'
+                                                                                : ''
+                                                                        }}
+                                                                    />
+                                                                    <span
+                                                                        className='task-checklist'
+                                                                        style={{
+                                                                            backgroundColor: getDoneInChecklist(task.id, group.id) === getAllTodosInChecklist(task.id, group.id) ? 'var(--bgclr1)' : ''
+                                                                        }}
+                                                                    >
+                                                                        {getDoneInChecklist(task.id, group.id)}/{getAllTodosInChecklist(task.id, group.id)}
+                                                                    </span>
                                                                 </div>
-                                                                :
-                                                                ''}
+                                                            ) : ''}
                                                         </div>
 
                                                         <div className='members-container'>
