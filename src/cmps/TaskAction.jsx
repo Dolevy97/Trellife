@@ -75,7 +75,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         await updateTask(task, group, board)
     }
 
-    async function onAddChecklist() {
+    async function onAddChecklist(ev) {
         const updatedTask = {...task}
         updatedTask.checklists.push({ id: 'cl' + makeId(), title: checklistInputValue, todos: [] })
         const activityTitle = `added ${checklistInputValue} to this card`
@@ -212,7 +212,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             {action === 'attach' &&
                 <>
                     <div className="attachment">
-                        <span className="title">Attach a file from your computer</span>
+                        <span className="sub-title">Attach a file from your computer</span>
                         <input
                             className="input-file-upload"
                             type="file"

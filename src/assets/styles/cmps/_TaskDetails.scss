@@ -25,6 +25,10 @@
 
 
     .task-details {
+        button {
+            font-family: inherit;
+        }
+
         position: relative;
         min-height: em(600, 16);
         width: em(768, 16);
@@ -33,7 +37,17 @@
         flex-direction: column;
 
         background-color: rgb(50 57 64);
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-family: system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        Roboto,
+        Oxygen,
+        Ubuntu,
+        Cantarell,
+        'Open Sans',
+        'Helvetica Neue',
+        sans-serif;
         color: rgb(182, 194, 207);
         border-radius: 12px;
 
@@ -91,7 +105,7 @@
             }
 
             .card-icon {
-                left: em(26);
+                left: em(24);
                 top: em(22);
             }
         }
@@ -101,7 +115,7 @@
 
             .task-content {
                 position: relative;
-
+                width: 576px;
                 padding: 0 8px 8px 57px;
 
                 .members-labels-notifications-date-container {
@@ -319,6 +333,7 @@
                     align-items: flex-start;
 
                     margin-block-end: 24px;
+                    // gap: em(8);
 
                     .attachments-icon {
                         left: -36px;
@@ -326,10 +341,35 @@
                         height: 24px;
                     }
 
-                    span {
+                    .attachments-title {
                         font-size: 1em;
                         line-height: 20px;
                         font-weight: 600;
+                        position: relative;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        min-height: 32px;
+                        margin: 0 0 4px 0px;
+                        padding: 8px 0;
+                        width: 100%;
+
+                        & button {
+                            font-family: inherit;
+                            font-size: 14px;
+                            line-height: 20px;
+                            padding: 6px 12px;
+                            border-radius: 3px;
+                            font-weight: 500;
+                            transition-property: background-color, border-color, box-shadow;
+                            transition-duration: 85ms;
+                            transition-timing-function: ease;
+                            background-color: #579DFF;
+                            color: #1d2125;
+                            background-color: rgba(161, 189, 217, 0.0784313725);
+                            color: #b6c2cf;
+                            font-weight: 500;
+                        }
                     }
 
                     .attachments {
@@ -338,26 +378,111 @@
                         align-items: flex-start;
 
                         .attachment {
+                            display: flex;
+                            align-items: center;
+                            font-size: em(14);
+                            padding: 4px 8px 4px 0;
+                            // width: em(512); //Somewhy looks better without this
+
+
+                            .attachment-file-preview {
+                                display: block;
+                                font-size: 18px;
+                                font-weight: 700;
+                                height: 80px;
+                                line-height: 80px;
+                                text-align: center;
+                                text-decoration: none;
+                                padding-inline: 25px;
+                                width: 112px;
+                                border-radius: 3px;
+                            }
+
                             .attachment-thumbnail {
-                                height: em(80);
+                                height: em(80, 14);
+                                width: em(112, 14);
+                                background-position: 50%;
+                                background-repeat: no-repeat;
+                                background-size: contain;
+                                border-radius: 3px;
+
+
+                                // flex-grow: 1;
                             }
 
                             .attachment-details {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: flex-start;
+                                padding: em(8) em(8) em(8) em(16);
+                                width: 400px;
+                                // flex-shrink: 1;
 
                                 .attachment-header {
-                                   
+                                    .attachment-title {
+                                        font-weight: 700;
+                                        word-break: break-all;
+                                    }
                                 }
-                                .attachment-main{
-                                    
-                                }
-                                .attachment-remove-cover{
+
+                                .attachment-main {
+                                    display: flex;
+                                    align-items: center;
+                                    flex-wrap: wrap;
+
+
+                                    .attachment-added-at {
+                                        white-space: nowrap;
+                                    }
+
+
+                                    .attachment-link {
+                                        display: flex;
+
+                                        .attachment-link-text {
+                                            text-decoration: underline;
+                                        }
+
+                                        &:hover {
+                                            cursor: pointer;
+                                        }
+
+                                        &::before {
+                                            content: " • ";
+                                            padding-inline: 4px;
+                                            height: 19px;
+                                        }
+                                    }
 
                                 }
-                                
+
+                                .attachment-remove-cover {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 8px;
+
+                                    .attachment-remove-cover-icon {
+                                        position: static;
+                                        height: 16px;
+                                        width: 16px;
+                                        scale: .9;
+                                    }
+
+                                    .attachment-span-remove-cover {
+                                        text-decoration: underline;
+
+                                        &:hover {
+                                            cursor: pointer;
+                                        }
+                                    }
+                                }
+
                             }
                         }
                     }
                 }
+
+
 
                 .activity-container {
                     position: relative;
@@ -385,14 +510,13 @@
                             border: none;
                             background-color: #A1BDD914;
                             color: '$txtclr1';
-                            border-radius: 3px;
+                            border-radius: 8px;
 
                             font-weight: 500;
                             font-size: .875em;
                             font-family: inherit;
                             line-height: 1.25em;
 
-                            box-shadow: 0 0 0 1px inset #738496;
                             background-color: #22272B;
                             color: $txtclr1;
                             font-size: 0.875em;
@@ -408,6 +532,7 @@
 
                             &:hover {
                                 cursor: pointer;
+                                background-color: #282E33;
                             }
 
                             &.editing:hover {
@@ -437,13 +562,19 @@
                         .btns {
                             margin-block-start: 8px;
 
-                            button {
+                            .btn-save {
                                 @include btn;
                                 width: fit-content;
 
                                 margin-inline-end: 6px;
 
-                                &.btn-save:hover {
+                                &:disabled {
+                                    background-color: #BCD6F00A;
+                                    color: #BFDBF847;
+                                    cursor: not-allowed;
+                                }
+
+                                &.btn-save:hover:not(:disabled) {
                                     background-color: #85B8FF;
                                 }
 
@@ -666,6 +797,8 @@
 }
 
 .checklist-items {
+    position: relative;
+
 
     & .checklist-item-container {
         position: relative;
@@ -734,8 +867,10 @@
         }
 
         & .checklist-item-details {
+            position: relative;
+
             display: inline-flex;
-            width: 100%;
+            width: 101.5%;
 
             margin: 0 0 0 -8px;
             padding: 6px 8px;
@@ -747,6 +882,7 @@
 
             &:hover {
                 background-color: #A1BDD914;
+                cursor: pointer;
             }
 
             .todo-actions {
@@ -755,6 +891,38 @@
 
             &:hover .todo-actions {
                 display: flex;
+                align-items: center;
+
+                position: absolute;
+                right: 9px;
+                top: 4px;
+
+                .action-container {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    width: 26px;
+                    height: 26px;
+                    border-radius: 50%;
+
+                    background-color: #434E57;
+
+                    &:hover {
+                        background-color: #4D5964;
+                    }
+                }
+
+                img {
+                    position: relative;
+
+                    height: 20px;
+                    width: 20px;
+
+                    font-size: 16px;
+                    line-height: 20px;
+                }
+
             }
 
             .todo-title {
@@ -890,11 +1058,14 @@
         }
 
 
-        textarea {
-            height: 40px;
+        .new-checklist-item {
+            overflow: hidden;
+            overflow-wrap: break-word;
+            resize: vertical;
+
             padding: 8px 12px;
-            resize: none;
             width: 512px;
+            height: 56px;
 
             border: none;
             background-color: #A1BDD914;
@@ -912,7 +1083,7 @@
 
             font-size: 0.875em;
             line-height: 1.714;
-            margin-top: 0.75rem;
+            margin-top: 4px;
             margin-bottom: 0px;
             letter-spacing: -0.005em;
 
@@ -951,6 +1122,99 @@
                         background-color: #A6C5E229;
                     }
                 }
+            }
+        }
+    }
+}
+
+.item-actions {
+    width: 304px;
+
+    color: $txtclr1;
+    background-color: #282E33;
+    box-shadow: 0px 8px 12px #091e4226, 0px 0px 1px #091e424f;
+    border-radius: 8px;
+
+    z-index: 10;
+
+    .item-actions-header {
+        display: grid;
+        position: relative;
+        grid-template-columns: 32px 1fr 32px;
+        align-items: center;
+        padding: 4px 8px;
+        text-align: center;
+
+        h2 {
+            display: block;
+            position: relative;
+            grid-column: 1 / span 3;
+            grid-row: 1;
+            height: 40px;
+            margin: 0;
+            padding: 0 32px;
+            overflow: hidden;
+            color: $txtclr2;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: -0.003em;
+            line-height: 40px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        button {
+            @include btn;
+            background-color: transparent;
+            grid-column: 3;
+            grid-row: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+
+            &:hover {
+                background-color: #A6C5E229;
+                cursor: pointer;
+            }
+
+            img {
+                width: 16px;
+                height: 16px;
+                filter: brightness(0) saturate(100%) invert(68%) sepia(28%) saturate(212%) hue-rotate(170deg) brightness(86%) contrast(81%);
+            }
+        }
+    }
+
+    .item-actions-body {
+        max-height: 1162px;
+
+        .item-action {
+            @include btn;
+
+            display: block;
+            position: relative;
+            width: 100%;
+            margin: unset;
+            padding: 6px 12px;
+            background-color: unset;
+            font-weight: normal;
+            text-align: left;
+
+            color: $txtclr1;
+            font-size: 14px;
+            cursor: pointer;
+
+            transition: background-color 0s;
+
+            &:last-child {
+                margin-block-end: 8px;
+            }
+
+            &:hover {
+                background-color: #A6C5E229;
             }
         }
     }

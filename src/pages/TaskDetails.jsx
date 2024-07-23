@@ -1,14 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { boardService } from '../services/board';
-import { updateBoard } from '../store/actions/board.actions';
-import { updateTask } from '../store/actions/task.actions';
-import { TaskAction } from '../cmps/TaskAction';
-import autosize from 'autosize';
-import { getRandomMember } from '../services/board/board-demo-data.service';
-import { getFormattedTime, makeId } from '../services/util.service';
-import { updateGroup } from '../store/actions/group.actions';
+import { useEffect, useRef, useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { boardService } from '../services/board'
+import { updateBoard } from '../store/actions/board.actions'
+import { updateTask } from '../store/actions/task.actions'
+import { TaskAction } from '../cmps/TaskAction'
+import autosize from 'autosize'
+import { getRandomMember } from '../services/board/board-demo-data.service'
+import { getAverageColorFromAttachment, getFormattedTime, makeId, onDownloadUrl } from '../services/util.service'
+import { updateGroup } from '../store/actions/group.actions'
+import ms from 'ms'
 
 export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
@@ -24,8 +25,12 @@ export function TaskDetails() {
     const [isSettingDescription, setIsSettingDescription] = useState(false)
     const [isAddingComment, setIsAddingComment] = useState(false)
     const [isAddingItem, setIsAddingItem] = useState(false)
+    const [isTodoMenuOpen, setIsTodoMenuOpen] = useState(false)
+    const [todoMenuId, setTodoMenuId] = useState(null)
+    const [todoMenuPosition, setTodoMenuPosition] = useState({})
     const [tempDescription, setTempDescription] = useState('')
     const [commentToEdit, setCommentToEdit] = useState('')
+    const [averageColors, setAverageColors] = useState({})
 
     const { taskId, groupId, boardId } = useParams()
     const navigate = useNavigate()
@@ -36,62 +41,82 @@ export function TaskDetails() {
 
     useEffect(() => {
         if (textareaRef.current) {
-            autosize(textareaRef.current);
+            autosize(textareaRef.current)
         }
 
         return () => {
             if (textareaRef.current) {
-                autosize.destroy(textareaRef.current);
+                autosize.destroy(textareaRef.current)
             }
         }
     }, [taskToEdit, isSettingDescription])
 
     useEffect(() => {
         if (textareaCommentRef.current) {
-            autosize(textareaCommentRef.current);
+            autosize(textareaCommentRef.current)
         }
 
         return () => {
             if (textareaCommentRef.current) {
-                autosize.destroy(textareaCommentRef.current);
+                autosize.destroy(textareaCommentRef.current)
             }
         }
     }, [taskToEdit, isSettingDescription])
 
+    useEffect(() => {
+        if (!taskToEdit || !taskToEdit.attachments) return
+
+        const loadImages = async () => {
+            for (const attachment of taskToEdit.attachments) {
+                if (!averageColors[attachment.url]) {
+                    try {
+                        const color = await getAverageColorFromAttachment(attachment)
+                        setAverageColors(prev => ({ ...prev, [attachment.url]: color }))
+                    } catch (error) {
+                        console.error("Error loading image or getting average color:", error)
+                    }
+                }
+            }
+        }
+
+        loadImages()
+    }, [taskToEdit, averageColors])
+
+
     function setTask() {
         setTaskToEdit(() => {
-            const group = board.groups.find(group => group.id === groupId);
-            setGroup(group);
-            const task = group.tasks.find(task => task.id === taskId);
-            return task;
-        });
+            const group = board.groups.find(group => group.id === groupId)
+            setGroup(group)
+            const task = group.tasks.find(task => task.id === taskId)
+            return task
+        })
     }
 
     function onBack() {
-        navigate(`/board/${boardId}`, { replace: true });
+        navigate(`/board/${boardId}`, { replace: true })
     }
 
     function onBackdropClicked() {
-        if (action) setAction(null);
-        else onBack();
+        if (action) setAction(null)
+        else onBack()
     }
 
     function onTaskDetailsClicked(ev) {
-        ev.stopPropagation();
-        setAction(null);
+        ev.stopPropagation()
+        setAction(null)
     }
 
     function onSubmit(ev) {
-        ev.preventDefault();
+        ev.preventDefault()
     }
 
     function handleChange({ target }) {
-        const { type, name: field } = target;
-        let { value } = target;
+        const { type, name: field } = target
+        let { value } = target
         if (type === 'number') {
-            value = +value || '';
+            value = +value || ''
         }
-        setTaskToEdit({ ...taskToEdit, [field]: value });
+        setTaskToEdit({ ...taskToEdit, [field]: value })
     }
 
     function handleCommentChange({ target }) {
@@ -104,21 +129,21 @@ export function TaskDetails() {
     }
 
     function getMemberById(id) {
-        return board.members.find(member => member._id === id);
+        return board.members.find(member => member._id === id)
     }
 
     function getLabelById(id) {
-        return board.labels.find(label => label.id === id);
+        return board.labels.find(label => label.id === id)
     }
 
     function onSetAction(ev, isNull = false) {
-        ev.stopPropagation();
+        ev.stopPropagation()
         if (isNull) {
-            setAction(null);
+            setAction(null)
             return
         }
-        const actionName = action === ev.currentTarget.name ? null : ev.currentTarget.name;
-        setAction(actionName);
+        const actionName = action === ev.currentTarget.name ? null : ev.currentTarget.name
+        setAction(actionName)
     }
 
     function startSetDescription() {
@@ -129,7 +154,6 @@ export function TaskDetails() {
     async function onSaveDescription() {
         await updateTask(taskToEdit, group, board)
         setIsSettingDescription(false)
-
     }
 
     function cancelSetDescription() {
@@ -166,7 +190,7 @@ export function TaskDetails() {
     function getDueDate(timeStamp) {
         if (!timeStamp) return
         const date = new Date(timeStamp)
-        const isoString = date.toISOString();
+        const isoString = date.toISOString()
         return isoString.slice(0, 16)
     }
 
@@ -225,11 +249,18 @@ export function TaskDetails() {
         const completedTodos = checklist.todos.filter(todo => todo.isDone).length
         const todosLengthPercent = (completedTodos / checklist.todos.length) * 100
         if (isNaN(todosLengthPercent)) return 0
-        return todosLengthPercent
+        return todosLengthPercent.toFixed(0)
+    }
+
+    function handleChecklistKeyDown(ev, checklist) {
+        if (ev.key === 'Enter') {
+            ev.preventDefault()
+            onAddItem(checklist)
+        }
     }
 
     async function onAddItem(checklist) {
-
+        if (!checklistItem.current.value) return
         const newTodo = {
             id: makeId(),
             title: checklistItem.current.value,
@@ -250,13 +281,57 @@ export function TaskDetails() {
         await updateTask(taskToEdit, group, board)
     }
 
-    function getAddedAt(timestamp){
+    function onClickMenu(ev, taskId) {
+        ev.stopPropagation()
+        const rect = ev.target.getBoundingClientRect()
+        setTodoMenuPosition({ top: rect.bottom, left: rect.left })
+        setTodoMenuId(taskId)
+        setIsTodoMenuOpen(true)
+    }
+
+    async function onDeleteTodo(ev, checklist) {
+        if (!todoMenuId) return
+        ev.stopPropagation()
+
+        const updatedTask = { ...taskToEdit }
+        const checklistIndex = updatedTask.checklists.findIndex(check => check.id === checklist.id)
+
+        if (checklistIndex !== -1) {
+            updatedTask.checklists = [...updatedTask.checklists]
+            updatedTask.checklists[checklistIndex] = {
+                ...updatedTask.checklists[checklistIndex],
+                todos: updatedTask.checklists[checklistIndex].todos.filter(todo => todo.id !== todoMenuId)
+            }
+        }
+
+        await updateTask(updatedTask, group, board)
+        setIsTodoMenuOpen(false)
+    }
+
+    function getAddedAt(createdAt) {
+        const timestamp = (createdAt - Date.now()) * -1
+        return 'Addeddddddddddddddddd ' + (ms(timestamp, { long: true })) + ' ago'
+    }
+
+    function onFocusOnComment() {
+        setIsAddingComment(true)
+        textareaCommentRef.current.focus()
+        textareaCommentRef.current.setSelectionRange(textareaCommentRef.current.value.length, textareaCommentRef.current.value.length);
+    }
+
+    async function onRemoveAttachment(attachment) {
+        const attachments = taskToEdit.attachments.filter(a=>a.url!==attachment.url)
+        const activity = `deleted the ${attachment.title} from card (id: ${taskToEdit.id})`
+        updateTask({ ...taskToEdit, attachments }, group, board, activity)
+    }
+
+    function onAddAttachment() {
 
     }
 
     if (!taskToEdit || !group) return <section>Loading...</section>
 
-    const { title, description, membersIds, labelsIds, style } = taskToEdit;
+    const { title, description, membersIds, labelsIds, style } = taskToEdit
 
     const taskActionProps = { task: taskToEdit, board, group, onSetAction }
 
@@ -292,8 +367,8 @@ export function TaskDetails() {
                                 <span className="fs12">Labels</span>
                                 <div className="labels">
                                     {labelsIds && labelsIds.map(id => {
-                                        const label = getLabelById(id);
-                                        return <span className="label" key={id} style={{ backgroundColor: label.color }}>{label.title}</span>;
+                                        const label = getLabelById(id)
+                                        return <span className="label" key={id} style={{ backgroundColor: label.color }}>{label.title}</span>
                                     })}
                                 </div>
                             </div> : ''}
@@ -358,25 +433,51 @@ export function TaskDetails() {
 
                         {taskToEdit.attachments && taskToEdit.attachments.length ?
                             <div className="attachments-container">
-                                <img className="attachments-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/paperclip.svg" alt="attachment icon" />
-                                <span>Attachments</span>
-                                <div className="attachments">
-                                    {taskToEdit.attachments.map(a => 
-                                    <div className="attachment">
-                                    <img className="attachment-thumbnail" src={a.url} />
-                                    <header className="attachment-header">
-                                        <span className="url">{a.url}</span>
-                                        {/* ADD LINK ARROW HERE */}
-                                    </header>
-                                    <main className="attachment-main">
-                                        <span>
-                                            {getAddedAt(a.createdAt)}
-                                        </span>
-                                    </main>
-                                    <div className="attachment-remove-cover">
 
-                                    </div>
-                                    </div>
+                                <div className='attachments-title'>
+
+                                    <img className="attachments-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/paperclip.svg" alt="attachment icon" />
+                                    <span>Attachments</span>
+
+                                    <button onClick={onAddAttachment} style={{ cursor: 'not-allowed' }}>Add</button>
+                                </div>
+                                <div className="attachments">
+                                    {taskToEdit.attachments.map(a =>
+                                        <div key={a.url} className="attachment">
+                                            {a.type.slice(0, 5) === 'image' ?
+                                                <a
+                                                    href={a.url}
+                                                    className="attachment-thumbnail"
+                                                    style={{
+                                                        backgroundImage: `url(${a.url})`,
+                                                        backgroundColor: averageColors[a.url] || 'transparent'
+                                                    }}
+                                                />
+                                                :
+                                                <div className="attachment-file-preview">
+                                                    <p>{a.type.split('/')[1] === 'x-zip-compressed' ? 'zip' : a.type.split('/')[1]}</p>
+                                                </div>
+                                            }
+                                            <div className="attachment-details">
+                                                <div className="attachment-header">
+                                                    <span className="attachment-title">{a.title}</span>
+                                                    {/* ADD LINK ARROW HERE */}
+                                                </div>
+                                                <div className="attachment-main">
+                                                    <span className="attachment-added-at">
+                                                        {getAddedAt(a.createdAt)}
+                                                    </span>
+                                                        <article className="attachment-link" onClick={onFocusOnComment}><span className='attachment-link-text'>Comment</span></article>
+                                                        <article className="attachment-link" onClick={() => onDownloadUrl(a.url, a.title)}><span className='attachment-link-text'>Download</span></article>
+                                                        <article className="attachment-link" onClick={() => onRemoveAttachment(a)}><span className='attachment-link-text'>Delete</span></article>
+                                                        <article className="attachment-link" name="edit-attachment" onClick={onSetAction} style={{ cursor: 'not-allowed' }}><span className='attachment-link-text'>Edit</span></article>
+                                                </div>
+                                                <div className="attachment-remove-cover">
+                                                    <img className="attachment-remove-cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
+                                                    <span className="attachment-span-remove-cover" style={{ cursor: 'not-allowed' }}> Remove cover</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
                             </div>
@@ -393,44 +494,70 @@ export function TaskDetails() {
                                                 <button onClick={() => onDeleteChecklist(checklist.id)} className='btn-delete-checklist'>Delete</button>
                                             </div>
                                             <div className="checklist-progress">
-
                                                 <span className='progress-percentage'>{getDonePercentage(checklist)}%</span>
                                                 <div className="progress-bar">
                                                     <div
                                                         className="progress-bar-current"
                                                         style={{
                                                             width: `${getDonePercentage(checklist)}%`,
-                                                            backgroundColor: getDonePercentage(checklist) === 100 ? '#4BCE97' : undefined,
+                                                            backgroundColor: getDonePercentage(checklist) > 99.9 ? '#4BCE97' : undefined,
                                                         }}
                                                     ></div>
                                                 </div>
                                             </div>
                                             <div className="checklist-items">
-                                                {checklist.todos ? checklist.todos.map(todo => {
-                                                    return (
-                                                        <div className="checklist-item-container" key={todo.id}>
-                                                            <div className="checklist-item-checkbox">
-                                                                <input
-                                                                    className='item-checkbox'
-                                                                    type="checkbox"
-                                                                    name="item-checklist"
-                                                                    checked={todo.isDone}
-                                                                    onChange={(ev) => { onChangeTodo(ev, todo, checklist) }} />
+                                                {checklist.todos ? checklist.todos.map(todo => (
+                                                    <div className="checklist-item-container" key={todo.id}>
+                                                        <div className="checklist-item-checkbox">
+                                                            <input
+                                                                className='item-checkbox'
+                                                                type="checkbox"
+                                                                name="item-checklist"
+                                                                checked={todo.isDone}
+                                                                onChange={(ev) => { onChangeTodo(ev, todo, checklist) }} />
+                                                        </div>
+                                                        <div
+                                                            className="checklist-item-details"
+                                                            style={todo.isDone ? { textDecoration: 'line-through' } : {}}>
+                                                            <div className="todo-actions">
+                                                                <div className="action-container">
+                                                                    <img onClick={(ev) => onClickMenu(ev, todo.id)} src="../../../src/assets/imgs/TaskDetails-icons/3dots.svg" alt="" />
+                                                                </div>
                                                             </div>
-                                                            <div
-                                                                className="checklist-item-details"
-                                                                style={todo.isDone ? { textDecoration: 'line-through' } : {}}
-                                                            >
-                                                                <span className='todo-title'>{todo.title}</span>
-                                                            </div>
-                                                        </div>)
-                                                }) : ''}
+                                                            <span className='todo-title'>{todo.title}</span>
+                                                        </div>
+                                                    </div>
+                                                )) : ''}
+
+                                                {isTodoMenuOpen && todoMenuPosition && (
+                                                    <article
+                                                        className="item-actions"
+                                                        style={{
+                                                            position: 'fixed',
+                                                            top: `${todoMenuPosition.top + 10}px`,
+                                                            left: `${todoMenuPosition.left - 5}px`,
+                                                            right: 'auto',
+                                                            bottom: 'auto'
+                                                        }}>
+                                                        <header className="item-actions-header">
+                                                            <h2>Item actions</h2>
+                                                            <button><img onClick={() => setIsTodoMenuOpen(false)} src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="" /></button>
+                                                        </header>
+                                                        <div className="item-actions-body">
+                                                            <button onClick={(ev) => onDeleteTodo(ev, checklist)} className='item-action'>Delete</button>
+                                                        </div>
+                                                    </article>
+                                                )}
                                             </div>
 
                                             <div className="add-item-container">
                                                 {isAddingItem ?
                                                     <>
-                                                        <textarea className='new-checklist-item' ref={checklistItem}></textarea>
+                                                        <textarea className='new-checklist-item'
+                                                            ref={checklistItem}
+                                                            placeholder='Add an item'
+                                                            onKeyDown={(ev) => handleChecklistKeyDown(ev, checklist)}
+                                                        ></textarea>
                                                         <div className="checklist-add-controls">
                                                             <button onClick={() => onAddItem(checklist)} className='btn-add'>Add</button>
                                                             <button onClick={() => setIsAddingItem(false)} className='btn-cancel'>Cancel</button>
@@ -463,7 +590,7 @@ export function TaskDetails() {
                                             onKeyUp={handleCommentKeyUp}
                                             ref={textareaCommentRef} />
                                         <article className="btns">
-                                            <button onClick={onSaveComment} className='btn-save'>Save</button>
+                                            <button onClick={onSaveComment} className='btn-save' disabled={textareaCommentRef.current.value ? false : true}>Save</button>
                                         </article>
                                     </>
                                     :
@@ -514,7 +641,7 @@ export function TaskDetails() {
                         </div>
                         <div className="task-action-container">
 
-                            <button className="action" name="dates" onClick={onSetAction}>
+                            <button className="action" name="dates" onClick={onSetAction} style={{ cursor: 'not-allowed' }}>
                                 <img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" alt="dates icon" />
                                 <span className="action-title">Dates</span>
                             </button>
@@ -528,7 +655,7 @@ export function TaskDetails() {
                             {action === 'attachment' && <TaskAction action="attach" {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
-                            <button className="action" name="location" onClick={onSetAction}>
+                            <button className="action" name="location" onClick={onSetAction} style={{ cursor: 'not-allowed' }}>
                                 <img className="location-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/location.svg" alt="location icon" />
                                 <span className="action-title">Location</span>
                             </button>
@@ -546,12 +673,12 @@ export function TaskDetails() {
 
                         <button className="action remove-task" onClick={onRemoveTask}>
                             <img className="icon" src="../../../src/assets/imgs/TaskDetails-icons/trash.svg" alt="close icon" />
-                            <span className="action-title">Remove task</span>
+                            <span className="action-title">Remove card</span>
                         </button>
 
                     </section>
                 </section>
             </form>
         </div >
-    );
+    )
 }
