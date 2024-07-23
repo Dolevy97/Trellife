@@ -3,7 +3,7 @@ export const cloudinaryService = {
 }
 
 //FETCH
-async function uploadImg(ev) {
+async function uploadImg(img) {
     //Defining our variables
     // const CLOUD_NAME = 'insert1'
     const CLOUD_NAME = 'dw5vg4xiv'
@@ -13,7 +13,7 @@ async function uploadImg(ev) {
     const FORM_DATA = new FormData()
     
     //Bulding the request body
-    FORM_DATA.append('file', ev.target.files[0])
+    FORM_DATA.append('file', img)
     FORM_DATA.append('upload_preset', UPLOAD_PRESET)
   
     // Sending a post method request to Cloudinarys API
