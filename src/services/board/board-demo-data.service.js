@@ -45,6 +45,7 @@ function _getRandomBoardBackground() {
             'https://images.unsplash.com/photo-1624979679474-1da6b7344672?q=80&w=3571&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
             'https://images.unsplash.com/photo-1569458582195-286d4ab6e63e?q=80&w=3570&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
             'https://images.unsplash.com/photo-1458682625221-3a45f8a844c7?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZ3JhbW1pbmclMjB3YWxscGFwZXJ8ZW58MHx8MHx8fDA%3D',
+            'https://plus.unsplash.com/premium_photo-1673688152102-b24caa6e8725?q=80&w=3732&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 
         ],
         small: [
@@ -139,7 +140,7 @@ function _getRandomActivityTitle() {
 }
 
 function _getRandomGroups(board) {
-    const length = getRandomIntInclusive(2, 10)
+    const length = getRandomIntInclusive(4, 6)
     const groups = []
     for (let i = 0; i < length; i++) {
         const group = _getRandomGroup(board)
@@ -154,7 +155,7 @@ function _getRandomGroup(board) {
         title: getRandomGroupTitle(),
         archivedAt: getRandomIntInclusive(0, 9) < 3 ? _getRandomTimestamp() : null,
         tasks: _getRandomTasks(board),
-        style: {}
+        style: getRandomIntInclusive(1, 3) === 1 ? { backgroundColor: getRandomColor() } : null
     }
     return group
 }
@@ -198,7 +199,7 @@ function getRandomGroupTitle() {
 }
 
 function _getRandomTasks(board) {
-    const length = getRandomIntInclusive(2, 20)
+    const length = getRandomIntInclusive(0, 20)
     const tasks = []
     for (let i = 0; i < length; i++) {
         tasks.push(_getRandomTask(board))
@@ -209,19 +210,73 @@ function _getRandomTasks(board) {
 function _getRandomTask(board) {
     const task = {
         id: 't' + makeId(),
-        title: _getRandomTaskName(),
+        title: getRandomIntInclusive(1, 4) > 1 ? _getRandomTaskName() : '',
         isDone: _getRandomTaskIsDone(),
-        priority: _getRandomPriority(),
-        dueDate: _getRandomDueDate(),
+        priority: getRandomIntInclusive(1, 4) > 1 ? _getRandomPriority() : null,
+        dueDate: getRandomIntInclusive(1, 4) > 1 ? _getRandomDueDate() : null,
         description: _getRandomTaskDescription(),
-        checklists: _getRandomChecklists(),
+        checklists: getRandomIntInclusive(1, 4) > 1 ? _getRandomChecklists() : [],
         membersIds: _getRandomTaskMembersIds(board),
         labelsIds: _getRandomTaskLabels(board),
         byMember: _getRandomTaskMember(board),
         style: getRandomTaskStyle(),
-        attachments: []
+        attachments: getRandomIntInclusive(1, 4) > 1 ? [] : _getRandomAttachments()
     }
     return task
+}
+
+function _getRandomAttachments() {
+    const demoAttachments = [
+        {
+            title: "openart-image_NCjT4BO6_1721211304700_raw.jpg",
+            url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721739547/jypeggdpogvfaoz0xbn6.jpg",
+            createdAt: 1721739548198,
+            type: "image/jpeg"
+        },
+        {
+            title: "openart-image_R3VI1CMG_1721209766848_raw.jpg",
+            url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721739549/ldob56coyk2vn088sjci.jpg",
+            createdAt: 1721739549873,
+            type: "image/jpeg"
+        },
+        {
+            title: "BDGD.jpeg",
+            url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721739602/wrmgxooponh1kdk3fx8y.jpg",
+            createdAt: 1721739603540,
+            type: "image/jpeg"
+        },
+        {
+            title: "e0f3495a4bd023d4f9e45715f6a64099b6-harris-lede.rvertical.w600.webp",
+            url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721740532/pjogbkebvzk8pl2xzat3.webp",
+            createdAt: 1721740532640,
+            type: "image/webp"
+        },
+        {
+            title: "images.jpeg",
+            url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721740543/u3e9okwefql3ys33wdbh.jpg",
+            createdAt: 1721740544374,
+            type: "image/jpeg"
+        },
+        {
+            title: "the-matrix-code-keanu-reeves.avif",
+            url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721740556/nkzneerrwqileytdawtt.avif",
+            createdAt: 1721740557093,
+            type: "image/avif"
+        },
+        {
+            title: "matrix2.jpeg",
+            url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721740577/o1w139lb4812tmd97ukm.jpg",
+            createdAt: 1721740578511,
+            type: "image/jpeg"
+        }
+    ]
+    const length = getRandomIntInclusive(1,3)
+    const attachments = []
+    for (let i = 0; i<length; i++){
+        const attachment = {...demoAttachments.splice(getRandomIntInclusive(0,demoAttachments.length-1),1)[0]}
+        attachments.push(attachment)
+    }
+    return attachments
 }
 
 function getRandomTaskStyle() {
@@ -259,7 +314,7 @@ function _getRandomTaskMembersIds(board) {
 }
 
 function _getRandomChecklists() {
-    const length = getRandomIntInclusive(4, 10)
+    const length = getRandomIntInclusive(1, 3)
     const checklists = []
     for (let i = 0; i < length; i++) {
         const checklist = _getRandomChecklist()

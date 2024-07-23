@@ -70,8 +70,6 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         onSetAction(ev, true)
     }
 
-
-    // REFACTOR UPLOADING AND DOWNLOADING FILES WHICH TYPE IS NOT IMAGE
     async function onAddAttachment(ev) {
         const files = ev.target.files
 
@@ -84,7 +82,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                 createdAt: Date.now(),
                 type: file.type
             }
-
+            console.log('Attachment: ', JSON.stringify(attachment))
             const updatedTask = { ...task }
             updatedTask.attachments.push(attachment)
             const activityTitle = `attached ${file.name} to this card`
@@ -98,18 +96,6 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
     function onUpload() {
         document.querySelector('.input-file-upload').click()
     }
-
-
-    // USE TO RENDER THE IMG ATTACHMENT LATER
-    // function loadImageFromInput(ev, onImageReady) {
-    //     const reader = new FileReader()
-    //     reader.onload = function (event) {
-    //         let elImg = new Image()
-    //         elImg.src = event.target.result
-    //         elImg.onload = () => onImageReady(elImg)
-    //     }
-    //     reader.readAsDataURL(ev.target.files[0])
-    // }
 
     return (
         <section className="task-action" onClick={(ev) => ev.stopPropagation()}>

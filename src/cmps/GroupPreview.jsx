@@ -20,6 +20,8 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
     const addTaskRef = useRef(null)
     const [taskToEdit, setTaskToEdit] = useState(null)
     const textareaRef = useRef(null)
+    const [expandedLabelTaskId, setExpandedLabelTaskId] = useState(null)
+
 
     const navigate = useNavigate()
 
@@ -85,6 +87,11 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
 
     function getLabelById(id) {
         return board.labels.find(label => label.id === id)
+    }
+
+    const toggleLabelExpansion = (taskId, event) => {
+        event.stopPropagation()
+        setExpandedLabelTaskId(prevId => prevId === taskId ? null : taskId)
     }
 
     function getComments(taskId) {
@@ -153,21 +160,24 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
                                                     padding: task.style?.isFull ? '8px 8px 8px 12px' : '8px 12px',
                                                     minHeight: task.style?.isFull ? '40px' : '',
                                                     marginTop: task.style?.isFull ? '15px' : ''
-                                                }}
-
-                                            >
+                                                }}>
                                                 {(!task.style || !task.style.isFull) && (
                                                     <div className='task-label-container'>
                                                         {task.labelsIds && task.labelsIds.map(id => {
                                                             const label = getLabelById(id)
+                                                            const isExpanded = expandedLabelTaskId === task.id
                                                             return label && (
                                                                 <div
-                                                                    className="label-tab"
                                                                     key={id}
-                                                                    style={{ backgroundColor: label.color }}
-                                                                    title={label.title}
-                                                                >
-                                                                    <span className="label-title">{label.title}</span>
+                                                                    className={`label-tab ${isExpanded ? 'expanded' : ''}`}
+                                                                    onClick={(e) => toggleLabelExpansion(task.id, e)}
+                                                                    title={label.title}>
+                                                                    <div
+                                                                        className="label-color"
+                                                                        style={{ backgroundColor: label.color }}
+                                                                    >
+                                                                        {isExpanded && <span className="label-title">{label.title}</span>}
+                                                                    </div>
                                                                 </div>
                                                             )
                                                         })}
