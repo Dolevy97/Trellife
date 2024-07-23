@@ -356,10 +356,26 @@
                             display: flex;
                             align-items: center;
                             font-size: em(14);
-                            width: em(512);
+                            // width: em(512); //Somewhy looks better without this
+
+
+                            .attachment-file-preview {
+                                display: block;
+                                font-size: 18px;
+                                font-weight: 700;
+                                height: 80px;
+                                line-height: 80px;
+                                text-align: center;
+                                text-decoration: none;
+                                padding-inline: 25px;
+                            }
 
                             .attachment-thumbnail {
-                                height: em(80);
+                                height: 80px;
+                                width: 112px;
+                                background-size: contain;
+                                background-repeat: no-repeat;
+                                background-position: 50%;
                             }
 
                             .attachment-details {
@@ -994,7 +1010,7 @@
             overflow: hidden;
             overflow-wrap: break-word;
             resize: vertical;
-            
+
             padding: 8px 12px;
             width: 512px;
             height: 56px;

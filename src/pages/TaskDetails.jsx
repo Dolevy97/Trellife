@@ -401,7 +401,14 @@ export function TaskDetails() {
                                 <div className="attachments">
                                     {taskToEdit.attachments.map(a =>
                                         <div className="attachment">
-                                            <img className="attachment-thumbnail" src={a.url} />
+                                            {console.log(a.type)}
+                                            {a.type.slice(0, 5) === 'image' ?
+                                                <a className="attachment-thumbnail" style={{ backgroundImage: `url(${a.url})` }} />
+                                                :
+                                                <div className="attachment-file-preview">
+                                                    <p>{a.type.split('/')[1] === 'x-zip-compressed' ? 'zip' : a.type.split('/')[1]}</p>
+                                                </div>
+                                            }
                                             <div className="attachment-details">
                                                 <div className="attachment-header">
                                                     <span className="attachment-url">{a.url}</span>
@@ -419,7 +426,7 @@ export function TaskDetails() {
                                                     </ul>
                                                 </div>
                                                 <div className="attachment-remove-cover">
-                                                    <img className="attachment-remove-cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
+                                                    <a className="attachment-remove-cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
                                                     <span className="attachment-span-remove-cover"> Remove cover</span>
                                                 </div>
                                             </div>
