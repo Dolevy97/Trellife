@@ -14,12 +14,23 @@ export function BoardDetails() {
   const board = useSelector(storeState => storeState.boardModule.board)
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [newGroupTitle, setNewGroupTitle] = useState('')
+  const groupListContainer = useRef()
+  const groupListHeader = useRef()
 
   const addGroupRef = useRef(null)
 
   useEffect(() => {
     loadBoard(boardId)
   }, [boardId])
+
+  useEffect(() => {
+    if (board && board.style && board.style.background && groupListContainer) {
+      groupListContainer.current.style.background = board.style.background
+      groupListContainer.current.style.backgroundSize = 'cover'
+      groupListHeader.current.style.background = board.style.background
+      groupListHeader.current.style.backgroundSize = 'cover'
+    }
+  }, [board])
 
 
   useEffect(() => {
@@ -64,7 +75,7 @@ export function BoardDetails() {
     if (!result.destination) return
     const { source, destination, type } = result
     const updatedGroups = Array.from(board.groups)
-  
+
     if (type === 'GROUP') {
       const [reorderedGroup] = updatedGroups.splice(source.index, 1)
       updatedGroups.splice(destination.index, 0, reorderedGroup)
@@ -74,7 +85,7 @@ export function BoardDetails() {
       const [movedTask] = sourceGroup.tasks.splice(source.index, 1)
       destGroup.tasks.splice(destination.index, 0, movedTask)
     }
-  
+
     try {
       await updateBoard({ ...board, groups: updatedGroups })
     } catch (err) {
@@ -90,21 +101,21 @@ export function BoardDetails() {
   }
 
   const groups = board?.groups || []
-  if (!board) return null
+  if (!board) return <div>Loading...</div>
 
   return (
     // <section className="main-display-container">
     // <LeftNavBar />
-    <section style={{ background: board.style.background, backgroundSize: 'cover' }}>
+    <section ref={groupListHeader}>
       <BoardDetailsHeader />
-      <section className="group-list-container" style={{ background: board.style.background, backgroundSize: 'cover' }}>
+      <section ref={groupListContainer} className="group-list-container">
         <DragDropContext onDragEnd={handleOnDragEnd}>
-          <Droppable droppableId='groups' direction='horizontal'  type='GROUP'>
+          <Droppable droppableId='groups' direction='horizontal' type='GROUP'>
             {(provided) => (
               board && (
                 <div className='group-container' {...provided.droppableProps} ref={provided.innerRef}>
                   {groups.map((group, index) => (
-                    <Draggable key={group.id} draggableId={group.id.toString()} index={index}  type='GROUP'>
+                    <Draggable key={group.id} draggableId={group.id.toString()} index={index} type='GROUP'>
                       {(provided, snapshot) => (
                         <div
                           ref={provided.innerRef}
