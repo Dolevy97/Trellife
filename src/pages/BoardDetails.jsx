@@ -16,6 +16,7 @@ export function BoardDetails() {
   const [newGroupTitle, setNewGroupTitle] = useState('')
   const groupListContainer = useRef()
   const groupListHeader = useRef()
+  const [areLabelsExpanded, setAreLabelsExpanded] = useState(false)
 
   const addGroupRef = useRef(null)
 
@@ -100,6 +101,12 @@ export function BoardDetails() {
     }
   }
 
+  function toggleLabelExpansion(event) {
+    event.stopPropagation()
+    setAreLabelsExpanded(prev => !prev)
+}
+
+
   const groups = board?.groups || []
   if (!board) return null
 
@@ -128,6 +135,8 @@ export function BoardDetails() {
                             boardId={boardId}
                             group={group}
                             handleOnDragEnd={handleOnDragEnd}
+                            toggleLabelExpansion={toggleLabelExpansion}
+                            areLabelsExpanded={areLabelsExpanded}
 
                           />
                         </div>
