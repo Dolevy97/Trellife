@@ -155,6 +155,12 @@
                 margin-inline: em(12) em(4);
             }
 
+
+            .label-checkbox {
+                @include checkbox;
+                width: 22.05px;
+            }
+
             .pen-icon-container {
                 display: flex;
                 justify-content: center;

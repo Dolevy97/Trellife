@@ -113,44 +113,47 @@
                         gap: 4px;
                         margin-bottom: 4px;
                         width: 90%;
-                      }
-                      
-                      .label-tab {
+                    }
+
+                    .label-tab {
                         cursor: pointer;
                         border-radius: 4px;
                         overflow: hidden;
                         transition: all 0.3s ease;
                         transition: opacity 0s ease;
-                      
+
                         .label-color {
-                          width: 40px;
-                          height: 8px;
-                          transition: all 0.3s ease;
+                            width: 40px;
+                            height: 8px;
+                            transition: all 0.3s ease;
                         }
-                      
+
                         &.expanded {
-                          .label-color {
-                            width: auto;
-                            min-width: 56px;
-                            height: 16px;
-                            padding: 0 4px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: flex-start;
-                          }
-                          &:hover{
-                            opacity: 0.7;
+                            .label-color {
+                                width: auto;
+                                min-width: 56px;
+                                height: 16px;
+                                padding: 0 4px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: flex-start;
+                            }
+
+                            &:hover {
+                                opacity: 0.7;
+                            }
+
+                            .label-title {
+                                font-size: 12px;
+                                font-weight: 500;
+                                color: #f4feffbc;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+
+                            }
                         }
-                          .label-title {
-                            font-size: 12px;
-                            font-weight: 500;
-                            color: #f4feffbc;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                           
-                          }
-                        }
-                      }
+                    }
+
                     .task-title-container {
                         display: block;
                         margin-bottom: 4px;
@@ -171,6 +174,8 @@
                             display: flex;
                             align-items: center;
                             gap: 4px;
+                            margin-block-end: 2px;
+
 
                             img {
                                 height: 16px;

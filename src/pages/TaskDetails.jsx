@@ -17,14 +17,16 @@ export function TaskDetails() {
     const textareaRef = useRef(null)
     const textareaCommentRef = useRef(null)
     const dateInputRef = useRef(null)
-    const checklistItem = useRef(null)
+    const checklistItemRefs = useRef({})
 
     const [group, setGroup] = useState(null)
     const [taskToEdit, setTaskToEdit] = useState(null)
     const [action, setAction] = useState(null)
     const [isSettingDescription, setIsSettingDescription] = useState(false)
     const [isAddingComment, setIsAddingComment] = useState(false)
-    const [isAddingItem, setIsAddingItem] = useState(false)
+
+    const [isAddingItems, setIsAddingItems] = useState(null)
+
     const [isTodoMenuOpen, setIsTodoMenuOpen] = useState(false)
     const [todoMenuId, setTodoMenuId] = useState(null)
     const [todoMenuPosition, setTodoMenuPosition] = useState({})
@@ -260,19 +262,24 @@ export function TaskDetails() {
     }
 
     async function onAddItem(checklist) {
-        if (!checklistItem.current.value) return
+        const textareaElement = checklistItemRefs.current[checklist.id];
+        if (!textareaElement || !textareaElement.value.trim()) return
+
         const newTodo = {
             id: makeId(),
-            title: checklistItem.current.value,
+            title: textareaElement.value.trim(),
             isDone: false
         }
+
         const checklistIndex = taskToEdit.checklists.findIndex(check => check.id === checklist.id)
 
         if (checklistIndex !== -1) {
             taskToEdit.checklists[checklistIndex].todos.push(newTodo)
         }
+
         await updateTask(taskToEdit, group, board)
-        checklistItem.current.value = ''
+
+        textareaElement.value = ''
     }
 
     async function onDeleteChecklist(checklistId) {
@@ -320,13 +327,29 @@ export function TaskDetails() {
     }
 
     async function onRemoveAttachment(attachment) {
-        const attachments = taskToEdit.attachments.filter(a=>a.url!==attachment.url)
+        const attachments = taskToEdit.attachments.filter(a => a.url !== attachment.url)
         const activity = `deleted the ${attachment.title} from card (id: ${taskToEdit.id})`
         updateTask({ ...taskToEdit, attachments }, group, board, activity)
     }
 
     function onAddAttachment() {
 
+    }
+
+    function toggleAddingItem(checklistId) {
+        setIsAddingItems(prevIsAddingItems => {
+            if (prevIsAddingItems === checklistId) {
+                if (checklistItemRefs.current[checklistId]) {
+                    checklistItemRefs.current[checklistId].value = ''
+                }
+                return null;
+            } else {
+                if (prevIsAddingItems && checklistItemRefs.current[prevIsAddingItems]) {
+                    checklistItemRefs.current[prevIsAddingItems].value = ''
+                }
+                return checklistId;
+            }
+        });
     }
 
     if (!taskToEdit || !group) return null
@@ -375,24 +398,26 @@ export function TaskDetails() {
 
                             {taskToEdit.dueDate && <div className="date-container">
                                 <span className="fs12">Due date</span>
-                                <div onClick={onShowDatePicker} className="date">
+                                <section className="due-date-inner-container">
                                     <input
                                         onClick={(ev) => ev.stopPropagation()}
-                                        className="checkbox"
+                                        className="checkbox-due-date"
                                         type="checkbox"
                                         onChange={onChangeIsDone}
                                         checked={taskToEdit.isDone}
                                     />
-                                    <input
-                                        ref={dateInputRef}
-                                        className="date-input"
-                                        type="datetime-local"
-                                        value={getDueDate(taskToEdit.dueDate)}
-                                        onChange={onChangeDueDate}
-                                    />
-                                    <span className='inside-input-is-done' style={!taskToEdit.isDone ? { backgroundColor: '#F5CD47' } : { backgroundColor: '#4BCE97' }}>{taskToEdit.isDone ? 'Complete' : 'Due soon'}</span>
-                                    <img className="arrow-down" src="../../../src/assets/imgs/TaskDetails-icons/arrow-down.svg" alt="description icon" />
-                                </div>
+                                    <div onClick={onShowDatePicker} className="date">
+                                        <input
+                                            ref={dateInputRef}
+                                            className="date-input"
+                                            type="datetime-local"
+                                            value={getDueDate(taskToEdit.dueDate)}
+                                            onChange={onChangeDueDate}
+                                        />
+                                        <span className='inside-input-is-done' style={!taskToEdit.isDone ? { backgroundColor: '#F5CD47' } : { backgroundColor: '#4BCE97' }}>{taskToEdit.isDone ? 'Complete' : 'Due soon'}</span>
+                                        <img className="arrow-down" src="../../../src/assets/imgs/TaskDetails-icons/arrow-down.svg" alt="description icon" />
+                                    </div>
+                                </section>
                             </div>}
 
                         </div>
@@ -467,10 +492,10 @@ export function TaskDetails() {
                                                     <span className="attachment-added-at">
                                                         {getAddedAt(a.createdAt)}
                                                     </span>
-                                                        <article className="attachment-link" onClick={onFocusOnComment}><span className='attachment-link-text'>Comment</span></article>
-                                                        <article className="attachment-link" onClick={() => onDownloadUrl(a.url, a.title)}><span className='attachment-link-text'>Download</span></article>
-                                                        <article className="attachment-link" onClick={() => onRemoveAttachment(a)}><span className='attachment-link-text'>Delete</span></article>
-                                                        <article className="attachment-link" name="edit-attachment" onClick={onSetAction} style={{ cursor: 'not-allowed' }}><span className='attachment-link-text'>Edit</span></article>
+                                                    <article className="attachment-link" onClick={onFocusOnComment}><span className='attachment-link-text'>Comment</span></article>
+                                                    <article className="attachment-link" onClick={() => onDownloadUrl(a.url, a.title)}><span className='attachment-link-text'>Download</span></article>
+                                                    <article className="attachment-link" onClick={() => onRemoveAttachment(a)}><span className='attachment-link-text'>Delete</span></article>
+                                                    <article className="attachment-link" name="edit-attachment" onClick={onSetAction} style={{ cursor: 'not-allowed' }}><span className='attachment-link-text'>Edit</span></article>
                                                 </div>
                                                 <div className="attachment-remove-cover">
                                                     <img className="attachment-remove-cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
@@ -551,21 +576,24 @@ export function TaskDetails() {
                                             </div>
 
                                             <div className="add-item-container">
-                                                {isAddingItem ?
+                                                {isAddingItems === checklist.id ? (
                                                     <>
-                                                        <textarea className='new-checklist-item'
-                                                            ref={checklistItem}
+                                                        <textarea
+                                                            className='new-checklist-item'
+                                                            ref={(el) => checklistItemRefs.current[checklist.id] = el}
                                                             placeholder='Add an item'
                                                             onKeyDown={(ev) => handleChecklistKeyDown(ev, checklist)}
                                                         ></textarea>
                                                         <div className="checklist-add-controls">
                                                             <button onClick={() => onAddItem(checklist)} className='btn-add'>Add</button>
-                                                            <button onClick={() => setIsAddingItem(false)} className='btn-cancel'>Cancel</button>
+                                                            <button onClick={() => toggleAddingItem(checklist.id)} className='btn-cancel'>Cancel</button>
                                                         </div>
                                                     </>
-                                                    :
-                                                    <button onClick={() => setIsAddingItem(true)} className="btn-add-item">Add an item</button>
-                                                }
+                                                ) : (
+                                                    <button onClick={() => toggleAddingItem(checklist.id)} className="btn-add-item">
+                                                        Add an item
+                                                    </button>
+                                                )}
                                             </div>
                                         </div>
                                     )

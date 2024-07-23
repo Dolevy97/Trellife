@@ -186,6 +186,19 @@
                         }
                     }
 
+                    .due-date-inner-container {
+                        display: flex;
+                        gap: 5px;
+
+                        .checkbox-due-date {
+                            @include checkbox;
+
+                            vertical-align: middle;
+                            margin: auto;
+
+                        }
+                    }
+
                     .date-container {
                         position: relative;
                         display: flex;
@@ -214,16 +227,11 @@
                             filter: invert(73%) sepia(21%) saturate(206%) hue-rotate(170deg) brightness(90%) contrast(90%);
                         }
 
-                        .checkbox {
-                            vertical-align: middle;
-                            margin: auto;
-                        }
-
 
                         .date-input {
                             font-family: inherit;
                             padding-inline-end: 6px;
-                            width: 132px;
+                            width: 124.5px;
 
                             background-color: transparent;
                             color: $txtclr1;
@@ -250,6 +258,7 @@
                             line-height: 16px;
 
                             border-radius: 2px;
+                            font-weight: 500;
                         }
                     }
                 }
@@ -752,7 +761,6 @@
             font-size: 0.875em;
             line-height: 1.714;
             font-weight: normal;
-            margin-top: 0.75rem;
             margin-bottom: 0px;
             letter-spacing: -0.005em;
 
@@ -819,50 +827,7 @@
             text-align: center;
 
             & .item-checkbox {
-
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                appearance: none;
-
-                cursor: pointer;
-
-                height: 16px;
-                width: 16px;
-
-                margin: 0;
-
-                background-color: $bgclr2;
-
-                border-radius: 3px;
-                box-shadow: inset 0 0 0 1px #738496;
-                border: none;
-                outline: none;
-                transition-duration: 85ms;
-                transition-property: background-color, border-color, box-shadow;
-                transition-timing-function: ease;
-
-                padding: 0;
-
-                &:checked {
-                    // -webkit-appearance: checkbox; 
-                    // -moz-appearance: checkbox; 
-                    // appearance: checkbox;
-
-                    background-color: #99C8FF;
-
-                    &::before {
-                        content: '✔';
-                        color: #3B3B3B;
-                        position: absolute;
-
-                        top: 50%;
-                        left: 50%;
-
-                        transform: translate(-50%, -50%);
-                        font-size: 14px;
-                        line-height: 1;
-                    }
-                }
+                @include checkbox;
             }
         }
 
