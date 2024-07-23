@@ -51,6 +51,10 @@
                     margin-bottom: -1rem;
                     z-index: 1;
 
+                    img {
+                        width: 100%;
+                    }
+
                     @media (min-width: 768px) {
                         margin-bottom: -0.5rem;
                         padding-bottom: 1rem;

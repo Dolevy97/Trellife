@@ -127,7 +127,7 @@
 
     .svg-arrow-down {
         width: 14px;
-        filter: invert(73%) sepia(21%) saturate(206%) hue-rotate(170deg) brightness(90%) contrast(90%);
+        filter: brightness(0) saturate(100%) invert(73%) sepia(21%) saturate(206%) hue-rotate(170deg) brightness(90%) contrast(90%);
     }
 
     .logo-text {
