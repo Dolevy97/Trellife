@@ -133,7 +133,8 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
                                 <span className='color-picker-btn' >
                                     Change color list
                                 </span>
-                                <span className='color-picker-arrow'>{isColorPickerOpen ? '▲' : '▼'}</span>
+                                <span className='color-picker-arrow'>{isColorPickerOpen ? <img src="../../../src\assets\imgs\Icons\arrow-up.svg" /> :
+                                    <img src="../../../src\assets\imgs\Icons\arrow-down.svg" alt="" />}</span>
                             </p>
                             {isColorPickerOpen && (
                                 <div className="colors-grid">

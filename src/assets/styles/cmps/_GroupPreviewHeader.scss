@@ -157,10 +157,6 @@
 
                     color: $textclr2;
 
-                    &:hover {
-                        color: rgba(255, 255, 255, 0.925);
-                    }
-
                     .color-picker-btn {
                         font-size: 12px;
 
@@ -168,11 +164,27 @@
                     }
 
                     .color-picker-arrow {
-                        padding-right: 10px;
+                        padding-right: 5px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+
+                        img {
+                            filter: invert(42%) sepia(17%) saturate(178%) hue-rotate(170deg) brightness(78%) contrast(90%);
+
+                            height: 16px;
+                            width: 16px;
+                        }
                     }
+
+                    &:hover {
+                        color: rgba(255, 255, 255, 0.925);
+                        filter: brightness(100) saturate(0%);
+                    }
+
                 }
 
-                .colors-grid{
+                .colors-grid {
                     display: flex;
                     flex-wrap: wrap;
                     gap: 4px;
