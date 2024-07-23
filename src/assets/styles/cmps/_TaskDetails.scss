@@ -345,6 +345,31 @@
                         font-size: 1em;
                         line-height: 20px;
                         font-weight: 600;
+                        position: relative;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        min-height: 32px;
+                        margin: 0 0 4px 0px;
+                        padding: 8px 0;
+                        width: 100%;
+
+                        & button {
+                            font-family: inherit;
+                            font-size: 14px;
+                            line-height: 20px;
+                            padding: 6px 12px;
+                            border-radius: 3px;
+                            font-weight: 500;
+                            transition-property: background-color, border-color, box-shadow;
+                            transition-duration: 85ms;
+                            transition-timing-function: ease;
+                            background-color: #579DFF;
+                            color: #1d2125;
+                            background-color: rgba(161, 189, 217, 0.0784313725);
+                            color: #b6c2cf;
+                            font-weight: 500;
+                        }
                     }
 
                     .attachments {
@@ -372,11 +397,13 @@
                             }
 
                             .attachment-thumbnail {
-                                height: 80px;
-                                width: 112px;
-                                background-size: contain;
-                                background-repeat: no-repeat;
+                                height: em(80, 14);
+                                width: em(112, 14);
                                 background-position: 50%;
+                                background-repeat: no-repeat;
+                                background-size: contain;
+
+                                // flex-grow: 1;
                             }
 
                             .attachment-details {
@@ -384,9 +411,10 @@
                                 flex-direction: column;
                                 align-items: flex-start;
                                 padding: em(8) em(8) em(8) em(16);
+                                // flex-shrink: 1;
 
                                 .attachment-header {
-                                    .attachment-url {
+                                    .attachment-title {
                                         font-weight: 700;
                                         word-break: break-all;
                                     }
@@ -440,6 +468,10 @@
 
                                     .attachment-span-remove-cover {
                                         text-decoration: underline;
+
+                                        &:hover {
+                                            cursor: pointer;
+                                        }
                                     }
                                 }
 
