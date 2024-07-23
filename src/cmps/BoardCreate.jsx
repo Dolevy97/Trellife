@@ -18,8 +18,11 @@ export function BoardCreate({ setIsAdding }) {
 
     function handleClickOutside(event) {
         if (boardCreateRef.current && !boardCreateRef.current.contains(event.target)) {
-            setIsBoardCreateOpen(false)
             if (setIsAdding) setIsAdding(false)
+            else {
+                setIsBoardCreateOpen(false)
+                navigate(-1)
+            }
         }
     }
 
@@ -56,6 +59,9 @@ export function BoardCreate({ setIsAdding }) {
         if (setIsAdding) setIsAdding(false)
         navigate(`/board/${addedBoard._id}`)
     }
+
+    console.log(isBoardCreateOpen)
+
 
     const { title } = boardToAdd
 
