@@ -108,7 +108,7 @@ export function BoardDetails() {
 
 
   const groups = board?.groups || []
-  if (!board) return <div>Loading...</div>
+  if (!board) return null
 
   return (
     // <section className="main-display-container">
