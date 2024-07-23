@@ -443,9 +443,8 @@ export function TaskDetails() {
                                     <button onClick={onAddAttachment} style={{ cursor: 'not-allowed' }}>Add</button>
                                 </div>
                                 <div className="attachments">
-                                    {taskToEdit.attachments.map(a =>
+                                    {taskToEdit.attachments.map((a, i) =>
                                         <div key={a.url} className="attachment">
-                                            {console.log(a.type)}
                                             {a.type.slice(0, 5) === 'image' ?
                                                 <a
                                                     href={a.url}
