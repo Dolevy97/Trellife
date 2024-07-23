@@ -85,9 +85,6 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
     
     async function onAddAttachment(ev) {
         const url = await cloudinaryService.uploadImg(ev)
-        // const { target } = ev
-        // console.log(target.files[0])
-        console.log(url)
         const file = ev.target.files[0]
         
         const attachment = {
@@ -96,9 +93,11 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             createdAt: Date.now(),
             type: file.type
         }
+        
         const updatedTask = {...task}
         updatedTask.attachments.push(attachment)
         const activityTitle = `attached ${file.name} to this card`
+        
         await updateTask(updatedTask, group, board, activityTitle)
         onSetAction(ev, true)
     }
