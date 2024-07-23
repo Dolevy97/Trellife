@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react"
 import { updateTask } from "../store/actions/task.actions"
-import { makeId } from "../services/util.service"
+import { getAverageColorFromAttachment, makeId } from "../services/util.service"
 import { cloudinaryService } from "../services/cloudinary.service"
 
 
-export function TaskAction({ action, board, group, task, getMemberById, getLabelById, onSetAction }) {
-
+export function TaskAction({ action, board, group, task, getMemberById, getLabelById, onSetAction, onRemoveCover }) {
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
 
     function getBoardMembers() {
@@ -42,10 +41,12 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
 
     async function onUpdateCoverColor({ target }) {
         const backgroundColor = target.style.backgroundColor
-        if (!target.style) {
-            task = { ...task, style: { isFull: false, backgroundColor } }
+        const backgroundImage = ''
+        const background = { backgroundColor, backgroundImage }
+        if (!task.style) {
+            task = { ...task, style: { isFull: false, ...background } }
         } else {
-            task = { ...task, style: { ...task.style, backgroundColor } }
+            task = { ...task, style: { ...task.style, ...background } }
         }
         await updateTask(task, group, board)
     }
@@ -57,10 +58,17 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         await updateTask(task, group, board)
     }
 
-    async function onRemoveCover() {
-        task = { ...task, style: null }
-        await updateTask(task, group, board)
+    async function onSetAttachmentAsCover(ev, a) {
+        task = { ...task, style: { ...task.style, backgroundImage: `url(${a.url}`, backgroundColor: a.backgroundColor } }
+        const activityTitle = `set ${a.title} as a cover for task (id: ${task.id})`
+        await updateTask(task, group, board, activityTitle)
+        onSetAction(ev, true)
     }
+
+    // async function onRemoveCover() {
+    //     task = { ...task, style: null }
+    //     await updateTask(task, group, board)
+    // }
 
     async function onAddChecklist(ev) {
         const updatedTask = { ...task }
@@ -82,10 +90,16 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                 createdAt: Date.now(),
                 type: file.type
             }
-            console.log('Attachment: ', JSON.stringify(attachment))
-            const updatedTask = { ...task }
+            attachment.backgroundColor = await getAverageColorFromAttachment(attachment)
+    
+            let updatedTask = { ...task }
+
             updatedTask.attachments.push(attachment)
             const activityTitle = `attached ${file.name} to this card`
+
+            if (!updatedTask.style) {
+                updatedTask = { ...updatedTask, style: { isFull: true, backgroundImage: `url(${attachment.url}`, backgroundColor: attachment.backgroundColor } }
+            }
 
             await updateTask(updatedTask, group, board, activityTitle)
         }
@@ -175,6 +189,20 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                                 <div className="color" style={{ backgroundColor: '#596773' }} onClick={onUpdateCoverColor}></div>
                             </div>
                         </div>
+                        {task.attachments && task.attachments.length &&
+                            <div className="cover-attachments-container">
+                                <span className="title">Attachments</span>
+                                <div className="cover-attachmnets">
+                                    {task.attachments.map(a =>
+                                        <div
+                                            key={a.url}
+                                            className="cover-attachment"
+                                            style={{ backgroundImage: `url(${a.url})`, backgroundColor: a.backgroundColor }}
+                                            onClick={(ev) => onSetAttachmentAsCover(ev, a)}
+                                        />)}
+                                </div>
+                            </div>
+                        }
                     </div>
                 </>
             }

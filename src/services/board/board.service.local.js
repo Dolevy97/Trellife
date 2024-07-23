@@ -45,7 +45,7 @@ async function save(board) {
 async function _createBoards() {
     let boards = await loadFromStorage(STORAGE_KEY)
     if (boards && boards.length !== 0) return
-    boards = boardDemoDataService.createDemoBoards()
+    boards = await boardDemoDataService.createDemoBoards()
     saveToStorage(STORAGE_KEY, boards)
 }
 
