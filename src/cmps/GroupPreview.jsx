@@ -228,7 +228,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd }) {
                                                             {task.attachments.length ?
                                                                 <div title='Attachments' className='task-attachment-container'>
                                                                     <img src="../../../src\assets\imgs\TaskDetails-icons\attachment.svg" />
-                                                                    <span className='task-comment'>1</span>
+                                                                    <span className='task-comment'>{task.attachments.length}</span>
                                                                 </div> : ''
                                                             }
                                                             {task.checklists.length ?
