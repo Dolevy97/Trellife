@@ -403,7 +403,13 @@ export function TaskDetails() {
                                         <div className="attachment">
                                             {console.log(a.type)}
                                             {a.type.slice(0, 5) === 'image' ?
-                                                <a className="attachment-thumbnail" style={{ backgroundImage: `url(${a.url})` }} />
+                                                <a
+                                                    className="attachment-thumbnail"
+                                                    style={{
+                                                        backgroundImage: `url(${a.url})`
+                                                    }}
+                                                    target='_blank'
+                                                />
                                                 :
                                                 <div className="attachment-file-preview">
                                                     <p>{a.type.split('/')[1] === 'x-zip-compressed' ? 'zip' : a.type.split('/')[1]}</p>
@@ -418,15 +424,15 @@ export function TaskDetails() {
                                                     <span className="attachment-added-at">
                                                         {getAddedAt(a.createdAt)}
                                                     </span>
-                                                    <ul className="attachment-links">
-                                                        <li className="attachment-link">Comment</li>
-                                                        <li className="attachment-link">Download</li>
-                                                        <li className="attachment-link">Delete</li>
-                                                        <li className="attachment-link">Edit</li>
-                                                    </ul>
+                                                    <section className="attachment-links">
+                                                        <article className="attachment-link"><span className='attachment-link-text'>Comment</span></article>
+                                                        <article className="attachment-link"><span className='attachment-link-text'>Download</span></article>
+                                                        <article className="attachment-link"><span className='attachment-link-text'>Delete</span></article>
+                                                        <article className="attachment-link"><span className='attachment-link-text'>Edit</span></article>
+                                                    </section>
                                                 </div>
                                                 <div className="attachment-remove-cover">
-                                                    <a className="attachment-remove-cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
+                                                    <img className="attachment-remove-cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
                                                     <span className="attachment-span-remove-cover"> Remove cover</span>
                                                 </div>
                                             </div>

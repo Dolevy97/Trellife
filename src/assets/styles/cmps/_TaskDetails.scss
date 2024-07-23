@@ -368,6 +368,7 @@
                                 text-align: center;
                                 text-decoration: none;
                                 padding-inline: 25px;
+                                // width: 112px;
                             }
 
                             .attachment-thumbnail {
@@ -399,18 +400,27 @@
                                     .attachment-added-at {}
 
                                     .attachment-links {
-                                        list-style: revert;
-                                        padding-inline-start: em(22);
+                                        // padding-inline-start: em(22);
                                         display: flex;
                                         align-items: center;
-                                        gap: em(22);
                                         margin: 0;
+                                        color: #9FADBC;
 
                                         .attachment-link {
-                                            text-decoration: underline;
+                                            display: flex;
+
+                                            .attachment-link-text {
+                                                text-decoration: underline;
+                                            }
 
                                             &:hover {
                                                 cursor: pointer;
+                                            }
+
+                                            &::before {
+                                                content: " • ";
+                                                padding-inline: 4px;
+                                                height: 19px;
                                             }
                                         }
                                     }
@@ -418,11 +428,19 @@
                                 }
 
                                 .attachment-remove-cover {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 8px;
                                     .attachment-remove-cover-icon {
                                         position: static;
+                                        height: 16px;
+                                        width: 16px;
+                                        scale: .9;
                                     }
 
-                                    .attachment-span-remove-cover {}
+                                    .attachment-span-remove-cover {
+                                        text-decoration: underline;
+                                    }
                                 }
 
                             }
