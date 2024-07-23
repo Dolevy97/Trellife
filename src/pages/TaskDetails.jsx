@@ -446,7 +446,7 @@ export function TaskDetails() {
                                                         className="progress-bar-current"
                                                         style={{
                                                             width: `${getDonePercentage(checklist)}%`,
-                                                            backgroundColor: getDonePercentage(checklist) === 100 ? '#4BCE97' : undefined,
+                                                            backgroundColor: getDonePercentage(checklist) > 99.9 ? '#4BCE97' : undefined,
                                                         }}
                                                     ></div>
                                                 </div>
