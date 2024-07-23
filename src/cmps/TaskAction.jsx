@@ -4,7 +4,7 @@ import { getAverageColorFromAttachment, makeId } from "../services/util.service"
 import { cloudinaryService } from "../services/cloudinary.service"
 
 
-export function TaskAction({ action, board, group, task, getMemberById, getLabelById, onSetAction, onRemoveCover }) {
+export function TaskAction({ action, board, group, task, getMemberById, getLabelById, onSetAction, onRemoveCover, onSetCover }) {
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
 
     function getBoardMembers() {
@@ -59,16 +59,9 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
     }
 
     async function onSetAttachmentAsCover(ev, a) {
-        task = { ...task, style: { ...task.style, backgroundImage: `url(${a.url}`, backgroundColor: a.backgroundColor } }
-        const activityTitle = `set ${a.title} as a cover for task (id: ${task.id})`
-        await updateTask(task, group, board, activityTitle)
+        onSetCover(a)
         onSetAction(ev, true)
     }
-
-    // async function onRemoveCover() {
-    //     task = { ...task, style: null }
-    //     await updateTask(task, group, board)
-    // }
 
     async function onAddChecklist(ev) {
         const updatedTask = { ...task }
@@ -91,7 +84,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                 type: file.type
             }
             attachment.backgroundColor = await getAverageColorFromAttachment(attachment)
-    
+
             let updatedTask = { ...task }
 
             updatedTask.attachments.push(attachment)

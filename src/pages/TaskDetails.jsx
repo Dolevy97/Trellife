@@ -13,7 +13,7 @@ import ms from 'ms'
 
 export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
-    
+
     const textareaRef = useRef(null)
     const textareaCommentRef = useRef(null)
     const dateInputRef = useRef(null)
@@ -327,21 +327,15 @@ export function TaskDetails() {
     }
 
     async function onRemoveAttachment(attachment) {
-        const updatedTask = {...taskToEdit}
-        const coverImg = updatedTask.style?.backgroundImage
-        if (coverImg && coverImg.substring(4)===attachment.url) updatedTask.style = null
-        const attachments = updatedTask.attachments.filter(a=>a.url!==attachment.url)
+        const updatedTask = { ...taskToEdit }
+        if (isCover(attachment)) updatedTask.style = null
+        const attachments = updatedTask.attachments.filter(a => a.url !== attachment.url)
         const activity = `deleted the ${attachment.title} from card (id: ${updatedTask.id})`
         updateTask({ ...updatedTask, attachments }, group, board, activity)
     }
 
     function onAddAttachment() {
 
-    }
-
-    async function onRemoveCover() {
-        const task = { ...taskToEdit, style: null }
-        await updateTask(task, group, board)
     }
 
     async function onRemoveCover() {
@@ -365,6 +359,17 @@ export function TaskDetails() {
         });
     }
 
+    function isCover(attachment) {
+        const coverImg = taskToEdit.style?.backgroundImage
+        return (coverImg && coverImg.substring(4) === attachment.url)
+    }
+
+    async function onSetCover(attachment) {
+        const updatedTask = { ...taskToEdit, style: { ...taskToEdit.style, backgroundImage: `url(${attachment.url}`, backgroundColor: attachment.backgroundColor } }
+        const activityTitle = `set ${attachment.title} as a cover for task (id: ${updatedTask.id})`
+        await updateTask(updatedTask, group, board, activityTitle)
+    }
+
     if (!taskToEdit || !group) return null
 
     const { title, description, membersIds, labelsIds, style } = taskToEdit
@@ -375,8 +380,8 @@ export function TaskDetails() {
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
             <form className="task-details" onSubmit={onSubmit} onClick={onTaskDetailsClicked}>
                 <img onClick={onBackdropClicked} className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close-white.svg" alt="close icon" />
-                {style && <div className="task-details-cover" style={{ ...style ,height: style.backgroundImage? '160px' : ''}}>
-        
+                {style && <div className="task-details-cover" style={{ ...style, height: style.backgroundImage ? '160px' : '' }}>
+
                 </div>}
                 <header className="task-header">
                     <img className="card-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/card.svg" alt="card icon" />
@@ -506,14 +511,19 @@ export function TaskDetails() {
                                                         {getAddedAt(a.createdAt)}
                                                     </span>
                                                     <article className="attachment-link" onClick={onFocusOnComment}><span className='attachment-link-text'>Comment</span></article>
-                                                    <article className="attachment-link" onClick={() => onDownloadUrl(a.url, a.title)}><span className='attachment-link-text'>Download</span></article>
+                                                    {a.type.slice(0, 5) === 'image' &&
+                                                        <article className="attachment-link" onClick={() => onDownloadUrl(a.url, a.title)}><span className='attachment-link-text'>Download</span></article>}
                                                     <article className="attachment-link" onClick={() => onRemoveAttachment(a)}><span className='attachment-link-text'>Delete</span></article>
                                                     <article className="attachment-link" name="edit-attachment" onClick={onSetAction} style={{ cursor: 'not-allowed' }}><span className='attachment-link-text'>Edit</span></article>
                                                 </div>
-                                                <div className="attachment-remove-cover">
-                                                    <img className="attachment-remove-cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
-                                                    <span className="attachment-span-remove-cover" onClick={onRemoveCover}> Remove cover</span>
-                                                </div>
+                                                {a.type.slice(0, 5) === 'image' &&
+                                                    <div className="attachment-set-remove-cover">
+                                                        <img className="attachment-set-remove-cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
+                                                        <span className="attachment-span-set-remove-cover"
+                                                            onClick={isCover(a) ? onRemoveCover : () => onSetCover(a)}>
+                                                            {(isCover(a) ? 'Remove' : 'Make') + ' cover'}
+                                                        </span>
+                                                    </div>}
                                             </div>
                                         </div>
                                     )}
@@ -707,7 +717,7 @@ export function TaskDetails() {
                                 <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
                                 <span className="action-title">Cover</span>
                             </button>
-                            {action === 'cover' && <TaskAction action="cover" onRemoveCover={onRemoveCover} {...taskActionProps} />}
+                            {action === 'cover' && <TaskAction action="cover" onSetCover={onSetCover} onRemoveCover={onRemoveCover} {...taskActionProps} />}
                         </div>
 
                         <hr className='sidebar-hr' />

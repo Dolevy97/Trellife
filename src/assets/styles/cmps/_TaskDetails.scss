@@ -468,19 +468,19 @@
 
                                 }
 
-                                .attachment-remove-cover {
+                                .attachment-set-remove-cover {
                                     display: flex;
                                     align-items: center;
                                     gap: 8px;
 
-                                    .attachment-remove-cover-icon {
+                                    .attachment-set-remove-cover-icon {
                                         position: static;
                                         height: 16px;
                                         width: 16px;
                                         scale: .9;
                                     }
 
-                                    .attachment-span-remove-cover {
+                                    .attachment-span-set-remove-cover {
                                         text-decoration: underline;
 
                                         &:hover {

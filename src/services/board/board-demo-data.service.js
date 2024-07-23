@@ -1,19 +1,19 @@
-import { getAverageColorFromAttachment, getRandomColor, getRandomIntInclusive, getRandomTimestamp, makeId } from "../util.service"
+import { getRandomColor, getRandomIntInclusive, getRandomTimestamp, makeId } from "../util.service"
 
 
 export const boardDemoDataService = {
     createDemoBoards
 }
 
-async function createDemoBoards(length = 20) {
+function createDemoBoards(length = 20) {
     const boards = []
     for (let i = 0; i < length; i++) {
-        boards.push(await _createDemoBoard())
+        boards.push(_createDemoBoard())
     }
     return boards
 }
 
-async function _createDemoBoard() {
+function _createDemoBoard() {
     const board = {
         _id: makeId(),
         title: _getProjectTitle(),
@@ -27,7 +27,7 @@ async function _createDemoBoard() {
         labels: _getRandomLabels(),
         members: _getRandomMembers(),
     }
-    board.groups = await _getRandomGroups(board)
+    board.groups = _getRandomGroups(board)
     board.activities = _getRandomActivities(board)
     return board
 }
@@ -139,22 +139,22 @@ function _getRandomActivityTitle() {
     return activities[getRandomIntInclusive(0, activities.length - 1)]
 }
 
-async function _getRandomGroups(board) {
+function _getRandomGroups(board) {
     const length = getRandomIntInclusive(4, 6)
     const groups = []
     for (let i = 0; i < length; i++) {
-        const group = await _getRandomGroup(board)
+        const group = _getRandomGroup(board)
         groups.push(group)
     }
     return groups
 }
 
-async function _getRandomGroup(board) {
+function _getRandomGroup(board) {
     const group = {
         id: 'g' + makeId(),
         title: getRandomGroupTitle(),
         archivedAt: getRandomIntInclusive(0, 9) < 3 ? _getRandomTimestamp() : null,
-        tasks: await _getRandomTasks(board),
+        tasks:_getRandomTasks(board),
         style: getRandomIntInclusive(1, 3) === 1 ? { backgroundColor: getRandomColor() } : null
     }
     return group
@@ -198,16 +198,16 @@ function getRandomGroupTitle() {
     return groupTitles[randomIndex]
 }
 
-async function _getRandomTasks(board) {
+function _getRandomTasks(board) {
     const length = getRandomIntInclusive(0, 20)
     const tasks = []
     for (let i = 0; i < length; i++) {
-        tasks.push(await _getRandomTask(board))
+        tasks.push(_getRandomTask(board))
     }
     return tasks
 }
 
-async function _getRandomTask(board) {
+function _getRandomTask(board) {
     const task = {
         id: 't' + makeId(),
         title: getRandomIntInclusive(1, 4) > 1 ? _getRandomTaskName() : '',
@@ -220,66 +220,79 @@ async function _getRandomTask(board) {
         labelsIds: _getRandomTaskLabels(board),
         byMember: _getRandomTaskMember(board),
         style: getRandomTaskStyle(),
-        // attachments: getRandomIntInclusive(1, 4) > 1 ? [] : _getRandomAttachments()
-        attachments: await _getRandomAttachments()
+        attachments: getRandomIntInclusive(1, 4) > 1 ? [] : _getRandomAttachments()
     }
-    console.log(task)
     return task
 }
 
-async function _getRandomAttachments() {
+function _getRandomAttachments() {
     const demoAttachments = [
         {
             title: "openart-image_NCjT4BO6_1721211304700_raw.jpg",
             url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721739547/jypeggdpogvfaoz0xbn6.jpg",
             createdAt: 1721739548198,
-            type: "image/jpeg"
+            type: "image/jpeg",
+            backgroundColor:  _rgb(229, 229, 226)
         },
         {
             title: "openart-image_R3VI1CMG_1721209766848_raw.jpg",
             url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721739549/ldob56coyk2vn088sjci.jpg",
             createdAt: 1721739549873,
-            type: "image/jpeg"
+            type: "image/jpeg",
+            backgroundColor: _rgb(63, 67, 50)
         },
         {
             title: "BDGD.jpeg",
             url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721739602/wrmgxooponh1kdk3fx8y.jpg",
             createdAt: 1721739603540,
-            type: "image/jpeg"
+            type: "image/jpeg",
+            backgroundColor: _rgb(245, 246, 245)
         },
         {
             title: "e0f3495a4bd023d4f9e45715f6a64099b6-harris-lede.rvertical.w600.webp",
             url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721740532/pjogbkebvzk8pl2xzat3.webp",
             createdAt: 1721740532640,
-            type: "image/webp"
+            type: "image/webp",
+            backgroundColor: _rgb(72, 61, 50)
         },
         {
             title: "images.jpeg",
             url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721740543/u3e9okwefql3ys33wdbh.jpg",
             createdAt: 1721740544374,
-            type: "image/jpeg"
+            type: "image/jpeg",
+            backgroundColor: _rgb(61, 78, 57)
         },
         {
             title: "the-matrix-code-keanu-reeves.avif",
             url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721740556/nkzneerrwqileytdawtt.avif",
             createdAt: 1721740557093,
-            type: "image/avif"
+            type: "image/avif",
+            backgroundColor: _rgb(81, 93, 62)
         },
         {
             title: "matrix2.jpeg",
             url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721740577/o1w139lb4812tmd97ukm.jpg",
             createdAt: 1721740578511,
-            type: "image/jpeg"
+            type: "image/jpeg",
+            backgroundColor: _rgb(63, 67, 50)
         }
     ]
     const length = getRandomIntInclusive(1,3)
     const attachments = []
     for (let i = 0; i<length; i++){
         const attachment = {...demoAttachments.splice(getRandomIntInclusive(0,demoAttachments.length-1),1)[0]}
-        attachment.backgroundColor = await getAverageColorFromAttachment(attachment)
         attachments.push(attachment)
     }
     return attachments
+}
+
+function _rgb(r, g, b) {
+    const toHex = (value) => {
+        const hex = value.toString(16);
+        return hex.length === 1 ? '0' + hex : hex;
+    };
+
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
 function getRandomTaskStyle() {
