@@ -7,7 +7,7 @@ import { updateTask } from '../store/actions/task.actions'
 import { TaskAction } from '../cmps/TaskAction'
 import autosize from 'autosize'
 import { getRandomMember } from '../services/board/board-demo-data.service'
-import { getAverageColorFromImgUrl, getFormattedTime, makeId, onDownloadUrl } from '../services/util.service'
+import { getAverageColorFromAttachment, getFormattedTime, makeId, onDownloadUrl } from '../services/util.service'
 import { updateGroup } from '../store/actions/group.actions'
 import ms from 'ms'
 
@@ -70,7 +70,7 @@ export function TaskDetails() {
             for (const attachment of taskToEdit.attachments) {
                 if (!averageColors[attachment.url]) {
                     try {
-                        const color = await getAverageColorFromImgUrl(attachment.url)
+                        const color = await getAverageColorFromAttachment(attachment)
                         setAverageColors(prev => ({ ...prev, [attachment.url]: color }))
                     } catch (error) {
                         console.error("Error loading image or getting average color:", error)
@@ -319,10 +319,9 @@ export function TaskDetails() {
         textareaCommentRef.current.setSelectionRange(textareaCommentRef.current.value.length, textareaCommentRef.current.value.length);
     }
 
-    async function onRemoveAttachment(a, i) {
-        const attachments = [...taskToEdit.attachments]
-        attachments.splice(i, 1)
-        const activity = `deleted the ${a.title} from card (id: ${taskToEdit.id})`
+    async function onRemoveAttachment(attachment) {
+        const attachments = taskToEdit.attachments.filter(a=>a.url!==attachment.url)
+        const activity = `deleted the ${attachment.title} from card (id: ${taskToEdit.id})`
         updateTask({ ...taskToEdit, attachments }, group, board, activity)
     }
 
@@ -443,7 +442,7 @@ export function TaskDetails() {
                                     <button onClick={onAddAttachment} style={{ cursor: 'not-allowed' }}>Add</button>
                                 </div>
                                 <div className="attachments">
-                                    {taskToEdit.attachments.map((a, i) =>
+                                    {taskToEdit.attachments.map(a =>
                                         <div key={a.url} className="attachment">
                                             {a.type.slice(0, 5) === 'image' ?
                                                 <a
@@ -471,7 +470,7 @@ export function TaskDetails() {
                                                     <section className="attachment-links">
                                                         <article className="attachment-link" onClick={onFocusOnComment}><span className='attachment-link-text'>Comment</span></article>
                                                         <article className="attachment-link" onClick={() => onDownloadUrl(a.url, a.title)}><span className='attachment-link-text'>Download</span></article>
-                                                        <article className="attachment-link" onClick={() => onRemoveAttachment(i)}><span className='attachment-link-text'>Delete</span></article>
+                                                        <article className="attachment-link" onClick={() => onRemoveAttachment(a)}><span className='attachment-link-text'>Delete</span></article>
                                                         <article className="attachment-link" name="edit-attachment" onClick={onSetAction} style={{ cursor: 'not-allowed' }}><span className='attachment-link-text'>Edit</span></article>
                                                     </section>
                                                 </div>

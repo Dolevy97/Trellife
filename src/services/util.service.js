@@ -115,7 +115,7 @@ export function getFormattedShortTime(time) {
 //     try {
 //         const avgColors = []
 //         imgsUrls.forEach(imgUrl=>{
-//             return await getAverageColorFromImgUrl(imgUrl)
+//             return await getAverageColorFromAttachmentUrl(imgUrl)
 //         })
 //     } catch (er) {
 //         console.log(er)
@@ -124,12 +124,13 @@ export function getFormattedShortTime(time) {
 
 // }
 
-export async function getAverageColorFromImgUrl(imgUrl) {
+export async function getAverageColorFromAttachment(attachment) {
 
+    if (attachment.type.slice(0,5)!=='image') return 'transparent'
     try {
         const img = new Image()
         img.crossOrigin = "Anonymous"
-        img.src = imgUrl
+        img.src = attachment.url
         await new Promise((resolve) => {
             img.onload = resolve
         })
