@@ -13,6 +13,7 @@ import ms from 'ms'
 
 export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
+    const boards = useSelector(storeState => storeState.boardModule.boards)
 
     const textareaRef = useRef(null)
     const textareaCommentRef = useRef(null)
