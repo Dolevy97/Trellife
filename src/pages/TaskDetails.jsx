@@ -326,7 +326,7 @@ export function TaskDetails() {
         updateTask({ ...taskToEdit, attachments }, group, board, activity)
     }
 
-    function onAddAttachment(){
+    function onAddAttachment() {
 
     }
 
@@ -443,16 +443,23 @@ export function TaskDetails() {
                                     <button onClick={onAddAttachment} style={{ cursor: 'not-allowed' }}>Add</button>
                                 </div>
                                 <div className="attachments">
-                                    {taskToEdit.attachments.map((a, i) =>
-                                        <div key={makeId()} className="attachment">
-                                            <a
-                                                className="attachment-thumbnail"
-                                                href={a.url}
-                                                style={{
-                                                    backgroundImage: `url(${a.url})`,
-                                                    backgroundColor: averageColors[a.url] || 'transparent'
-                                                }}
-                                            />
+                                    {taskToEdit.attachments.map(a =>
+                                        <div key={a.url} className="attachment">
+                                            {console.log(a.type)}
+                                            {a.type.slice(0, 5) === 'image' ?
+                                                <a
+                                                    href={a.url}
+                                                    className="attachment-thumbnail"
+                                                    style={{
+                                                        backgroundImage: `url(${a.url})`,
+                                                        backgroundColor: averageColors[a.url] || 'transparent'
+                                                    }}
+                                                />
+                                                :
+                                                <div className="attachment-file-preview">
+                                                    <p>{a.type.split('/')[1] === 'x-zip-compressed' ? 'zip' : a.type.split('/')[1]}</p>
+                                                </div>
+                                            }
                                             <div className="attachment-details">
                                                 <div className="attachment-header">
                                                     <span className="attachment-title">{a.title}</span>
@@ -497,7 +504,7 @@ export function TaskDetails() {
                                                         className="progress-bar-current"
                                                         style={{
                                                             width: `${getDonePercentage(checklist)}%`,
-                                                            backgroundColor: getDonePercentage(checklist) === 100 ? '#4BCE97' : undefined,
+                                                            backgroundColor: getDonePercentage(checklist) > 99.9 ? '#4BCE97' : undefined,
                                                         }}
                                                     ></div>
                                                 </div>
