@@ -65,10 +65,13 @@
 .group-container {
   display: flex;
   gap: 12px;
-  padding-bottom: 20px;
-  min-height: calc(100vh - 140px);
-  align-items: flex-start;
+  width: max-content;
 
+
+  .group-item {
+    height: max-content;
+  }
+  
   .group-item.dragging {
     opacity: .4;
     rotate: 4deg;
