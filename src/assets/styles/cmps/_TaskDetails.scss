@@ -33,13 +33,13 @@
         }
 
         position: relative;
-        min-height: em(600, 16);
+        min-height: calc((100vh - 64px));
         width: em(768, 16);
         margin-block-end: auto;
 
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        // justify-content: center;
 
         background-color: rgb(50 57 64);
         font-family: system-ui,

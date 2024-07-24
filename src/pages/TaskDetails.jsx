@@ -807,7 +807,7 @@ export function TaskDetails() {
 
                         <button className="action remove-task" onClick={onRemoveTask}>
                             <img className="icon" src="../../../src/assets/imgs/TaskDetails-icons/trash.svg" alt="close icon" />
-                            <span className="action-title">Remove card</span>
+                            <span className="action-title">Delete card</span>
                         </button>
 
                     </section>
