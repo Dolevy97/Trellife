@@ -72,12 +72,32 @@
         }
 
         .task-details-cover {
+            position: relative;
             height: 7.25em;
             border-top-left-radius: 12px;
             border-top-right-radius: 12px;
             background-position: 50%;
             background-repeat: no-repeat;
             background-size: contain;
+
+            .task-header-action-container {
+                position: absolute;
+                background-color: transparent;
+                right: 0;
+                bottom: 0;
+
+                .action {
+                    padding: em(6) em(12) em(6) em(6);
+                    font-size: em(14);
+                    color: inherit;
+                    display: flex;
+                    .icon{
+                        position: static;
+                        height: auto;
+                        width: 1em;
+                    }
+                }
+            }
         }
 
         .fs12 {
