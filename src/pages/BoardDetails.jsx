@@ -7,10 +7,13 @@ import { boardService } from '../services/board/'
 import { GroupPreview } from "../cmps/GroupPreview.jsx"
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { BoardDetailsHeader } from '../cmps/BoardDetailsHeader.jsx'
-import { LeftNavBar } from '../cmps/LeftNavBar.jsx'
+import { store } from '../store/store.js'
+import { SET_USER } from '../store/reducers/user.reducer.js'
+import { socketService } from '../services/socket.service.js'
 
 export function BoardDetails() {
   const { boardId } = useParams()
+  const user = useSelector(storeState => storeState.userModule.user)
   const board = useSelector(storeState => storeState.boardModule.board)
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [newGroupTitle, setNewGroupTitle] = useState('')
@@ -20,9 +23,24 @@ export function BoardDetails() {
 
   const addGroupRef = useRef(null)
 
+
   useEffect(() => {
     loadBoard(boardId)
   }, [boardId])
+
+  useEffect(() => {
+    if (!user) {
+      const guest = {
+        _id: '',
+        fullname: 'Guest',
+        imgUrl: 'https://www.shutterstock.com/image-vector/user-icon-trendy-flat-style-600nw-1697898655.jpg'
+      }
+      store.dispatch({ type: SET_USER, user: guest })
+      socketService.login(guest._id)
+    }
+  }, [user])
+
+  console.log(user)
 
   useEffect(() => {
     if (board && board.style && board.style.background && groupListContainer) {
@@ -103,7 +121,7 @@ export function BoardDetails() {
   function toggleLabelExpansion(event) {
     event.stopPropagation()
     setAreLabelsExpanded(prev => !prev)
-}
+  }
 
 
   const groups = board?.groups || []

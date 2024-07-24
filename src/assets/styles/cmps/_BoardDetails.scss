@@ -13,7 +13,9 @@
   background-color: $bgclr2;
   
   overflow-x: auto;
-  overflow-y: hidden;
+  // overflow-y: hidden;
+  
+  height: calc(100vh - 100px);
 
   background-size: cover;
 
