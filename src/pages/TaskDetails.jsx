@@ -138,10 +138,10 @@ export function TaskDetails() {
         return board.labels.find(label => label.id === id)
     }
 
-    function onSetAction(ev, isNull = false) {
+    function onSetAction(ev, action) {
         ev.stopPropagation()
-        if (isNull) {
-            setAction(null)
+        if (action!==undefined) {
+            setAction(action)
             return
         }
         const actionName = action === ev.currentTarget.name ? null : ev.currentTarget.name

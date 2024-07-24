@@ -76,7 +76,6 @@ export function BoardDetails() {
     if (!result.destination) return
     const { source, destination, type } = result
     const updatedGroups = Array.from(board.groups)
-
     if (type === 'GROUP') {
       const [reorderedGroup] = updatedGroups.splice(source.index, 1)
       updatedGroups.splice(destination.index, 0, reorderedGroup)
