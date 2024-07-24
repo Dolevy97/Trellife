@@ -18,6 +18,7 @@
 @import "pages/AboutUs";
 @import "pages/HomePage";
 @import "pages/BoardIndex";
+@import "pages/TaskDetails";
 
 // Components
 @import "cmps/list";
@@ -37,7 +38,6 @@
 
 @import "cmps/GroupPreview";
 @import "cmps/GroupPreviewHeader";
-@import "cmps/TaskDetails";
 @import "cmps/TaskAction";
 @import "cmps/GroupAction";
 @import "cmps/LeftNavBar";

@@ -11,8 +11,10 @@ import autosize from 'autosize'
 import ms from 'ms'
 
 export function TaskDetails() {
+
     const board = useSelector(storeState => storeState.boardModule.board)
     const user = useSelector(storeState => storeState.userModule.user)
+
     const textareaRef = useRef(null)
     const textareaCommentRef = useRef(null)
     const dateInputRef = useRef(null)
@@ -38,8 +40,6 @@ export function TaskDetails() {
 
     const { taskId, groupId, boardId } = useParams()
     const navigate = useNavigate()
-
-
 
     useEffect(() => {
         setTask()
@@ -380,7 +380,6 @@ export function TaskDetails() {
     function handleTitleClick() {
         setIsEditingTitle(true)
         setTaskTitleInputValue(taskToEdit.title)
-
     }
 
     function handleTitleBlur() {
