@@ -12,6 +12,8 @@
   
   background-color: $bgclr2;
   
+  height: calc(100vh - 100px);
+
   overflow-x: auto;
   overflow-y: hidden;
 
@@ -63,9 +65,12 @@
 .group-container {
   display: flex;
   gap: 12px;
-  padding-bottom: 20px;
-  min-height: calc(100vh - 140px);
-  align-items: flex-start;
+  width: max-content;
+
+
+  .group-item {
+    height: max-content;
+  }
 
   .group-item.dragging {
     opacity: .4;
