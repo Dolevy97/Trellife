@@ -1,15 +1,29 @@
+
+.board-preview-container {
+    width: 25%;
+
+    @media only screen and (min-width: 751px) and (max-width: 900px),
+    only screen and (min-width: 901px) and (max-width: 1280px) {
+        width: 33.33%;
+    }
+
+    @media only screen and (max-width: 750px) {
+        width: 100%;
+        padding-right: 0;
+    }
+
+}
+
 .board-preview {
 
     position: relative;
-    min-width: 316.5px;
-    width: 25%;
 
-    // flex: 0 0 25%;
-
-    height: 96px;
-    margin-block: 1.35em;
+    height: 104px;
+    margin-block: 21.6px;
+    margin-block: 12px;
 
     padding: 4px 8px;
+
 
 
     .board-preview-wrapper {
