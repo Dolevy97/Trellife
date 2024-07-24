@@ -376,7 +376,7 @@ export function TaskDetails() {
     }
 
     //Task title
-    
+
     function handleTitleClick() {
         setIsEditingTitle(true)
         setTaskTitleInputValue(taskToEdit.title)
