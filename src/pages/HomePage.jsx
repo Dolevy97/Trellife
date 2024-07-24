@@ -1,13 +1,16 @@
 import { useSelector } from "react-redux"
 import { login } from "../store/actions/user.actions"
+import { useNavigate } from "react-router"
 
 export function HomePage() {
     const loggedInUser = useSelector(storeState => storeState.userModule.user)
+    const navigate = useNavigate()
 
     async function onSignIn() {
         try {
             await login({ username: 'Dolevy', password: '1234' })
-            console.log(`logged in successfully: ${loggedInUser}`);
+            console.log(`logged in successfully: ${loggedInUser}`)
+            navigate('/board')
         } catch (err) {
             console.log('error logging in:', err)
         }
