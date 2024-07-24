@@ -87,9 +87,14 @@ export function BoardDetailsHeader() {
           <span>Filters</span>
         </div>
         <div className='members-container'>
-          <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img1.jpg" alt="user" />
-          <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img2.jpg" alt="user" />
-          <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img3.jpg" alt="user" />
+          {board.members.map(member => {
+            return <img
+              key={member._id}
+              className='user-img'
+              src={member.imgUrl}
+              alt="user image"
+              title={member.fullname} />
+          })}
         </div>
 
       </div>

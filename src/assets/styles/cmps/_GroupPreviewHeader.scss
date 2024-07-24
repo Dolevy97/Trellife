@@ -8,6 +8,12 @@
     position: relative;
     align-items: center;
 
+    // .collapsed{
+    //     transform: rotate(90deg);
+    // }
+
+   
+
     input {
         border: none;
         outline: none;
@@ -68,6 +74,8 @@
         display: flex;
         gap: 8px;
         align-items: center;
+       
+
     }
 
     .header-options-menu {
@@ -132,7 +140,6 @@
         }
 
         .menu-info {
-
             >p {
                 font-size: 14px;
                 color: $textclr2;
@@ -249,7 +256,5 @@
                 }
             }
         }
-
-
     }
 }
