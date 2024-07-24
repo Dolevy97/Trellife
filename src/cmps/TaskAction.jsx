@@ -70,7 +70,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         onSetAction(ev, null)
     }
 
-    async function onAddAttachment(ev) {
+    async function onAddAttachment(ev,isCover) {
         const files = ev.target.files
         const action = !task.style ? 'cover' : null
 
@@ -90,8 +90,12 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             updatedTask.attachments.push(attachment)
             const activityTitle = `attached ${file.name} to this card`
 
-            if (!updatedTask.style) {
+            if (!updatedTask.style || isCover) {
                 updatedTask = { ...updatedTask, style: { isFull: true, backgroundImage: `url(${attachment.url}`, backgroundColor: attachment.backgroundColor } }
+                if (isCover){
+                    await updateTask(updatedTask, group, board, activityTitle)
+                    break
+                }
             }
 
             await updateTask(updatedTask, group, board, activityTitle)
@@ -208,18 +212,23 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                     <button className="add-checklist" onClick={onAddChecklist}>Add</button>
                 </>
             }
-            {action === 'attach' &&
+            {(action === 'attach' || action === 'cover') &&
                 <>
                     <div className="attachment">
-                        <span className="sub-title">Attach a file from your computer</span>
+                        {action === 'attach' &&
+                            <span className="sub-title">Attach a file from your computer</span>
+                        }
                         <input
                             className="input-file-upload"
                             type="file"
                             style={{ display: 'none' }}
-                            onChange={onAddAttachment}
+                            onChange={(ev) => onAddAttachment(ev, (action === 'attach' ? undefined : true))}
                             multiple
                         />
-                        <button className="btn-file-upload" onClick={onUpload}>Choose a file</button>
+                        <button className="btn-file-upload"
+                            onClick={onUpload}>
+                            {action === 'attach' ? 'Choose a file' : 'Upload a cover image'}
+                        </button>
                     </div>
                 </>
             }
