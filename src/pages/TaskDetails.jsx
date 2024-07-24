@@ -140,7 +140,7 @@ export function TaskDetails() {
 
     function onSetAction(ev, action) {
         ev.stopPropagation()
-        if (action!==undefined) {
+        if (action !== undefined) {
             setAction(action)
             return
         }
@@ -361,7 +361,7 @@ export function TaskDetails() {
 
     function isCover(attachment) {
         const coverImg = taskToEdit.style?.backgroundImage
-        return (coverImg && coverImg.substring(4,coverImg.length-1) === attachment.url)
+        return (coverImg && coverImg.substring(4, coverImg.length - 1) === attachment.url)
     }
 
     async function onSetCover(attachment) {
@@ -384,7 +384,15 @@ export function TaskDetails() {
             <form className="task-details" onSubmit={onSubmit} onClick={onTaskDetailsClicked}>
                 <img onClick={onBackdropClicked} className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close-white.svg" alt="close icon" />
                 {style && <div className="task-details-cover" style={{ ...style, height: style.backgroundImage ? '160px' : '' }}>
-
+                    {style &&
+                        <div className="task-header-action-container">
+                            <button className="action" name="cover" onClick={onSetAction}>
+                                <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
+                                <span className="action-title">Cover</span>
+                            </button>
+                            {action === 'cover' && <TaskAction action="cover" onSetCover={onSetCover} onRemoveCover={onRemoveCover} {...taskActionProps} />}
+                        </div>
+                    }
                 </div>}
                 <header className="task-header">
                     <img className="card-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/card.svg" alt="card icon" />
@@ -715,13 +723,15 @@ export function TaskDetails() {
                             </button>
                             {/* Enter location action rendering */}
                         </div>
-                        <div className="task-action-container">
-                            <button className="action" name="cover" onClick={onSetAction}>
-                                <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
-                                <span className="action-title">Cover</span>
-                            </button>
-                            {action === 'cover' && <TaskAction action="cover" onSetCover={onSetCover} onRemoveCover={onRemoveCover} {...taskActionProps} />}
-                        </div>
+                        {!taskToEdit.style &&
+                            <div className="task-action-container">
+                                <button className="action" name="cover" onClick={onSetAction}>
+                                    <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
+                                    <span className="action-title">Cover</span>
+                                </button>
+                                {action === 'cover' && <TaskAction action="cover" onSetCover={onSetCover} onRemoveCover={onRemoveCover} {...taskActionProps} />}
+                            </div>
+                        }
 
                         <hr className='sidebar-hr' />
 
