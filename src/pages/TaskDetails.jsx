@@ -414,7 +414,7 @@ export function TaskDetails() {
                     {style &&
                         <div className="task-header-action-container">
                             <button className="action" name="cover" onClick={onSetAction}>
-                                <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
+                                <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover-white.svg" alt="cover icon" />
                                 <span className="action-title">Cover</span>
                             </button>
                             {action === 'cover' && <TaskAction action="cover" onSetCover={onSetCover} onRemoveCover={onRemoveCover} {...taskActionProps} />}

@@ -63,8 +63,8 @@
         }
 
         .close-icon {
-            right: em(22);
-            top: em(22);
+            right: em(16);
+            top: em(16);
 
             height: em(24);
             width: em(24);
@@ -73,6 +73,10 @@
 
             &:hover {
                 cursor: pointer;
+                background-color: #45505a;
+                border-radius: 50%;
+                // padding: em(20);
+                // NEED TO REFACTOR
             }
         }
 
@@ -92,10 +96,21 @@
                 bottom: 0;
 
                 .action {
-                    padding: em(6) em(12) em(6) em(6);
+                    padding: em(6);
                     font-size: em(14);
                     color: inherit;
                     display: flex;
+                    align-items: center;
+                    gap: em(6);
+                    margin-inline-end: em(16);
+                    margin-block-end: em(12);
+                    background-color: transparent;
+                    color: white;
+                    border-radius: 3px;
+        
+                    &:hover{
+                        background-color: #45505a;
+                    }
 
                     .icon {
                         position: static;
@@ -114,13 +129,14 @@
         .task-header {
             position: relative;
             min-height: em(32);
-            padding: 1em em(52)em(8) em(56);
+            padding: em(12) em(52)em(8) em(56);
 
             display: flex;
             flex-direction: column;
 
             border-top-left-radius: 12px;
             border-top-right-radius: 12px;
+            margin-block-end: 24px;
 
             .task-title {
                 font-size: em(20);
@@ -134,8 +150,8 @@
             }
 
             .card-icon {
-                left: em(24);
-                top: em(22);
+                left: em(20);
+                top: em(18);
             }
         }
 
@@ -317,7 +333,7 @@
 
                         & .description-icon {
                             position: absolute;
-                            left: -36px;
+                            left: -38px;
 
                             width: 24px;
                             height: 24px;
@@ -377,7 +393,7 @@
                     // gap: em(8);
 
                     .attachments-icon {
-                        left: -36px;
+                        left: -38px;
                         width: 24px;
                         height: 24px;
                     }
@@ -592,7 +608,7 @@
                         .user-img-activity-input {
                             position: absolute;
                             top: 16px;
-                            left: -40px;
+                            left: -42px;
 
                             width: 32px;
                             height: 32px;
@@ -637,7 +653,8 @@
                     }
 
                     .activity-icon {
-                        left: -32px;
+                        left: -36px;
+                        scale: 0.9;
                     }
 
                     & input {
@@ -770,7 +787,7 @@
         .member-img-comment {
             position: absolute;
             top: 12px;
-            left: -40px;
+            left: -42px;
 
             height: 32px;
             width: 32px;
@@ -1003,7 +1020,7 @@
             & .progress-percentage {
                 position: absolute;
                 top: -1px;
-                left: -40px;
+                left: -42px;
 
                 color: $txtclr1;
 
@@ -1039,7 +1056,7 @@
     }
 
     .checklists-icon {
-        left: -36px;
+        left: -38px;
         width: 24px;
         height: 24px;
     }
