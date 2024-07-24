@@ -1,4 +1,6 @@
 .main-container main {
-    min-height: calc(100vh - 7rem);
+    height: 100vh;
     overflow: hidden; // Quick fix for JSONs in <pre>
+    display: grid;
+    grid-template-rows: auto 1fr;
 }
