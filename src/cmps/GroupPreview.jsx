@@ -192,15 +192,20 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                         )}
 
                                                         <div className={`title-container ${task.style?.backgroundImage ? 'img-title-container' : ''}`}
-                                                            style={{ marginBlockEnd: task.style?.isFull ? '0' : '4px', color: task.style?.isFull ? '#172B4D' : 'inherit' }}
+                                                            style={{
+                                                                marginBlockEnd: task.style?.isFull ? '0' : '4px',
+
+                                                                color: task.style?.isFull && !task.style?.backgroundImage ? 'white' :
+                                                                    task.style?.backgroundImage && task.style?.isFull ? '#172B4D' :
+                                                                        'inherit'
+                                                            }}
                                                         >
                                                             <span style={{
                                                                 fontWeight: task.style?.isFull ? '500' : 'normal',
                                                                 fontSize: task.style?.isFull ? '1em' : ''
-
-                                                            }}>{task.title}</span>
+                                                            }}>
+                                                                {task.title}</span>
                                                         </div>
-
 
                                                         {(!task.style || !task.style.isFull) && (
                                                             <div className='task-bottom-container'>
