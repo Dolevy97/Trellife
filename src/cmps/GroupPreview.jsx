@@ -227,7 +227,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                                     <span className='task-comment'>{task.attachments.length}</span>
                                                                 </div> : ''
                                                             }
-                                                            {task.checklists.length ? (
+                                                            {task.checklists.length && getAllTodosInChecklist(task.id, group.id) !== 0 ? (
                                                                 <div
                                                                     title='Checklist items'
                                                                     className='task-checklist-container'
