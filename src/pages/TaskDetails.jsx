@@ -670,7 +670,7 @@ export function TaskDetails() {
                             <div className="input-container">
                                 <img
                                     className='user-img-activity-input'
-                                    src={user.imgUrl}
+                                    src={user && user.imgUrl || 'https://www.shutterstock.com/image-vector/user-icon-trendy-flat-style-600nw-1697898655.jpg'}
                                     alt="user image" />
                                 {isAddingComment ?
                                     <>
