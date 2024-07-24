@@ -87,6 +87,7 @@ export function BoardDetailsHeader() {
           <span>Filters</span>
         </div>
         <div className='members-container'>
+          {console.log(board.members)}
           <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img1.jpg" alt="user" />
           <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img2.jpg" alt="user" />
           <img className='user-img' src="../../../src/assets/imgs/user-imgs/user-img3.jpg" alt="user" />
