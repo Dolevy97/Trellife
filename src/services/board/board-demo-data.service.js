@@ -214,11 +214,11 @@ function _getRandomTasks(board) {
 function _getRandomTask(board) {
     const task = {
         id: 't' + makeId(),
-        title: getRandomIntInclusive(1, 4) > 1 ? _getRandomTaskName() : '',
+        title: _getRandomTaskName(),
         isDone: _getRandomTaskIsDone(),
         priority: getRandomIntInclusive(1, 4) > 1 ? _getRandomPriority() : null,
         dueDate: getRandomIntInclusive(1, 4) > 1 ? _getRandomDueDate() : null,
-        description: _getRandomTaskDescription(),
+        description:  getRandomIntInclusive(1, 10) > 3 ? '' : _getRandomTaskDescription(),
         checklists: getRandomIntInclusive(1, 4) > 1 ? _getRandomChecklists() : [],
         membersIds: _getRandomTaskMembersIds(board),
         labelsIds: _getRandomTaskLabels(board),
@@ -461,7 +461,7 @@ function _getRandomTaskDescription() {
     ];
 
     const randomIndex = Math.floor(Math.random() * descriptions.length)
-    return getRandomIntInclusive(1, 10) > 3 ? '' : descriptions[randomIndex]
+    return descriptions[randomIndex]
 }
 
 function _getRandomDueDate() {
