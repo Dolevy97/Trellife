@@ -378,10 +378,16 @@ export function TaskDetails() {
     const { title, description, membersIds, labelsIds, style } = taskToEdit
 
     const taskActionProps = { task: taskToEdit, board, group, onSetAction }
+    console.log('style: ', style)
 
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
-            <form className="task-details" onSubmit={onSubmit} onClick={onTaskDetailsClicked}>
+            <form
+                className="task-details"
+                onSubmit={onSubmit}
+                onClick={onTaskDetailsClicked}
+                // style={style ? ({ marginBlockStart: style?.backgroundImage ? '117px' : '71px' }) : {}}
+                >
                 <img onClick={onBackdropClicked} className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close-white.svg" alt="close icon" />
                 {style && <div className="task-details-cover" style={{ ...style, height: style.backgroundImage ? '160px' : '' }}>
                     {style &&
