@@ -58,10 +58,6 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         await updateTask(task, group, board)
     }
 
-    // async function onSetAttachmentAsCover(a) {
-    //     onSetCover(a)
-    // }
-
     async function onAddChecklist(ev) {
         const updatedTask = { ...task }
         updatedTask.checklists.push({ id: 'cl' + makeId(), title: checklistInputValue, todos: [] })
