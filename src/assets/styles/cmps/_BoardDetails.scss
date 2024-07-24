@@ -15,7 +15,7 @@
   height: calc(100vh - 100px);
 
   overflow-x: auto;
-  // overflow-y: hidden;
+  overflow-y: hidden;
 
   background-size: cover;
 
@@ -71,7 +71,7 @@
   .group-item {
     height: max-content;
   }
-  
+
   .group-item.dragging {
     opacity: .4;
     rotate: 4deg;
