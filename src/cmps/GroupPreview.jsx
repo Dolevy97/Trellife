@@ -8,6 +8,7 @@ import { getFormattedShortTime } from '../services/util.service'
 import { useSelector } from 'react-redux'
 import { addTask } from "../store/actions/task.actions"
 import { Droppable, Draggable } from 'react-beautiful-dnd'
+import { updateGroup } from '../store/actions/group.actions'
 
 
 export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpansion, areLabelsExpanded }) {
@@ -117,15 +118,19 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
     const labelsIds = taskToEdit?.labelsIds || []
 
     return (
-        <section className="group-preview-container" style={group.style}>
-            <GroupPreviewHeader
-                group={group}
-                openMenuGroupId={openMenuGroupId}
-                setOpenMenuGroupId={setOpenMenuGroupId}
-                onAddTaskClick={() => setIsAddingTask(true)}
-            />
+        <section className={`group-preview-container ${group.style.isCollapse ? 'collapsed' : ''}`}
+            style={group.style}>
+
             {!group.style.isCollapse ? (
                 <>
+                    <GroupPreviewHeader
+                        group={group}
+                        openMenuGroupId={openMenuGroupId}
+                        setOpenMenuGroupId={setOpenMenuGroupId}
+                        onAddTaskClick={() => setIsAddingTask(true)}
+                    />
+
+
                     <Droppable droppableId={group.id} type="TASK">
                         {(provided) => (
                             <div
@@ -154,9 +159,13 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                         </section>
                                                     )}
 
-                                                    <section className='task-info-container'
+                                                    <div className='pen-display'>
+                                                        <img src="../../../src\assets\imgs\Icons\pen.svg" />
+                                                    </div>
+
+                                                    <section className={`task-info-container ${task.style && task.style.backgroundImage && task.style.isFull ? 'is-full' : ''}`}
                                                         style={{
-                                                            padding: task.style?.isFull ? '8px 8px 8px 12px' : '8px 12px',
+                                                            padding: task.style?.isFull ? '8px 8px 8px 12px' : '8px 6px 8px 12px',
                                                             minHeight: task.style?.isFull ? '40px' : '',
                                                             marginTop: task.style?.isFull ? '15px' : ''
                                                         }}>
@@ -183,7 +192,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                         )}
 
                                                         <div className={`title-container ${task.style?.backgroundImage ? 'img-title-container' : ''}`}
-                                                            style={{ marginBlockEnd: task.style?.isFull ? '0' : '4px', color: task.style?.isFull ? 'white' : 'inherit' }}
+                                                            style={{ marginBlockEnd: task.style?.isFull ? '0' : '4px', color: task.style?.isFull ? '#172B4D' : 'inherit' }}
                                                         >
                                                             <span style={{
                                                                 fontWeight: task.style?.isFull ? '500' : 'normal',
@@ -192,9 +201,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                             }}>{task.title}</span>
                                                         </div>
 
-                                                        <div className='pen-display'>
-                                                            <img src="../../../src\assets\imgs\Icons\pen.svg" />
-                                                        </div>
+
                                                         {(!task.style || !task.style.isFull) && (
                                                             <div className='task-bottom-container'>
                                                                 <div className='bottom-leftside'>
@@ -229,7 +236,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                                             <span className='task-comment'>{task.attachments.length}</span>
                                                                         </div> : ''
                                                                     }
-                                                                    {task.checklists.length && getAllTodosInChecklist(task.id, group.id) !== 0  ? (
+                                                                    {task.checklists.length && getAllTodosInChecklist(task.id, group.id) !== 0 ? (
                                                                         <div
                                                                             title='Checklist items'
                                                                             className='task-checklist-container'
@@ -321,7 +328,24 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                 </>
             ) : (
                 <div className="collapsed-group-container">
-                    {/* <span>{group.title} ({group.tasks.length})</span> */}
+                    <img
+                        className="collapse-icon "
+                        src="../../../src/assets/imgs/Icons/expand.svg"
+                        alt="expand"
+                        title="expand"
+                        onClick={() => {
+                            const updatedGroup = {
+                                ...group,
+                                style: {
+                                    ...group.style,
+                                    isCollapse: false
+                                }
+                            };
+                            updateGroup(updatedGroup.id, updatedGroup, board)
+                        }}
+                    />
+                    <span className='collapse-title'>{group.title}</span>
+                    <span className='collapse-length'> {group.tasks.length}</span>
 
                 </div>
             )}
