@@ -159,7 +159,7 @@ function _getRandomGroup(board) {
         title: getRandomGroupTitle(),
         archivedAt: getRandomIntInclusive(0, 9) < 3 ? _getRandomTimestamp() : null,
         tasks: _getRandomTasks(board),
-        style: getRandomIntInclusive(1, 3) === 1 ? { backgroundColor: getRandomColor() } : null
+        style:  { isCollapse: getRandomIntInclusive(1,5) === 1 ,backgroundColor: getRandomIntInclusive(1, 3) === 1 ? getRandomColor() : null}
     }
     return group
 }
