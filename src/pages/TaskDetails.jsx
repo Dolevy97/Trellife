@@ -31,7 +31,6 @@ export function TaskDetails() {
     const [todoMenuPosition, setTodoMenuPosition] = useState({})
     const [tempDescription, setTempDescription] = useState('')
     const [commentToEdit, setCommentToEdit] = useState('')
-    // const [averageColors, setAverageColors] = useState({})
 
     const { taskId, groupId, boardId } = useParams()
     const navigate = useNavigate()
@@ -63,26 +62,6 @@ export function TaskDetails() {
             }
         }
     }, [taskToEdit, isSettingDescription])
-
-    // useEffect(() => {
-    //     if (!taskToEdit || !taskToEdit.attachments) return
-
-    //     const loadImages = async () => {
-    //         for (const attachment of taskToEdit.attachments) {
-    //             if (!averageColors[attachment.url]) {
-    //                 try {
-    //                     const color = await getAverageColorFromAttachment(attachment)
-    //                     setAverageColors(prev => ({ ...prev, [attachment.url]: color }))
-    //                 } catch (error) {
-    //                     console.error("Error loading image or getting average color:", error)
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     loadImages()
-    // }, [taskToEdit, averageColors])
-
 
     function setTask() {
         setTaskToEdit(() => {
@@ -390,36 +369,28 @@ export function TaskDetails() {
         await updateTask(updatedTask, group, board, activityTitle)
     }
 
-    // console.log(taskToEdit)
-    // console.log(taskToEdit.attachments[1])
-
     if (!taskToEdit || !group) return null
 
     const { title, description, membersIds, labelsIds, style } = taskToEdit
 
     const taskActionProps = { task: taskToEdit, board, group, onSetAction }
-    console.log('style: ', style)
 
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
-            <form
-                className="task-details"
-                onSubmit={onSubmit}
-                onClick={onTaskDetailsClicked}
-            // style={style ? ({ marginBlockStart: style?.backgroundImage ? '117px' : '71px' }) : {}}
-            >
+            <form className="task-details" onSubmit={onSubmit} onClick={onTaskDetailsClicked}>
                 <img onClick={onBackdropClicked} className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close-white.svg" alt="close icon" />
-                {style && <div className="task-details-cover" style={{ ...style, height: style.backgroundImage ? '160px' : '' }}>
-                    {style &&
-                        <div className="task-header-action-container">
-                            <button className="action" name="cover" onClick={onSetAction}>
-                                <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
-                                <span className="action-title">Cover</span>
-                            </button>
-                            {action === 'cover' && <TaskAction action="cover" onSetCover={onSetCover} onRemoveCover={onRemoveCover} {...taskActionProps} />}
-                        </div>
-                    }
-                </div>}
+                {style &&
+                    <div className="task-details-cover" style={{ ...style, height: style.backgroundImage ? '160px' : '' }}>
+                        {style &&
+                            <div className="task-header-action-container">
+                                <button className="action" name="cover" onClick={onSetAction}>
+                                    <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover-white.svg" alt="cover icon" />
+                                    <span className="action-title">Cover</span>
+                                </button>
+                                {action === 'cover' && <TaskAction action="cover" onSetCover={onSetCover} onRemoveCover={onRemoveCover} {...taskActionProps} />}
+                            </div>
+                        }
+                    </div>}
                 <header className="task-header">
                     <img className="card-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/card.svg" alt="card icon" />
                     <span className="task-title">{title}</span>
@@ -429,51 +400,54 @@ export function TaskDetails() {
                     <section className="task-content">
                         <div className="members-labels-notifications-date-container">
 
-                            {membersIds.length ? <div className="members-container">
-                                <span className="fs12">Members</span>
-                                <div className="members-img-container">
-                                    {membersIds.map(id => {
-                                        const member = getMemberById(id)
-                                        return <img key={member._id} className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
-                                    }
-                                    )}
-                                    <div name="members" onClick={onSetAction} className="add-member-thumbnail"><img src="../../../src/assets/imgs/TaskDetails-icons/add.svg" alt="add plus icon" /></div>
-                                </div>
-                            </div> : ''}
-
-                            {labelsIds.length ? <div className="labels-container">
-                                <span className="fs12">Labels</span>
-                                <div className="labels">
-                                    {labelsIds && labelsIds.map(id => {
-                                        const label = getLabelById(id)
-                                        return <span className="label" key={id} style={{ backgroundColor: label.color }}>{label.title}</span>
-                                    })}
-                                </div>
-                            </div> : ''}
-
-                            {taskToEdit.dueDate && <div className="date-container">
-                                <span className="fs12">Due date</span>
-                                <section className="due-date-inner-container">
-                                    <input
-                                        onClick={(ev) => ev.stopPropagation()}
-                                        className="checkbox-due-date"
-                                        type="checkbox"
-                                        onChange={onChangeIsDone}
-                                        checked={taskToEdit.isDone}
-                                    />
-                                    <div onClick={onShowDatePicker} className="date">
-                                        <input
-                                            ref={dateInputRef}
-                                            className="date-input"
-                                            type="datetime-local"
-                                            value={getDueDate(taskToEdit.dueDate)}
-                                            onChange={onChangeDueDate}
-                                        />
-                                        <span className='inside-input-is-done' style={!taskToEdit.isDone ? { backgroundColor: '#F5CD47' } : { backgroundColor: '#4BCE97' }}>{taskToEdit.isDone ? 'Complete' : 'Due soon'}</span>
-                                        <img className="arrow-down" src="../../../src/assets/imgs/TaskDetails-icons/arrow-down.svg" alt="description icon" />
+                            {membersIds.length ?
+                                <div className="members-container">
+                                    <span className="fs12">Members</span>
+                                    <div className="members-img-container">
+                                        {membersIds.map(id => {
+                                            const member = getMemberById(id)
+                                            return <img key={member._id} className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
+                                        }
+                                        )}
+                                        <div name="members" onClick={onSetAction} className="add-member-thumbnail"><img src="../../../src/assets/imgs/TaskDetails-icons/add.svg" alt="add plus icon" /></div>
                                     </div>
-                                </section>
-                            </div>}
+                                </div> : ''}
+
+                            {labelsIds.length ?
+                                <div className="labels-container">
+                                    <span className="fs12">Labels</span>
+                                    <div className="labels">
+                                        {labelsIds && labelsIds.map(id => {
+                                            const label = getLabelById(id)
+                                            return <span className="label" key={id} style={{ backgroundColor: label.color }}>{label.title}</span>
+                                        })}
+                                    </div>
+                                </div> : ''}
+
+                            {taskToEdit.dueDate &&
+                                <div className="date-container">
+                                    <span className="fs12">Due date</span>
+                                    <section className="due-date-inner-container">
+                                        <input
+                                            onClick={(ev) => ev.stopPropagation()}
+                                            className="checkbox-due-date"
+                                            type="checkbox"
+                                            onChange={onChangeIsDone}
+                                            checked={taskToEdit.isDone}
+                                        />
+                                        <div onClick={onShowDatePicker} className="date">
+                                            <input
+                                                ref={dateInputRef}
+                                                className="date-input"
+                                                type="datetime-local"
+                                                value={getDueDate(taskToEdit.dueDate)}
+                                                onChange={onChangeDueDate}
+                                            />
+                                            <span className='inside-input-is-done' style={!taskToEdit.isDone ? { backgroundColor: '#F5CD47' } : { backgroundColor: '#4BCE97' }}>{taskToEdit.isDone ? 'Complete' : 'Due soon'}</span>
+                                            <img className="arrow-down" src="../../../src/assets/imgs/TaskDetails-icons/arrow-down.svg" alt="description icon" />
+                                        </div>
+                                    </section>
+                                </div>}
 
                         </div>
                         <div className="description-container">
@@ -513,12 +487,9 @@ export function TaskDetails() {
 
                         {taskToEdit.attachments && taskToEdit.attachments.length ?
                             <div className="attachments-container">
-
                                 <div className='attachments-title'>
-
                                     <img className="attachments-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/paperclip.svg" alt="attachment icon" />
                                     <span>Attachments</span>
-
                                     <button onClick={onAddAttachment} style={{ cursor: 'not-allowed' }}>Add</button>
                                 </div>
                                 <div className="attachments">
@@ -566,12 +537,11 @@ export function TaskDetails() {
                                     )}
                                 </div>
                             </div>
-                            :
-                            ''}
+                            : ''}
                         {taskToEdit.checklists && taskToEdit.checklists.length ?
                             <div className="checklists-container">
-                                {taskToEdit.checklists.length ? taskToEdit.checklists.map(checklist => {
-                                    return (
+                                {taskToEdit.checklists.length ?
+                                    taskToEdit.checklists.map(checklist =>
                                         <div className="checklist-container" key={checklist.id}>
                                             <div className="checklist-title-container">
                                                 <img className="checklists-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="attachment icon" />
@@ -655,9 +625,8 @@ export function TaskDetails() {
                                                     </button>
                                                 )}
                                             </div>
-                                        </div>
-                                    )
-                                }) : ''}
+                                        </div>)
+                                    : ''}
                             </div>
                             :
                             ''}
@@ -723,21 +692,24 @@ export function TaskDetails() {
                                 <img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" alt="members icon" />
                                 <span className="action-title">Members</span>
                             </button>
-                            {action === 'members' && <TaskAction action="members" getMemberById={getMemberById} {...taskActionProps} />}
+                            {action === 'members'
+                                && <TaskAction action="members" getMemberById={getMemberById} {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
                             <button className="action" name="labels" onClick={onSetAction}>
                                 <img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" alt="labels icon" />
                                 <span className="action-title">Labels</span>
                             </button>
-                            {action === 'labels' && <TaskAction action="labels" getLabelById={getLabelById} {...taskActionProps} />}
+                            {action === 'labels'
+                                && <TaskAction action="labels" getLabelById={getLabelById} {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
                             <button className="action" name="checklist" onClick={onSetAction}>
                                 <img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="checklist icon" />
                                 <span className="action-title">Checklist</span>
                             </button>
-                            {action === 'checklist' && <TaskAction action="add checklist" {...taskActionProps} />}
+                            {action === 'checklist'
+                                && <TaskAction action="add checklist" {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
 
@@ -752,7 +724,8 @@ export function TaskDetails() {
                                 <img className="attachment-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/attachment.svg" alt="attachment icon" />
                                 <span className="action-title">Attachment</span>
                             </button>
-                            {action === 'attachment' && <TaskAction action="attach" {...taskActionProps} />}
+                            {action === 'attachment'
+                                && <TaskAction action="attach" {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
                             <button className="action" name="location" onClick={onSetAction} style={{ cursor: 'not-allowed' }}>
@@ -761,13 +734,15 @@ export function TaskDetails() {
                             </button>
                             {/* Enter location action rendering */}
                         </div>
-                        {!taskToEdit.style &&
+                        {!taskToEdit.style
+                            &&
                             <div className="task-action-container">
                                 <button className="action" name="cover" onClick={onSetAction}>
                                     <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
                                     <span className="action-title">Cover</span>
                                 </button>
-                                {action === 'cover' && <TaskAction action="cover" onSetCover={onSetCover} onRemoveCover={onRemoveCover} {...taskActionProps} />}
+                                {action === 'cover'
+                                    && <TaskAction action="cover" onSetCover={onSetCover} onRemoveCover={onRemoveCover} {...taskActionProps} />}
                             </div>
                         }
 

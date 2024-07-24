@@ -96,6 +96,7 @@ export function BoardDetailsHeader() {
               title={member.fullname} />
           })}
         </div>
+        <img src="../../../src\assets\imgs\Icons\3dots.svg" alt="" />
 
       </div>
     </section>

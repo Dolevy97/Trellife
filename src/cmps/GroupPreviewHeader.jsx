@@ -157,7 +157,7 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
                     </header>
 
                     <div className='menu-info'>
-                        <p><span onClick={onAddTaskClick}>Add task</span></p>
+                        <p><span onClick={onAddTaskClick}>Add card</span></p>
                         <hr className='menu-header-hr' />
                         <div className="color-picker-accordion">
                             <p className='color-picker-container' onClick={() => setIsColorPickerOpen(!isColorPickerOpen)}>
