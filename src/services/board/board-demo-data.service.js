@@ -214,7 +214,7 @@ function _getRandomTasks(board) {
 function _getRandomTask(board) {
     const task = {
         id: 't' + makeId(),
-        title: getRandomIntInclusive(1, 4) > 1 ? _getRandomTaskName() : '',
+        title: _getRandomTaskName(),
         isDone: _getRandomTaskIsDone(),
         priority: getRandomIntInclusive(1, 4) > 1 ? _getRandomPriority() : null,
         dueDate: getRandomIntInclusive(1, 4) > 1 ? _getRandomDueDate() : null,
