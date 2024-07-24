@@ -212,7 +212,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                                 <div className='bottom-leftside'>
                                                                     {task.dueDate && (
                                                                         <div
-                                                                            title={task.isDone ? 'This task is complete.' : 'This task is due later.'}
+                                                                            title={task.isDone ? 'This card is complete.' : 'This card is due later.'}
                                                                             className="timer-container"
                                                                             style={!task.isDone ? {} : { backgroundColor: '#4BCE97' }}
                                                                         >

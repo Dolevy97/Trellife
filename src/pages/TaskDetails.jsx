@@ -1,18 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { boardService } from '../services/board'
 import { updateBoard } from '../store/actions/board.actions'
 import { updateTask } from '../store/actions/task.actions'
 import { TaskAction } from '../cmps/TaskAction'
-import autosize from 'autosize'
-import { getRandomMember } from '../services/board/board-demo-data.service'
-import { getAverageColorFromAttachment, getFormattedTime, makeId, onDownloadUrl } from '../services/util.service'
+import { getFormattedTime, makeId, onDownloadUrl } from '../services/util.service'
 import { updateGroup } from '../store/actions/group.actions'
+
+import autosize from 'autosize'
 import ms from 'ms'
 
 export function TaskDetails() {
     const board = useSelector(storeState => storeState.boardModule.board)
+    const user = useSelector(storeState => storeState.userModule.user)
 
     const textareaRef = useRef(null)
     const textareaCommentRef = useRef(null)
@@ -138,6 +138,8 @@ export function TaskDetails() {
         return board.labels.find(label => label.id === id)
     }
 
+    // Action - Dynamic Component
+
     function onSetAction(ev, action) {
         ev.stopPropagation()
         if (action !== undefined) {
@@ -147,6 +149,8 @@ export function TaskDetails() {
         const actionName = action === ev.currentTarget.name ? null : ev.currentTarget.name
         setAction(actionName)
     }
+
+    // Description
 
     function startSetDescription() {
         setTempDescription(taskToEdit.description)
@@ -163,21 +167,7 @@ export function TaskDetails() {
         setIsSettingDescription(false)
     }
 
-    async function onSaveComment() {
-        const newActivity = {
-            id: makeId(),
-            group: group,
-            task: taskToEdit,
-            txt: commentToEdit,
-            byMember: getRandomMember(),
-            title: 'add comment',
-            createdAt: Date.now()
-        }
-        const updatedBoard = { ...board }
-        updatedBoard.activities.unshift(newActivity)
-        await updateBoard(updatedBoard)
-        setIsAddingComment(false)
-    }
+    // Due date
 
     async function onChangeDueDate() {
         const dateStr = dateInputRef.current.value
@@ -202,32 +192,13 @@ export function TaskDetails() {
         }
     }
 
-    function handleCommentKeyUp(ev) {
-        if (ev.code === 'Escape') {
-            setIsAddingComment(false)
-        }
-    }
-
     async function onChangeIsDone({ target }) {
         taskToEdit.isDone = target.checked
         const activityTitle = 'marked the due date ' + target.checked ? 'complete' : 'incomplete'
         await updateTask(taskToEdit, group, board, activityTitle)
     }
 
-    async function onChangeTodo({ target }, todo, checklist) {
-        const updatedTask = { ...taskToEdit }
-        const checklistIndex = updatedTask.checklists.findIndex(check => check.id === checklist.id)
-
-        if (checklistIndex !== -1) {
-            const todoIndex = updatedTask.checklists[checklistIndex].todos.findIndex(t => t.id === todo.id)
-
-            if (todoIndex !== -1) {
-                updatedTask.checklists[checklistIndex].todos[todoIndex].isDone = target.checked
-            }
-        }
-
-        await updateTask(updatedTask, group, board)
-    }
+    // Comments
 
     function getComments(taskId) {
         let comments = board.activities.filter(activity => {
@@ -238,6 +209,37 @@ export function TaskDetails() {
         return comments
     }
 
+    async function onDeleteComment(commentId) {
+        const updatedTask = { ...taskToEdit }
+        const commentIdx = board.activities.findIndex(activity => activity.id === commentId)
+        board.activities.splice(commentIdx, 1)
+        await updateBoard(board)
+    }
+
+    async function onSaveComment() {
+        const newActivity = {
+            id: makeId(),
+            group: group,
+            task: taskToEdit,
+            txt: commentToEdit,
+            byMember: user,
+            title: 'add comment',
+            createdAt: Date.now()
+        }
+        const updatedBoard = { ...board }
+        updatedBoard.activities.unshift(newActivity)
+        await updateBoard(updatedBoard)
+        setIsAddingComment(false)
+    }
+
+    function handleCommentKeyUp(ev) {
+        if (ev.code === 'Escape') {
+            setIsAddingComment(false)
+        }
+    }
+
+    // Remove task
+
     async function onRemoveTask() {
         const newTasks = group.tasks.filter(task => task.id !== taskToEdit.id)
         const newGroup = { ...group, tasks: newTasks }
@@ -246,6 +248,8 @@ export function TaskDetails() {
         await updateGroup(newGroup.id, newGroup, board)
         onBackdropClicked()
     }
+
+    // Checklist
 
     function getDonePercentage(checklist) {
         const completedTodos = checklist.todos.filter(todo => todo.isDone).length
@@ -282,6 +286,22 @@ export function TaskDetails() {
         textareaElement.value = ''
     }
 
+    function toggleAddingItem(checklistId) {
+        setIsAddingItems(prevIsAddingItems => {
+            if (prevIsAddingItems === checklistId) {
+                if (checklistItemRefs.current[checklistId]) {
+                    checklistItemRefs.current[checklistId].value = ''
+                }
+                return null;
+            } else {
+                if (prevIsAddingItems && checklistItemRefs.current[prevIsAddingItems]) {
+                    checklistItemRefs.current[prevIsAddingItems].value = ''
+                }
+                return checklistId;
+            }
+        });
+    }
+
     async function onDeleteChecklist(checklistId) {
         const checklistIndex = taskToEdit.checklists.findIndex(checklist => checklist.id === checklistId)
         taskToEdit.checklists.splice(checklistIndex, 1)
@@ -315,9 +335,19 @@ export function TaskDetails() {
         setIsTodoMenuOpen(false)
     }
 
-    function getAddedAt(createdAt) {
-        const timestamp = (createdAt - Date.now()) * -1
-        return 'Added ' + (ms(timestamp, { long: true })) + ' ago'
+    async function onChangeTodo({ target }, todo, checklist) {
+        const updatedTask = { ...taskToEdit }
+        const checklistIndex = updatedTask.checklists.findIndex(check => check.id === checklist.id)
+
+        if (checklistIndex !== -1) {
+            const todoIndex = updatedTask.checklists[checklistIndex].todos.findIndex(t => t.id === todo.id)
+
+            if (todoIndex !== -1) {
+                updatedTask.checklists[checklistIndex].todos[todoIndex].isDone = target.checked
+            }
+        }
+
+        await updateTask(updatedTask, group, board)
     }
 
     function onFocusOnComment() {
@@ -326,6 +356,7 @@ export function TaskDetails() {
         textareaCommentRef.current.setSelectionRange(textareaCommentRef.current.value.length, textareaCommentRef.current.value.length);
     }
 
+    // Attachment
     async function onRemoveAttachment(attachment) {
         const updatedTask = { ...taskToEdit }
         if (isCover(attachment)) updatedTask.style = null
@@ -338,25 +369,15 @@ export function TaskDetails() {
 
     }
 
+    function getAddedAt(createdAt) {
+        const timestamp = (createdAt - Date.now()) * -1
+        return 'Added ' + (ms(timestamp, { long: true })) + ' ago'
+    }
+
+    // Cover
     async function onRemoveCover() {
         const task = { ...taskToEdit, style: null }
         await updateTask(task, group, board)
-    }
-
-    function toggleAddingItem(checklistId) {
-        setIsAddingItems(prevIsAddingItems => {
-            if (prevIsAddingItems === checklistId) {
-                if (checklistItemRefs.current[checklistId]) {
-                    checklistItemRefs.current[checklistId].value = ''
-                }
-                return null;
-            } else {
-                if (prevIsAddingItems && checklistItemRefs.current[prevIsAddingItems]) {
-                    checklistItemRefs.current[prevIsAddingItems].value = ''
-                }
-                return checklistId;
-            }
-        });
     }
 
     function isCover(attachment) {
@@ -386,8 +407,8 @@ export function TaskDetails() {
                 className="task-details"
                 onSubmit={onSubmit}
                 onClick={onTaskDetailsClicked}
-                // style={style ? ({ marginBlockStart: style?.backgroundImage ? '117px' : '71px' }) : {}}
-                >
+            // style={style ? ({ marginBlockStart: style?.backgroundImage ? '117px' : '71px' }) : {}}
+            >
                 <img onClick={onBackdropClicked} className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close-white.svg" alt="close icon" />
                 {style && <div className="task-details-cover" style={{ ...style, height: style.backgroundImage ? '160px' : '' }}>
                     {style &&
@@ -647,7 +668,10 @@ export function TaskDetails() {
                                 <span className='activity-title-text'>Activity</span>
                             </div>
                             <div className="input-container">
-                                <img className='user-img-activity-input' src="../../../src/assets/imgs/user-imgs/user-img3.jpg" alt="user" />
+                                <img
+                                    className='user-img-activity-input'
+                                    src={user && user.imgUrl || 'https://www.shutterstock.com/image-vector/user-icon-trendy-flat-style-600nw-1697898655.jpg'}
+                                    alt="user image" />
                                 {isAddingComment ?
                                     <>
                                         <textarea
@@ -673,11 +697,20 @@ export function TaskDetails() {
                                 }
                             </div>
                             <div className="comments-container">
+                                {console.log(getComments(taskToEdit.id))}
                                 {getComments(taskToEdit.id).map(comment =>
                                     <div className="comment-container" key={comment.id}>
                                         <img className='member-img-comment' src={comment.byMember.imgUrl} alt="" />
                                         <p>{comment.byMember.fullname} <span className='comment-timestamp'>{getFormattedTime(comment.createdAt)}</span></p>
                                         <h1 className='comment-txt'>{comment.txt}</h1>
+                                        <article className="comment-reactions">
+                                            {user && user._id === comment.byMember._id &&
+                                                <span class="edit-and-delete">
+                                                    <span class="comment-reaction-button">Edit</span>
+                                                    <span class="sep">•</span>
+                                                    <span onClick={() => onDeleteComment(comment.id)} class="comment-reaction-button">Delete</span>
+                                                </span>}
+                                        </article>
                                     </div>
                                 )}
                             </div>

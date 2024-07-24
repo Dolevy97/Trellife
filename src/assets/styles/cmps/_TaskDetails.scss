@@ -96,7 +96,8 @@
                     font-size: em(14);
                     color: inherit;
                     display: flex;
-                    .icon{
+
+                    .icon {
                         position: static;
                         height: auto;
                         width: 1em;
@@ -206,6 +207,7 @@
                             border-radius: 3px;
                             padding: em(3) em(12);
                             line-height: 2;
+                            min-width: 48px;
 
 
                             &:hover {
@@ -235,7 +237,7 @@
                             display: flex;
                             align-items: center;
                             margin: 0 8px 8px 0;
-                            padding: 8px 12px;
+                            padding: 8px 12px 8px 6px;
                             border-radius: 3px;
                             margin-block: auto;
 
@@ -257,9 +259,10 @@
 
 
                         .date-input {
+                            // direction: rtl;
                             font-family: inherit;
                             padding-inline-end: 6px;
-                            width: 124.5px;
+                            width: 140.5px;
 
                             background-color: transparent;
                             color: $txtclr1;
@@ -281,7 +284,6 @@
                         .inside-input-is-done {
                             color: $bgclr1;
                             margin-inline-end: 20px;
-                            margin-block-start: 2px;
 
                             padding: 0 4px;
                             font-size: 12px;
@@ -731,6 +733,27 @@
 
         width: 510px;
 
+        .comment-reactions {
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            line-height: 24px;
+            color: $txtclr2;
+
+            .edit-and-delete {
+                font-size: 12px;
+
+                .sep {
+                    padding-inline: 3px;
+                }
+
+                .comment-reaction-button {
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+            }
+        }
+
         p {
             font-size: .875em;
             font-weight: 700;
@@ -763,6 +786,7 @@
             max-width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
+            font-weight: 400;
         }
     }
 }
