@@ -375,7 +375,6 @@ export function TaskDetails() {
     const { title, description, membersIds, labelsIds, style } = taskToEdit
 
     const taskActionProps = { task: taskToEdit, board, group, onSetAction }
-    console.log('style: ', style)
 
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
