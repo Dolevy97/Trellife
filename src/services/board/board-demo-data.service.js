@@ -18,7 +18,7 @@ function _createDemoBoard() {
         _id: makeId(),
         title: _getProjectTitle(),
         isStarred: getRandomIntInclusive(0, 9) < 3 ? true : false,
-        archivedAt: getRandomIntInclusive(0, 9) < 3 ? _getRandomTimestamp() : null,
+        archivedAt: getRandomIntInclusive(0, 9) < 3 ? getrandomtimestamp() : null,
         createdBy: getRandomMember(),
         style: {
             // background: 'url(https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1748&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
@@ -157,7 +157,7 @@ function _getRandomGroup(board) {
     const group = {
         id: 'g' + makeId(),
         title: getRandomGroupTitle(),
-        archivedAt: getRandomIntInclusive(0, 9) < 3 ? _getRandomTimestamp() : null,
+        archivedAt: getRandomIntInclusive(0, 9) < 3 ? getRandomTimestamp() : null,
         tasks: _getRandomTasks(board),
         style:  { isCollapse: getRandomIntInclusive(1,5) === 1 ,backgroundColor: getRandomIntInclusive(1, 3) === 1 ? getRandomColor() : null}
     }
@@ -234,49 +234,49 @@ function _getRandomAttachments() {
         {
             title: "openart-image_NCjT4BO6_1721211304700_raw.jpg",
             url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721739547/jypeggdpogvfaoz0xbn6.jpg",
-            createdAt: 1721739548198,
+            createdAt: getRandomTimestamp(),
             type: "image/jpeg",
             backgroundColor: _rgb(229, 229, 226)
         },
         {
             title: "openart-image_R3VI1CMG_1721209766848_raw.jpg",
             url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721739549/ldob56coyk2vn088sjci.jpg",
-            createdAt: 1721739549873,
+            createdAt: getRandomTimestamp(),
             type: "image/jpeg",
             backgroundColor: _rgb(63, 67, 50)
         },
         {
             title: "BDGD.jpeg",
             url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721739602/wrmgxooponh1kdk3fx8y.jpg",
-            createdAt: 1721739603540,
+            createdAt: getRandomTimestamp(),
             type: "image/jpeg",
             backgroundColor: _rgb(245, 246, 245)
         },
         {
             title: "e0f3495a4bd023d4f9e45715f6a64099b6-harris-lede.rvertical.w600.webp",
             url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721740532/pjogbkebvzk8pl2xzat3.webp",
-            createdAt: 1721740532640,
+            createdAt: getRandomTimestamp(),
             type: "image/webp",
             backgroundColor: _rgb(72, 61, 50)
         },
         {
             title: "images.jpeg",
             url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721740543/u3e9okwefql3ys33wdbh.jpg",
-            createdAt: 1721740544374,
+            createdAt: getRandomTimestamp(),
             type: "image/jpeg",
             backgroundColor: _rgb(61, 78, 57)
         },
         {
             title: "the-matrix-code-keanu-reeves.avif",
             url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721740556/nkzneerrwqileytdawtt.avif",
-            createdAt: 1721740557093,
+            createdAt: getRandomTimestamp(),
             type: "image/avif",
             backgroundColor: _rgb(81, 93, 62)
         },
         {
             title: "matrix2.jpeg",
             url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721740577/o1w139lb4812tmd97ukm.jpg",
-            createdAt: 1721740578511,
+            createdAt: getRandomTimestamp(),
             type: "image/jpeg",
             backgroundColor: _rgb(63, 67, 50)
         }
@@ -551,15 +551,6 @@ function _getRandomFullName() {
     const randomLastName = lastNames[Math.floor(Math.random() * lastNames.length)]
 
     return `${randomFirstName} ${randomLastName}`
-}
-
-function _getRandomTimestamp() {
-    const now = new Date()
-    const twoYearsAgo = new Date(now.getFullYear() - 2, now.getMonth(), now.getDate())
-
-    const randomTimestamp = twoYearsAgo.getTime() + Math.random() * (now.getTime() - twoYearsAgo.getTime())
-
-    return Math.floor(randomTimestamp)
 }
 
 function _getProjectTitle() {

@@ -68,6 +68,7 @@
   padding-bottom: 20px;
   min-height: calc(100vh - 140px);
   align-items: flex-start;
+  width: max-content;
 
   .group-item.dragging {
     opacity: .4;
