@@ -12,17 +12,19 @@ import { SET_USER } from '../store/reducers/user.reducer.js'
 import { socketService } from '../services/socket.service.js'
 
 export function BoardDetails() {
-  const { boardId } = useParams()
+  
   const user = useSelector(storeState => storeState.userModule.user)
   const board = useSelector(storeState => storeState.boardModule.board)
+
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [newGroupTitle, setNewGroupTitle] = useState('')
+  const [areLabelsExpanded, setAreLabelsExpanded] = useState(false)
+  
   const groupListContainer = useRef()
   const groupListHeader = useRef()
-  const [areLabelsExpanded, setAreLabelsExpanded] = useState(false)
-
   const addGroupRef = useRef(null)
-
+  
+  const { boardId } = useParams()
 
   useEffect(() => {
     loadBoard(boardId)
