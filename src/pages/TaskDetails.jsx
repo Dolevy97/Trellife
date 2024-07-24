@@ -32,6 +32,7 @@ export function TaskDetails() {
     const [todoMenuPosition, setTodoMenuPosition] = useState({})
     const [tempDescription, setTempDescription] = useState('')
     const [commentToEdit, setCommentToEdit] = useState('')
+    const [labelToEdit, setLabelToEdit] = useState(null)
 
     const { taskId, groupId, boardId } = useParams()
     const navigate = useNavigate()
@@ -666,7 +667,7 @@ export function TaskDetails() {
                                 }
                             </div>
                             <div className="comments-container">
-                                {console.log(getComments(taskToEdit.id))}
+                                {/* {console.log(getComments(taskToEdit.id))} */}
                                 {getComments(taskToEdit.id).map(comment =>
                                     <div className="comment-container" key={comment.id}>
                                         <img className='member-img-comment' src={comment.byMember.imgUrl} alt="" />
@@ -702,7 +703,9 @@ export function TaskDetails() {
                                 <span className="action-title">Labels</span>
                             </button>
                             {action === 'labels'
-                                && <TaskAction action="labels" getLabelById={getLabelById} {...taskActionProps} />}
+                                && <TaskAction action="labels" getLabelById={getLabelById} {...taskActionProps} setLabelToEdit={setLabelToEdit}/>}
+                            {action === 'edit label'
+                                && <TaskAction action="edit label" getLabelById={getLabelById} labelToEdit={labelToEdit} {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
                             <button className="action" name="checklist" onClick={onSetAction}>

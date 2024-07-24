@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react"
 import { updateTask } from "../store/actions/task.actions"
-import { getAverageColorFromAttachment, makeId } from "../services/util.service"
+import { getAverageColorFromAttachment, getRandomIntInclusive, makeId } from "../services/util.service"
 import { cloudinaryService } from "../services/cloudinary.service"
+import { updateBoard } from "../store/actions/board.actions"
 
 
-export function TaskAction({ action, board, group, task, getMemberById, getLabelById, onSetAction, onRemoveCover, onSetCover }) {
+export function TaskAction({ action, board, group, task, getMemberById, getLabelById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit }) {
+
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
+    const [labelInputValue, setLabelInputValue] = useState('')
+
+    useEffect(() => {
+        if (labelToEdit) setLabelInputValue(labelToEdit.title)
+    }, [])
 
     function getBoardMembers() {
         const boardMembers = board.members.filter(member => !task.membersIds.includes(member._id))
@@ -66,7 +73,32 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         onSetAction(ev, null)
     }
 
-    async function onAddAttachment(ev,isCover) {
+    async function onSaveLabel(ev) {
+        const label = { ...labelToEdit, title: labelInputValue }
+        const labels = board.labels.map(l => {
+            if (l.id !== label.id) return l
+            return label
+        })
+        const activityTitle = `updated label (id: ${label.id}) on this board`
+
+        let activities = [...board.activities]
+        const activity = {
+            id: 'a' + makeId(),
+            title: activityTitle,
+            // NOTICE TO CHANGE THE BY MEMBER TO LOGGED IN USER
+            byMember: { ...board.members[getRandomIntInclusive(0, board.members.length - 1)] },
+            group: { ...group },
+            task: { ...task }
+        }
+        activities.push(activity)
+
+        const updatedBoard = { ...board, labels, activities }
+
+        await updateBoard(updatedBoard)
+        onSetAction(ev, null)
+    }
+
+    async function onAddAttachment(ev, isCover) {
         const files = ev.target.files
         const action = !task.style ? 'cover' : null
 
@@ -88,7 +120,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
 
             if (!updatedTask.style || isCover) {
                 updatedTask = { ...updatedTask, style: { isFull: true, backgroundImage: `url(${attachment.url}`, backgroundColor: attachment.backgroundColor } }
-                if (isCover){
+                if (isCover) {
                     await updateTask(updatedTask, group, board, activityTitle)
                     break
                 }
@@ -145,15 +177,30 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                         {board.labels.map(label => {
                             return (
                                 <div key={label.id} className="label-container">
-                                    <input className="label-checkbox" type="checkbox" checked={task.labelsIds.includes(label.id)} onChange={() => onToggleLabel(event, label.id)} />
+                                    <input className="label-checkbox" type="checkbox" checked={task.labelsIds.includes(label.id)} onChange={(ev) => onToggleLabel(ev, label.id)} />
                                     <div className="label" style={{ backgroundColor: label.color }} >{label.title}</div>
-                                    <div className="pen-icon-container"><img className="pen-icon" src="../../../src/assets/imgs/TaskDetails-icons/pen.svg"></img></div>
+                                    <div
+                                        className="pen-icon-container"
+                                        onClick={(ev) => { setLabelToEdit({ ...label }); onSetAction(ev, 'edit label'); }}>
+                                        <img className="pen-icon" src="../../../src/assets/imgs/TaskDetails-icons/pen.svg"></img>
+                                    </div>
                                 </div>
                             )
                         })
 
                         }
                     </div>
+                </>
+            }
+            {action === 'edit label' &&
+                <>
+                    <div className="edit-label">
+                        <span className="title">Title</span>
+                        <input className="text" value={labelInputValue} onChange={(ev) => setLabelInputValue(ev.target.value)} />
+                        {/* <input className="text" value={checklistInputValue} onChange={(ev) => setChecklistInputValue(ev.target.value)} /> */}
+                    </div>
+                    <button className="add-checklist" onClick={onSaveLabel}>Save</button>
+                    {/* <button className="add-checklist" onClick={onSaveLabel}>Add</button> */}
                 </>
             }
             {action === 'cover' &&
