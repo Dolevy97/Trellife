@@ -237,7 +237,7 @@
                             display: flex;
                             align-items: center;
                             margin: 0 8px 8px 0;
-                            padding: 8px 12px;
+                            padding: 8px 12px 8px 0;
                             border-radius: 3px;
                             margin-block: auto;
 
@@ -259,9 +259,10 @@
 
 
                         .date-input {
+                            // direction: rtl;
                             font-family: inherit;
                             padding-inline-end: 6px;
-                            width: 124.5px;
+                            width: 140.5px;
 
                             background-color: transparent;
                             color: $txtclr1;
@@ -283,7 +284,6 @@
                         .inside-input-is-done {
                             color: $bgclr1;
                             margin-inline-end: 20px;
-                            margin-block-start: 2px;
 
                             padding: 0 4px;
                             font-size: 12px;
