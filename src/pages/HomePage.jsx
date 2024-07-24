@@ -1,4 +1,20 @@
+import { useSelector } from "react-redux"
+import { login } from "../store/actions/user.actions"
+import { useNavigate } from "react-router"
+
 export function HomePage() {
+    const loggedInUser = useSelector(storeState => storeState.userModule.user)
+    const navigate = useNavigate()
+
+    async function onSignIn() {
+        try {
+            await login({ username: 'Dolevy', password: '1234' })
+            console.log(`logged in successfully: ${loggedInUser}`)
+            navigate('/board')
+        } catch (err) {
+            console.log('error logging in:', err)
+        }
+    }
     return (
         <section className="homepage-container">
             <section className="homepage-first">
@@ -12,10 +28,10 @@ export function HomePage() {
                                 </div>
                                 <div className="spacer"></div>
                             </div>
-                            <form className="homepage-form">
+                            <div className="homepage-get-started">
                                 {/* <input type="email" name="" id="" /> */}
-                                <button>Get started!</button>
-                            </form>
+                                <button onClick={onSignIn}>Get started!</button>
+                            </div>
                         </div>
                         <div className="right-container">
                             <img src="../../../src/assets/imgs/homepage.png" alt="" />
@@ -33,8 +49,8 @@ export function HomePage() {
                             </div>
                             <div className="text-content">
                                 <p>Simple, flexible, and powerful.
-                                All it takes are boards, groups,
-                                and tasks to get a clear view of who’s doing what and what needs to get done.</p>
+                                    All it takes are boards, groups,
+                                    and tasks to get a clear view of who’s doing what and what needs to get done.</p>
                             </div>
                         </div>
                     </div>
