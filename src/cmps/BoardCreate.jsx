@@ -60,9 +60,6 @@ export function BoardCreate({ setIsAdding }) {
         navigate(`/board/${addedBoard._id}`)
     }
 
-    console.log(isBoardCreateOpen)
-
-
     const { title } = boardToAdd
 
     return (
