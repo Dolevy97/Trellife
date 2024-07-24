@@ -1,8 +1,8 @@
-.board-details {
-  display: grid;
-  grid-template-rows: auto 1fr;
-  overflow: hidden;
-}
+// .board-details {
+//   display: grid;
+//   grid-template-rows: auto 1fr;
+//   overflow: hidden;
+// }
 
 .group-list-container {
   display: flex;
@@ -68,6 +68,7 @@
   padding-bottom: 20px;
   min-height: calc(100vh - 140px);
   align-items: flex-start;
+  width: max-content;
 
   .group-item.dragging {
     opacity: .4;

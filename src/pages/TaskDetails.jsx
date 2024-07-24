@@ -33,8 +33,13 @@ export function TaskDetails() {
     const [commentToEdit, setCommentToEdit] = useState('')
     const [labelToEdit, setLabelToEdit] = useState(null)
 
+    const [isEditingTitle, setIsEditingTitle] = useState(false)
+    const [taskTitleInputValue, setTaskTitleInputValue] = useState(taskToEdit?.title || '')
+
     const { taskId, groupId, boardId } = useParams()
     const navigate = useNavigate()
+
+
 
     useEffect(() => {
         setTask()
@@ -245,7 +250,7 @@ export function TaskDetails() {
     }
 
     async function onAddItem(checklist) {
-        const textareaElement = checklistItemRefs.current[checklist.id];
+        const textareaElement = checklistItemRefs.current[checklist.id]
         if (!textareaElement || !textareaElement.value.trim()) return
 
         const newTodo = {
@@ -271,14 +276,14 @@ export function TaskDetails() {
                 if (checklistItemRefs.current[checklistId]) {
                     checklistItemRefs.current[checklistId].value = ''
                 }
-                return null;
+                return null
             } else {
                 if (prevIsAddingItems && checklistItemRefs.current[prevIsAddingItems]) {
                     checklistItemRefs.current[prevIsAddingItems].value = ''
                 }
-                return checklistId;
+                return checklistId
             }
-        });
+        })
     }
 
     async function onDeleteChecklist(checklistId) {
@@ -332,7 +337,7 @@ export function TaskDetails() {
     function onFocusOnComment() {
         setIsAddingComment(true)
         textareaCommentRef.current.focus()
-        textareaCommentRef.current.setSelectionRange(textareaCommentRef.current.value.length, textareaCommentRef.current.value.length);
+        textareaCommentRef.current.setSelectionRange(textareaCommentRef.current.value.length, textareaCommentRef.current.value.length)
     }
 
     // Attachment
@@ -370,6 +375,44 @@ export function TaskDetails() {
         await updateTask(updatedTask, group, board, activityTitle)
     }
 
+    //Task title
+    
+    function handleTitleClick() {
+        setIsEditingTitle(true)
+        setTaskTitleInputValue(taskToEdit.title)
+
+    }
+
+    function handleTitleBlur() {
+        handleTitleUpdate()
+    }
+
+    function handleTitleKeyPress(event) {
+        if (event.key === 'Enter') {
+            handleTitleUpdate()
+        }
+    }
+
+    async function handleTitleUpdate() {
+        let titleToSet = taskTitleInputValue.trim()
+        if (titleToSet === '' || titleToSet === taskToEdit.title) {
+            setTaskTitleInputValue(taskToEdit.title)
+            setIsEditingTitle(false)
+            return
+        }
+
+        const updatedTask = { ...taskToEdit, title: titleToSet }
+        try {
+            await updateTask(updatedTask, group, board, `Changed task title to "${titleToSet}"`)
+            setIsEditingTitle(false)
+        } catch (error) {
+            console.error('Failed to update task title:', error)
+            setTaskTitleInputValue(taskToEdit.title)
+        }
+    }
+
+
+
     if (!taskToEdit || !group) return null
 
     const { title, description, membersIds, labelsIds, style } = taskToEdit
@@ -394,7 +437,18 @@ export function TaskDetails() {
                     </div>}
                 <header className="task-header">
                     <img className="card-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/card.svg" alt="card icon" />
-                    <span className="task-title">{title}</span>
+                    {isEditingTitle ? (
+                        <input
+                            type="text"
+                            value={taskTitleInputValue}
+                            onChange={(ev) => setTaskTitleInputValue(ev.target.value)}
+                            onBlur={handleTitleBlur}
+                            onKeyPress={handleTitleKeyPress}
+                            autoFocus
+                        />
+                    ) : (
+                        <span className="task-title" onClick={handleTitleClick}>{title}</span>
+                    )}
                     <span className="task-in-list fs14">in list <span style={{ textDecoration: 'underline' }}>{group.title}</span></span>
                 </header>
                 <section className="task-container">
@@ -702,7 +756,7 @@ export function TaskDetails() {
                                 <span className="action-title">Labels</span>
                             </button>
                             {action === 'labels'
-                                && <TaskAction action="labels" getLabelById={getLabelById} {...taskActionProps} setLabelToEdit={setLabelToEdit}/>}
+                                && <TaskAction action="labels" getLabelById={getLabelById} {...taskActionProps} setLabelToEdit={setLabelToEdit} />}
                             {action === 'edit label'
                                 && <TaskAction action="edit label" getLabelById={getLabelById} labelToEdit={labelToEdit} {...taskActionProps} />}
                         </div>
