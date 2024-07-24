@@ -45,14 +45,30 @@ export async function addBoard(board) {
     }
 }
 
+// export async function updateBoard(board) {
+//     store.dispatch(getCmdUpdateBoard(board))
+//     try {
+//         const savedBoard = await boardService.save(board)
+//         store.dispatch(getCmdUpdateBoard(savedBoard))
+//         return savedBoard
+//     } catch (err) {
+//         console.log('Cannot save board', err)
+//         store.dispatch({ type: UPDATE_BOARD_FAILED, originalBoard: board });
+//         throw err
+//     }
+// }
+
 export async function updateBoard(board) {
+    store.dispatch(getCmdUpdateBoard(board));
+
     try {
         const savedBoard = await boardService.save(board)
         store.dispatch(getCmdUpdateBoard(savedBoard))
-        return savedBoard
+        return savedBoard;
     } catch (err) {
         console.log('Cannot save board', err)
-        throw err
+        store.dispatch({ type: 'UPDATE_BOARD_FAILED', originalBoard: board })
+        throw err;
     }
 }
 

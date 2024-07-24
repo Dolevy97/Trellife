@@ -4,7 +4,7 @@ export const REMOVE_BOARD = 'REMOVE_BOARD'
 export const ADD_BOARD = 'ADD_BOARD'
 export const UPDATE_BOARD = 'UPDATE_BOARD'
 export const ADD_BOARD_MSG = 'ADD_BOARD_MSG'
-
+export const UPDATE_BOARD_FAILED = 'UPDATE_BOARD_FAILED';
 
 const initialState = {
     boards: [],
@@ -32,11 +32,14 @@ export function boardReducer(state = initialState, action) {
         case UPDATE_BOARD:
             boards = state.boards.map(board => (board._id === action.board._id) ? action.board : board)
             // newState = { ...state, board: action.board }
-            newState = { ...state, boards, board: action.board  }
+            newState = { ...state, boards, board: action.board }
             break
         case ADD_BOARD_MSG:
             newState = { ...state, board: { ...state.board, msgs: [...state.board.msgs || [], action.msg] } }
             break
+        case UPDATE_BOARD_FAILED:
+            newState = { ...state, board: action.originalBoard };
+            break;
         default:
     }
     return newState
