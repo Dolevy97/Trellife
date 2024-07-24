@@ -361,14 +361,17 @@ export function TaskDetails() {
 
     function isCover(attachment) {
         const coverImg = taskToEdit.style?.backgroundImage
-        return (coverImg && coverImg.substring(4) === attachment.url)
+        return (coverImg && coverImg.substring(4,coverImg.length-1) === attachment.url)
     }
 
     async function onSetCover(attachment) {
-        const updatedTask = { ...taskToEdit, style: { ...taskToEdit.style, backgroundImage: `url(${attachment.url}`, backgroundColor: attachment.backgroundColor } }
+        const updatedTask = { ...taskToEdit, style: { ...taskToEdit.style, backgroundImage: `url(${attachment.url})`, backgroundColor: attachment.backgroundColor } }
         const activityTitle = `set ${attachment.title} as a cover for task (id: ${updatedTask.id})`
         await updateTask(updatedTask, group, board, activityTitle)
     }
+
+    // console.log(taskToEdit)
+    // console.log(taskToEdit.attachments[1])
 
     if (!taskToEdit || !group) return null
 
