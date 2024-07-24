@@ -670,7 +670,7 @@ export function TaskDetails() {
                             <div className="input-container">
                                 <img
                                     className='user-img-activity-input'
-                                    src={user.imgUrl}
+                                    src={user.imgUrl || ''}
                                     alt="user image" />
                                 {isAddingComment ?
                                     <>
