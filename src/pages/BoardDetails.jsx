@@ -10,15 +10,20 @@ import { BoardDetailsHeader } from '../cmps/BoardDetailsHeader.jsx'
 import { LeftNavBar } from '../cmps/LeftNavBar.jsx'
 
 export function BoardDetails() {
-  const { boardId } = useParams()
   const board = useSelector(storeState => storeState.boardModule.board)
+
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [newGroupTitle, setNewGroupTitle] = useState('')
+  const [areLabelsExpanded, setAreLabelsExpanded] = useState(false)
+  const [isScrolling, setIsScrolling] = useState(false);
+
+  const scrollTimeoutRef = useRef(null);
   const groupListContainer = useRef()
   const groupListHeader = useRef()
-  const [areLabelsExpanded, setAreLabelsExpanded] = useState(false)
-
   const addGroupRef = useRef(null)
+
+  const { boardId } = useParams()
+
 
   useEffect(() => {
     loadBoard(boardId)
@@ -47,6 +52,33 @@ export function BoardDetails() {
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [addGroupRef])
+
+  useEffect(() => {
+    const container = groupListContainer.current
+
+    function handleScroll() {
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current)
+      }
+      setIsScrolling(true)
+      scrollTimeoutRef.current = setTimeout(() => {
+        setIsScrolling(false)
+      }, 1000)
+    }
+
+    if (container) {
+      container.addEventListener('scroll', handleScroll)
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener('scroll', handleScroll)
+      }
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current)
+      }
+    }
+  }, [])
 
   async function onAddGroup() {
     if (!newGroupTitle.trim()) return
@@ -103,7 +135,7 @@ export function BoardDetails() {
   function toggleLabelExpansion(event) {
     event.stopPropagation()
     setAreLabelsExpanded(prev => !prev)
-}
+  }
 
 
   const groups = board?.groups || []
@@ -114,7 +146,8 @@ export function BoardDetails() {
     // <LeftNavBar />
     <section ref={groupListHeader} className='board-details'>
       <BoardDetailsHeader />
-      <section ref={groupListContainer} className="group-list-container">
+
+      <section ref={groupListContainer} className={`group-list-container ${isScrolling ? 'scrolling' : ''}`}>
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId='groups' direction='horizontal' type='GROUP'>
             {(provided) => (
