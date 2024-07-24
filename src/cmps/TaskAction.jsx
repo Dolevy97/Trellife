@@ -58,21 +58,21 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         await updateTask(task, group, board)
     }
 
-    async function onSetAttachmentAsCover(ev, a) {
-        onSetCover(a)
-        onSetAction(ev, true)
-    }
+    // async function onSetAttachmentAsCover(a) {
+    //     onSetCover(a)
+    // }
 
     async function onAddChecklist(ev) {
         const updatedTask = { ...task }
         updatedTask.checklists.push({ id: 'cl' + makeId(), title: checklistInputValue, todos: [] })
         const activityTitle = `added ${checklistInputValue} to this card`
         await updateTask(updatedTask, group, board, activityTitle)
-        onSetAction(ev, true)
+        onSetAction(ev, null)
     }
 
     async function onAddAttachment(ev) {
         const files = ev.target.files
+        const action = !task.style ? 'cover' : null
 
         for (let i = 0; i < files.length; i++) {
             const file = files[i]
@@ -97,7 +97,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             await updateTask(updatedTask, group, board, activityTitle)
         }
 
-        onSetAction(ev, true)
+        onSetAction(ev, action)
     }
 
     function onUpload() {
@@ -108,7 +108,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         <section className="task-action" onClick={(ev) => ev.stopPropagation()}>
             <header className="action-header">
                 {action.charAt(0).toUpperCase() + action.substring(1, action.length)}
-                <div onClick={(ev) => onSetAction(ev, true)} className="close-action-container"> <img className="close-action icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" /> </div>
+                <div onClick={(ev) => onSetAction(ev, null)} className="close-action-container"> <img className="close-action icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" /> </div>
             </header>
             {(action === 'members' || action === 'labels') && <input className="text" placeholder={`Search ${action}`} />}
             {action === 'members' &&
@@ -182,7 +182,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                                 <div className="color" style={{ backgroundColor: '#596773' }} onClick={onUpdateCoverColor}></div>
                             </div>
                         </div>
-                        {task.attachments && task.attachments.length &&
+                        {task.attachments && task.attachments.length ?
                             <div className="cover-attachments-container">
                                 <span className="title">Attachments</span>
                                 <div className="cover-attachments">
@@ -191,11 +191,11 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                                             key={a.url}
                                             className="cover-attachment"
                                             style={{ backgroundImage: `url(${a.url})`, backgroundColor: a.backgroundColor }}
-                                            onClick={(ev) => onSetAttachmentAsCover(ev, a)}
+                                            onClick={() => onSetCover(a)}
                                         />)}
                                 </div>
                             </div>
-                        }
+                            : null}
                     </div>
                 </>
             }
