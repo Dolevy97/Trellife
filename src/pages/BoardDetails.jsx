@@ -9,7 +9,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { BoardDetailsHeader } from '../cmps/BoardDetailsHeader.jsx'
 import { store } from '../store/store.js'
 import { SET_USER } from '../store/reducers/user.reducer.js'
-import { socketService } from '../services/socket.service.js'
+// import { socketService } from '../services/socket.service.js'
 
 export function BoardDetails() {
   
