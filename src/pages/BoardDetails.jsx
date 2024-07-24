@@ -112,7 +112,7 @@ export function BoardDetails() {
   return (
     // <section className="main-display-container">
     // <LeftNavBar />
-    <section ref={groupListHeader}>
+    <section ref={groupListHeader} className='board-details'>
       <BoardDetailsHeader />
       <section ref={groupListContainer} className="group-list-container">
         <DragDropContext onDragEnd={handleOnDragEnd}>
