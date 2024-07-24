@@ -1,7 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { boardService } from '../services/board/'
-import { updateBoard } from '../store/actions/board.actions'
+import { useNavigate } from 'react-router-dom'
 import { GroupPreviewHeader } from './GroupPreviewHeader'
 import autosize from 'autosize'
 import { getFormattedShortTime } from '../services/util.service'
@@ -87,7 +85,6 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
         return board.labels.find(label => label.id === id)
     }
 
-
     function getComments(taskId) {
         let comments = board.activities.filter(activity => {
 
@@ -113,7 +110,6 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
             return total + (Array.isArray(checklist.todos) ? checklist.todos.length : 0)
         }, 0)
     }
-
 
     const labelsIds = taskToEdit?.labelsIds || []
 
