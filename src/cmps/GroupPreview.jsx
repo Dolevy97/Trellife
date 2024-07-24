@@ -10,7 +10,7 @@ import { addTask } from "../store/actions/task.actions"
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 
 
-export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpansion,areLabelsExpanded}) {
+export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpansion, areLabelsExpanded }) {
     const tasks = group?.tasks || []
     const board = useSelector(storeState => storeState.boardModule.board)
 
@@ -113,6 +113,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
         }, 0)
     }
 
+
     const labelsIds = taskToEdit?.labelsIds || []
 
     return (
@@ -141,11 +142,13 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                         onClick={() => handleTaskClick(task.id)}
                                     >
                                         <div
-                                            className='task-inner-container'
-                                            style={task.style && task.style.isFull ? { backgroundColor: task.style.backgroundColor, borderRadius: '8px' } : {}}
+                                            className={`task-inner-container ${task.style?.backgroundImage ? 'task-inner-container-img' : ''}`}
+                                            style={task.style && task.style.isFull ? { ...task.style, borderRadius: '8px' } : {}}
                                         >
                                             {task.style && !task.style.isFull && (
-                                                <section className='task-cover-container' style={{ ...task.style }}>
+                                                <section
+                                                    className={`cover-container ${task.style?.backgroundImage ? 'cover-container-img' : ''}`}
+                                                     style={{ ...task.style }}>
                                                 </section>
                                             )}
 
@@ -177,7 +180,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                     </div>
                                                 )}
 
-                                                <div className='task-title-container'
+                                                <div className={`title-container ${task.style?.backgroundImage ? 'img-title-container' : ''}`}
                                                     style={{ marginBlockEnd: task.style?.isFull ? '0' : '4px' }}
                                                 >
                                                     <span style={{

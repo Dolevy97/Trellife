@@ -79,19 +79,42 @@
                 display: flex;
             }
 
+            .task-inner-container-img {
+                min-height: 245px;
+                width: 100%;
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+
+            }
+
             .task-inner-container {
                 display: flex;
                 flex-direction: column;
                 align-items: flex-start;
                 width: 100%;
+                justify-content: flex-end;
 
                 // padding: 4px 0px;
-                .task-cover-container {
+                .cover-container {
                     width: 100%;
                     height: 36px;
                     overflow: hidden;
                     border-top-left-radius: 8px;
                     border-top-right-radius: 8px;
+
+                }
+
+                .cover-container-img {
+                    width: 100%;
+                    background-color: rgb(252, 252, 252);
+                    height: 260px;
+                    max-height: 260px;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    display: flex;
+                 
                 }
 
                 .task-info-container {
@@ -154,12 +177,21 @@
                         }
                     }
 
-                    .task-title-container {
+                    .title-container {
                         display: block;
                         margin-bottom: 4px;
                         overflow: hidden;
                         overflow-wrap: break-word;
                         white-space: normal;
+                    }
+
+                    .img-title-container {
+                        display: block;
+                        margin-bottom: 4px;
+                        overflow: hidden;
+                        overflow-wrap: break-word;
+                        white-space: normal;
+                        color: #ffffff;
                     }
 
                     .task-bottom-container {
