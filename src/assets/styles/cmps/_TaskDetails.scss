@@ -96,7 +96,8 @@
                     font-size: em(14);
                     color: inherit;
                     display: flex;
-                    .icon{
+
+                    .icon {
                         position: static;
                         height: auto;
                         width: 1em;
@@ -731,6 +732,27 @@
 
         width: 510px;
 
+        .comment-reactions {
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            line-height: 24px;
+            color: $txtclr2;
+
+            .edit-and-delete {
+                font-size: 12px;
+
+                .sep {
+                    padding-inline: 3px;
+                }
+
+                .comment-reaction-button {
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+            }
+        }
+
         p {
             font-size: .875em;
             font-weight: 700;
@@ -763,6 +785,7 @@
             max-width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
+            font-weight: 400;
         }
     }
 }
