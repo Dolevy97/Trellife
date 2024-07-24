@@ -130,7 +130,7 @@
 
                     }
 
-                    .task-label-container {
+                    .label-container {
                         display: flex;
                         flex-wrap: wrap;
                         gap: 4px;
@@ -191,7 +191,6 @@
                         overflow: hidden;
                         overflow-wrap: break-word;
                         white-space: normal;
-                        color: #ffffff;
                     }
 
                     .task-bottom-container {
@@ -202,7 +201,7 @@
                         width: 100%;
                         flex-wrap: wrap;
 
-                        .task-bottom-leftside {
+                        .bottom-leftside {
                             display: flex;
                             align-items: center;
                             gap: 4px;
@@ -214,7 +213,7 @@
                                 width: 16px;
                             }
 
-                            .task-comment-container {
+                            .comment-container {
                                 position: relative;
 
                                 display: flex;
@@ -267,7 +266,7 @@
                                 }
                             }
 
-                            .task-timer-container {
+                            .timer-container {
                                 position: relative;
 
                                 display: flex;
@@ -298,7 +297,7 @@
                                 }
                             }
 
-                            .task-attachment-container {
+                            .attachment-container {
                                 position: relative;
 
                                 display: flex;

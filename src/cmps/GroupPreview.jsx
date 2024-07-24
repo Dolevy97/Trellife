@@ -159,7 +159,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                     marginTop: task.style?.isFull ? '15px' : ''
                                                 }}>
                                                 {(!task.style || !task.style.isFull) && (
-                                                    <div className='task-label-container'>
+                                                    <div className='label-container'>
                                                         {task.labelsIds && task.labelsIds.map(id => {
                                                             const label = getLabelById(id)
                                                             return label && (
@@ -181,7 +181,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                 )}
 
                                                 <div className={`title-container ${task.style?.backgroundImage ? 'img-title-container' : ''}`}
-                                                    style={{ marginBlockEnd: task.style?.isFull ? '0' : '4px' }}
+                                                    style={{ marginBlockEnd: task.style?.isFull ? '0' : '4px', color: task.style?.isFull ? 'white' : 'inherit'}}
                                                 >
                                                     <span style={{
                                                         fontWeight: task.style?.isFull ? '500' : 'normal',
@@ -195,11 +195,11 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                 </div>
                                                 {(!task.style || !task.style.isFull) && (
                                                     <div className='task-bottom-container'>
-                                                        <div className='task-bottom-leftside'>
+                                                        <div className='bottom-leftside'>
                                                             {task.dueDate && (
                                                                 <div
                                                                     title={task.isDone ? 'This task is complete.' : 'This task is due later.'}
-                                                                    className="task-timer-container"
+                                                                    className="timer-container"
                                                                     style={!task.isDone ? {} : { backgroundColor: '#4BCE97' }}
                                                                 >
                                                                     <img
@@ -216,13 +216,13 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                                 <img title='This card has a description.' src="../../../src/assets/imgs/Icons/description.svg" alt="description" />
                                                             )}
                                                             {getComments(task.id).length ?
-                                                                <div title='Comments' className='task-comment-container'>
+                                                                <div title='Comments' className='comment-container'>
                                                                     <img src="../../../src\assets\imgs\Icons\comment.svg" />
                                                                     <span className='task-comment'>{getComments(task.id).length} </span>
                                                                 </div> : ''
                                                             }
                                                             {task.attachments.length ?
-                                                                <div title='Attachments' className='task-attachment-container'>
+                                                                <div title='Attachments' className='attachment-container'>
                                                                     <img src="../../../src\assets\imgs\TaskDetails-icons\attachment.svg" />
                                                                     <span className='task-comment'>{task.attachments.length}</span>
                                                                 </div> : ''
