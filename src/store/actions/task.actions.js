@@ -20,6 +20,7 @@ export async function updateTask(task, group, board, activityTitle = '') {
         const activity = {
             id: 'a' + makeId(),
             title: activityTitle,
+            // NOTICE TO CHANGE THE BY MEMBER TO LOGGED IN USER
             byMember: { ...board.members[getRandomIntInclusive(0, board.members.length - 1)] },
             group: { ...group },
             task: { ...task }
