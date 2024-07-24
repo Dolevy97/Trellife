@@ -1,21 +1,19 @@
-.main-display-container {
-  // display: flex;
-  // height: 100%;
-
-  .center-display-container {
-    // height: 100%;
-  }
-
+.board-details {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
 }
 
 .group-list-container {
   display: flex;
   flex-direction: column;
+
   padding: 12px 20px 8px;
-  height: calc(100vh - 100px); //48px app header, 52px board header
+  
   background-color: $bgclr2;
+  
   overflow-x: auto;
-  // overflow-y: hidden;
+  overflow-y: hidden;
 
   background-size: cover;
 
