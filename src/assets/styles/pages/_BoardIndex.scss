@@ -2,19 +2,46 @@
     width: 100vw;
 
     header {
+        width: 95%;
+        margin: auto;
 
-        display: flex;
-        justify-content: flex-start;
+        .workspace {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 32px 8px;
+            margin: auto;
+            max-width: 1266px;
 
-        height: 7.75em;
-    
-        padding-inline: 32px;
-        padding-block-start: 20px;
+            @media (max-width: 1380px) {
+                padding-inline: 40px;
+            }
 
-        margin-inline-start: 32px;
+            .workspace-icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                width: 60px;
+                height: 60px;
+                background: linear-gradient(#E774BB, #943D73);
+                border-radius: 4px;
+                font-size: 2.188em;
+                font-weight: 700;
+                color: #1D2125;
+
+                margin-inline-end: 10px;
+            }
+
+            h3 {
+                margin: 0;
+                padding: 0;
+            }
+
+        }
+
     }
 }
-
 
 .horizontal-rule {
     margin: auto;
@@ -22,7 +49,6 @@
     border-color: #A6C5E229;
     height: 1px;
 }
-
 
 h2 {
     margin: 0;
@@ -36,36 +62,6 @@ button {
 h3 {
     font-size: 1.25em;
     font-weight: 500;
-}
-
-.workspace {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    // margin: auto;
-
-
-    .workspace-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(#E774BB, #943D73);
-        border-radius: 4px;
-        font-size: 2.188em;
-        font-weight: 700;
-        color: #1D2125;
-
-        margin-inline-end: 10px;
-    }
-
-    h3 {
-        margin: 0;
-        padding: 0;
-    }
-
 }
 
 .board-main {
