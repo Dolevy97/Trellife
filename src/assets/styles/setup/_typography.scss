@@ -31,6 +31,8 @@
   src: url('../fonts/Segoe UI Bold Italic.woff') format('woff');
 }
 
+// Charlies
+
 @font-face {
   font-family: 'Charlie';
   font-style: normal;
@@ -39,9 +41,11 @@
 }
 @font-face {
   font-family: 'Charlie Text';
-  font-style: normal;
-  font-weight: normal;
   src: url('../../../src/assets/styles/fonts/Charlie-Text.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Charlie Text Bold';
+  src: url('../../../src/assets/styles/fonts/Charlie-Text-Bold.ttf') format('truetype');
 }
 
 .material-symbols-outlined {

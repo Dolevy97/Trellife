@@ -40,8 +40,6 @@ export function BoardDetails() {
     }
   }, [user])
 
-  console.log(user)
-
   useEffect(() => {
     if (board && board.style && board.style.background && groupListContainer) {
       groupListContainer.current.style.background = board.style.background
