@@ -5,6 +5,10 @@
 
     max-width: 1250px;
     padding: 20px 0 8px;
+
+    @media (max-width: 1394px) {
+        padding-inline: 8px;
+    }
     margin: auto;
 
     label {
