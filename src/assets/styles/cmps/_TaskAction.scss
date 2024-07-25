@@ -153,6 +153,10 @@
                 padding: em(12);
                 border-radius: 3px;
                 margin-inline: em(12) em(4);
+                
+                &:hover{
+                    cursor: pointer;
+                }
             }
 
 
