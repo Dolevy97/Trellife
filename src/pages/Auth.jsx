@@ -28,7 +28,7 @@ export function Auth() {
         }
 
         try {
-            const user = isSignup ? await signup(newUser) : await login(newUser)
+            const user = isSignup === 'signup' ? await signup(newUser) : await login(newUser)
 
             if (user) {
                 navigate('/board')
