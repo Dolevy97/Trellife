@@ -154,5 +154,8 @@
             font-size: 14px;
         }
 
+        &:-webkit-autofill {
+            background-color: red;
+        }
     }
 }

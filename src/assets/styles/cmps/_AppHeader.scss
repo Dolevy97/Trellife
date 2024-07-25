@@ -31,7 +31,7 @@
 
 
     &.homepage {
-        
+
 
         height: 60px;
         margin: 0px auto;
@@ -85,6 +85,7 @@
         text-decoration: none;
         white-space: nowrap;
         font-family: inherit;
+
         &:hover {
             background-color: #85B8FF;
         }
@@ -138,7 +139,8 @@
     }
 }
 
-.logo-wrapper:hover, .logo-wrapper.active {
+.logo-wrapper:hover,
+.logo-wrapper.active {
     background-color: #A6C5E229;
 }
 
@@ -216,6 +218,137 @@
 
         &:hover {
             background-color: $txtclr1hvr;
+        }
+    }
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+
+    &:hover {
+        background-color: #A6C5E229;
+    }
+
+    & .user-profile-img {
+        height: 24px;
+        width: 24px;
+        line-height: 24px;
+        border-radius: 50%;
+
+        cursor: pointer;
+    }
+}
+
+.user-menu {
+    position: fixed;
+    width: 304px;
+
+    z-index: 10;
+
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    overflow: hidden;
+    border-radius: 8px;
+    outline: 0;
+    background-color: #282E33;
+    box-shadow: 0px 8px 12px #091e4226, 0px 0px 1px #091e424f;
+
+    padding: 12px;
+    max-height: 1197px;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    h2 {
+        margin: 16px 0 8px;
+        padding: 0 8px;
+        color: #8C9BAB;
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 16px;
+        text-transform: uppercase;
+    }
+
+    .user-menu-nav {
+        margin: 0 -12px;
+
+        .nav-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+    }
+}
+
+.account-info {
+    display: flex;
+    max-width: 100%;
+    padding: 8px;
+
+    .user-profile-img {
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        margin-inline-end: 8px;
+    }
+
+    .user-fullname {
+        margin-block-start: 2px;
+    }
+
+    .user-username {
+        overflow: hidden;
+        color: $txtclr2;
+        font-size: 12px;
+        line-height: 16px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+.nav-list-item {
+    border: none;
+    background-color: transparent;
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 8px 20px;
+    transition: none;
+    border-radius: 0;
+    outline: 0;
+    color: $txtclr1;
+    text-align: left;
+    text-decoration: none;
+
+    font-family: inherit;
+
+    &:hover {
+        border: none;
+        background-color: transparent;
+        box-shadow: none;
+        background: #A1BDD914;
+        text-decoration: none;
+    }
+
+    .span-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        column-gap: 4px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+
+        .nav-item-text {
+            display: flex;
+            align-items: center;
         }
     }
 }
