@@ -18,7 +18,7 @@ export function TaskDetails() {
     const textareaRef = useRef(null)
     const textareaCommentRef = useRef(null)
     const editCommentRef = useRef(null)
-    
+
     const dateInputRef = useRef(null)
     const checklistItemRefs = useRef({})
 
@@ -80,6 +80,12 @@ export function TaskDetails() {
             }
         }
     }, [editCommentInputValue])
+
+    useEffect(() => {
+        if (isAddingItems && checklistItemRefs.current[isAddingItems]) {
+            checklistItemRefs.current[isAddingItems].focus()
+        }
+    }, [isAddingItems])
 
     function setTask() {
         setTaskToEdit(() => {
@@ -172,7 +178,7 @@ export function TaskDetails() {
         const timestamp = dateObj.getTime()
         taskToEdit.dueDate = timestamp
         const activityTitle = `changed the due date of task (id: ${taskToEdit.id}) to ${dateStr}`
-        await updateTask(taskToEdit, group, board, activityTitle)
+        await updateTask(taskToEdit, group, board, activityTitle, user)
 
     }
 
@@ -192,7 +198,7 @@ export function TaskDetails() {
     async function onChangeIsDone({ target }) {
         taskToEdit.isDone = target.checked
         const activityTitle = 'marked the due date ' + target.checked ? 'complete' : 'incomplete'
-        await updateTask(taskToEdit, group, board, activityTitle)
+        await updateTask(taskToEdit, group, board, activityTitle, user)
     }
 
     // Comments
@@ -274,7 +280,7 @@ export function TaskDetails() {
     }
 
     function handleChecklistKeyDown(ev, checklist) {
-        if (ev.key === '') {
+        if (ev.key === 'Enter') {
             ev.preventDefault()
             onAddItem(checklist)
         }
@@ -353,16 +359,27 @@ export function TaskDetails() {
     async function onChangeTodo({ target }, todo, checklist) {
         const updatedTask = { ...taskToEdit }
         const checklistIndex = updatedTask.checklists.findIndex(check => check.id === checklist.id)
+        let todoIndex = -1
 
         if (checklistIndex !== -1) {
-            const todoIndex = updatedTask.checklists[checklistIndex].todos.findIndex(t => t.id === todo.id)
+            todoIndex = updatedTask.checklists[checklistIndex].todos.findIndex(t => t.id === todo.id)
 
             if (todoIndex !== -1) {
                 updatedTask.checklists[checklistIndex].todos[todoIndex].isDone = target.checked
+                setTaskToEdit(updatedTask)
             }
         }
 
-        await updateTask(updatedTask, group, board)
+        try {
+            await updateTask(updatedTask, group, board)
+        } catch (err) {
+            console.error("Failed to update task:", err)
+            if (checklistIndex !== -1 && todoIndex !== -1) {
+                const revertedTask = { ...taskToEdit }
+                revertedTask.checklists[checklistIndex].todos[todoIndex].isDone = !target.checked
+                setTaskToEdit(revertedTask)
+            }
+        }
     }
 
     // Attachment
@@ -371,7 +388,7 @@ export function TaskDetails() {
         if (isCover(attachment)) updatedTask.style = null
         const attachments = updatedTask.attachments.filter(a => a.url !== attachment.url)
         const activity = `deleted the ${attachment.title} from card (id: ${updatedTask.id})`
-        updateTask({ ...updatedTask, attachments }, group, board, activity)
+        updateTask({ ...updatedTask, attachments }, group, board, activity, user)
     }
 
     function onAddAttachment() {
@@ -397,7 +414,7 @@ export function TaskDetails() {
     async function onSetCover(attachment) {
         const updatedTask = { ...taskToEdit, style: { ...taskToEdit.style, backgroundImage: `url(${attachment.url})`, backgroundColor: attachment.backgroundColor } }
         const activityTitle = `set ${attachment.title} as a cover for task (id: ${updatedTask.id})`
-        await updateTask(updatedTask, group, board, activityTitle)
+        await updateTask(updatedTask, group, board, activityTitle, user)
     }
 
     //Task title
@@ -428,7 +445,7 @@ export function TaskDetails() {
 
         const updatedTask = { ...taskToEdit, title: titleToSet }
         try {
-            await updateTask(updatedTask, group, board, `Changed task title to "${titleToSet}"`)
+            await updateTask(updatedTask, group, board, `Changed task title to "${titleToSet}"`, user)
             setIsEditingTitle(false)
         } catch (error) {
             console.error('Failed to update task title:', error)
@@ -801,7 +818,7 @@ export function TaskDetails() {
                                 <span className="action-title">Checklist</span>
                             </button>
                             {action === 'checklist'
-                                && <TaskAction action="add checklist" {...taskActionProps} />}
+                                && <TaskAction action="add checklist" toggleAddingItem={toggleAddingItem} {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
 
