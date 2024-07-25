@@ -1,0 +1,156 @@
+.login {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    color: $txtclr2;
+
+
+    .login-outer-container {
+        display: flex;
+        width: 100%;
+        min-height: 100%;
+        flex-direction: column;
+
+        .login-inner-container {
+            display: flex;
+            flex: 1 1 auto;
+
+            .login-innermost-container {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-image: url("https://id-frontend.prod-east.frontend.public.atl-paas.net/assets/trello-left.4f52d13c.svg"), url("https://id-frontend.prod-east.frontend.public.atl-paas.net/assets/trello-right.e6e102c7.svg");
+                background-repeat: no-repeat, no-repeat;
+                background-attachment: fixed, fixed;
+                background-size: 368px, 368px;
+                background-position: left bottom, right bottom;
+
+                .black-box-container {
+                    min-height: calc(100% - 100px);
+                    display: flex;
+                    flex-direction: column;
+                    -webkit-box-pack: center;
+                    justify-content: center;
+                    margin: 50px 0px;
+                }
+            }
+        }
+    }
+}
+
+
+.logo-container {
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 1.2em;
+
+    border-radius: 3px;
+
+    filter: brightness(0) saturate(100%) invert(66%) sepia(20%) saturate(225%) hue-rotate(170deg) brightness(101%) contrast(85%);
+
+
+    .logo-icon {
+        width: 23px;
+        height: 23px;
+        margin-inline-end: 8px;
+    }
+
+    .logo-text {
+        font-family: 'Charlie';
+        font-weight: 600;
+        font-size: 1.2em;
+        line-height: 1.2em;
+        letter-spacing: .1em;
+    }
+
+}
+
+.login-signup-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    min-height: calc(100% - 100px);
+
+    width: 400px;
+    padding: 32px 40px;
+
+    background: lighten($bgclr1, 5%);
+    border-radius: 3px;
+    box-shadow: rgba(255, 255, 255, 0.3) 0px 0px 10px;
+
+    margin: 50px auto;
+
+    .login-header {
+        display: flex;
+        flex-direction: column;
+        -webkit-box-align: center;
+        align-items: center;
+        text-align: center;
+
+        margin-bottom: 16px;
+
+        & h5 {
+            display: flex;
+            flex-direction: column;
+            -webkit-box-align: center;
+            align-items: center;
+
+            padding-top: 24px;
+
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 20px;
+        }
+    }
+
+
+
+    p {
+        margin-block-start: 1em;
+        margin-inline: auto;
+        width: fit-content;
+        padding-block: 0;
+        font-size: 14px;
+        color: #0c66e4;
+        cursor: pointer;
+    }
+
+    button {
+        @include btn;
+        background-color: #0C66E4;
+        color: $bgclr2;
+    }
+
+}
+
+.login-container {
+    margin-block-end: 1em;
+
+    div {
+        font-size: .8em;
+        color: #ae2e24;
+    }
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: .6em;
+
+    input {
+        @include input;
+        padding: 8px 6px;
+        font-size: 14px;
+
+        &::placeholder {
+        font-size: 14px;
+
+        }
+
+    }
+}

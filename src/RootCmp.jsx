@@ -10,6 +10,7 @@ import { TaskDetails } from './pages/TaskDetails.jsx'
 import { BoardCreate } from './cmps/BoardCreate.jsx'
 import { AppLayout } from './AppLayout'
 import { loadBoards } from './store/actions/board.actions.js'
+import { Login } from './pages/Login.jsx'
 
 export function RootCmp() {
 	loadBoards()
@@ -18,6 +19,7 @@ export function RootCmp() {
 			<UserMsg />
 			<main className='full'>
 				<Routes>
+					<Route element={<Login />} path="/login" />
 					<Route path="/" element={<>
 						<AppHeader isHomePage={true} />
 						<HomePage />
