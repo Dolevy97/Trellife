@@ -14,6 +14,7 @@ export function TaskDetails() {
 
     const board = useSelector(storeState => storeState.boardModule.board)
     const user = useSelector(storeState => storeState.userModule.user)
+    console.log(board)
 
     const textareaRef = useRef(null)
     const textareaCommentRef = useRef(null)
