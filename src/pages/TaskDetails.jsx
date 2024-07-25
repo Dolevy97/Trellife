@@ -124,10 +124,10 @@ export function TaskDetails() {
 
     // Action - Dynamic Component
 
-    function onSetAction(ev, action) {
+    function onSetAction(ev,act) {
         ev.stopPropagation()
-        if (action !== undefined) {
-            setAction(action)
+        if (act !== undefined) {
+            setAction(act)
             return
         }
         const actionName = action === ev.currentTarget.name ? null : ev.currentTarget.name
