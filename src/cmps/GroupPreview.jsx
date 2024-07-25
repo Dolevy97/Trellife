@@ -168,7 +168,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                             <div className='label-container'>
                                                                 {task.labelsIds && task.labelsIds.map(id => {
                                                                     const label = getLabelById(id)
-                                                                    return label && (
+                                                                    return label?.color && (
                                                                         <div
                                                                             key={id}
                                                                             className={`label-tab ${areLabelsExpanded ? 'expanded' : ''}`}

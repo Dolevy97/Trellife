@@ -33,6 +33,26 @@
     }
 
 
+    .back-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        padding: em(12);
+        border-radius: 3px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+
+        &:hover {
+            background-color: #3c474f;
+            cursor: pointer;
+        }
+
+    }
+
     .close-action-container {
         position: absolute;
         top: 0;
@@ -261,6 +281,18 @@
         line-height: em(20, 12);
         font-weight: 500;
         margin-block: 12px 15px;
+    }
+
+    .btn-disabled{
+        cursor: not-allowed;
+        background-color: #2e343a;
+        color: #57636e;
+
+        &:hover{
+            cursor: not-allowed;
+            background-color: #2e343a;
+            color: #57636e;
+        }
     }
 
     .size-container {
