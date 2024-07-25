@@ -260,7 +260,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             {action === 'edit label' &&
                 <>
                     <div className="label-preview-container flex">
-                        <span className="label-preview" style={{backgroundColor:labelToEdit.color}}>{labelInputValue}</span>
+                        <span className="label-preview" style={{ backgroundColor: labelToEdit.color ? labelToEdit.color : '#3a444c' }}>{labelInputValue}</span>
                     </div>
                     <div className="edit-label">
                         <span className="title">Title</span>
