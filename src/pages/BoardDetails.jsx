@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
-import { loadBoard, updateBoard } from '../store/actions/board.actions'
+import { loadBoard, updateBoard, removeBoard } from '../store/actions/board.actions'
 import { boardService } from '../services/board/'
 import { GroupPreview } from "../cmps/GroupPreview.jsx"
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
@@ -19,11 +19,13 @@ export function BoardDetails() {
 
   const user = useSelector(storeState => storeState.userModule.user)
   const board = useSelector(storeState => storeState.boardModule.board)
+  const navigate = useNavigate()
 
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [newGroupTitle, setNewGroupTitle] = useState('')
   const [areLabelsExpanded, setAreLabelsExpanded] = useState(false)
   const [isRightNavBarOpen, setIsRightNavBarOpen] = useState(false)
+  const [areAllGroupsCollapsed, setAreAllGroupsCollapsed] = useState(false)
 
   const groupListContainer = useRef()
   const groupListHeader = useRef()
@@ -123,9 +125,49 @@ export function BoardDetails() {
   }
 
 
+  async function toggleAllGroupsCollapse() {
+    const newCollapseState = !areAllGroupsCollapsed
+    const updatedGroups = board.groups.map(group => ({
+      ...group,
+      style: {
+        ...group.style,
+        isCollapse: newCollapseState
+      }
+    }))
+
+    const updatedBoard = {
+      ...board,
+      groups: updatedGroups
+    }
+
+    await updateBoard(updatedBoard)
+    setAreAllGroupsCollapsed(newCollapseState)
+  }
+
+  // async function handleDeleteBoard() {
+  //   if (!board || !board._id) {
+  //     console.error('No board or board ID available for deletion')
+  //     return
+  // }
+
+  // try {
+  //     console.log('Attempting to delete board with ID:', board._id)
+  //     await removeBoard(board._id)
+  //     navigate('/board')
+  //     console.log('Board deleted successfully')
+  // } catch (error) {
+  //     console.error('Error deleting board:', error)
+  //     if (error.response) {
+  //         console.error('Error response:', error.response.data)
+  //         console.error('Error status:', error.response.status)
+  //     }
+  //     // Optionally, show an error message to the user
+  // }
+  // }
+
   const groups = board?.groups || []
   //needs layers
-  if (!board) return <img src="../../../src\assets\imgs\TaskDetails-icons\loading animation.svg"/>
+  if (!board) return <img src="../../../src\assets\imgs\TaskDetails-icons\loading animation.svg" />
 
   return (
     // <section className="main-display-container">
@@ -138,7 +180,10 @@ export function BoardDetails() {
       <RightNavBar
         onClose={() => setIsRightNavBarOpen(false)}
         isRightNavBarOpen={isRightNavBarOpen}
-        setIsRightNavBarOpen ={setIsRightNavBarOpen}
+        setIsRightNavBarOpen={setIsRightNavBarOpen}
+        toggleAllGroupsCollapse={toggleAllGroupsCollapse}
+        board={ board}
+
       />
       <section ref={groupListContainer} className="group-list-container">
         <DragDropContext onDragEnd={handleOnDragEnd}>
