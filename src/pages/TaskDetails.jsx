@@ -386,12 +386,13 @@ export function TaskDetails() {
         handleTitleUpdate()
     }
 
-    function handleTitleKeyPress(event) {
-        if (event.key === 'Enter') {
+    function handleTitleKeyPress(ev) {
+        if (ev.key === 'Enter') {
+            ev.preventDefault()
             handleTitleUpdate()
         }
     }
-
+    
     async function handleTitleUpdate() {
         let titleToSet = taskTitleInputValue.trim()
         if (titleToSet === '' || titleToSet === taskToEdit.title) {
@@ -719,7 +720,6 @@ export function TaskDetails() {
                                 }
                             </div>
                             <div className="comments-container">
-                                {/* {console.log(getComments(taskToEdit.id))} */}
                                 {getComments(taskToEdit.id).map(comment =>
                                     <div className="comment-container" key={comment.id}>
                                         <img className='member-img-comment' src={comment.byMember.imgUrl} alt="" />
