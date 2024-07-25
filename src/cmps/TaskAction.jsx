@@ -80,12 +80,22 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
 
     async function onSaveLabel(ev) {
         if (!labelToEdit.color && !labelToEdit.title) return
-        const label = { ...labelToEdit, title: labelInputValue }
-        const labels = board.labels.map(l => {
-            if (l.id !== label.id) return l
-            return label
-        })
-        const activityTitle = `updated label (id: ${label.id}) on this board`
+        let label
+        let labels
+        let activityTitle
+        if (labelToEdit.id) {
+            label = { ...labelToEdit, title: labelInputValue }
+            labels = board.labels.map(l => {
+                if (l.id !== label.id) return l
+                return label
+            })
+            activityTitle = `updated label (id: ${label.id}) on this board`
+        } else {
+            label = { ...labelToEdit, title: labelInputValue, id: 'l' + makeId() }
+            labels = [...board.labels]
+            labels.push(label)
+            activityTitle = `added label (id: ${label.id}) on this board`
+        }
 
         const activities = [...board.activities]
         const activity = {
@@ -101,6 +111,11 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         const updatedBoard = { ...board, labels, activities }
 
         await updateBoard(updatedBoard)
+        if (!labelToEdit.id) {
+            const updatedTaskLabelsIds = [...task.labelsIds]
+            updatedTaskLabelsIds.push(label.id)
+            await updateTask({ ...task, labelsIds: updatedTaskLabelsIds }, group, updatedBoard)
+        }
         onSetAction(ev, null)
     }
 
@@ -129,10 +144,6 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         activities.push(activity)
 
         const updatedBoard = { ...board, groups, labels: updatedLabels, activities }
-
-        // console.log('labelToEdit.id ', labelToEdit.id)
-        // updatedBoard.labels.forEach(label => console.log(label.id))
-        // updatedBoard.groups.forEach(g => g.tasks.forEach(t => t.labelsIds.forEach(id => console.log(id))))
 
         await updateBoard(updatedBoard)
         onSetAction(ev, null)
@@ -192,7 +203,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         <section className="task-action" onClick={(ev) => ev.stopPropagation()}>
             <header className="action-header">
                 {action === 'edit label' && <div onClick={(ev) => onSetAction(ev, 'labels')} className="back-container"> <img className="back-action icon" src="../../../src/assets/imgs/TaskDetails-icons/left-arrow.svg" /> </div>}
-                {action.charAt(0).toUpperCase() + action.substring(1, action.length)}
+                {action === 'edit label' && !labelToEdit.id ? 'Create label' : (action.charAt(0).toUpperCase() + action.substring(1, action.length))}
                 <div onClick={(ev) => onSetAction(ev, null)} className="close-action-container"> <img className="close-action icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" /> </div>
             </header>
             {(action === 'members' || action === 'labels') && <input className="text" placeholder={`Search ${action}`} />}
@@ -243,10 +254,14 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
 
                         }
                     </div>
+                    <button className="btn-dark-grey" onClick={(ev) => { setLabelToEdit({ color: '#206e4e' }); onSetAction(ev, 'edit label') }}>Create a new label</button>
                 </>
             }
             {action === 'edit label' &&
                 <>
+                    <div className="label-preview-container flex">
+                        <span className="label-preview" style={{ backgroundColor: labelToEdit.color ? labelToEdit.color : '#3a444c' }}>{labelInputValue}</span>
+                    </div>
                     <div className="edit-label">
                         <span className="title">Title</span>
                         <input className="text" value={labelInputValue} onChange={(ev) => setLabelInputValue(ev.target.value)} />
@@ -259,7 +274,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                             <div className="color" style={{ backgroundColor: '#702e00' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#5d1f1a' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#362c63' }} onClick={onSetLabelToEditColor}></div>
-                            <div className="color" style={{ backgroundColor: '#206e4e' }} onClick={onSetLabelToEditColor}></div>
+                            <div className={`color ${!labelToEdit.id ? 'selected' : ''}`} style={{ backgroundColor: '#206e4e' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#7f5f02' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#a64700' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#ae2e24' }} onClick={onSetLabelToEditColor}></div>
@@ -291,8 +306,8 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                         <span>Remove color</span>
                     </button>
                     <div className="flex space-between">
-                        <button className={`btn-blue ${(!labelToEdit.color && !labelInputValue) ? 'btn-disabled' : ''}`} onClick={onSaveLabel}>Save</button>
-                        <button className="btn-red" onClick={onRemoveLabel}>Delete</button>
+                        <button className={`btn-blue ${(!labelToEdit.color && !labelInputValue) ? 'btn-disabled' : ''}`} onClick={onSaveLabel}>{!labelToEdit.id ? 'Create' : 'Save'}</button>
+                        {labelToEdit.id && <button className="btn-red" onClick={onRemoveLabel}>Delete</button>}
                     </div>
                 </>
             }

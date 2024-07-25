@@ -128,6 +128,10 @@
             height: 1em;
             width: 1em;
             margin-inline-start: auto;
+
+            &:hover {
+                background-color: #333b41;
+            }
         }
     }
 
@@ -172,10 +176,11 @@
                 padding: em(12);
                 border-radius: 3px;
                 margin-inline: em(12) em(4);
-                min-height: em(34,14);
-                
-                &:hover{
+                min-height: em(34, 14);
+
+                &:hover {
                     cursor: pointer;
+                    opacity: 0.7;
                 }
 
             }
@@ -210,6 +215,33 @@
         }
     }
 
+    .label-preview-container {
+        margin: 0 em(-12);
+        padding: em(32);
+        background-color: #161a1d;
+    }
+
+    .label-preview {
+        display: inline-block;
+        position: relative;
+        box-sizing: border-box;
+        min-width: em(48);
+        max-width: 100%;
+        height: em(32);
+        margin-bottom: 0;
+        padding: 0 em(12);
+        overflow: hidden;
+        border-radius: 3px;
+        color: inherit;
+        font-size: em(14);
+        font-weight: 500;
+        line-height: em(32);
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+    }
+
     .colors {
         display: grid;
         grid-template-columns: repeat(5, auto);
@@ -223,7 +255,7 @@
             cursor: pointer;
 
 
-            &.selected{
+            &.selected {
                 outline-color: #579dff;
                 outline-width: em(2);
                 outline-style: solid;
@@ -260,7 +292,7 @@
         }
     }
 
-    .btn-dark-grey{
+    .btn-dark-grey {
         background-color: #323940;
         color: inherit;
         text-align: center;
@@ -284,12 +316,12 @@
         margin-block: 12px 15px;
     }
 
-    .btn-disabled{
+    .btn-disabled {
         cursor: not-allowed;
         background-color: #2e343a;
         color: #57636e;
 
-        &:hover{
+        &:hover {
             cursor: not-allowed;
             background-color: #2e343a;
             color: #57636e;
@@ -348,7 +380,7 @@
         }
     }
 
-    .icon.remove-icon{
+    .icon.remove-icon {
         position: static;
     }
 
