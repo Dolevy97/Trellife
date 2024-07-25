@@ -18,6 +18,7 @@ export function TaskDetails() {
     const textareaRef = useRef(null)
     const textareaCommentRef = useRef(null)
     const editCommentRef = useRef(null)
+    const editTodoItemRef = useRef(null);
 
     const dateInputRef = useRef(null)
     const checklistItemRefs = useRef({})
@@ -38,7 +39,11 @@ export function TaskDetails() {
     const [labelToEdit, setLabelToEdit] = useState(null)
 
     const [isEditingComment, setIsEditingComment] = useState(false)
-    const [editCommentInputValue, setEditCommentInputValue] = useState(false)
+    const [editCommentInputValue, setEditCommentInputValue] = useState('')
+
+    const [editingItemIds, setEditingItemIds] = useState({})
+    const [editItemTitleValue, setEditItemTitleValue] = useState('')
+    const [editingTodoId, setEditingTodoId] = useState(null);
 
     const [isEditingTitle, setIsEditingTitle] = useState(false)
     const [taskTitleInputValue, setTaskTitleInputValue] = useState(taskToEdit?.title || '')
@@ -87,6 +92,17 @@ export function TaskDetails() {
         }
     }, [isAddingItems])
 
+    useEffect(() => {
+        if (editingTodoId && editTodoItemRef.current) {
+            const textarea = editTodoItemRef.current
+            textarea.focus()
+
+            const length = textarea.value.length
+            textarea.setSelectionRange(length, length)
+
+        }
+    }, [editingTodoId])
+
     function setTask() {
         setTaskToEdit(() => {
             const group = board.groups.find(group => group.id === groupId)
@@ -131,6 +147,11 @@ export function TaskDetails() {
     function handleEditCommentChange({ target }) {
         let { value } = target
         setEditCommentInputValue(value)
+    }
+
+    function handleItemEditTitle({ target }) {
+        let { value } = target
+        setEditItemTitleValue(value)
     }
 
     function getMemberById(id) {
@@ -270,7 +291,7 @@ export function TaskDetails() {
         onBackdropClicked()
     }
 
-    // Checklist
+    // Checklists
 
     function getDonePercentage(checklist) {
         const completedTodos = checklist.todos.filter(todo => todo.isDone).length
@@ -379,6 +400,44 @@ export function TaskDetails() {
                 revertedTask.checklists[checklistIndex].todos[todoIndex].isDone = !target.checked
                 setTaskToEdit(revertedTask)
             }
+        }
+    }
+
+    function startEditingItem(todoId, todoTitle) {
+        setEditingItemIds(prev => {
+            const newState = Object.keys(prev).reduce((acc, key) => {
+                acc[key] = false
+                return acc
+            }, {})
+
+            newState[todoId] = true
+            return newState
+        })
+        setEditItemTitleValue(todoTitle)
+        setEditingTodoId(todoId)
+    }
+
+    async function saveEditedItem(todo, checklist) {
+        const updatedTask = { ...taskToEdit }
+        const checklistIndex = updatedTask.checklists.findIndex(c => c.id === checklist.id)
+        const todoIndex = updatedTask.checklists[checklistIndex].todos.findIndex(t => t.id === todo.id)
+        updatedTask.checklists[checklistIndex].todos[todoIndex].title = editItemTitleValue
+
+        await updateTask(updatedTask, group, board)
+        closeAllEditingItems()
+    }
+
+    function closeAllEditingItems() {
+        setEditingItemIds({})
+        setEditingTodoId(null)
+    }
+
+    function handleKeyDown(e, todo, checklist) {
+        if (e.key === 'Escape') {
+            closeAllEditingItems()
+        } else if (e.key === 'Enter') {
+            e.preventDefault()
+            saveEditedItem(todo, checklist)
         }
     }
 
@@ -660,7 +719,7 @@ export function TaskDetails() {
                                             </div>
                                             <div className="checklist-items">
                                                 {checklist.todos ? checklist.todos.map(todo => (
-                                                    <div className="checklist-item-container" key={todo.id}>
+                                                    <div className={`checklist-item-container ${editingItemIds[todo.id] ? 'editing' : ''}`} key={todo.id}>
                                                         <div className="checklist-item-checkbox">
                                                             <input
                                                                 className='item-checkbox'
@@ -669,16 +728,33 @@ export function TaskDetails() {
                                                                 checked={todo.isDone}
                                                                 onChange={(ev) => { onChangeTodo(ev, todo, checklist) }} />
                                                         </div>
-                                                        <div
-                                                            className="checklist-item-details"
-                                                            style={todo.isDone ? { textDecoration: 'line-through' } : {}}>
-                                                            <div className="todo-actions">
-                                                                <div className="action-container">
-                                                                    <img onClick={(ev) => onClickMenu(ev, todo.id)} src="../../../src/assets/imgs/TaskDetails-icons/3dots.svg" alt="" />
+                                                        {editingItemIds[todo.id] ?
+                                                            <>
+                                                                <textarea
+                                                                    ref={editTodoItemRef}
+                                                                    className='edit-checklist-item-title'
+                                                                    onChange={handleItemEditTitle}
+                                                                    value={editItemTitleValue}
+                                                                    onKeyDown={(e) => handleKeyDown(e, todo, checklist)}
+                                                                ></textarea>
+                                                                <article className="btns">
+                                                                    <button type='button' onClick={() => saveEditedItem(todo, checklist)} className='btn-save'>Save</button>
+                                                                    <img onClick={closeAllEditingItems} src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="" />
+                                                                </article>
+                                                            </>
+
+                                                            :
+                                                            <div
+                                                                onClick={() => startEditingItem(todo.id, todo.title)}
+                                                                className="checklist-item-details"
+                                                                style={todo.isDone ? { textDecoration: 'line-through' } : {}}>
+                                                                <div className="todo-actions">
+                                                                    <div className="action-container">
+                                                                        <img onClick={(ev) => onClickMenu(ev, todo.id)} src="../../../src/assets/imgs/TaskDetails-icons/3dots.svg" alt="" />
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <span className='todo-title'>{todo.title}</span>
-                                                        </div>
+                                                                <span className='todo-title'>{todo.title}</span>
+                                                            </div>}
                                                     </div>
                                                 )) : ''}
 
@@ -769,7 +845,12 @@ export function TaskDetails() {
                                         <p>{comment.byMember.fullname} <span className='comment-timestamp'>{getFormattedTime(comment.createdAt)}</span></p>
                                         {isEditingComment ?
                                             <>
-                                                <textarea ref={editCommentRef} className='edit-comment' onChange={handleEditCommentChange} value={editCommentInputValue}></textarea>
+                                                <textarea
+                                                    ref={editCommentRef}
+                                                    className='edit-comment'
+                                                    onChange={handleEditCommentChange}
+                                                    value={editCommentInputValue}
+                                                ></textarea>
                                                 <article className="btns">
                                                     <button disabled={!editCommentInputValue} type='button' onClick={() => onSaveEdittedComment(comment.id)} className='btn-save'>Save</button>
                                                     <button type='button' onClick={() => setIsEditingComment(false)} className='btn-cancel'>Discard changes</button>
