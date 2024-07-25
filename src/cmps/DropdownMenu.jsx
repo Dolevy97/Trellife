@@ -4,9 +4,10 @@ import { useNavigate } from "react-router"
 
 export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen }) {
     const boards = useSelector(storeState => storeState.boardModule.boards)
-    const navigate = useNavigate()
-    const dropdownRef = useRef(null);
+    const user = useSelector(storeState => storeState.userModule.user)
+    const dropdownRef = useRef(null)
 
+    const navigate = useNavigate()
 
     function handleClickOutside(event) {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -34,10 +35,13 @@ export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen }) {
                     <div className="menu-content">
                         <ul>
                             {boards.map(board => (
-                                <li key={board._id} onClick={() => {
+                                <li key={board._id} className='menu-list' onClick={() => {
                                     navigate(`/board/${board._id}`)
                                     setIsMenuOpen(false)
-                                }}>{board.title}</li>
+                                }}>
+                                    <div className="board-bg" style={board.style}></div>
+                                    <div className="menu-text">{board.title} </div>
+                                </li>
                             ))}
                         </ul>
                     </div>
@@ -53,15 +57,18 @@ export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen }) {
                 )
 
             case 'Starred':
-                const filteredBoards = boards.filter(board => board.isStarred)
+                const filteredBoards = boards.filter(board => user.favorites.includes(board._id))
                 return (
                     <div className="menu-content">
                         <ul>
                             {filteredBoards.map(board => (
-                                <li key={board._id} onClick={() => {
+                                <li key={board._id} className='menu-list' onClick={() => {
                                     navigate(`/board/${board._id}`)
                                     setIsMenuOpen(false)
-                                }}>{board.title}</li>
+                                }}>
+                                    <div className="board-bg" style={board.style}></div>
+                                    <div className="menu-text">{board.title} </div>
+                                </li>
                             ))}
                         </ul>
                     </div>

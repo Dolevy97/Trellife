@@ -189,15 +189,27 @@ export async function onDownloadUrl(url, filename) {
     }
 }
 
-const imageCache = new Map()
+const imageCache = {}
+
+function saveToLocalCache(key, data) {
+    localStorage.setItem(key, JSON.stringify(data))
+}
+
+function getFromLocalCache(key) {
+    const data = localStorage.getItem(key)
+    return data ? JSON.parse(data) : null
+}
 
 export async function getUnsplashImages(query = 'random', count = 1) {
-    const cacheKey = `${query}_${count}`
+    const cacheKey = 'all_images'
 
-    // Check if we have cached results for this query and count
-    if (imageCache.has(cacheKey)) {
-        console.log('Returning cached images')
-        return imageCache.get(cacheKey)
+    let allImages = getFromLocalCache(cacheKey)
+    if (allImages) {
+        return allImages
+    }
+
+    if (Object.keys(imageCache).length > 0) {
+        return Object.values(imageCache)
     }
 
     try {
@@ -216,10 +228,13 @@ export async function getUnsplashImages(query = 'random', count = 1) {
             url: image.urls.raw,
             smallUrl: image.urls.small,
             thumbnailUrl: image.urls.thumb,
-            description: image.description || image.alt_description,
+            description: image.description || image.alt_description
         }))
 
-        imageCache.set(cacheKey, images)
+        saveToLocalCache(cacheKey, images)
+        images.forEach(image => {
+            imageCache[image.id] = image
+        })
 
         return images
     } catch (error) {
@@ -229,13 +244,18 @@ export async function getUnsplashImages(query = 'random', count = 1) {
 }
 
 export async function getUnsplashImageById(imageId) {
-    // Check if the image is in any of our cached results
-    for (let cachedImages of imageCache.values()) {
-        const cachedImage = cachedImages.find(img => img.id === imageId)
-        if (cachedImage) {
-            console.log('Returning cached image by ID')
-            return cachedImage
+    const cacheKey = 'all_images'
+
+    let allImages = getFromLocalCache(cacheKey)
+    if (allImages) {
+        const image = allImages.find(img => img.id === imageId)
+        if (image) {
+            return image
         }
+    }
+
+    if (imageCache[imageId]) {
+        return imageCache[imageId]
     }
 
     try {
@@ -250,10 +270,13 @@ export async function getUnsplashImageById(imageId) {
             url: response.data.urls.regular,
             smallUrl: response.data.urls.small,
             thumbnailUrl: response.data.urls.thumb,
-            description: response.data.description || response.data.alt_description,
+            description: response.data.description || response.data.alt_description
         }
 
-        imageCache.set(`single_${imageId}`, [image])
+        allImages = getFromLocalCache(cacheKey) || []
+        allImages.push(image)
+        saveToLocalCache(cacheKey, allImages)
+        imageCache[image.id] = image
 
         return image
     } catch (error) {
@@ -263,6 +286,7 @@ export async function getUnsplashImageById(imageId) {
 }
 
 export function clearUnsplashCache() {
-    imageCache.clear()
+    localStorage.removeItem('all_images')
+    Object.keys(imageCache).forEach(key => delete imageCache[key])
     console.log('Unsplash image cache cleared')
 }
