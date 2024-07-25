@@ -177,8 +177,8 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                         {board.labels.map(label => {
                             return (
                                 <div key={label.id} className="label-container">
-                                    <input className="label-checkbox" type="checkbox" checked={task.labelsIds.includes(label.id)} onChange={(ev) => onToggleLabel(ev, label.id)} />
-                                    <div className="label" style={{ backgroundColor: label.color }} >{label.title}</div>
+                                    <input className={`label-checkbox ${label.id}`} type="checkbox" checked={task.labelsIds.includes(label.id)} onChange={(ev) => onToggleLabel(ev, label.id)} />
+                                    <div className="label" style={{ backgroundColor: label.color }} onClick={() => document.querySelector(`.label-checkbox.${label.id}`).click()}>{label.title}</div>
                                     <div
                                         className="pen-icon-container"
                                         onClick={(ev) => { setLabelToEdit({ ...label }); onSetAction(ev, 'edit label'); }}>
