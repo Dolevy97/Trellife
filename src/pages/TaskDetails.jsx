@@ -727,10 +727,10 @@ export function TaskDetails() {
                                         <h1 className='comment-txt'>{comment.txt}</h1>
                                         <article className="comment-reactions">
                                             {user && user._id === comment.byMember._id &&
-                                                <span class="edit-and-delete">
-                                                    <span class="comment-reaction-button">Edit</span>
-                                                    <span class="sep">•</span>
-                                                    <span onClick={() => onDeleteComment(comment.id)} class="comment-reaction-button">Delete</span>
+                                                <span className="edit-and-delete">
+                                                    <span className="comment-reaction-button">Edit</span>
+                                                    <span className="sep">•</span>
+                                                    <span onClick={() => onDeleteComment(comment.id)} className="comment-reaction-button">Delete</span>
                                                 </span>}
                                         </article>
                                     </div>
