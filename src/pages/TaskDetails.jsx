@@ -92,10 +92,6 @@ export function TaskDetails() {
         setAction(null)
     }
 
-    function onSubmit(ev) {
-        ev.preventDefault()
-    }
-
     function handleChange({ target }) {
         const { type, name: field } = target
         let { value } = target
@@ -137,7 +133,6 @@ export function TaskDetails() {
     // Description
 
     function startSetDescription(ev) {
-        console.log(ev)
         setTempDescription(taskToEdit.description)
         setIsSettingDescription(true)
     }
