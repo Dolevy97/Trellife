@@ -422,7 +422,7 @@ export function TaskDetails() {
 
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
-            <form className="task-details" onSubmit={onSubmit} onClick={onTaskDetailsClicked}>
+            <section className="task-details" onClick={onTaskDetailsClicked}>
                 <img onClick={onBackdropClicked} className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close-white.svg" alt="close icon" />
                 {style &&
                     <div className="task-details-cover" style={{ ...style, height: style.backgroundImage ? '160px' : '' }}>
@@ -812,7 +812,7 @@ export function TaskDetails() {
 
                     </section>
                 </section>
-            </form>
+            </section>
         </div >
     )
 }
