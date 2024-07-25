@@ -98,6 +98,22 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         onSetAction(ev, null)
     }
 
+    async function onRemoveLabel() {
+
+    }
+
+    function onSetLabelToEditColor({ target }) {
+        const color = target.style.backgroundColor
+        document.querySelectorAll('.color').forEach(elColor => elColor.classList.remove('selected'))
+        target.classList.add('selected')
+        setLabelToEdit({ ...labelToEdit, color })
+    }
+
+    async function onRemoveLabelToEditColor() {
+        document.querySelectorAll('.color').forEach(elColor => elColor.classList.remove('selected'))
+        setLabelToEdit({ ...labelToEdit, color: null })
+    }
+
     async function onAddAttachment(ev, isCover) {
         const files = ev.target.files
         const action = !task.style ? 'cover' : null
@@ -197,10 +213,50 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                     <div className="edit-label">
                         <span className="title">Title</span>
                         <input className="text" value={labelInputValue} onChange={(ev) => setLabelInputValue(ev.target.value)} />
-                        {/* <input className="text" value={checklistInputValue} onChange={(ev) => setChecklistInputValue(ev.target.value)} /> */}
                     </div>
-                    <button className="add-checklist" onClick={onSaveLabel}>Save</button>
-                    {/* <button className="add-checklist" onClick={onSaveLabel}>Add</button> */}
+                    <div className="colors-container">
+                        <span className="title">Select a color</span>
+                        <div className="colors">
+                            <div className="color" style={{ backgroundColor: '#174b35' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#533f03' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#702e00' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#5d1f1a' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#362c63' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#206e4e' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#7f5f02' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#a64700' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#ae2e24' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#5e4db2' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#4cce97' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#e1b205' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#fea363' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#f87168' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#9f8fef' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#0a326c' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#154555' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#37471f' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#50253f' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#454f59' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#0055cc' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#1f6a83' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#4d6b1f' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#943d73' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#596773' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#579dff' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#6cc3e0' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#94c747' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#e774bb' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#8c9baa' }} onClick={onSetLabelToEditColor}></div>
+                        </div>
+                    </div>
+                    <button className="btn-dark-grey flex align-center justify-center" onClick={onRemoveLabelToEditColor}>
+                        <img className="icon remove-icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" />
+                        <span>Remove color</span>
+                    </button>
+                    <div className="flex space-between">
+                        <button className="btn-blue" onClick={onSaveLabel}>Save</button>
+                        <button className="btn-red" onClick={onRemoveLabel}>Delete</button>
+                    </div>
                 </>
             }
             {action === 'cover' &&
@@ -252,7 +308,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                         <span className="title">Title</span>
                         <input className="text" value={checklistInputValue} onChange={(ev) => setChecklistInputValue(ev.target.value)} />
                     </div>
-                    <button className="add-checklist" onClick={onAddChecklist}>Add</button>
+                    <button className="btn-blue" onClick={onAddChecklist}>Add</button>
                 </>
             }
             {(action === 'attach' || action === 'cover') &&

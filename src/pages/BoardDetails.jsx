@@ -7,6 +7,9 @@ import { boardService } from '../services/board/'
 import { GroupPreview } from "../cmps/GroupPreview.jsx"
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { BoardDetailsHeader } from '../cmps/BoardDetailsHeader.jsx'
+
+import { RightNavBar } from '../cmps/RightNavBar'
+
 import { store } from '../store/store.js'
 import { SET_USER } from '../store/reducers/user.reducer.js'
 import { guestLogin } from '../store/actions/user.actions.js'
@@ -20,6 +23,7 @@ export function BoardDetails() {
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [newGroupTitle, setNewGroupTitle] = useState('')
   const [areLabelsExpanded, setAreLabelsExpanded] = useState(false)
+  const [isRightNavBarOpen, setIsRightNavBarOpen] = useState(false)
 
   const groupListContainer = useRef()
   const groupListHeader = useRef()
@@ -126,7 +130,15 @@ export function BoardDetails() {
     // <section className="main-display-container">
     // <LeftNavBar />
     <section ref={groupListHeader} className='board-details'>
-      <BoardDetailsHeader />
+      <BoardDetailsHeader
+        isRightNavBarOpen={isRightNavBarOpen}
+        setIsRightNavBarOpen={setIsRightNavBarOpen}
+      />
+      <RightNavBar
+        onClose={() => setIsRightNavBarOpen(false)}
+        isRightNavBarOpen={isRightNavBarOpen}
+        setIsRightNavBarOpen ={setIsRightNavBarOpen}
+      />
       <section ref={groupListContainer} className="group-list-container">
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId='groups' direction='horizontal' type='GROUP'>

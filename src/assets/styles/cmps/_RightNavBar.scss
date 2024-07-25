@@ -1,0 +1,77 @@
+.header-moving {}
+
+.right-nav-bar-container {
+    display: flex;
+    flex-direction: column;
+
+    position: fixed;
+    right: 0;
+    top: 3rem;
+    z-index: 1000;
+    width: 21.188em;
+    height: calc(100% - 3rem);
+    // height: fit-content;
+    background-color:$bgclr1;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &.is-close {
+        transform: translateX(100%);
+
+    }
+
+    .right-nav-bar-header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+
+        .close-btn-wrapper {
+            position: absolute;
+            right: 8px;
+            top: 0px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            transition: background-color 0.1s ease;
+            cursor: pointer;
+
+            &:hover {
+                background-color: $btnhoverclr;
+            }
+
+            img {
+                height: 16px;
+                width: 16px;
+            }
+
+        }
+
+        .header-sep {
+            height: 1px;
+            width: 100%;
+            background-color: #181818;
+        }
+    }
+
+    .activity-container{
+        img{
+            height: 16px;
+            width: 16px;
+        }
+    }
+
+    .delete-board-container{
+        img{
+            height: 16px;
+            width: 16px;
+        }
+    }
+
+}
