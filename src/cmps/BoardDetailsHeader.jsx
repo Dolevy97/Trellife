@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 import { updateBoard } from '../store/actions/board.actions'
 import { useSelector } from 'react-redux'
+import { showSuccessMsg } from '../services/event-bus.service'
 
 export function BoardDetailsHeader() {
   const board = useSelector(storeState => storeState.boardModule.board)
+  const user = useSelector(storeState => storeState.userModule.user)
+
   const [isEditing, setIsEditing] = useState(false)
   const [newTitle, setNewTitle] = useState(board.title)
 
@@ -54,6 +57,27 @@ export function BoardDetailsHeader() {
     }
   }
 
+  async function onShareJoinClick() {
+    const userIsInBoard = canUserJoinBoard()
+    if (!userIsInBoard) {
+      board.members.push(user)
+      await updateBoard(board)
+      return
+    }
+    const currentURL = window.location.href
+
+    try {
+      await navigator.clipboard.writeText(currentURL)
+      showSuccessMsg('Board link copied to clipboard')
+    } catch (error) {
+      console.error('Failed to copy URL:', error)
+    }
+  }
+
+  function canUserJoinBoard() {
+    return board.members.find(u => u._id === user._id)
+  }
+
   return (
     <section className='groups-header'>
       <div className='groups-header-leftside'>
@@ -86,16 +110,23 @@ export function BoardDetailsHeader() {
           <img src="../../../src\assets\imgs\Icons\filter.svg" />
           <span>Filters</span>
         </div>
+        <span className="sep">
+
+        </span>
         <div className='members-container'>
-          {board.members.map(member => {
+          {board.members.map((member, idx, members) => {
             return <img
               key={member._id}
               className='user-img'
               src={member.imgUrl}
               alt="user image"
-              title={member.fullname} />
+              title={member.fullname}
+              style={{ zIndex: members.length - idx }} />
           })}
         </div>
+        <button onClick={onShareJoinClick} className='btn-share-join'>
+          <img className="share-join-icon" src="../../../src\assets\imgs\Icons\share.svg"></img>
+          <span className='share-join-text'>{canUserJoinBoard() ? 'Share' : 'Join'}</span></button>
         <img src="../../../src\assets\imgs\Icons\3dots.svg" alt="" />
 
       </div>

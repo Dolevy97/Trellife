@@ -98,7 +98,6 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
         setOpenMenuGroupId(null);
     }
 
-
     async function toggleCollapse() {
         const updatedGroup = {
             ...group,
@@ -110,7 +109,7 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
         const newBoard = await updateGroup(updatedGroup.id, updatedGroup, board);
         // You might need to update your local state here if you're not relying solely on Redux
     }
-
+    
     return (
         <header className={`group-preview-header ${group.style.isCollapse ? 'collapsed' : ''}`}>
          {isEditing && !group.style.isCollapse ? (

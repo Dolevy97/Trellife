@@ -7,7 +7,7 @@
     backdrop-filter: blur(7.1px);
     -webkit-backdrop-filter: blur(7.1px);
 
-    padding: 10px 15px;
+    padding: 12px 10px 12px 16px;
     color: white;
     font-weight: bold;
 
@@ -91,11 +91,11 @@
     .groups-header-rightside {
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 8px;
 
         .filter-container {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
 
             img {
@@ -105,13 +105,44 @@
             }
 
             span {
-                font-weight: 400;
+                font-weight: 500;
             }
+        }
+
+        & .sep {
+            display: inherit;
+            height: 16px;
+            margin: 8px 4px 8px 4px;
+            border-left: 1px solid hsla(0, 0%, 100%, 0.16);
         }
 
         .members-container {
             display: flex;
             align-items: center;
+        }
+
+        .btn-share-join {
+            display: flex;
+            align-items: center;
+
+            @include btn;
+
+            max-width: 400px;
+            padding-inline-start: 8px;
+            background-color: #DCDFE4;
+
+            &:hover {
+                background-color: #FFFFFF;
+            }
+
+            & .share-join-icon {
+                width: 16px;
+                height: 16px;
+            }
+
+            & .share-join-text {
+                margin-inline-start: 4px;
+            }
         }
     }
 }
