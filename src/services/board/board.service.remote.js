@@ -7,6 +7,8 @@ export const boardService = {
     remove,
 }
 
+console.log('remote works')
+
 async function query(filterBy = { title: '' }) {
     return httpService.get(`board`, filterBy)
 }
