@@ -119,7 +119,6 @@ export function AppHeader({ isHomePage }) {
 						</article>
 					</section>
 				</nav>
-				{console.log(userMenuOpen)}
 				{!isHomePage && user && <section ref={accountProfileRef} title='account' onClick={() => setUserMenuOpen(!userMenuOpen)} className="user-profile">
 					<img className='user-profile-img' src={user.imgUrl} />
 				</section>}
