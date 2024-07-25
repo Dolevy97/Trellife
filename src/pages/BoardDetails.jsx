@@ -144,7 +144,6 @@ export function BoardDetails() {
     setAreAllGroupsCollapsed(newCollapseState)
   }
 
-  console.log(board.activities);
 
   const groups = board?.groups || []
   //needs layers
