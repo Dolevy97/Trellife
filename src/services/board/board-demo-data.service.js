@@ -18,7 +18,7 @@ function _createDemoBoard() {
         _id: makeId(),
         title: _getProjectTitle(),
         isStarred: getRandomIntInclusive(0, 9) < 3 ? true : false,
-        archivedAt: getRandomIntInclusive(0, 9) < 3 ? getrandomtimestamp() : null,
+        archivedAt: getRandomIntInclusive(0, 9) < 3 ? getRandomTimestamp() : null,
         createdBy: getRandomMember(),
         style: {
             // background: 'url(https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1748&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',

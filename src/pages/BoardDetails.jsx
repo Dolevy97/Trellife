@@ -9,21 +9,22 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { BoardDetailsHeader } from '../cmps/BoardDetailsHeader.jsx'
 import { store } from '../store/store.js'
 import { SET_USER } from '../store/reducers/user.reducer.js'
+import { guestLogin } from '../store/actions/user.actions.js'
 // import { socketService } from '../services/socket.service.js'
 
 export function BoardDetails() {
-  
+
   const user = useSelector(storeState => storeState.userModule.user)
   const board = useSelector(storeState => storeState.boardModule.board)
 
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [newGroupTitle, setNewGroupTitle] = useState('')
   const [areLabelsExpanded, setAreLabelsExpanded] = useState(false)
-  
+
   const groupListContainer = useRef()
   const groupListHeader = useRef()
   const addGroupRef = useRef(null)
-  
+
   const { boardId } = useParams()
 
   useEffect(() => {
@@ -32,13 +33,7 @@ export function BoardDetails() {
 
   useEffect(() => {
     if (!user) {
-      const guest = {
-        _id: '',
-        fullname: 'Guest',
-        imgUrl: 'https://www.shutterstock.com/image-vector/user-icon-trendy-flat-style-600nw-1697898655.jpg'
-      }
-      store.dispatch({ type: SET_USER, user: guest })
-      socketService.login(guest._id)
+      guestLogin()
     }
   }, [user])
 
