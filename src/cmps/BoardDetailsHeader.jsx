@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { RightNavBar } from '../cmps/RightNavBar';
 import { showSuccessMsg } from '../services/event-bus.service'
 
-export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen }) {
+export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen,isFilterOpen }) {
   const board = useSelector(storeState => storeState.boardModule.board)
   const user = useSelector(storeState => storeState.userModule.user)
 
@@ -103,6 +103,10 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen }) 
   function toggleRightNavBar() {
     setIsRightNavBarOpen(!isRightNavBarOpen)
   }
+
+  function toggleFilterOpen() {
+    setIsFilterOpen(!isFilterOpen)
+  }
   return (
     <section className={`groups-header ${isRightNavBarOpen ? 'right-nav-open' : ''}`}>
       <div className='groups-header-leftside'>
@@ -131,7 +135,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen }) 
         </div>
       </div>
       <div className='groups-header-rightside'>
-        <div className='filter-container'>
+        <div className='filter-container'  onClick={toggleFilterOpen}>
           <img src="../../../src\assets\imgs\Icons\filter.svg" />
           <span>Filters</span>
         </div>
