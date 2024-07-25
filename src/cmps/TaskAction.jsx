@@ -79,6 +79,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
     }
 
     async function onSaveLabel(ev) {
+        if (!labelToEdit.color && !labelToEdit.title) return
         const label = { ...labelToEdit, title: labelInputValue }
         const labels = board.labels.map(l => {
             if (l.id !== label.id) return l
@@ -86,7 +87,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         })
         const activityTitle = `updated label (id: ${label.id}) on this board`
 
-        let activities = [...board.activities]
+        const activities = [...board.activities]
         const activity = {
             id: 'a' + makeId(),
             title: activityTitle,
@@ -103,8 +104,38 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         onSetAction(ev, null)
     }
 
-    async function onRemoveLabel() {
+    async function onRemoveLabel(ev) {
 
+        const updatedLabels = board.labels.filter(l => l.id !== labelToEdit.id)
+
+        const groups = [...board.groups].map(g => {
+            const tasks = [...g.tasks].map(t => {
+                const labelsIds = [...t.labelsIds].filter(id => id !== labelToEdit.id)
+                return { ...t, labelsIds }
+            })
+            return { ...g, tasks: tasks }
+        })
+
+        const activityTitle = `Label (id: ${labelToEdit.id}) removed from board`
+        const activities = [...board.activities]
+        const activity = {
+            id: 'a' + makeId(),
+            title: activityTitle,
+            // NOTICE TO CHANGE THE BY MEMBER TO LOGGED IN USER
+            byMember: { ...board.members[getRandomIntInclusive(0, board.members.length - 1)] },
+            group: { ...group },
+            task: { ...task }
+        }
+        activities.push(activity)
+
+        const updatedBoard = { ...board, groups, labels: updatedLabels, activities }
+
+        // console.log('labelToEdit.id ', labelToEdit.id)
+        // updatedBoard.labels.forEach(label => console.log(label.id))
+        // updatedBoard.groups.forEach(g => g.tasks.forEach(t => t.labelsIds.forEach(id => console.log(id))))
+
+        await updateBoard(updatedBoard)
+        onSetAction(ev, null)
     }
 
     function onSetLabelToEditColor({ target }) {
@@ -160,6 +191,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
     return (
         <section className="task-action" onClick={(ev) => ev.stopPropagation()}>
             <header className="action-header">
+                {action === 'edit label' && <div onClick={(ev) => onSetAction(ev, 'labels')} className="back-container"> <img className="back-action icon" src="../../../src/assets/imgs/TaskDetails-icons/left-arrow.svg" /> </div>}
                 {action.charAt(0).toUpperCase() + action.substring(1, action.length)}
                 <div onClick={(ev) => onSetAction(ev, null)} className="close-action-container"> <img className="close-action icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" /> </div>
             </header>
@@ -199,7 +231,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                             return (
                                 <div key={label.id} className="label-container">
                                     <input className={`label-checkbox ${label.id}`} type="checkbox" checked={task.labelsIds.includes(label.id)} onChange={(ev) => onToggleLabel(ev, label.id)} />
-                                    <div className="label" style={{ backgroundColor: label.color }} onClick={() => document.querySelector(`.label-checkbox.${label.id}`).click()}>{label.title}</div>
+                                    <div className="label" style={{ backgroundColor: label.color ? label.color : '#323940' }} onClick={() => document.querySelector(`.label-checkbox.${label.id}`).click()}>{label.title}</div>
                                     <div
                                         className="pen-icon-container"
                                         onClick={(ev) => { setLabelToEdit({ ...label }); onSetAction(ev, 'edit label'); }}>
@@ -254,12 +286,12 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                             <div className="color" style={{ backgroundColor: '#8c9baa' }} onClick={onSetLabelToEditColor}></div>
                         </div>
                     </div>
-                    <button className="btn-dark-grey flex align-center justify-center" onClick={onRemoveLabelToEditColor}>
-                        <img className="icon remove-icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" />
+                    <button className={`btn-dark-grey flex align-center justify-center ${!labelToEdit.color ? 'btn-disabled' : ''}`} onClick={onRemoveLabelToEditColor}>
+                        <img className="icon remove-icon" src={`../../../src/assets/imgs/TaskDetails-icons/close${!labelToEdit.color ? '-disabled' : ''}.svg`} />
                         <span>Remove color</span>
                     </button>
                     <div className="flex space-between">
-                        <button className="btn-blue" onClick={onSaveLabel}>Save</button>
+                        <button className={`btn-blue ${(!labelToEdit.color && !labelInputValue) ? 'btn-disabled' : ''}`} onClick={onSaveLabel}>Save</button>
                         <button className="btn-red" onClick={onRemoveLabel}>Delete</button>
                     </div>
                 </>

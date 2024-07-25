@@ -483,7 +483,8 @@ export function TaskDetails() {
                                     <div className="labels">
                                         {labelsIds && labelsIds.map(id => {
                                             const label = getLabelById(id)
-                                            return <span className="label" key={id} style={{ backgroundColor: label.color }}>{label.title}</span>
+                                            if (!label) return null
+                                            return <span className="label" key={id} style={{ backgroundColor: label.color? label.color : '#3a444c' }}>{label.title}</span>
                                         })}
                                     </div>
                                 </div> : ''}
