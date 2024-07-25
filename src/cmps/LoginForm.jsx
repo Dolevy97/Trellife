@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router';
 
 const SignupSchema = Yup.object().shape({
     username: Yup.string()
@@ -11,7 +12,9 @@ const SignupSchema = Yup.object().shape({
 
 
 
-export function LoginForm({ onSubmit, handleChange, setIsSignup, isSignup }) {
+export function LoginForm({ onSubmit, handleChange, isSignup }) {
+    const navigate = useNavigate()
+
     return (
         <div className="login-container">
             <Formik
@@ -37,11 +40,11 @@ export function LoginForm({ onSubmit, handleChange, setIsSignup, isSignup }) {
                         {errors.fullname && touched.fullname && (
                             <div>{errors.fullname}</div>
                         )}
-                        <button type="submit">{isSignup? 'Sign up': 'Continue'}</button>
+                        <button type="submit">{isSignup === 'signup' ? 'Sign up' : 'Continue'}</button>
                     </Form>
                 )}
             </Formik>
-            <p onClick={() => setIsSignup(!isSignup)}>{isSignup ? 'Already have a Trellife account? Log in' : 'Create an account'}</p>
+            <p onClick={() => navigate(isSignup === 'signup' ? '/login' : '/signup', { replace: true })}>{isSignup === 'signup' ? 'Already have a Trellife account? Log in' : 'Create an account'}</p>
         </div>
     )
 }
