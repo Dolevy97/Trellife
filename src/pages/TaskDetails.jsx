@@ -35,6 +35,9 @@ export function TaskDetails() {
     const [commentToEdit, setCommentToEdit] = useState('')
     const [labelToEdit, setLabelToEdit] = useState(null)
 
+    const [isEditingComment, setIsEditingComment] = useState(false)
+    const [editCommentInputValue, setEditCommentInputValue] = useState(false)
+
     const [isEditingTitle, setIsEditingTitle] = useState(false)
     const [taskTitleInputValue, setTaskTitleInputValue] = useState(taskToEdit?.title || '')
 
@@ -108,6 +111,11 @@ export function TaskDetails() {
             value = +value || ''
         }
         setCommentToEdit(value)
+    }
+
+    function handleEditCommentChange({ target }) {
+        let { value } = target
+        setEditCommentInputValue(value)
     }
 
     function getMemberById(id) {
@@ -210,6 +218,11 @@ export function TaskDetails() {
         updatedBoard.activities.unshift(newActivity)
         await updateBoard(updatedBoard)
         setIsAddingComment(false)
+    }
+
+    async function onStartEditComment(commentId) {
+        console.log(commentId)
+        setIsEditingComment(true)
     }
 
     function handleCommentKeyUp(ev) {
@@ -470,7 +483,8 @@ export function TaskDetails() {
                                     <div className="labels">
                                         {labelsIds && labelsIds.map(id => {
                                             const label = getLabelById(id)
-                                            return <span className="label" key={id} style={{ backgroundColor: label.color }}>{label.title}</span>
+                                            if (!label) return null
+                                            return <span className="label" key={id} style={{ backgroundColor: label.color? label.color : '#3a444c' }}>{label.title}</span>
                                         })}
                                     </div>
                                 </div> : ''}
@@ -720,11 +734,15 @@ export function TaskDetails() {
                                     <div className="comment-container" key={comment.id}>
                                         <img className='member-img-comment' src={comment.byMember.imgUrl} alt="" />
                                         <p>{comment.byMember.fullname} <span className='comment-timestamp'>{getFormattedTime(comment.createdAt)}</span></p>
-                                        <h1 className='comment-txt'>{comment.txt}</h1>
+                                        {isEditingComment ?
+                                            <textarea onChange={handleEditCommentChange} value={editCommentInputValue}></textarea>
+                                            :
+                                            <h1 className='comment-txt'>{comment.txt}</h1>
+                                        }
                                         <article className="comment-reactions">
                                             {user && user._id === comment.byMember._id &&
                                                 <span className="edit-and-delete">
-                                                    <span className="comment-reaction-button">Edit</span>
+                                                    <span onClick={() => onStartEditComment(comment.id)} className="comment-reaction-button">Edit</span>
                                                     <span className="sep">•</span>
                                                     <span onClick={() => onDeleteComment(comment.id)} className="comment-reaction-button">Delete</span>
                                                 </span>}
