@@ -243,7 +243,7 @@ function _getRandomAttachments() {
             url: "http://res.cloudinary.com/dw5vg4xiv/image/upload/v1721739549/ldob56coyk2vn088sjci.jpg",
             createdAt: getRandomTimestamp(),
             type: "image/jpeg",
-            backgroundColor: _rgb(63, 67, 50)
+            backgroundColor: '#e3e4e3'
         },
         {
             title: "BDGD.jpeg",

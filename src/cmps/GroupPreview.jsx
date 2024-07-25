@@ -126,7 +126,6 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                         onAddTaskClick={() => setIsAddingTask(true)}
                     />
 
-
                     <Droppable droppableId={group.id} type="TASK">
                         {(provided) => (
                             <div
