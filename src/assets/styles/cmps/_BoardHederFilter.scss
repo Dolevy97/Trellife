@@ -1,0 +1,40 @@
+.BoardHederFilter {
+    position: fixed;
+    width: 384px;
+    top: 6em;
+    right: 1em;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    background-color: $bgclr1;
+    z-index: 1000;
+    padding: 4px 12px 12px 12px;
+
+    .close-btn-wrapper {
+        position: absolute;
+        right: 6px;
+        top: 6px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 28px;
+        height: 28px;
+        border-radius: 4px;
+        transition: background-color 0.1s ease;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $btnhoverclr;
+        }
+
+        img {
+            height: 16px;
+            width: 16px;
+        }
+
+    }
+}
