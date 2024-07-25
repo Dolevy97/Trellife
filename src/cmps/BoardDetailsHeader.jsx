@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { updateBoard } from '../store/actions/board.actions'
 import { useSelector } from 'react-redux'
+import { RightNavBar } from '../cmps/RightNavBar';
 
-export function BoardDetailsHeader() {
+export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen }) {
   const board = useSelector(storeState => storeState.boardModule.board)
   const [isEditing, setIsEditing] = useState(false)
   const [newTitle, setNewTitle] = useState(board.title)
@@ -54,8 +55,11 @@ export function BoardDetailsHeader() {
     }
   }
 
+  function toggleRightNavBar() {
+    setIsRightNavBarOpen(!isRightNavBarOpen)
+  }
   return (
-    <section className='groups-header'>
+    <section className={`groups-header ${isRightNavBarOpen ? 'right-nav-open' : ''}`}>
       <div className='groups-header-leftside'>
         {isEditing ? (
           <input
@@ -96,8 +100,15 @@ export function BoardDetailsHeader() {
               title={member.fullname} />
           })}
         </div>
-        <img src="../../../src\assets\imgs\Icons\3dots.svg" alt="" />
+        {!isRightNavBarOpen && (
+          <div className='open-right-nav-wrapper'>
+            <img
+              onClick={toggleRightNavBar}
+              src="../../../src\assets\imgs\Icons\3dots.svg" alt=""
+              className='open-right-nav-icon' />
+          </div>
 
+        )}
       </div>
     </section>
   )

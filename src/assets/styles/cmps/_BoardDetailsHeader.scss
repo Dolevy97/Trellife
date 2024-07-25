@@ -10,6 +10,12 @@
     padding: 10px 15px;
     color: white;
     font-weight: bold;
+    transition: margin 0.2s ease-in-out;
+
+    &.right-nav-open {
+        margin-inline-end: 21.188em;
+    }
+
 
     .groups-header-leftside {
         display: flex;
@@ -112,7 +118,7 @@
         .members-container {
             display: flex;
             align-items: center;
-            
+
             .user-img-header {
                 cursor: pointer;
                 position: relative;
@@ -121,12 +127,34 @@
                 border-radius: 50%;
                 object-fit: cover;
                 margin-left: -2px;
-             
+
                 &:hover {
                     opacity: 0.8;
-                  
+
                 }
             }
+        }
+
+        .open-right-nav-wrapper {
+
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.1s ease;
+    
+            &:hover {
+              background-color: $btnhoverclr;
+            }
+    
+
+            .open-right-nav-icon {
+                cursor: pointer;
+            }
+
         }
     }
 }

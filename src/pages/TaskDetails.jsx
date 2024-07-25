@@ -243,7 +243,7 @@ export function TaskDetails() {
     }
 
     function handleChecklistKeyDown(ev, checklist) {
-        if (ev.key === 'Enter') {
+        if (ev.key === '') {
             ev.preventDefault()
             onAddItem(checklist)
         }
