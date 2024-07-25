@@ -116,14 +116,19 @@
         width: fit-content;
         padding-block: 0;
         font-size: 14px;
-        color: #0c66e4;
+        color: #85B8FF;
         cursor: pointer;
     }
 
     button {
         @include btn;
-        background-color: #0C66E4;
+        background-color: #85B8FF;
         color: $bgclr2;
+        margin-block-start: 8px;
+
+        &:hover {
+            background-color: darken(#85B8FF, 10%);
+        }
     }
 
 }
@@ -148,8 +153,7 @@
         font-size: 14px;
 
         &::placeholder {
-        font-size: 14px;
-
+            font-size: 14px;
         }
 
     }

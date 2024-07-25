@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { LoginForm } from "../cmps/LoginForm.jsx";
 import { login, signup } from '../store/actions/user.actions.js';
 
 
-export function Login() {
+export function Auth() {
+    const path = window.location.pathname
+    const isSignup = path.split('/').pop()
+    // const [isSignup, setIsSignup] = useState(false)
+
     const [userInfo, setUserInfo] = useState('')
-    const [isSignup, setIsSignup] = useState(false)
     const navigate = useNavigate()
 
     function handleChange({ target }) {
@@ -51,9 +54,9 @@ export function Login() {
                                         <img className='logo-icon' src='../../../src/assets/imgs/icons/trello-logo.svg' alt='logo' />
                                         <span className='logo-text'>Trellife</span>
                                     </div>
-                                    <h5>{isSignup ? 'Sign up to continue' : 'Log in to continue'}</h5>
+                                    <h5>{isSignup === 'signup' ? 'Sign up to continue' : 'Log in to continue'}</h5>
                                 </div>
-                                <LoginForm onSubmit={onSubmit} handleChange={handleChange} setIsSignup={setIsSignup} isSignup={isSignup} />
+                                <LoginForm onSubmit={onSubmit} handleChange={handleChange} isSignup={isSignup} />
                             </div>
                         </article>
                     </article>

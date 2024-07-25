@@ -63,10 +63,10 @@ export function AppHeader({ isHomePage }) {
 				{isHomePage && <Link to={'/board'}>Board</Link>}
 				<nav>
 					<section className={`homepage-links ${isHomePage ? 'homepage' : ''}`}>
-						<article className="btn-login">
+						<article onClick={() => navigate('/login')} className="btn-login">
 							Log in
 						</article>
-						<article className="btn-register">
+						<article onClick={() => navigate('/signup')} className="btn-register">
 							Get Trellife for free
 						</article>
 					</section>
