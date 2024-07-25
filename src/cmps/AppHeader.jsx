@@ -118,7 +118,7 @@ export function AppHeader({ isHomePage }) {
 						</article>
 					</section>
 				</nav>
-				{!isHomePage && <section onClick={() => setUserMenuOpen(!userMenuOpen)} className="user-profile">
+				{!isHomePage && user && <section onClick={() => setUserMenuOpen(!userMenuOpen)} className="user-profile">
 					<img className='user-profile-img' src={user.imgUrl} />
 				</section>}
 				{isMenuOpen && <DropdownMenu menu={menuToOpen} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />}

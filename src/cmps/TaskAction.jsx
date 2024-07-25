@@ -114,7 +114,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         if (!labelToEdit.id) {
             const updatedTaskLabelsIds = [...task.labelsIds]
             updatedTaskLabelsIds.push(label.id)
-            await updateTask({...task, labelsIds: updatedTaskLabelsIds}, group, updatedBoard)
+            await updateTask({ ...task, labelsIds: updatedTaskLabelsIds }, group, updatedBoard)
         }
         onSetAction(ev, null)
     }
@@ -254,11 +254,14 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
 
                         }
                     </div>
-                    <button className="btn-dark-grey" onClick={(ev) => { setLabelToEdit({ color: '#362c63' }); onSetAction(ev, 'edit label') }}>Create a new label</button>
+                    <button className="btn-dark-grey" onClick={(ev) => { setLabelToEdit({ color: '#206e4e' }); onSetAction(ev, 'edit label') }}>Create a new label</button>
                 </>
             }
             {action === 'edit label' &&
                 <>
+                    <div className="label-preview-container flex">
+                        <span className="label-preview" style={{backgroundColor:labelToEdit.color}}>{labelInputValue}</span>
+                    </div>
                     <div className="edit-label">
                         <span className="title">Title</span>
                         <input className="text" value={labelInputValue} onChange={(ev) => setLabelInputValue(ev.target.value)} />
@@ -271,7 +274,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                             <div className="color" style={{ backgroundColor: '#702e00' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#5d1f1a' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#362c63' }} onClick={onSetLabelToEditColor}></div>
-                            <div className={`color ${!labelToEdit.id ? 'selected' : '' }`} style={{ backgroundColor: '#206e4e' }} onClick={onSetLabelToEditColor}></div>
+                            <div className={`color ${!labelToEdit.id ? 'selected' : ''}`} style={{ backgroundColor: '#206e4e' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#7f5f02' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#a64700' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#ae2e24' }} onClick={onSetLabelToEditColor}></div>
