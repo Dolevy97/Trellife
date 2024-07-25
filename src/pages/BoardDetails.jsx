@@ -124,7 +124,8 @@ export function BoardDetails() {
 
 
   const groups = board?.groups || []
-  if (!board) return null
+  //needs layers
+  if (!board) return <img src="../../../src\assets\imgs\TaskDetails-icons\loading animation.svg"/>
 
   return (
     // <section className="main-display-container">

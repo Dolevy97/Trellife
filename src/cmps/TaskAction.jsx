@@ -74,8 +74,8 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         const updatedTask = { ...task }
         updatedTask.checklists.push({ id: 'cl' + makeId(), title: checklistInputValue, todos: [] })
         const activityTitle = `added ${checklistInputValue} to this card`
-        await updateTask(updatedTask, group, board, activityTitle)
         onSetAction(ev, null)
+        await updateTask(updatedTask, group, board, activityTitle)
     }
 
     async function onSaveLabel(ev) {
