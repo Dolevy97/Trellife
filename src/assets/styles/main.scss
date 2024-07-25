@@ -19,6 +19,7 @@
 @import "pages/HomePage";
 @import "pages/BoardIndex";
 @import "pages/TaskDetails";
+@import "pages/Auth";
 
 // Components
 @import "cmps/list";
@@ -40,5 +41,5 @@
 @import "cmps/GroupPreviewHeader";
 @import "cmps/TaskAction";
 @import "cmps/GroupAction";
-@import "cmps/LeftNavBar";
 @import "cmps/RightNavBar";
+@import "cmps/LeftNavBar";

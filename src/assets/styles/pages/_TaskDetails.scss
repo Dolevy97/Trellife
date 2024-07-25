@@ -611,7 +611,7 @@
 
                             &:hover {
                                 cursor: pointer;
-                                background-color: #282E33;
+                                background-color: $bgclr2;
                             }
 
                             &.editing:hover {
@@ -1190,7 +1190,7 @@
     width: 304px;
 
     color: $txtclr1;
-    background-color: #282E33;
+    background-color: $bgclr2;
     box-shadow: 0px 8px 12px #091e4226, 0px 0px 1px #091e424f;
     border-radius: 8px;
 

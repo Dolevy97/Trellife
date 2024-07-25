@@ -107,7 +107,7 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
         };
         await updateGroup(updatedGroup.id, updatedGroup, board);
     }
-
+    
     return (
         <header className={`group-preview-header`}>
              {isEditing ? (
