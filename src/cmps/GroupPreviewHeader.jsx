@@ -21,7 +21,6 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
         '#3B7AC5'
     ]
 
-
     useEffect(() => {
         setNewTitle(group.title)
     }, [group.title])
@@ -98,7 +97,6 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
         setOpenMenuGroupId(null);
     }
 
-
     async function toggleCollapse() {
         const updatedGroup = {
             ...group,
@@ -107,13 +105,12 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
                 isCollapse: !group.style.isCollapse
             }
         };
-        const newBoard = await updateGroup(updatedGroup.id, updatedGroup, board);
-        // You might need to update your local state here if you're not relying solely on Redux
+        await updateGroup(updatedGroup.id, updatedGroup, board);
     }
-
+    
     return (
-        <header className={`group-preview-header ${group.style.isCollapse ? 'collapsed' : ''}`}>
-         {isEditing && !group.style.isCollapse ? (
+        <header className={`group-preview-header`}>
+             {isEditing ? (
                 <input
                     type="text"
                     value={newTitle}
@@ -123,29 +120,29 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
                     autoFocus
                 />
             ) : (
-                <span className='header-title' onClick={() => !group.style.isCollapse && setIsEditing(true)}>
-                        {group.title} {group.style.isCollapse && `(${group.tasks.length})`}
+                <span className='header-title' onClick={() => setIsEditing(true)}>
+                    {group.title} {group.style.isCollapse && `(${group.tasks.length})`}
 
 
-                    </span>
+                </span>
             )}
             <div className='header-svg-container'>
-                <img
-                    className='collapse-icon'
-                    src={group.style.isCollapse ? "../../../src/assets/imgs/Icons/expand.svg" : "../../../src/assets/imgs/Icons/collapse.svg"}
-                    alt={group.style.isCollapse ? "expand" : "collapse"}
-                    title={group.style.isCollapse ? "expand" : "collapse"}
-                    onClick={toggleCollapse}
-                />
-                {!group.style.isCollapse && (
-                    <div onClick={toggleOptions} className='three-dots-btn-wrapper'>
+                <div onClick={toggleCollapse} className='collapse-wrapper' >
+                    <img
+                        className='collapse-icon'
+                        src={group.style.isCollapse ? "../../../src/assets/imgs/Icons/expand.svg" : "../../../src/assets/imgs/Icons/collapse.svg"}
+                        alt={group.style.isCollapse ? "expand" : "collapse"}
+                        title={group.style.isCollapse ? "expand" : "collapse"}
+                        
+                    />
+                </div>
+                    <div onClick={toggleOptions} className='three-dots-wrapper'>
                         <img
-                            className='svg-size three-dots-open'
+                            className='svg-size three-dots-icon'
                             src="../../../src/assets/imgs/Icons/3dots.svg"
                             alt="options"
                         />
                     </div>
-                )}
             </div>
             {openMenuGroupId === group.id && (
                 <div ref={menuRef} className="header-options-menu">

@@ -85,6 +85,13 @@ export function BoardDetails() {
     }
   }
 
+  function handleKeyPress(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      onAddGroup()
+    }
+  }
+
   async function handleOnDragEnd(result) {
     if (!result.destination) return
     const { source, destination, type } = result
@@ -103,13 +110,6 @@ export function BoardDetails() {
       await updateBoard({ ...board, groups: updatedGroups })
     } catch (err) {
       console.error('Failed to update board:', err)
-    }
-  }
-
-  function handleKeyPress(e) {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      onAddGroup()
     }
   }
 
