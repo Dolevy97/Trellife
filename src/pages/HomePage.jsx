@@ -9,7 +9,6 @@ export function HomePage() {
     async function onSignIn() {
         try {
             await guestLogin()
-            console.log(`logged in successfully: ${loggedInUser}`)
             navigate('/board')
         } catch (err) {
             console.log('error logging in:', err)

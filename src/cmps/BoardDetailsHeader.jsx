@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { updateBoard } from '../store/actions/board.actions'
 import { useSelector } from 'react-redux'
+import { RightNavBar } from '../cmps/RightNavBar';
 import { showSuccessMsg } from '../services/event-bus.service'
 
-export function BoardDetailsHeader() {
+export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen }) {
   const board = useSelector(storeState => storeState.boardModule.board)
   const user = useSelector(storeState => storeState.userModule.user)
 
@@ -78,8 +79,32 @@ export function BoardDetailsHeader() {
     return board.members.find(u => u._id === user._id)
   }
 
+  async function onShareJoinClick() {
+    const userIsInBoard = canUserJoinBoard()
+    if (!userIsInBoard) {
+      board.members.push(user)
+      await updateBoard(board)
+      return
+    }
+    const currentURL = window.location.href
+
+    try {
+      await navigator.clipboard.writeText(currentURL)
+      showSuccessMsg('Board link copied to clipboard')
+    } catch (error) {
+      console.error('Failed to copy URL:', error)
+    }
+  }
+
+  function canUserJoinBoard() {
+    return board.members.find(u => u._id === user._id)
+  }
+
+  function toggleRightNavBar() {
+    setIsRightNavBarOpen(!isRightNavBarOpen)
+  }
   return (
-    <section className='groups-header'>
+    <section className={`groups-header ${isRightNavBarOpen ? 'right-nav-open' : ''}`}>
       <div className='groups-header-leftside'>
         {isEditing ? (
           <input
@@ -127,8 +152,15 @@ export function BoardDetailsHeader() {
         <button onClick={onShareJoinClick} className='btn-share-join'>
           <img className="share-join-icon" src="../../../src\assets\imgs\Icons\share.svg"></img>
           <span className='share-join-text'>{canUserJoinBoard() ? 'Share' : 'Join'}</span></button>
-        <img src="../../../src\assets\imgs\Icons\3dots.svg" alt="" />
+        {!isRightNavBarOpen && (
+          <div className='open-right-nav-wrapper'>
+            <img
+              onClick={toggleRightNavBar}
+              src="../../../src\assets\imgs\Icons\3dots.svg" alt=""
+              className='open-right-nav-icon' />
+          </div>
 
+        )}
       </div>
     </section>
   )

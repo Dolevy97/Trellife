@@ -157,6 +157,7 @@
                 &:hover{
                     cursor: pointer;
                 }
+
             }
 
 
@@ -200,10 +201,18 @@
             height: em(32, 16);
             border-radius: 3px;
             cursor: pointer;
+
+
+            &.selected{
+                outline-color: #579dff;
+                outline-width: em(2);
+                outline-style: solid;
+            }
+
         }
     }
 
-    .add-checklist {
+    .btn-blue {
         width: em(74, 14);
         color: rgb(40, 46, 51);
         background-color: #579dff;
@@ -215,6 +224,32 @@
         &:hover {
             background-color: #85b8ff;
         }
+    }
+
+    .btn-red {
+        width: em(74, 14);
+        color: rgb(40, 46, 51);
+        background-color: #f87168;
+        border-radius: 3px;
+        font-size: 14px;
+        font-weight: 500;
+        height: 32px;
+
+        &:hover {
+            background-color: #fd9891;
+        }
+    }
+
+    .btn-dark-grey{
+        background-color: #323940;
+        color: inherit;
+        text-align: center;
+        width: 100%;
+        border-radius: 3px;
+        font-size: em(14, 16);
+        line-height: em(20, 12);
+        font-weight: 500;
+        gap: em(8);
     }
 
     .btn-file-upload {
@@ -279,6 +314,10 @@
                 cursor: pointer;
             }
         }
+    }
+
+    .icon.remove-icon{
+        position: static;
     }
 
 }
