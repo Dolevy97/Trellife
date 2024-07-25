@@ -94,8 +94,10 @@ export async function logout() {
 export async function guestLogin() {
     const guest = {
         _id: '',
-        fullname: 'Guest',
-        imgUrl: 'https://www.shutterstock.com/image-vector/user-icon-trendy-flat-style-600nw-1697898655.jpg'
+        fullname: 'Gustavo Guesto',
+        username: 'Guest',
+        imgUrl: 'https://www.shutterstock.com/image-vector/user-icon-trendy-flat-style-600nw-1697898655.jpg',
+        favorites: []
     }
     store.dispatch({ type: SET_USER, user: guest })
 }
