@@ -1,15 +1,58 @@
-import { Link, NavLink } from 'react-router-dom'
 import { useNavigate } from 'react-router'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { DropdownMenu } from './DropdownMenu'
 import { BoardCreate } from './BoardCreate'
+import { useSelector } from 'react-redux'
+import { guestLogin, logout } from '../store/actions/user.actions'
 
 export function AppHeader({ isHomePage }) {
+	const user = useSelector(storeState => storeState.userModule.user)
+
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 	const [menuToOpen, setMenuToOpen] = useState(null)
 	const [isAdding, setIsAdding] = useState(false)
+	const [userMenuOpen, setUserMenuOpen] = useState(false)
+	const [userMenuStyle, setUserMenuStyle] = useState({});
+
+	const userMenuRef = useRef()
+	const appHeaderRef = useRef()
 
 	const navigate = useNavigate()
+
+
+	useEffect(() => {
+		handleResize()
+
+		window.addEventListener('resize', handleResize)
+		document.addEventListener('mousedown', handleClickOutside)
+
+		return () => {
+			window.removeEventListener('resize', handleResize)
+			document.removeEventListener('mousedown', handleClickOutside)
+		};
+	}, [userMenuRef, appHeaderRef])
+
+	useEffect(() => {
+		if (!user) {
+			guestLogin()
+		}
+	}, [user])
+
+	function handleResize() {
+		const headerWidth = appHeaderRef.current.offsetWidth;
+		const screenWidth = window.innerWidth;
+
+		const rightInset = Math.max(0, (screenWidth - headerWidth) / 2) + 2;
+		setUserMenuStyle({
+			inset: `48px ${rightInset}px auto auto`
+		})
+	}
+
+	function handleClickOutside(event) {
+		if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+			setUserMenuOpen(false)
+		}
+	}
 
 	function handleMenuChange(menu) {
 		if (menuToOpen === menu) {
@@ -21,9 +64,14 @@ export function AppHeader({ isHomePage }) {
 		}
 	}
 
+	function onLogout() {
+		logout()
+		navigate('/')
+	}
+	
 	return (
 		<section className={`outer-header ${isHomePage ? 'homepage' : ''}`}>
-			<header className={`app-header full ${isHomePage ? 'homepage' : ''}`}>
+			<header className={`app-header full ${isHomePage ? 'homepage' : ''}`} ref={appHeaderRef}>
 				<div className='flex'>
 					<div onClick={() => navigate('/')} className={`logo-wrapper  ${isHomePage ? 'homepage' : ''}`}>
 						<div className='logo'></div>
@@ -70,8 +118,35 @@ export function AppHeader({ isHomePage }) {
 						</article>
 					</section>
 				</nav>
+				{!isHomePage && <section onClick={() => setUserMenuOpen(!userMenuOpen)} className="user-profile">
+					<img className='user-profile-img' src={user.imgUrl} />
+				</section>}
 				{isMenuOpen && <DropdownMenu menu={menuToOpen} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />}
 			</header>
+			{userMenuOpen &&
+				<section className='user-menu' ref={userMenuRef} style={userMenuStyle}>
+					<h2>Account</h2>
+					<div className="account-info">
+						<img className='user-profile-img' src={user.imgUrl} />
+						<div className="user-info">
+							<div className="user-fullname">{user.fullname}</div>
+							<div className="user-username">{user.username}</div>
+						</div>
+					</div>
+					<nav className='user-menu-nav'>
+						<ul className='nav-list'>
+							<li>
+								<button onClick={onLogout} className='nav-list-item'>
+									<span className='span-container'>
+										<span className="nav-item-text">
+											Log out
+										</span>
+									</span>
+								</button>
+							</li>
+						</ul>
+					</nav>
+				</section>}
 		</section>
 	)
 }
