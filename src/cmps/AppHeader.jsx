@@ -124,7 +124,7 @@ export function AppHeader({ isHomePage }) {
 				{isMenuOpen && <DropdownMenu menu={menuToOpen} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />}
 			</header>
 			{userMenuOpen &&
-				<section className='user-menu' ref={userMenuRef} style={userMenuStyle}>
+				<section title='account' className='user-menu' ref={userMenuRef} style={userMenuStyle}>
 					<h2>Account</h2>
 					<div className="account-info">
 						<img className='user-profile-img' src={user.imgUrl} />
