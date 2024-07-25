@@ -21,7 +21,6 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
         '#3B7AC5'
     ]
 
-
     useEffect(() => {
         setNewTitle(group.title)
     }, [group.title])
@@ -98,7 +97,6 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
         setOpenMenuGroupId(null);
     }
 
-
     async function toggleCollapse() {
         const updatedGroup = {
             ...group,
@@ -107,8 +105,7 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
                 isCollapse: !group.style.isCollapse
             }
         };
-        const newBoard = await updateGroup(updatedGroup.id, updatedGroup, board);
-        // You might need to update your local state here if you're not relying solely on Redux
+        await updateGroup(updatedGroup.id, updatedGroup, board);
     }
 
     return (
