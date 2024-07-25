@@ -757,7 +757,7 @@ export function TaskDetails() {
                             {action === 'labels'
                                 && <TaskAction action="labels" getLabelById={getLabelById} {...taskActionProps} setLabelToEdit={setLabelToEdit} />}
                             {action === 'edit label'
-                                && <TaskAction action="edit label" getLabelById={getLabelById} labelToEdit={labelToEdit} {...taskActionProps} />}
+                                && <TaskAction action="edit label" getLabelById={getLabelById} labelToEdit={labelToEdit} setLabelToEdit={setLabelToEdit} {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
                             <button className="action" name="checklist" onClick={onSetAction}>
