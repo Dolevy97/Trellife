@@ -18,6 +18,7 @@ export function TaskDetails() {
     const textareaRef = useRef(null)
     const textareaCommentRef = useRef(null)
     const editCommentRef = useRef(null)
+    
     const dateInputRef = useRef(null)
     const checklistItemRefs = useRef({})
 

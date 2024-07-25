@@ -144,26 +144,7 @@ export function BoardDetails() {
     setAreAllGroupsCollapsed(newCollapseState)
   }
 
-  // async function handleDeleteBoard() {
-  //   if (!board || !board._id) {
-  //     console.error('No board or board ID available for deletion')
-  //     return
-  // }
-
-  // try {
-  //     console.log('Attempting to delete board with ID:', board._id)
-  //     await removeBoard(board._id)
-  //     navigate('/board')
-  //     console.log('Board deleted successfully')
-  // } catch (error) {
-  //     console.error('Error deleting board:', error)
-  //     if (error.response) {
-  //         console.error('Error response:', error.response.data)
-  //         console.error('Error status:', error.response.status)
-  //     }
-  //     // Optionally, show an error message to the user
-  // }
-  // }
+  console.log(board.activities);
 
   const groups = board?.groups || []
   //needs layers
@@ -182,7 +163,7 @@ export function BoardDetails() {
         isRightNavBarOpen={isRightNavBarOpen}
         setIsRightNavBarOpen={setIsRightNavBarOpen}
         toggleAllGroupsCollapse={toggleAllGroupsCollapse}
-        board={ board}
+        board={board}
 
       />
       <section ref={groupListContainer} className="group-list-container">
