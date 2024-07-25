@@ -1,18 +1,20 @@
 .group-preview-header {
-    height: 40px;
+    position: relative;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    height: 40px;
     padding: 9px 4px;
     margin: 4px 4px 0;
-    position: relative;
-    align-items: center;
+
 
     // .collapsed{
     //     transform: rotate(90deg);
     // }
 
-   
+
 
     input {
         border: none;
@@ -35,46 +37,72 @@
 
     }
 
-    .three-dots-btn-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 28px;
-        height: 28px;
-        transition: background-color 0.1s ease;
-        border-radius: 4px;
-        cursor: pointer;
 
-        &:hover {
-            background-color: $btnhoverclr;
-        }
-
-        .three-dots-open {
-            height: 16px;
-            width: 16px;
-            cursor: pointer;
-        }
-    }
 
     .header-title {
+        display: flex;
+        align-items: center;
+
+        width: 77%;
+        height: 20px;
+
         font-weight: 600;
         font-size: 14px;
         color: $textclr2;
-        width: 77%;
-        height: 20px;
-        display: flex;
-        align-items: center;
+        
         padding: 9px 8px 9px 12px;
         cursor: pointer;
-
         overflow-wrap: anywhere;
+
     }
 
     .header-svg-container {
         display: flex;
-        gap: 8px;
         align-items: center;
-       
+        gap: 2px;
+
+        .collapse-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            transition: background-color 0.1s ease;
+            border-radius: 4px;
+            cursor: pointer;
+    
+            &:hover {
+                background-color: $btnhoverclr;
+            }
+    
+            .collapse-icon {
+                height: 24px;
+                width: 24px;
+                cursor: pointer;
+            }
+    
+        }
+    
+        .three-dots-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            transition: background-color 0.1s ease;
+            border-radius: 4px;
+            cursor: pointer;
+    
+            &:hover {
+                background-color: $btnhoverclr;
+            }
+    
+            .three-dots-icon {
+                height: 16px;
+                width: 16px;
+                cursor: pointer;
+            }
+        }
 
     }
 
@@ -96,12 +124,13 @@
         z-index: 10;
 
         .menu-header {
-            padding: 9px 12px;
             position: relative;
-
             display: flex;
             align-items: center;
             justify-content: center;
+
+            padding: 9px 12px;
+
             font-size: 14px;
             font-weight: 600;
             color: $textclr2;
@@ -110,14 +139,16 @@
                 position: absolute;
                 right: 8px;
                 top: 6px;
-                width: 28px;
-                height: 28px;
+
                 display: flex;
                 align-items: center;
                 justify-content: center;
+
+                width: 28px;
+                height: 28px;
                 border-radius: 4px;
-                cursor: pointer;
                 transition: background-color 0.1s ease;
+                cursor: pointer;
 
                 &:hover {
                     background-color: $btnhoverclr;
@@ -131,19 +162,19 @@
         }
 
         .menu-header-hr {
-            background-color: rgba(166, 197, 226, 0.1607843137);
             height: 1px;
             width: 95%;
             margin-block: 0 8px;
             border: 0;
             padding: 0;
+            background-color: rgba(166, 197, 226, 0.1607843137);
         }
 
         .menu-info {
             >p {
                 font-size: 14px;
                 color: $textclr2;
-                
+
                 padding: 4px 8px;
                 margin: 0;
                 margin-bottom: 5px;
@@ -164,10 +195,10 @@
 
                     padding: 4px 8px;
                     margin-block-end: 0em;
-                    
+
                     color: $textclr2;
                     cursor: pointer;
-                    
+
                     .color-picker-btn {
                         font-size: 12px;
 
@@ -175,10 +206,10 @@
                     }
 
                     .color-picker-arrow {
-                        padding-right: 5px;
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
+                        padding-right: 5px;
 
                         img {
                             filter: invert(42%) sepia(17%) saturate(178%) hue-rotate(170deg) brightness(78%) contrast(90%);
