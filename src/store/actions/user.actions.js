@@ -55,6 +55,28 @@ export async function signup(credentials) {
     }
 }
 
+export async function updateUser(user) {
+    store.dispatch({
+        type: SET_USER,
+        user
+    })
+    try {
+        const updatedUser = await userService.update(user)
+        store.dispatch({
+            type: SET_USER,
+            user: updatedUser
+        })
+        return updatedUser
+    } catch (err) {
+        console.log('Cannot update', err)
+        store.dispatch({
+            type: SET_USER,
+            user: store.getState().user
+        })
+        throw err
+    }
+}
+
 export async function logout() {
     try {
         await userService.logout()

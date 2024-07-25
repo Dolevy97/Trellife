@@ -10,13 +10,14 @@ import { BoardList } from '../cmps/BoardList'
 import { Filter } from '../cmps/BoardFilter'
 
 export function BoardIndex() {
-
     const boards = useSelector(storeState => storeState.boardModule.boards)
+    
     const [filterBy, setFilterBy] = useState(boardService.getDefaultFilter())
 
     useEffect(() => {
         loadBoards(filterBy)
     }, [filterBy])
+
 
     return (
         <main className="board-index">
@@ -34,7 +35,6 @@ export function BoardIndex() {
                 <h2 className='boards-header'>Boards</h2>
                 <section>
                     <Filter filterBy={filterBy} setFilterBy={setFilterBy} />
-
                 </section>
                 <BoardList
                     boards={boards}
