@@ -756,7 +756,7 @@
                 }
 
                 &.btn-save:disabled {
-                    cursor:not-allowed;
+                    cursor: not-allowed;
                     background-color: #BCD6F00A;
                     color: #BFDBF847;
                 }
@@ -913,6 +913,17 @@
         transition-property: transform, opacity, height, padding, margin, background-color;
         transition-timing-function: ease-in;
 
+        &.editing {
+            background-color: #A1BDD914;
+            padding: 6px 8px;
+            padding-block-end: 8px;
+        }
+
+        &.editing .edit-checklist-item-title {
+            width: 496px;
+            margin-block: 0 4px;
+        }
+
         & .checklist-item-checkbox {
             position: absolute;
             left: -45.7px;
@@ -923,6 +934,29 @@
 
             & .item-checkbox {
                 @include checkbox;
+            }
+        }
+
+        & .btns {
+            display: flex;
+            align-items: center;
+
+            // margin-block-start: 8px;
+
+            button {
+                @include btn;
+
+                margin-inline-end: 6px;
+
+                &.btn-save:hover {
+                    background-color: #85B8FF;
+                }
+
+            }
+
+            & img {
+                cursor: pointer;
+                filter: brightness(0) saturate(100%) invert(68%) sepia(28%) saturate(212%) hue-rotate(170deg) brightness(86%) contrast(81%);
             }
         }
 
@@ -1285,6 +1319,11 @@
     @include textarea;
 
     margin-block-end: 0;
-    
+
     padding: 20px;
+}
+
+.edit-checklist-item-title {
+    @include textarea;
+    border-radius: 3px;
 }
