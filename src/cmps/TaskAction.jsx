@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { updateTask } from "../store/actions/task.actions"
 import { getAverageColorFromAttachment, getRandomIntInclusive, makeId } from "../services/util.service"
 import { cloudinaryService } from "../services/cloudinary.service"
@@ -9,9 +9,14 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
 
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
     const [labelInputValue, setLabelInputValue] = useState('')
+    const checklistTitleRef = useRef()
 
     useEffect(() => {
         if (labelToEdit) setLabelInputValue(labelToEdit.title)
+        if (checklistTitleRef.current) {
+            checklistTitleRef.current.focus()
+            checklistTitleRef.current.select()
+        }
     }, [])
 
     function getBoardMembers() {
@@ -69,8 +74,8 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         const updatedTask = { ...task }
         updatedTask.checklists.push({ id: 'cl' + makeId(), title: checklistInputValue, todos: [] })
         const activityTitle = `added ${checklistInputValue} to this card`
-        await updateTask(updatedTask, group, board, activityTitle)
         onSetAction(ev, null)
+        await updateTask(updatedTask, group, board, activityTitle)
     }
 
     async function onSaveLabel(ev) {
@@ -306,7 +311,11 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                 <>
                     <div className="checklist">
                         <span className="title">Title</span>
-                        <input className="text" value={checklistInputValue} onChange={(ev) => setChecklistInputValue(ev.target.value)} />
+                        <input
+                            ref={checklistTitleRef}
+                            className="text"
+                            value={checklistInputValue}
+                            onChange={(ev) => setChecklistInputValue(ev.target.value)} />
                     </div>
                     <button className="btn-blue" onClick={onAddChecklist}>Add</button>
                 </>
