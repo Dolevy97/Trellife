@@ -22,22 +22,31 @@ export function RightNavBar({ onClose, isRightNavBarOpen }) {
                 <section className="right-nav-bar-body">
 
                     <div className="activity-container">
-                        <img src="../../../src\assets\imgs\TaskDetails-icons\activity.svg" alt="" />
-                        <span>Activity</span>
+                        <div className="activity-wrapper">
+                            <img src="../../../src\assets\imgs\TaskDetails-icons\activity.svg" alt="" />
+                            <span>Activity</span>
+                        </div>
                     </div>
 
                     <div className="change-background-container">
+                        <div className="change-background-wrapper" >
+                            <img src="../../../src\assets\imgs\TaskDetails-icons\card.svg" alt="" />
                         <span>Change background</span>
+                        </div>
                     </div>
 
                     <div className="collapse-all-container">
+                        <div className="collapse-all-wrapper">
                         <img src="../../../src\assets\imgs\Icons\collapse.svg" alt="" />
                         <span>Collapse all</span>
+                        </div>
                     </div>
 
                     <div className="delete-board-container">
+                        <div className="delete-board-wrapper">
                         <img src="../../../src\assets\imgs\TaskDetails-icons\trash.svg" alt="" />
                         <span> Delete board</span>
+                        </div>
                     </div>
 
                 </section>
