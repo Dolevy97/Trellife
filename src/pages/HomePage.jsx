@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux"
-import { login } from "../store/actions/user.actions"
+import { guestLogin, login } from "../store/actions/user.actions"
 import { useNavigate } from "react-router"
 
 export function HomePage() {
@@ -8,7 +8,7 @@ export function HomePage() {
 
     async function onSignIn() {
         try {
-            await login({ username: 'Dolevy', password: '1234' })
+            await guestLogin()
             console.log(`logged in successfully: ${loggedInUser}`)
             navigate('/board')
         } catch (err) {
@@ -29,7 +29,7 @@ export function HomePage() {
                         </div>
                         <div className="homepage-get-started">
                             {/* <input type="email" name="" id="" /> */}
-                            <button onClick={onSignIn}>Get started!</button>
+                            <button onClick={onSignIn}>Start demo</button>
                         </div>
                     </div>
                     <div className="right-container">
