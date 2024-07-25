@@ -6,6 +6,7 @@
 
         background-color: $bgclr1;
         transition: background-color 0.5s ease 0s, box-shadow 0.5s ease 0s;
+        z-index: 100;
 
         &:hover {
             box-shadow: rgba(255, 255, 255, 0.35) 0px 0.5rem 1rem 0px;
@@ -231,6 +232,8 @@
     height: 32px;
     border-radius: 50%;
 
+    cursor: pointer;
+
     &:hover {
         background-color: #A6C5E229;
     }
@@ -238,10 +241,7 @@
     & .user-profile-img {
         height: 24px;
         width: 24px;
-        line-height: 24px;
         border-radius: 50%;
-
-        cursor: pointer;
     }
 }
 

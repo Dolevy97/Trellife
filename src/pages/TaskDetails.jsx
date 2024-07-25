@@ -17,6 +17,7 @@ export function TaskDetails() {
 
     const textareaRef = useRef(null)
     const textareaCommentRef = useRef(null)
+    const editCommentRef = useRef(null)
     const dateInputRef = useRef(null)
     const checklistItemRefs = useRef({})
 
@@ -52,25 +53,32 @@ export function TaskDetails() {
         if (textareaRef.current) {
             autosize(textareaRef.current)
         }
-
-        return () => {
-            if (textareaRef.current) {
-                autosize.destroy(textareaRef.current)
-            }
-        }
-    }, [taskToEdit, isSettingDescription])
-
-    useEffect(() => {
         if (textareaCommentRef.current) {
             autosize(textareaCommentRef.current)
         }
 
         return () => {
+            if (textareaRef.current) {
+                autosize.destroy(textareaRef.current)
+            }
+
             if (textareaCommentRef.current) {
                 autosize.destroy(textareaCommentRef.current)
             }
+
         }
     }, [taskToEdit, isSettingDescription])
+
+    useEffect(() => {
+        if (editCommentRef.current) {
+            autosize(editCommentRef.current)
+        }
+        return () => {
+            if (editCommentRef.current) {
+                autosize.destroy(editCommentRef.current)
+            }
+        }
+    }, [editCommentInputValue])
 
     function setTask() {
         setTaskToEdit(() => {
@@ -220,8 +228,8 @@ export function TaskDetails() {
         setIsAddingComment(false)
     }
 
-    async function onStartEditComment(commentId) {
-        console.log(commentId)
+    async function onStartEditComment(comment) {
+        setEditCommentInputValue(comment.txt)
         setIsEditingComment(true)
     }
 
@@ -229,6 +237,19 @@ export function TaskDetails() {
         if (ev.code === 'Escape') {
             setIsAddingComment(false)
         }
+    }
+
+    function onFocusOnComment() {
+        setIsAddingComment(true)
+        textareaCommentRef.current.focus()
+        textareaCommentRef.current.setSelectionRange(textareaCommentRef.current.value.length, textareaCommentRef.current.value.length)
+    }
+
+    async function onSaveEdittedComment(commentId) {
+        const commentIdx = board.activities.findIndex(activity => activity.id === commentId)
+        board.activities[commentIdx].txt = editCommentInputValue
+        await updateBoard(board)
+        setIsEditingComment(false)
     }
 
     // Remove task
@@ -341,12 +362,6 @@ export function TaskDetails() {
         }
 
         await updateTask(updatedTask, group, board)
-    }
-
-    function onFocusOnComment() {
-        setIsAddingComment(true)
-        textareaCommentRef.current.focus()
-        textareaCommentRef.current.setSelectionRange(textareaCommentRef.current.value.length, textareaCommentRef.current.value.length)
     }
 
     // Attachment
@@ -484,7 +499,7 @@ export function TaskDetails() {
                                         {labelsIds && labelsIds.map(id => {
                                             const label = getLabelById(id)
                                             if (!label) return null
-                                            return <span className="label" key={id} style={{ backgroundColor: label.color? label.color : '#3a444c' }}>{label.title}</span>
+                                            return <span className="label" key={id} style={{ backgroundColor: label.color ? label.color : '#3a444c' }}>{label.title}</span>
                                         })}
                                     </div>
                                 </div> : ''}
@@ -735,14 +750,20 @@ export function TaskDetails() {
                                         <img className='member-img-comment' src={comment.byMember.imgUrl} alt="" />
                                         <p>{comment.byMember.fullname} <span className='comment-timestamp'>{getFormattedTime(comment.createdAt)}</span></p>
                                         {isEditingComment ?
-                                            <textarea onChange={handleEditCommentChange} value={editCommentInputValue}></textarea>
+                                            <>
+                                                <textarea ref={editCommentRef} className='edit-comment' onChange={handleEditCommentChange} value={editCommentInputValue}></textarea>
+                                                <article className="btns">
+                                                    <button disabled={!editCommentInputValue} type='button' onClick={() => onSaveEdittedComment(comment.id)} className='btn-save'>Save</button>
+                                                    <button type='button' onClick={() => setIsEditingComment(false)} className='btn-cancel'>Discard changes</button>
+                                                </article>
+                                            </>
                                             :
                                             <h1 className='comment-txt'>{comment.txt}</h1>
                                         }
                                         <article className="comment-reactions">
-                                            {user && user._id === comment.byMember._id &&
+                                            {user && user._id === comment.byMember._id && !isEditingComment &&
                                                 <span className="edit-and-delete">
-                                                    <span onClick={() => onStartEditComment(comment.id)} className="comment-reaction-button">Edit</span>
+                                                    <span onClick={() => onStartEditComment(comment)} className="comment-reaction-button">Edit</span>
                                                     <span className="sep">•</span>
                                                     <span onClick={() => onDeleteComment(comment.id)} className="comment-reaction-button">Delete</span>
                                                 </span>}
