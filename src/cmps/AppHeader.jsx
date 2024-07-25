@@ -16,6 +16,7 @@ export function AppHeader({ isHomePage }) {
 
 	const userMenuRef = useRef()
 	const appHeaderRef = useRef()
+	const accountProfileRef = useRef()
 
 	const navigate = useNavigate()
 
@@ -49,7 +50,7 @@ export function AppHeader({ isHomePage }) {
 	}
 
 	function handleClickOutside(event) {
-		if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+		if (userMenuRef.current && !userMenuRef.current.contains(event.target) && !accountProfileRef.current.contains(event.target)) {
 			setUserMenuOpen(false)
 		}
 	}
@@ -118,13 +119,14 @@ export function AppHeader({ isHomePage }) {
 						</article>
 					</section>
 				</nav>
-				{!isHomePage && <section onClick={() => setUserMenuOpen(!userMenuOpen)} className="user-profile">
+				{console.log(userMenuOpen)}
+				{!isHomePage && user && <section ref={accountProfileRef} title='account' onClick={() => setUserMenuOpen(!userMenuOpen)} className="user-profile">
 					<img className='user-profile-img' src={user.imgUrl} />
 				</section>}
 				{isMenuOpen && <DropdownMenu menu={menuToOpen} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />}
 			</header>
 			{userMenuOpen &&
-				<section title='account' className='user-menu' ref={userMenuRef} style={userMenuStyle}>
+				<section className='user-menu' ref={userMenuRef} style={userMenuStyle}>
 					<h2>Account</h2>
 					<div className="account-info">
 						<img className='user-profile-img' src={user.imgUrl} />
