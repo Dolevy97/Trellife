@@ -8,7 +8,7 @@ import { updateBoard } from "../store/actions/board.actions"
 export function TaskAction({ action, board, group, task, getMemberById, getLabelById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit }) {
 
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
-    const [labelInputValue, setLabelInputValue] = useState('')
+    const [labelInputValue, setLabelInputValue] = useState(labelToEdit ? labelToEdit.title : '')
     const checklistTitleRef = useRef()
 
     useEffect(() => {
