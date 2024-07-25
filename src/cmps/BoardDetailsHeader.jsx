@@ -90,7 +90,7 @@ export function BoardDetailsHeader() {
           {board.members.map(member => {
             return <img
               key={member._id}
-              className='user-img'
+              className='user-img-header'
               src={member.imgUrl}
               alt="user image"
               title={member.fullname} />

@@ -112,6 +112,21 @@
         .members-container {
             display: flex;
             align-items: center;
+            
+            .user-img-header {
+                cursor: pointer;
+                position: relative;
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-left: -2px;
+             
+                &:hover {
+                    opacity: 0.8;
+                  
+                }
+            }
         }
     }
 }
