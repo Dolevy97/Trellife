@@ -23,6 +23,8 @@ export function BoardPreview({ board }) {
         await updateUser(user)
     }
 
+    console.log(user)
+    
     if (!user) return null
 
     return (
@@ -33,12 +35,12 @@ export function BoardPreview({ board }) {
                         style={{ background: board.style.background, backgroundPosition: '50%' }}
                         className='board-preview-img'>
                         <img onClick={(ev) => onClickStar(ev, board._id)}
-                            title={user.favorites.includes(board._id) ? 'Click to unstar this board. It will be removed from your starred list.'
+                            title={user && user.favorites.includes(board._id) ? 'Click to unstar this board. It will be removed from your starred list.'
                                 : 'Click to star this board. It will be added to your starred list.'}
 
-                            className={`board-preview-star ${user.favorites.includes(board._id) ? 'starred' : ''}`}
+                            className={`board-preview-star ${user && user.favorites.includes(board._id) ? 'starred' : ''}`}
 
-                            src={user.favorites.includes(board._id) ? "../src/assets/imgs/Icons/fullstar.svg"
+                            src={user && user.favorites.includes(board._id) ? "../src/assets/imgs/Icons/fullstar.svg"
                                 : '../../../src/assets/imgs/Icons/star.svg'}
 
                             alt="star icon" />
