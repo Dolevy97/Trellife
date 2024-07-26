@@ -402,7 +402,7 @@
 
     background-position: 50%;
     background-repeat: no-repeat;
-    background: #fff;
+    background: #22272B;
     border: 1px solid rgba(9, 30, 66, .08);
     border-radius: 3px;
     box-shadow: none;
@@ -432,14 +432,14 @@
             padding: 6px 4px 4px 6px;
 
             .top-line {
-                background: rgba(107, 119, 140, .42);
+                background: #596773;
                 border-radius: 2px;
                 height: 4px;
                 width: 122px;
             }
 
             .middle-line {
-                background: rgba(107, 119, 140, .42);
+                background: #596773;
                 border-radius: 2px;
                 height: 4px;
                 margin-top: 4px;
@@ -451,21 +451,19 @@
                 margin-top: 6px;
 
                 & * {
-                    background: #6b778c;
+                    background: #596773;
                     border-radius: 2px;
                     height: 6px;
                     margin-right: 2px;
-                    opacity: .3;
                     width: 16px;
                 }
             }
 
             .dot-corner {
-                background: #6b778c;
+                background: #596773;
                 border-radius: 5px;
                 bottom: 4px;
                 height: 10px;
-                opacity: .3;
                 position: absolute;
                 right: 4px;
                 width: 10px;
@@ -498,7 +496,7 @@
             position: absolute;
 
             & * {
-                background: #fff;
+                background: rgb(255 255 255 / 0.8);
                 border-radius: 2px;
                 height: 4px;
                 opacity: 1;
