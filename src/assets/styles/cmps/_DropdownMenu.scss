@@ -62,6 +62,12 @@
                     background-color: #A1BDD914;
                 }
 
+                &:hover .star-icon-container {
+                    width: 32px;
+                    display: flex;
+
+                }
+
                 & .board-bg {
                     display: inline-block;
                     position: relative;
@@ -74,12 +80,35 @@
                 }
 
                 .menu-text {
+                    display: block;
+                    width: 100%;
+
                     padding: 0 0 0 8px;
                     overflow: hidden;
-                    display: block;
                     text-overflow: ellipsis;
                     white-space: nowrap;
                     font-size: .875em;
+                }
+
+                .star-icon-container {
+                    display: none;
+                    align-items: center;
+                    justify-content: center;
+
+                    &.is-starred {
+                        filter: brightness(0) saturate(100%) invert(67%) sepia(60%) saturate(2110%) hue-rotate(9deg) brightness(101%) contrast(98%);
+                    }
+
+                    & img {
+                        width: 14px;
+                        height: 14px;
+
+                        &:hover {
+                            width: 16px;
+                            height: 16px;
+                            filter: brightness(0) saturate(100%) invert(67%) sepia(60%) saturate(2110%) hue-rotate(9deg) brightness(101%) contrast(98%);
+                        }
+                    }
                 }
             }
         }
