@@ -25,30 +25,34 @@ export function BoardDetails() {
   const [areLabelsExpanded, setAreLabelsExpanded] = useState(false)
   const [isRightNavBarOpen, setIsRightNavBarOpen] = useState(false)
   const [areAllGroupsCollapsed, setAreAllGroupsCollapsed] = useState(false)
-  
+
   const groupListContainer = useRef()
   const groupListHeader = useRef()
   const addGroupRef = useRef(null)
-  
+
   const [isFilterOpen, setIsFilterOpen] = useState(false)
-  const [filterBy, setFilterBy] = useState(boardService.getDefaultFilter())
+  const [filterBy, setFilterBy] = useState({
+    ...boardService.getDefaultFilter(),
+    memberIds: [],
+    labelIds: []
+  })
   const [filteredBoard, setFilteredBoard] = useState(null)
 
   const { boardId } = useParams()
 
 
-  
+
   useEffect(() => {
     loadBoard(boardId)
   }, [boardId])
 
   useEffect(() => {
     if (board) {
-        const filtered = filterBoard(board, filterBy)
-        setFilteredBoard(filtered)
+      const filtered = filterBoard(board, filterBy)
+      setFilteredBoard(filtered)
     }
-}, [filterBy, board])
-  
+  }, [filterBy, board])
+
   useEffect(() => {
     if (!user) {
       console.log('details no user apparently')
@@ -161,7 +165,7 @@ export function BoardDetails() {
   }
 
   const groups = filteredBoard?.groups || board?.groups || []
-    //needs layers
+  //needs layers
   if (!board) return <img src="../../../src\assets\imgs\TaskDetails-icons\loading animation.svg" />
 
   return (
@@ -189,7 +193,7 @@ export function BoardDetails() {
           filterBy={filterBy}
           setFilterBy={setFilterBy}
           board={board}
-
+    
         />
       }
       <section ref={groupListContainer} className="group-list-container">

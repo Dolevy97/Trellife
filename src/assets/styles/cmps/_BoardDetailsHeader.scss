@@ -101,9 +101,14 @@
 
         .filter-container {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
-            
+            border-radius: 4px;
+            transition: background-color 0.1s ease;
+            padding: 2px 6px;
+            &:hover {
+                background-color: $btnhoverclr;
+            }
             cursor: pointer;
 
             img {
