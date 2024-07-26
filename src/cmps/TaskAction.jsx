@@ -610,7 +610,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                             onChange={(ev) => onAddAttachment(ev, (action === 'attach' ? undefined : true))}
                             multiple
                         />
-                        <button className="btn-file-upload"
+                        <button className="btn-file-upload btn-dark-grey"
                             onClick={onUpload}>
                             {action === 'attach' ? 'Choose a file' : 'Upload a cover image'}
                         </button>
@@ -649,7 +649,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                         </Box>
                     </LocalizationProvider>
                         <span className="title" style={{margin:'0'}}>Due date</span>
-                    <div className="date">
+                    <div className="due-date">
                         <input ref={dueDateCheckboxRef} className="checkbox" type="checkbox" />
                         <input ref={dueDateInputRef} className="text date-text" type="text" onBlur={onBlurDateInput} />
                         <input ref={dueTimeInputRef} className="text date-text" type="text" onBlur={onBlurTimeInput} />

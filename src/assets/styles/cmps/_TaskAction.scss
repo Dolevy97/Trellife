@@ -302,6 +302,10 @@
         line-height: em(20, 12);
         font-weight: 500;
         gap: em(8);
+
+        &:hover{
+            background-color: #3c474f;
+        }
     }
 
     .btn-file-upload {
@@ -313,7 +317,7 @@
         font-size: em(14, 16);
         line-height: em(20, 12);
         font-weight: 500;
-        margin-block: 12px 15px;
+        margin-block-start:8px;
     }
 
     .btn-disabled {
@@ -389,7 +393,7 @@
         position: static;
     }
 
-    .date {
+    .due-date {
         width: 100%;
         display: flex;
         align-items: center;
