@@ -281,11 +281,12 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                             <div className="color" style={{ backgroundColor: '#a64700' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#ae2e24' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#5e4db2' }} onClick={onSetLabelToEditColor}></div>
-                            <div className="color" style={{ backgroundColor: '#4cce97' }} onClick={onSetLabelToEditColor}></div>
+                            {//LIGHT COLORS
+                            /* <div className="color" style={{ backgroundColor: '#4cce97' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#e1b205' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#fea363' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#f87168' }} onClick={onSetLabelToEditColor}></div>
-                            <div className="color" style={{ backgroundColor: '#9f8fef' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#9f8fef' }} onClick={onSetLabelToEditColor}></div> */}
                             <div className="color" style={{ backgroundColor: '#0a326c' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#154555' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#37471f' }} onClick={onSetLabelToEditColor}></div>
@@ -296,11 +297,11 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                             <div className="color" style={{ backgroundColor: '#4d6b1f' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#943d73' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#596773' }} onClick={onSetLabelToEditColor}></div>
-                            <div className="color" style={{ backgroundColor: '#579dff' }} onClick={onSetLabelToEditColor}></div>
+                            {/* <div className="color" style={{ backgroundColor: '#579dff' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#6cc3e0' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#94c747' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#e774bb' }} onClick={onSetLabelToEditColor}></div>
-                            <div className="color" style={{ backgroundColor: '#8c9baa' }} onClick={onSetLabelToEditColor}></div>
+                            <div className="color" style={{ backgroundColor: '#8c9baa' }} onClick={onSetLabelToEditColor}></div> */}
                         </div>
                     </div>
                     <button className={`btn-dark-grey flex align-center justify-center ${!labelToEdit.color ? 'btn-disabled' : ''}`} onClick={onRemoveLabelToEditColor}>
