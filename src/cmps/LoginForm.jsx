@@ -12,7 +12,7 @@ const SignupSchema = Yup.object().shape({
 
 
 
-export function LoginForm({ onSubmit, handleChange, isSignup }) {
+export function LoginForm({ onSubmit, handleChange, isSignup, onUploadImg, uploadedImage }) {
     const navigate = useNavigate()
 
     return (
@@ -40,6 +40,22 @@ export function LoginForm({ onSubmit, handleChange, isSignup }) {
                         {errors.fullname && touched.fullname && (
                             <div>{errors.fullname}</div>
                         )}
+                        <div className="profile-pic-container">
+                            <input
+                                type="file"
+                                id="profile-pic"
+                                accept="image/*"
+                                onChange={onUploadImg}
+                                style={{ display: 'none' }}
+                            />
+                            <label htmlFor="profile-pic" className="profile-pic-label">
+                                {uploadedImage ? (
+                                    <img src={uploadedImage} alt="Profile" className="profile-pic-preview" />
+                                ) : (
+                                    <span>Upload Profile Picture</span>
+                                )}
+                            </label>
+                        </div>
                         <button type="submit">{isSignup === 'signup' ? 'Sign up' : 'Continue'}</button>
                     </Form>
                 )}
