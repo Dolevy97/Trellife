@@ -166,11 +166,7 @@ export function TaskDetails() {
 
     function onSetAction(ev, act) {
         ev.stopPropagation()
-        if (act !== undefined) {
-            setAction(act)
-            return
-        }
-        const actionName = action === ev.currentTarget.name ? null : ev.currentTarget.name
+        const actionName = action === act ? null : act
         setAction(actionName)
     }
 
@@ -574,7 +570,7 @@ export function TaskDetails() {
                     <div className="task-details-cover" style={{ ...style, height: style.backgroundImage ? '160px' : '' }}>
                         {style &&
                             <div className="task-header-action-container">
-                                <button className="action" name="cover" onClick={onSetAction}>
+                                <button className="action" onClick={(ev)=>onSetAction(ev,'cover')}>
                                     <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover-white.svg" alt="cover icon" />
                                     <span className="action-title">Cover</span>
                                 </button>
@@ -611,7 +607,7 @@ export function TaskDetails() {
                                             return <img key={member._id} className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
                                         }
                                         )}
-                                        <div name="members" onClick={onSetAction} className="add-member-thumbnail"><img src="../../../src/assets/imgs/TaskDetails-icons/add.svg" alt="add plus icon" /></div>
+                                        <div onClick={(ev)=>onSetAction(ev,'members')} className="add-member-thumbnail"><img src="../../../src/assets/imgs/TaskDetails-icons/add.svg" alt="add plus icon" /></div>
                                     </div>
                                 </div> : ''}
 
@@ -725,7 +721,10 @@ export function TaskDetails() {
                                                     {a.type.slice(0, 5) === 'image' &&
                                                         <article className="attachment-link" onClick={() => onDownloadUrl(a.url, a.title)}><span className='attachment-link-text'>Download</span></article>}
                                                     <article className="attachment-link" onClick={() => onRemoveAttachment(a)}><span className='attachment-link-text'>Delete</span></article>
-                                                    <article className="attachment-link" name="edit-attachment" onClick={onSetAction} style={{ cursor: 'not-allowed' }}><span className='attachment-link-text'>Edit</span></article>
+                                                    <article className="attachment-link" onClick={(ev) => onSetAction(ev, 'edit attachment')} style={{position:'relative'}}><span className='attachment-link-text'>Edit</span>
+                                                    {action === 'edit attachment'
+                                                            && <TaskAction action="edit attachment" {...taskActionProps} style={{left: '12px', top: '22px'}}/>}
+                                                    </article>
                                                 </div>
                                                 {a.type.slice(0, 5) === 'image' &&
                                                     <div className="attachment-set-remove-cover">
@@ -922,7 +921,7 @@ export function TaskDetails() {
                     <section className="task-actions">
                         <span className="add-to-card fs12">Add to card</span>
                         <div className="task-action-container">
-                            <button type='button' className="action" name="members" onClick={onSetAction}>
+                            <button type='button' className="action" onClick={(ev)=>onSetAction(ev,'members')}>
                                 <img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" alt="members icon" />
                                 <span className="action-title">Members</span>
                             </button>
@@ -930,7 +929,7 @@ export function TaskDetails() {
                                 && <TaskAction action="members" getMemberById={getMemberById} {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
-                            <button type='button' className="action" name="labels" onClick={onSetAction}>
+                            <button type='button' className="action" onClick={(ev)=>onSetAction(ev,'labels')}>
                                 <img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" alt="labels icon" />
                                 <span className="action-title">Labels</span>
                             </button>
@@ -940,7 +939,7 @@ export function TaskDetails() {
                                 && <TaskAction action="edit label" labelToEdit={labelToEdit} setLabelToEdit={setLabelToEdit} {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
-                            <button type='button' className="action" name="checklist" onClick={onSetAction}>
+                            <button type='button' className="action" onClick={(ev)=>onSetAction(ev,'checklist')}>
                                 <img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="checklist icon" />
                                 <span className="action-title">Checklist</span>
                             </button>
@@ -948,7 +947,7 @@ export function TaskDetails() {
                                 && <TaskAction action="add checklist" toggleAddingItem={toggleAddingItem} {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
-                            <button type='button' className="action" name="dates" onClick={onSetAction}>
+                            <button type='button' className="action" onClick={(ev)=>onSetAction(ev,'dates')}>
                                 <img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" alt="dates icon" />
                                 <span className="action-title">Dates</span>
                             </button>
@@ -956,7 +955,7 @@ export function TaskDetails() {
                                 && <TaskAction action="dates" {...taskActionProps} dueDate={taskToEdit.dueDate} />}
                         </div>
                         <div className="task-action-container">
-                            <button type='button' className="action" name="attachment" onClick={onSetAction}>
+                            <button type='button' className="action" onClick={(ev)=>onSetAction(ev,'attachment')}>
                                 <img className="attachment-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/attachment.svg" alt="attachment icon" />
                                 <span className="action-title">Attachment</span>
                             </button>
@@ -964,7 +963,7 @@ export function TaskDetails() {
                                 && <TaskAction action="attach" {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
-                            <button type='button' className="action" name="location" onClick={onSetAction} style={{ cursor: 'not-allowed' }}>
+                            <button type='button' className="action" onClick={(ev)=>onSetAction(ev,'location')} style={{ cursor: 'not-allowed' }}>
                                 <img className="location-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/location.svg" alt="location icon" />
                                 <span className="action-title">Location</span>
                             </button>
@@ -973,7 +972,7 @@ export function TaskDetails() {
                         {!taskToEdit.style
                             &&
                             <div className="task-action-container">
-                                <button type='button' className="action" name="cover" onClick={onSetAction}>
+                                <button type='button' className="action" name="cover" onClick={(ev)=>onSetAction(ev,'cover')}>
                                     <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
                                     <span className="action-title">Cover</span>
                                 </button>
