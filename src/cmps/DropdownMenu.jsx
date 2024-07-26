@@ -30,7 +30,6 @@ export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen }) {
     async function onClickStar(ev, boardId) {
         ev.stopPropagation()
         ev.preventDefault()
-        console.log('star clicked!')
         if (!user.favorites.includes(boardId)) user.favorites.push(boardId)
         else {
             user.favorites = user.favorites.filter(id => id !== boardId)
@@ -38,7 +37,14 @@ export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen }) {
         await updateUser(user)
     }
 
+    function sortBoardsByRecent() {
+        return boards.sort((a, b) => {
+            const aLastActivity = a.activities[a.activities.length - 1]
+            const bLastActivity = b.activities[b.activities.length - 1]
 
+            return bLastActivity.createdAt - aLastActivity.createdAt
+        })
+    }
 
     function renderMenuContent() {
         switch (menu) {
@@ -72,10 +78,31 @@ export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen }) {
                 )
 
             case 'Recent':
+                const sortedboards = sortBoardsByRecent()
                 return (
                     <div className="menu-content">
                         <ul>
-                            <li style={{ cursor: 'default' }}>No recent boards to show</li>
+                            {console.log(sortedboards)}
+                            {sortedboards.map(board => (
+                                <li
+                                    key={board._id}
+                                    className='menu-list'
+                                    onClick={() => {
+                                        navigate(`/board/${board._id}`)
+                                        setIsMenuOpen(false)
+                                    }}>
+                                    <div className="board-bg" style={board.style}></div>
+                                    <div className="menu-text">{board.title} </div>
+                                    <div className={`star-icon-container ${user.favorites.includes(board._id) ? 'is-starred' : ''}`}>
+                                        <img
+                                            classname={`star-icon`}
+                                            src={user.favorites.includes(board._id) ? "../../../src/assets/imgs/Icons/fullstar.svg" : '../../../src/assets/imgs/Icons/star.svg'}
+                                            onClick={ev => onClickStar(ev, board._id)}
+                                        >
+                                        </img>
+                                    </div>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 )

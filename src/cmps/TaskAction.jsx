@@ -106,7 +106,8 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             // NOTICE TO CHANGE THE BY MEMBER TO LOGGED IN USER
             byMember: { ...board.members[getRandomIntInclusive(0, board.members.length - 1)] },
             group: { ...group },
-            task: { ...task }
+            task: { ...task },
+            createdAt: Date.now()
         }
         activities.push(activity)
 
