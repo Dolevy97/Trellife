@@ -3,7 +3,7 @@ import { useSelector } from "react-redux"
 import { useNavigate } from "react-router"
 import { updateUser } from "../store/actions/user.actions";
 
-export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen }) {
+export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen, position }) {
     const boards = useSelector(storeState => storeState.boardModule.boards)
     const user = useSelector(storeState => storeState.userModule.user)
     const dropdownRef = useRef(null)
@@ -154,7 +154,15 @@ export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen }) {
         }
     }
     return (
-        <div className={`dropdown-menu ${menu}`} ref={dropdownRef}>
+        <div
+            className={`dropdown-menu ${menu}`}
+            ref={dropdownRef}
+            style={{
+                position: 'fixed',
+                top: `${position.top + 8}px`,
+                left: `${position.left}px`
+            }}
+        >
             {renderMenuContent()}
         </div>
     )
