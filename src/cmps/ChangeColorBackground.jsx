@@ -1,10 +1,8 @@
-import { useNavigate } from "react-router";
 import { updateBoardBgc } from "../store/actions/board.actions";
 
 
-export function ChangeColorBackground({ board}) {
+export function ChangeColorBackground({ board }) {
 
-    const navigate = useNavigate()
 
     const palette = [
         'https://res.cloudinary.com/dp0y6hy2o/image/upload/v1686384751/707f35bc691220846678_pjgxni.svg',
@@ -20,9 +18,7 @@ export function ChangeColorBackground({ board}) {
 
     async function onUpdateBgc(bgc) {
         try {
-            // await updateBoardBgc(board, `url(${bgc})`)
-            const newboard = await updateBoardBgc(board, `url(${bgc})`)
-            console.log(newboard)
+            await updateBoardBgc(board, `url(${bgc})`)
         } catch (err) {
             console.log('Cannot update bgc board', err)
         }
@@ -30,15 +26,15 @@ export function ChangeColorBackground({ board}) {
 
     return (
         <section className="change-color-background">
-                {palette.map((colorOption, index) => (
-                    <button
-                        key={index}
-                        className="color-button"
-                        onClick={() => onUpdateBgc(colorOption)}
-                        style={{ backgroundImage: `url(${colorOption})` }}
-                    ></button>
-                ))}
-            
+            {palette.map((colorOption, index) => (
+                <button
+                    key={index}
+                    className="color-button"
+                    onClick={() => onUpdateBgc(colorOption)}
+                    style={{ backgroundImage: `url(${colorOption})` }}
+                ></button>
+            ))}
+
         </section>
     )
 }

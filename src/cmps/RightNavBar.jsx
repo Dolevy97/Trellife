@@ -3,6 +3,7 @@ import { removeBoard } from '../store/actions/board.actions'
 import { removeBoardFromFavorites } from '../store/actions/user.actions'
 import { useNavigate } from "react-router";
 import { ChangeColorBackground } from './ChangeColorBackground'
+import { ChangePhotoBackground } from "./ChangePhotoBackground";
 
 export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollapse, board }) {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
@@ -108,22 +109,28 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
 
                 {/* Change background body*/}
                 {field === 'Change background' && (
-                    <div className="background-options">
-                        <div className="imgs-option">
+                    <div className="background-options" >
+                        <div className="imgs-option" onClick={() => setField('Photos by Unsplash')}>
                             <img src="../../../src/assets/imgs/photosoption.jpg" alt="" />
                             <span>Photos</span>
                         </div>
-                        <div className="colors-option" onClick={() => setField('Change color background')}>
+
+                        <div className="colors-option" onClick={() => setField('Colors')}>
                             <img src="../../../src\assets\imgs\colorsoption.png" alt="" />
                             <span>Colors</span>
                         </div>
                     </div>
                 )}
 
-                {field === 'Change color background' && (
+                {field === 'Photos by Unsplash' && (
+                    <ChangePhotoBackground
+                        board={board}
+                    />
+                )}
+
+                {field === 'Colors' && (
                     <ChangeColorBackground
                         board={board}
-                        onOpenMenuCmp={() => setField('Menu')}
                     />
                 )}
 
