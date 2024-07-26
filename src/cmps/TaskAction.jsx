@@ -63,11 +63,15 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         await updateTask(task, group, board)
     }
 
-    async function onUpdateCoverIsFull({ target }) {
+    async function onUpdateCoverIsFull(ev) {
         if (!task.style) return
-        const isFull = JSON.parse(target.name)
+        const targetName = ev.currentTarget.getAttribute('data-name')
+        const isFull = JSON.parse(targetName)
         task = { ...task, style: { ...task.style, isFull } }
         await updateTask(task, group, board)
+        // const isFull = JSON.parse(target.name)
+        // task = { ...task, style: { ...task.style, isFull } }
+        // await updateTask(task, group, board)
     }
 
     async function onAddChecklist(ev) {
@@ -318,11 +322,42 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             {action === 'cover' &&
                 <>
                     <div className="cover">
+
                         <div className="size-container">
                             <span className="title">Size</span>
                             <div className="size-btns">
-                                <button className="head btn-size" name="false" onClick={onUpdateCoverIsFull}>Head</button>
-                                <button className="full btn-size" name="true" onClick={onUpdateCoverIsFull}>Full</button>
+                                <div>
+                                    <div className="cover-pic">
+                                        <div className={`header-cover ${task.style.isFull? '' : 'focused'}`} data-name="false" onClick={onUpdateCoverIsFull}>
+                                            <div className="card-header" style={task.style}>
+                                            </div>
+                                            <div className="card-body">
+                                                <div className="top-line">
+                                                </div>
+                                                <div className="middle-line">
+                                                </div>
+                                                <div className="bottom-line">
+                                                    <div className="left">
+                                                    </div>
+                                                    <div className="right">
+                                                    </div>
+                                                </div>
+                                                <div className="dot-corner">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="body" data-name="true" onClick={onUpdateCoverIsFull} >
+                                            <div className={`body-cover ${task.style.isFull? 'focused' : ''}`} style={task.style} >
+                                                <div className="card-body">
+                                                    <div className="top-line">
+                                                    </div>
+                                                    <div className="middle-line">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             {task.style && <button className="remove-cover" onClick={onRemoveCover}>Remove cover</button>}
                         </div>
