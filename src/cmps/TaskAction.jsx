@@ -24,6 +24,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     const dueDateInputRef = useRef()
     const dueTimeInputRef = useRef()
     const dueDateCheckboxRef = useRef()
+    const isFirstRenderRef = useRef(true)    
 
     useEffect(() => {
         if (labelToEdit) setLabelInputValue(labelToEdit.title)
@@ -37,9 +38,9 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         if (action === 'dates') {
             dueDateInputRef.current.value = formatTimestampToDateString(dueDateToEdit)
             dueTimeInputRef.current.value = formatTimestampToTimeString(dueDateToEdit)
-            if (dueDateCheckboxRef.current) {
+            if (isFirstRenderRef.current) {
                 dueDateCheckboxRef.current.checked = true
-                dueDateCheckboxRef.current = null
+                isFirstRenderRef.current = false
                 dueDateInputRef.current.focus()
                 dueDateInputRef.current.setSelectionRange(dueDateInputRef.current.value.length, dueDateInputRef.current.value.length);
             }
@@ -216,9 +217,22 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     // Dates
 
     async function onSaveDueDate(ev) {
+        if (!dueDateCheckboxRef.current.checked){
+            console.log('remove')
+            onRemoveDueDate(ev)
+            return
+        }
         const updatedTask = { ...task }
         updatedTask.dueDate = dueDateToEdit
         const activityTitle = `changed the due date of task ${updatedTask.id} to ${dueDateToEdit}`
+        await updateTask(updatedTask, group, board, activityTitle, user)
+        onSetAction(ev, null)
+    }
+
+    async function onRemoveDueDate(ev){
+        const updatedTask = { ...task }
+        updatedTask.dueDate = null
+        const activityTitle = `removed the due date of task ${updatedTask.id}`
         await updateTask(updatedTask, group, board, activityTitle, user)
         onSetAction(ev, null)
     }
@@ -369,6 +383,8 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             target.value = formatTimestampToTimeString(dueDateToEdit);
         }
     }
+
+   
 
     return (
         <section className="task-action" onClick={(ev) => ev.stopPropagation()}>
@@ -628,7 +644,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                         <input ref={dueTimeInputRef} className="text date-text" type="text" onBlur={onBlurTimeInput} />
                     </div>
                     <button className="btn-blue btn-full" onClick={(ev) => onSaveDueDate(ev)}>Save</button>
-                    <button className="btn-dark-grey btn-full">Remove</button>
+                    <button className="btn-dark-grey btn-full" onClick={(ev) => onRemoveDueDate(ev)}>Remove</button>
                 </>
             }
         </section>
