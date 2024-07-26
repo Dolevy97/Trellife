@@ -1,4 +1,7 @@
+import axios from "axios"
 import { FastAverageColor } from "fast-average-color"
+
+const UNSPLASH_ACCESS_KEY = 'dIHvSGsD7Z5x5tywZlJyMnmP-EvfROP6G5veUCw73nk'
 
 export function makeId(length = 6) {
     var txt = ''
@@ -66,24 +69,24 @@ export function loadFromStorage(key) {
 }
 
 export function getRandomTimestamp() {
-    const now = new Date();
-    const twoYearsAgo = new Date(now.getFullYear() - 2, now.getMonth(), now.getDate());
+    const now = new Date()
+    const twoYearsAgo = new Date(now.getFullYear() - 2, now.getMonth(), now.getDate())
 
     const randomTimestamp = twoYearsAgo.getTime() + Math.random() * (now.getTime() - twoYearsAgo.getTime());
 
-    return Math.floor(randomTimestamp);
+    return Math.floor(randomTimestamp)
 }
 
 export function getFormattedTime(time) {
-    const date = new Date(time);
-    const today = new Date();
-    const currYear = today.getFullYear();
+    const date = new Date(time)
+    const today = new Date()
+    const currYear = today.getFullYear()
     const formatter = new Intl.DateTimeFormat('en-US', {
         dateStyle: 'medium',
         timeStyle: 'short',
-    });
+    })
 
-    return formatter.format(date);
+    return formatter.format(date)
 }
 
 export function getFormattedShortTime(time) {
@@ -126,7 +129,7 @@ export function getFormattedShortTime(time) {
 
 export async function getAverageColorFromAttachment(attachment) {
 
-    if (attachment.type.slice(0,5)!=='image') return 'transparent'
+    if (attachment.type.slice(0, 5) !== 'image') return 'transparent'
     try {
         const img = new Image()
         img.crossOrigin = "Anonymous"
@@ -163,7 +166,7 @@ export async function onDownloadUrl(url, filename) {
         if (!response.ok) {
             throw new Error('Network response was not ok')
         }
-        
+
         const blob = await response.blob()
 
         // Create a temporary URL for the blob
@@ -184,4 +187,106 @@ export async function onDownloadUrl(url, filename) {
         console.error('Error downloading the file:', error)
         // Here you might want to show an error message to the user
     }
+}
+
+const imageCache = {}
+
+function saveToLocalCache(key, data) {
+    localStorage.setItem(key, JSON.stringify(data))
+}
+
+function getFromLocalCache(key) {
+    const data = localStorage.getItem(key)
+    return data ? JSON.parse(data) : null
+}
+
+export async function getUnsplashImages(query = 'random', count = 1) {
+    const cacheKey = 'all_images'
+
+    let allImages = getFromLocalCache(cacheKey)
+    if (allImages) {
+        return allImages
+    }
+
+    if (Object.keys(imageCache).length > 0) {
+        return Object.values(imageCache)
+    }
+
+    try {
+        const response = await axios.get('https://api.unsplash.com/photos/random', {
+            params: {
+                query,
+                count,
+                orientation: 'landscape',
+                w: 4000,
+                client_id: UNSPLASH_ACCESS_KEY
+            }
+        })
+
+        const images = response.data.map(image => ({
+            id: image.id,
+            url: image.urls.raw,
+            smallUrl: image.urls.small,
+            thumbnailUrl: image.urls.thumb,
+            description: image.description || image.alt_description
+        }))
+
+        saveToLocalCache(cacheKey, images)
+        images.forEach(image => {
+            imageCache[image.id] = image
+        })
+
+        return images
+    } catch (error) {
+        console.error('Error fetching images from Unsplash:', error)
+        return []
+    }
+}
+
+export async function getUnsplashImageById(imageId) {
+    const cacheKey = 'all_images'
+
+    let allImages = getFromLocalCache(cacheKey)
+    if (allImages) {
+        const image = allImages.find(img => img.id === imageId)
+        if (image) {
+            return image
+        }
+    }
+
+    if (imageCache[imageId]) {
+        return imageCache[imageId]
+    }
+
+    try {
+        const response = await axios.get(`https://api.unsplash.com/photos/${imageId}`, {
+            params: {
+                client_id: UNSPLASH_ACCESS_KEY
+            }
+        })
+
+        const image = {
+            id: response.data.id,
+            url: response.data.urls.regular,
+            smallUrl: response.data.urls.small,
+            thumbnailUrl: response.data.urls.thumb,
+            description: response.data.description || response.data.alt_description
+        }
+
+        allImages = getFromLocalCache(cacheKey) || []
+        allImages.push(image)
+        saveToLocalCache(cacheKey, allImages)
+        imageCache[image.id] = image
+
+        return image
+    } catch (error) {
+        console.error('Error fetching image by ID from Unsplash:', error)
+        return null
+    }
+}
+
+export function clearUnsplashCache() {
+    localStorage.removeItem('all_images')
+    Object.keys(imageCache).forEach(key => delete imageCache[key])
+    console.log('Unsplash image cache cleared')
 }

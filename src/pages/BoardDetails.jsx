@@ -13,6 +13,7 @@ import { RightNavBar } from '../cmps/RightNavBar'
 import { store } from '../store/store.js'
 import { SET_USER } from '../store/reducers/user.reducer.js'
 import { guestLogin } from '../store/actions/user.actions.js'
+import { BoardHederFilter } from '../cmps/BoardHederFilter.jsx'
 // import { socketService } from '../services/socket.service.js'
 
 export function BoardDetails() {
@@ -26,6 +27,7 @@ export function BoardDetails() {
   const [areLabelsExpanded, setAreLabelsExpanded] = useState(false)
   const [isRightNavBarOpen, setIsRightNavBarOpen] = useState(false)
   const [areAllGroupsCollapsed, setAreAllGroupsCollapsed] = useState(false)
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
 
   const groupListContainer = useRef()
   const groupListHeader = useRef()
@@ -124,7 +126,6 @@ export function BoardDetails() {
     setAreLabelsExpanded(prev => !prev)
   }
 
-
   async function toggleAllGroupsCollapse() {
     const newCollapseState = !areAllGroupsCollapsed
     const updatedGroups = board.groups.map(group => ({
@@ -144,8 +145,6 @@ export function BoardDetails() {
     setAreAllGroupsCollapsed(newCollapseState)
   }
 
-  // console.log(board.activities);
-
   const groups = board?.groups || []
   //needs layers
   if (!board) return <img src="../../../src\assets\imgs\TaskDetails-icons\loading animation.svg" />
@@ -157,6 +156,9 @@ export function BoardDetails() {
       <BoardDetailsHeader
         isRightNavBarOpen={isRightNavBarOpen}
         setIsRightNavBarOpen={setIsRightNavBarOpen}
+
+        isFilterOpen={isFilterOpen}
+        setIsFilterOpen={setIsFilterOpen}
       />
       <RightNavBar
         onClose={() => setIsRightNavBarOpen(false)}
@@ -164,8 +166,13 @@ export function BoardDetails() {
         setIsRightNavBarOpen={setIsRightNavBarOpen}
         toggleAllGroupsCollapse={toggleAllGroupsCollapse}
         board={board}
-
       />
+
+      {isFilterOpen &&
+        <BoardHederFilter
+        onClose={() => setIsFilterOpen(false)}
+        />
+      }
       <section ref={groupListContainer} className="group-list-container">
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId='groups' direction='horizontal' type='GROUP'>

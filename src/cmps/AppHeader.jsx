@@ -7,7 +7,6 @@ import { guestLogin, logout } from '../store/actions/user.actions'
 
 export function AppHeader({ isHomePage }) {
 	const user = useSelector(storeState => storeState.userModule.user)
-
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 	const [menuToOpen, setMenuToOpen] = useState(null)
 	const [isAdding, setIsAdding] = useState(false)

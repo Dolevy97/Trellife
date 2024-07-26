@@ -5,7 +5,7 @@ import { cloudinaryService } from "../services/cloudinary.service"
 import { updateBoard } from "../store/actions/board.actions"
 
 
-export function TaskAction({ action, board, group, task, getMemberById, getLabelById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit }) {
+export function TaskAction({ action, board, group, task, getMemberById, getLabelById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem }) {
 
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
     const [labelInputValue, setLabelInputValue] = useState(labelToEdit ? labelToEdit.title : '')
@@ -72,9 +72,11 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
 
     async function onAddChecklist(ev) {
         const updatedTask = { ...task }
-        updatedTask.checklists.push({ id: 'cl' + makeId(), title: checklistInputValue, todos: [] })
+        const newChecklist = { id: 'cl' + makeId(), title: checklistInputValue, todos: [] }
+        updatedTask.checklists.push(newChecklist)
         const activityTitle = `added ${checklistInputValue} to this card`
         onSetAction(ev, null)
+        toggleAddingItem(newChecklist.id)
         await updateTask(updatedTask, group, board, activityTitle)
     }
 

@@ -14,11 +14,13 @@ export function TaskDetails() {
 
     const board = useSelector(storeState => storeState.boardModule.board)
     const user = useSelector(storeState => storeState.userModule.user)
+    console.log(board)
 
     const textareaRef = useRef(null)
     const textareaCommentRef = useRef(null)
     const editCommentRef = useRef(null)
-    
+    const editTodoItemRef = useRef(null);
+
     const dateInputRef = useRef(null)
     const checklistItemRefs = useRef({})
 
@@ -38,7 +40,11 @@ export function TaskDetails() {
     const [labelToEdit, setLabelToEdit] = useState(null)
 
     const [isEditingComment, setIsEditingComment] = useState(false)
-    const [editCommentInputValue, setEditCommentInputValue] = useState(false)
+    const [editCommentInputValue, setEditCommentInputValue] = useState('')
+
+    const [editingItemIds, setEditingItemIds] = useState({})
+    const [editItemTitleValue, setEditItemTitleValue] = useState('')
+    const [editingTodoId, setEditingTodoId] = useState(null);
 
     const [isEditingTitle, setIsEditingTitle] = useState(false)
     const [taskTitleInputValue, setTaskTitleInputValue] = useState(taskToEdit?.title || '')
@@ -80,6 +86,23 @@ export function TaskDetails() {
             }
         }
     }, [editCommentInputValue])
+
+    useEffect(() => {
+        if (isAddingItems && checklistItemRefs.current[isAddingItems]) {
+            checklistItemRefs.current[isAddingItems].focus()
+        }
+    }, [isAddingItems])
+
+    useEffect(() => {
+        if (editingTodoId && editTodoItemRef.current) {
+            const textarea = editTodoItemRef.current
+            textarea.focus()
+
+            const length = textarea.value.length
+            textarea.setSelectionRange(length, length)
+
+        }
+    }, [editingTodoId])
 
     function setTask() {
         setTaskToEdit(() => {
@@ -127,6 +150,11 @@ export function TaskDetails() {
         setEditCommentInputValue(value)
     }
 
+    function handleItemEditTitle({ target }) {
+        let { value } = target
+        setEditItemTitleValue(value)
+    }
+
     function getMemberById(id) {
         return board.members.find(member => member._id === id)
     }
@@ -172,7 +200,7 @@ export function TaskDetails() {
         const timestamp = dateObj.getTime()
         taskToEdit.dueDate = timestamp
         const activityTitle = `changed the due date of task (id: ${taskToEdit.id}) to ${dateStr}`
-        await updateTask(taskToEdit, group, board, activityTitle)
+        await updateTask(taskToEdit, group, board, activityTitle, user)
 
     }
 
@@ -192,7 +220,7 @@ export function TaskDetails() {
     async function onChangeIsDone({ target }) {
         taskToEdit.isDone = target.checked
         const activityTitle = 'marked the due date ' + target.checked ? 'complete' : 'incomplete'
-        await updateTask(taskToEdit, group, board, activityTitle)
+        await updateTask(taskToEdit, group, board, activityTitle, user)
     }
 
     // Comments
@@ -264,7 +292,7 @@ export function TaskDetails() {
         onBackdropClicked()
     }
 
-    // Checklist
+    // Checklists
 
     function getDonePercentage(checklist) {
         const completedTodos = checklist.todos.filter(todo => todo.isDone).length
@@ -274,7 +302,7 @@ export function TaskDetails() {
     }
 
     function handleChecklistKeyDown(ev, checklist) {
-        if (ev.key === '') {
+        if (ev.key === 'Enter') {
             ev.preventDefault()
             onAddItem(checklist)
         }
@@ -353,16 +381,65 @@ export function TaskDetails() {
     async function onChangeTodo({ target }, todo, checklist) {
         const updatedTask = { ...taskToEdit }
         const checklistIndex = updatedTask.checklists.findIndex(check => check.id === checklist.id)
+        let todoIndex = -1
 
         if (checklistIndex !== -1) {
-            const todoIndex = updatedTask.checklists[checklistIndex].todos.findIndex(t => t.id === todo.id)
+            todoIndex = updatedTask.checklists[checklistIndex].todos.findIndex(t => t.id === todo.id)
 
             if (todoIndex !== -1) {
                 updatedTask.checklists[checklistIndex].todos[todoIndex].isDone = target.checked
+                setTaskToEdit(updatedTask)
             }
         }
 
+        try {
+            await updateTask(updatedTask, group, board)
+        } catch (err) {
+            console.error("Failed to update task:", err)
+            if (checklistIndex !== -1 && todoIndex !== -1) {
+                const revertedTask = { ...taskToEdit }
+                revertedTask.checklists[checklistIndex].todos[todoIndex].isDone = !target.checked
+                setTaskToEdit(revertedTask)
+            }
+        }
+    }
+
+    function startEditingItem(todoId, todoTitle) {
+        setEditingItemIds(prev => {
+            const newState = Object.keys(prev).reduce((acc, key) => {
+                acc[key] = false
+                return acc
+            }, {})
+
+            newState[todoId] = true
+            return newState
+        })
+        setEditItemTitleValue(todoTitle)
+        setEditingTodoId(todoId)
+    }
+
+    async function saveEditedItem(todo, checklist) {
+        const updatedTask = { ...taskToEdit }
+        const checklistIndex = updatedTask.checklists.findIndex(c => c.id === checklist.id)
+        const todoIndex = updatedTask.checklists[checklistIndex].todos.findIndex(t => t.id === todo.id)
+        updatedTask.checklists[checklistIndex].todos[todoIndex].title = editItemTitleValue
+
         await updateTask(updatedTask, group, board)
+        closeAllEditingItems()
+    }
+
+    function closeAllEditingItems() {
+        setEditingItemIds({})
+        setEditingTodoId(null)
+    }
+
+    function handleKeyDown(e, todo, checklist) {
+        if (e.key === 'Escape') {
+            closeAllEditingItems()
+        } else if (e.key === 'Enter') {
+            e.preventDefault()
+            saveEditedItem(todo, checklist)
+        }
     }
 
     // Attachment
@@ -371,7 +448,7 @@ export function TaskDetails() {
         if (isCover(attachment)) updatedTask.style = null
         const attachments = updatedTask.attachments.filter(a => a.url !== attachment.url)
         const activity = `deleted the ${attachment.title} from card (id: ${updatedTask.id})`
-        updateTask({ ...updatedTask, attachments }, group, board, activity)
+        updateTask({ ...updatedTask, attachments }, group, board, activity, user)
     }
 
     function onAddAttachment() {
@@ -397,7 +474,7 @@ export function TaskDetails() {
     async function onSetCover(attachment) {
         const updatedTask = { ...taskToEdit, style: { ...taskToEdit.style, backgroundImage: `url(${attachment.url})`, backgroundColor: attachment.backgroundColor } }
         const activityTitle = `set ${attachment.title} as a cover for task (id: ${updatedTask.id})`
-        await updateTask(updatedTask, group, board, activityTitle)
+        await updateTask(updatedTask, group, board, activityTitle, user)
     }
 
     //Task title
@@ -428,7 +505,7 @@ export function TaskDetails() {
 
         const updatedTask = { ...taskToEdit, title: titleToSet }
         try {
-            await updateTask(updatedTask, group, board, `Changed task title to "${titleToSet}"`)
+            await updateTask(updatedTask, group, board, `Changed task title to "${titleToSet}"`, user)
             setIsEditingTitle(false)
         } catch (error) {
             console.error('Failed to update task title:', error)
@@ -643,7 +720,7 @@ export function TaskDetails() {
                                             </div>
                                             <div className="checklist-items">
                                                 {checklist.todos ? checklist.todos.map(todo => (
-                                                    <div className="checklist-item-container" key={todo.id}>
+                                                    <div className={`checklist-item-container ${editingItemIds[todo.id] ? 'editing' : ''}`} key={todo.id}>
                                                         <div className="checklist-item-checkbox">
                                                             <input
                                                                 className='item-checkbox'
@@ -652,16 +729,33 @@ export function TaskDetails() {
                                                                 checked={todo.isDone}
                                                                 onChange={(ev) => { onChangeTodo(ev, todo, checklist) }} />
                                                         </div>
-                                                        <div
-                                                            className="checklist-item-details"
-                                                            style={todo.isDone ? { textDecoration: 'line-through' } : {}}>
-                                                            <div className="todo-actions">
-                                                                <div className="action-container">
-                                                                    <img onClick={(ev) => onClickMenu(ev, todo.id)} src="../../../src/assets/imgs/TaskDetails-icons/3dots.svg" alt="" />
+                                                        {editingItemIds[todo.id] ?
+                                                            <>
+                                                                <textarea
+                                                                    ref={editTodoItemRef}
+                                                                    className='edit-checklist-item-title'
+                                                                    onChange={handleItemEditTitle}
+                                                                    value={editItemTitleValue}
+                                                                    onKeyDown={(e) => handleKeyDown(e, todo, checklist)}
+                                                                ></textarea>
+                                                                <article className="btns">
+                                                                    <button type='button' onClick={() => saveEditedItem(todo, checklist)} className='btn-save'>Save</button>
+                                                                    <img onClick={closeAllEditingItems} src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="" />
+                                                                </article>
+                                                            </>
+
+                                                            :
+                                                            <div
+                                                                onClick={() => startEditingItem(todo.id, todo.title)}
+                                                                className="checklist-item-details"
+                                                                style={todo.isDone ? { textDecoration: 'line-through' } : {}}>
+                                                                <div className="todo-actions">
+                                                                    <div className="action-container">
+                                                                        <img onClick={(ev) => onClickMenu(ev, todo.id)} src="../../../src/assets/imgs/TaskDetails-icons/3dots.svg" alt="" />
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <span className='todo-title'>{todo.title}</span>
-                                                        </div>
+                                                                <span className='todo-title'>{todo.title}</span>
+                                                            </div>}
                                                     </div>
                                                 )) : ''}
 
@@ -752,7 +846,12 @@ export function TaskDetails() {
                                         <p>{comment.byMember.fullname} <span className='comment-timestamp'>{getFormattedTime(comment.createdAt)}</span></p>
                                         {isEditingComment ?
                                             <>
-                                                <textarea ref={editCommentRef} className='edit-comment' onChange={handleEditCommentChange} value={editCommentInputValue}></textarea>
+                                                <textarea
+                                                    ref={editCommentRef}
+                                                    className='edit-comment'
+                                                    onChange={handleEditCommentChange}
+                                                    value={editCommentInputValue}
+                                                ></textarea>
                                                 <article className="btns">
                                                     <button disabled={!editCommentInputValue} type='button' onClick={() => onSaveEdittedComment(comment.id)} className='btn-save'>Save</button>
                                                     <button type='button' onClick={() => setIsEditingComment(false)} className='btn-cancel'>Discard changes</button>
@@ -801,7 +900,7 @@ export function TaskDetails() {
                                 <span className="action-title">Checklist</span>
                             </button>
                             {action === 'checklist'
-                                && <TaskAction action="add checklist" {...taskActionProps} />}
+                                && <TaskAction action="add checklist" toggleAddingItem={toggleAddingItem} {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
 
