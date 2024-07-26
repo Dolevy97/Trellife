@@ -12,6 +12,40 @@ export async function loadBoards(filterBy) {
     }
 }
 
+export function filterBoard(board, filterBy = {}) {
+    if (!board || !board.groups) return board
+    let filteredBoard = { ...board }
+
+    if (filterBy.title) {
+        const lowercaseFilter = filterBy.title.toLowerCase()
+
+        filteredBoard.groups = board.groups.map(group => {
+            // Check if the group title matches the filter
+            const groupMatches = group.title.toLowerCase().includes(lowercaseFilter)
+
+            // Filter tasks within the group
+            const filteredTasks = group.tasks.filter(task =>
+                task.title.toLowerCase().includes(lowercaseFilter)
+            )
+
+            // If the group title matches 
+            if (groupMatches || filteredTasks.length > 0) {
+                return {
+                    ...group,
+                    tasks: groupMatches ? group.tasks : filteredTasks
+                }
+            }
+            return null
+        }).filter(Boolean) // Remove null groups
+    } else {
+        filteredBoard.groups = [...board.groups]
+    }
+
+    filteredBoard.groups = filteredBoard.groups.filter(group => group.tasks && group.tasks.length > 0)
+    return filteredBoard
+}
+
+
 export async function loadBoard(boardId) {
     try {
         const board = await boardService.getById(boardId)
@@ -56,6 +90,23 @@ export async function updateBoard(board) {
         console.log('Cannot save board', err)
         store.dispatch({ type: 'UPDATE_BOARD_FAILED', originalBoard: board })
         throw err;
+    }
+}
+
+export async function updateBoardBgc(board, bgc) {
+    try {
+        const updatedBoard = {
+            ...board,
+            style: {
+                ...board.style,
+                background: bgc
+            }
+        }
+        await updateBoard(updatedBoard)
+        return updatedBoard
+    } catch (err) {
+        console.log('Cannot update bgc board', err)
+        throw err
     }
 }
 

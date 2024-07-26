@@ -290,3 +290,10 @@ export function clearUnsplashCache() {
     Object.keys(imageCache).forEach(key => delete imageCache[key])
     console.log('Unsplash image cache cleared')
 }
+
+
+export function getBackgroundImages() {
+    const cacheKey = 'all_images'
+
+    return getFromLocalCache(cacheKey)
+}

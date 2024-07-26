@@ -37,7 +37,6 @@
                 max-width: 540px;
             }
 
-
             @media (min-width: 768px) {
                 max-width: 720px;
             }
@@ -49,10 +48,6 @@
             @media (max-width: 992px) {
                 flex-direction: column;
             }
-
-
-
-
 
             .left-container {
 
@@ -86,25 +81,6 @@
                 img {
                     width: 100%;
                 }
-
-                @media (min-width: 768px) {
-                    margin-bottom: -0.5rem;
-                    padding-bottom: 1rem;
-                    z-index: 1;
-                }
-
-                @media (min-width: 992px) {
-                    display: block;
-
-                    margin-left: -16.6667%;
-                    left: 16.6667%;
-                    flex: 0 0 auto;
-                    width: 50%;
-                    margin-top: 0px;
-                    padding-top: 8rem;
-                    margin-bottom: 0px;
-                    padding-bottom: 0px;
-                }
             }
         }
     }
@@ -120,27 +96,26 @@
             padding-left: 1rem;
             padding-right: 1rem;
 
-            @media (max-width: 992px) {
-                max-width: 960px;
-            }
 
-            @media (max-width: 768px) {
-                max-width: 720px;
-            }
-
-            @media (max-width: 576px) {
+            @media (min-width: 576px) {
                 max-width: 540px;
             }
 
+            @media (min-width: 768px) {
+                max-width: 720px;
+            }
+
+            @media (min-width: 992px) {
+                max-width: 960px;
+            }
+
+
             .inner-header {
                 display: flex;
-                align-items: flex-start;
-                justify-content: flex-start;
+
                 flex-wrap: wrap;
 
                 width: 100%;
-                margin-left: -1rem;
-                margin-right: -1rem;
 
                 .text-block {
                     position: relative;
@@ -153,7 +128,7 @@
 
                     text-align: left;
 
-                    @media (max-width: 768px) {
+                    @media (min-width: 768px) {
                         display: block;
                         flex: 0 0 auto;
 
@@ -267,7 +242,7 @@
 
         .subtitle {
             padding-bottom: 1rem;
-            font-size: 2em;
+            font-size: 2.25em;
         }
 
         .text-content {

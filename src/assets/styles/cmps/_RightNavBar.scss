@@ -1,4 +1,3 @@
-
 .right-nav-bar-container {
     display: flex;
     flex-direction: column;
@@ -18,19 +17,56 @@
     }
 
     .right-nav-bar-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        position: relative;
-        height: 5em;
+
         font-weight: 500;
         font-size: 16px;
+        height: 5em;
+        background-color: $bgclr1;
+        z-index: 1;
+
+
+        .to-menu-btn-wrapper {
+            position: absolute;
+            position: absolute;
+            left: 17px;
+            top: 16px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            transition: background-color 0.1s ease;
+            cursor: pointer;
+
+            &:hover {
+                background-color: lighten($btnhoverclr, 10%);
+            }
+
+            img {
+                transform: rotate(90deg);
+                height: 20px;
+                width: 20px;
+                filter: brightness(0) saturate(100%) invert(73%) sepia(21%) saturate(206%) hue-rotate(170deg) brightness(90%) contrast(90%);
+
+            }
+        }
 
         .close-btn-wrapper {
             position: absolute;
             right: 17px;
-            top: 17px;
+            top: 16px;
 
             display: flex;
             align-items: center;
@@ -62,194 +98,362 @@
         }
     }
 
-    .activity-container {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 4px;
-        cursor: pointer;
+    .right-nav-bar-body {
+        position: absolute;
+        top: 5em;
+        bottom: 0;
+        left: 0;
+        right: 0;
 
-        .activity-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            border-radius: 8px;
+        overflow-y: auto;
+        padding-top: 1em;
+        scrollbar-color: rgb(255 255 255 / 20%) rgb(233 255 236 / 2%);
+        scrollbar-width: thin;
 
-            font-weight: 600;
-            line-height: 20px;
-            padding: 8px 6px 8px 12px;
-
-            width: 94%;
-            gap: 10px;
-
-            img {
-                height: 20px;
-                width: 20px;
-            }
-
-            &:hover {
-                background-color: $btnhoverclr;
-            }
-        }
-
-    }
-
-    .change-background-container {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 4px;
-        cursor: pointer;
-
-        .change-background-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            border-radius: 8px;
-
-            font-weight: 600;
-            line-height: 20px;
-            padding: 8px 6px 8px 12px;
-            width: 94%;
-            gap: 10px;
-
-            .bgc-img {
-                height: 20px;
-                width: 20px;
-                background-position: 50% !important;
-                background-size: cover !important;
-                border-radius: 3px;
-            }
-
-            &:hover {
-                background-color: $btnhoverclr;
-            }
-        }
-    }
-
-    .collapse-all-container {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 4px;
-        cursor: pointer;
-
-        .collapse-all-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            border-radius: 8px;
-
-            font-weight: 600;
-            line-height: 20px;
-            padding: 6px 6px 6px 10px;
-            width: 94%;
-            gap: 8px;
-
-            img {
-                height: 24px;
-                width: 24px;
-            }
-
-            &:hover {
-                background-color: $btnhoverclr;
-            }
-        }
-    }
-
-    .delete-board-container {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 4px;
-        cursor: pointer;
-
-        .delete-board-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            border-radius: 8px;
-
-            font-weight: 600;
-            line-height: 20px;
-            padding: 8px 6px 8px 12px;
-            width: 94%;
-            gap: 10px;
-
-            img {
-                height: 20px;
-                width: 20px;
-            }
-
-            &:hover {
-                background-color: $btnhoverclr;
-            }
-        }
-    }
-
-    .delete-modal {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        color: inherit;
-
-        .delete-modal-content {
-            position: absolute;
-            top: 0;
-            right: 9px;
-
-
+        .activity-container {
             display: flex;
             justify-content: center;
-            flex-direction: column;
-            align-items: center;
+            margin-bottom: 4px;
+            cursor: pointer;
 
-            width: 304px;
-
-            background-color: $bgclr1;
-            text-align: center;
-            padding: 8px 12px 12px 12px;
-            width: 94%;
-            border: 1px solid $hrclr;
-            border-radius: 8px;
-
-            button {
-                background-color: #F87168;
-                color: #172b4d;
-                box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
-                border-radius: 2px;
-                height: 32px;
-                width: 80%;
-                &:hover{
-                    background-color: lighten( #F87168,3%);
-                }
-            }
-
-
-            .close-btn-wrapper {
-                position: absolute;
-                right: 8px;
-                top: 8px;
-
+            .activity-wrapper {
                 display: flex;
                 align-items: center;
-                justify-content: center;
+                justify-content: flex-start;
+                border-radius: 8px;
 
-                width: 28px;
-                height: 28px;
-                border-radius: 4px;
-                transition: background-color 0.1s ease;
-                cursor: pointer;
+                font-weight: 600;
+                line-height: 20px;
+                padding: 8px 6px 8px 12px;
+
+                width: 94%;
+                gap: 10px;
+
+                img {
+                    height: 20px;
+                    width: 20px;
+                }
 
                 &:hover {
                     background-color: $btnhoverclr;
                 }
-
-                img {
-                    height: 16px;
-                    width: 16px;
-                }
-
             }
 
         }
+
+        .change-background-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 4px;
+            cursor: pointer;
+
+            .change-background-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                border-radius: 8px;
+
+                font-weight: 600;
+                line-height: 20px;
+                padding: 8px 6px 8px 12px;
+                width: 94%;
+                gap: 10px;
+
+                .bgc-img {
+                    height: 20px;
+                    width: 20px;
+                    background-position: 50% !important;
+                    background-size: cover !important;
+                    border-radius: 3px;
+                }
+
+                &:hover {
+                    background-color: $btnhoverclr;
+                }
+            }
+        }
+
+        .collapse-all-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 4px;
+            cursor: pointer;
+
+            .collapse-all-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                border-radius: 8px;
+
+                font-weight: 600;
+                line-height: 20px;
+                padding: 6px 6px 6px 10px;
+                width: 94%;
+                gap: 8px;
+
+                img {
+                    height: 24px;
+                    width: 24px;
+                }
+
+                &:hover {
+                    background-color: $btnhoverclr;
+                }
+            }
+        }
+
+        .delete-board-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 4px;
+            cursor: pointer;
+
+            .delete-board-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                border-radius: 8px;
+
+                font-weight: 600;
+                line-height: 20px;
+                padding: 8px 6px 8px 12px;
+                width: 94%;
+                gap: 10px;
+
+                img {
+                    height: 20px;
+                    width: 20px;
+                }
+
+                &:hover {
+                    background-color: $btnhoverclr;
+                }
+            }
+        }
+
+        .delete-modal {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            color: inherit;
+
+            .delete-modal-content {
+                position: absolute;
+                top: 0;
+                right: 9px;
+
+
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+
+                width: 304px;
+
+                background-color: $bgclr1;
+                text-align: center;
+                padding: 8px 12px 12px 12px;
+                width: 94%;
+                border: 1px solid $hrclr;
+                border-radius: 8px;
+
+                button {
+                    background-color: #F87168;
+                    color: #172b4d;
+                    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+                    border-radius: 2px;
+                    height: 32px;
+                    width: 80%;
+
+                    &:hover {
+                        background-color: lighten(#F87168, 3%);
+                    }
+                }
+
+
+                .close-btn-wrapper {
+                    position: absolute;
+                    right: 8px;
+                    top: 8px;
+
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 4px;
+                    transition: background-color 0.1s ease;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: $btnhoverclr;
+                    }
+
+                    img {
+                        height: 16px;
+                        width: 16px;
+                    }
+
+                }
+
+            }
+        }
+
+        .activity-log {
+            display: flex;
+            flex-direction: column;
+
+            .activity-item {
+                padding: 8px 6px 8px 27px;
+            }
+        }
+
+        .background-options {
+            display: flex;
+            padding: 0px 18px;
+
+            .imgs-option {
+                cursor: pointer;
+                float: left;
+                padding: 0 4px;
+                position: relative;
+                text-align: center;
+                width: 50%;
+
+                img {
+                    background-size: cover;
+                    border-radius: 8px;
+                    height: 96px;
+                    margin-bottom: 8px;
+                    position: relative;
+                    width: 100%;
+
+                    &:hover {
+                        opacity: 0.7;
+                    }
+                }
+            }
+
+            .colors-option {
+                cursor: pointer;
+                float: left;
+                padding: 0 4px;
+                position: relative;
+                text-align: center;
+                width: 50%;
+
+                img {
+                    background-size: cover;
+                    border-radius: 8px;
+                    height: 96px;
+                    margin-bottom: 8px;
+                    position: relative;
+                    width: 100%;
+
+                    &:hover {
+                        opacity: 0.7;
+                    }
+                }
+            }
+
+        }
+
     }
 
 
+}
+
+.change-color-background {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 142px);
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin-block: 1em;
+    padding: 0 8px;
+
+    .color-button {
+        position: relative;
+
+        background-size: cover;
+        border-radius: 8px;
+        height: 96px;
+        width: 142px;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.7;
+        }
+
+        &::after {
+            content: '🦔';
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            font-size: 16px;
+            opacity: 1;
+        }
+    }
+
+    &::after {
+        content: '';
+        width: 142px;
+    }
+}
+
+.change-photo-background {
+    padding: 12px 6px 8px 12px;
+
+    .photos-bgc-container {
+        display: flex;
+        flex-wrap: wrap;
+        height: calc(100% - 40px);
+
+        padding: 0px 6px 8px 12px;
+        text-align: center;
+        width: 100%;
+        max-width: 338px;
+
+        .photo-container {
+            border-radius: 8px;
+            box-sizing: border-box;
+            display: inline-block;
+            padding: 0 4px 8px;
+            position: relative;
+            text-align: left;
+            vertical-align: top;
+            width: 50%;
+            z-index: 1;
+
+            cursor: pointer;
+
+            .photo {
+                background-color: #A1BDD914;
+                background-size: cover;
+                border-radius: 8px;
+                display: block;
+                height: 96px;
+                overflow: hidden;
+                position: relative;
+                width: 100%;
+            }
+        }
+    }
+}
+
+
+.photos-footer {
+    color: $txtclr1;
+    padding-top: 8px;
+
+    .unsplash-disclaimer {
+        font-size: 12px;
+        line-height: 16px;
+        text-align: left;
+
+        a {
+            color: #579DFF;
+        }
+    }
 }
