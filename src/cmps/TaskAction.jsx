@@ -12,21 +12,29 @@ import { Box } from "@mui/material"
 import { useSelector } from "react-redux"
 
 
-export function TaskAction({ action, board, group, task, getMemberById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem, dueDate }) {
-    
+export function TaskAction({ action, board, group, task, getMemberById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem, dueDate, style }) {
+
+    console.log('TaskAction')
+
     const user = useSelector(storeState => storeState.userModule.user)
 
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
     const [labelInputValue, setLabelInputValue] = useState(labelToEdit ? labelToEdit.title : '')
     const [dueDateToEdit, setDueDateToEdit] = useState(dueDate ? dueDate : Date.now());
-    
+
+    const searchMembersInputRef = useRef()
     const checklistTitleRef = useRef()
     const dueDateInputRef = useRef()
     const dueTimeInputRef = useRef()
     const dueDateCheckboxRef = useRef()
-    const isFirstRenderRef = useRef(true)    
+    const isFirstRenderRef = useRef(true)
 
     useEffect(() => {
+        if (action === 'members' && isFirstRenderRef.current) {
+            searchMembersInputRef.current.focus()
+            searchMembersInputRef.current.setSelectionRange(searchMembersInputRef.current.value.length, searchMembersInputRef.current.value.length);
+            isFirstRenderRef.current = false
+        }
         if (labelToEdit) setLabelInputValue(labelToEdit.title)
         if (checklistTitleRef.current) {
             checklistTitleRef.current.focus()
@@ -217,7 +225,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     // Dates
 
     async function onSaveDueDate(ev) {
-        if (!dueDateCheckboxRef.current.checked){
+        if (!dueDateCheckboxRef.current.checked) {
             console.log('remove')
             onRemoveDueDate(ev)
             return
@@ -229,7 +237,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         onSetAction(ev, null)
     }
 
-    async function onRemoveDueDate(ev){
+    async function onRemoveDueDate(ev) {
         const updatedTask = { ...task }
         updatedTask.dueDate = null
         const activityTitle = `removed the due date of task ${updatedTask.id}`
@@ -384,10 +392,10 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         }
     }
 
-   
+
 
     return (
-        <section className="task-action" onClick={(ev) => ev.stopPropagation()}>
+        <section className="task-action" onClick={(ev) => ev.stopPropagation()} style={style ? { ...style } : {}}>
 
             <header className="action-header">
                 {action === 'edit label' && <div onClick={(ev) => onSetAction(ev, 'labels')} className="back-container"> <img className="back-action icon" src="../../../src/assets/imgs/TaskDetails-icons/left-arrow.svg" /> </div>}
@@ -395,7 +403,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                 <div onClick={(ev) => onSetAction(ev, null)} className="close-action-container"> <img className="close-action icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" /> </div>
             </header>
 
-            {(action === 'members' || action === 'labels') && <input className="text" placeholder={`Search ${action}`} />}
+            {(action === 'members' || action === 'labels') && <input ref={searchMembersInputRef} className="text" placeholder={`Search ${action}`} />}
             {action === 'members' &&
                 <>
                     <div className="card-members">
@@ -532,7 +540,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                                             <div className={`body-cover ${task.style?.isFull ? 'focused' : ''}`} style={task.style} >
                                                 <div className="card-body">
                                                     <div className="top-line">
-                                                        
+
                                                     </div>
                                                     <div className="middle-line">
                                                     </div>
