@@ -494,7 +494,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                             <div className="size-btns">
                                 <div>
                                     <div className="cover-pic">
-                                        <div className={`header-cover ${task.style.isFull ? '' : 'focused'}`} data-name="false" onClick={onUpdateCoverIsFull}>
+                                        <div className={`header-cover ${task.style?.isFull ? '' : 'focused'}`} data-name="false" onClick={onUpdateCoverIsFull}>
                                             <div className="card-header" style={task.style}>
                                             </div>
                                             <div className="card-body">
@@ -513,9 +513,10 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                                             </div>
                                         </div>
                                         <div className="body" data-name="true" onClick={onUpdateCoverIsFull} >
-                                            <div className={`body-cover ${task.style.isFull ? 'focused' : ''}`} style={task.style} >
+                                            <div className={`body-cover ${task.style?.isFull ? 'focused' : ''}`} style={task.style} >
                                                 <div className="card-body">
                                                     <div className="top-line">
+                                                        
                                                     </div>
                                                     <div className="middle-line">
                                                     </div>
