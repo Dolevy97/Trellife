@@ -37,7 +37,6 @@ export function TaskDetails() {
     const [tempDescription, setTempDescription] = useState('')
     const [commentToEdit, setCommentToEdit] = useState('')
     const [labelToEdit, setLabelToEdit] = useState(null)
-    const [dateToEdit, setDateToEdit] = useState(null)
 
     const [isEditingComment, setIsEditingComment] = useState(false)
     const [editCommentInputValue, setEditCommentInputValue] = useState('')
@@ -205,10 +204,16 @@ export function TaskDetails() {
     }
 
     function getDueDate(timeStamp) {
-        if (!timeStamp) return
-        const date = new Date(timeStamp)
-        const isoString = date.toISOString()
-        return isoString.slice(0, 16)
+        if (!timeStamp) return;
+    
+        const date = new Date(timeStamp);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+    
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
 
     function onShowDatePicker() {
@@ -903,13 +908,12 @@ export function TaskDetails() {
                                 && <TaskAction action="add checklist" toggleAddingItem={toggleAddingItem} {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
-
-                            <button type='button' className="action" name="dates" onClick={(ev)=>{onSetAction(ev);setDateToEdit(taskToEdit.dueDate)}}>
+                            <button type='button' className="action" name="dates" onClick={onSetAction}>
                                 <img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" alt="dates icon" />
                                 <span className="action-title">Dates</span>
                             </button>
                             {action === 'dates'
-                                && <TaskAction action="dates" {...taskActionProps} dateToEdit={dateToEdit} setDateToEdit={setDateToEdit}/>}
+                                && <TaskAction action="dates" {...taskActionProps}  dueDate={taskToEdit.dueDate}/>}
                         </div>
                         <div className="task-action-container">
                             <button type='button' className="action" name="attachment" onClick={onSetAction}>
