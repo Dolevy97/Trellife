@@ -1,5 +1,7 @@
 .board-index {
     width: 100vw;
+    height: calc(100vh - 48px);
+    overflow-y: auto;
 
     header {
         width: 95%;
