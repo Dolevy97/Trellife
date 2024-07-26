@@ -101,6 +101,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
   function toggleRightNavBar() {
     setIsRightNavBarOpen(!isRightNavBarOpen)
+    setIsFilterOpen(false)
   }
 
   function toggleFilterOpen() {

@@ -303,9 +303,32 @@
         .activity-log {
             display: flex;
             flex-direction: column;
+            
+            .activity-item-container {
+                display: flex;
+                align-items: center;
 
-            .activity-item {
-                padding: 8px 6px 8px 27px;
+                margin-inline: 52px 12px;
+                min-height: 32px;
+                padding: 8px 0;
+                position: relative;
+
+                & .activity-item {
+                    font-size: .875em;
+                }
+
+                & .user-img {
+                    position: absolute;
+                    left: -40px;
+
+                    height: 32px;
+                    width: 32px;
+                }
+
+                & .activity-time {
+                    font-size: .75em;
+                    color: $txtclr2;
+                }
             }
         }
 

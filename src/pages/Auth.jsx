@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom"
 import { LoginForm } from "../cmps/LoginForm.jsx";
 import { login, signup } from '../store/actions/user.actions.js';
+import { cloudinaryService } from '../services/cloudinary.service.js';
 
 
 export function Auth() {
@@ -10,6 +11,7 @@ export function Auth() {
     // const [isSignup, setIsSignup] = useState(false)
 
     const [userInfo, setUserInfo] = useState('')
+    const [uploadedImage, setUploadedImage] = useState(null)
     const navigate = useNavigate()
 
     function handleChange({ target }) {
@@ -20,11 +22,13 @@ export function Auth() {
     }
 
     async function onSubmit() {
-        const { fullname, username, password, imgUrl } = userInfo
-        const newUser = { username, password, imgUrl }
+        const { fullname, username, password } = userInfo
+
+        const newUser = { username, password }
 
         if (isSignup) {
             newUser.fullname = fullname
+            newUser.imgUrl = uploadedImage
         }
 
         try {
@@ -41,6 +45,11 @@ export function Auth() {
         }
     }
 
+    async function onUploadImg({ target }) {
+        const file = target.files[0]
+        const url = await cloudinaryService.uploadImg(file)
+        return setUploadedImage(url)
+    }
 
     return (
         <section className="login">
@@ -56,7 +65,7 @@ export function Auth() {
                                     </div>
                                     <h5>{isSignup === 'signup' ? 'Sign up to continue' : 'Log in to continue'}</h5>
                                 </div>
-                                <LoginForm onSubmit={onSubmit} handleChange={handleChange} isSignup={isSignup} />
+                                <LoginForm onSubmit={onSubmit} handleChange={handleChange} isSignup={isSignup} onUploadImg={onUploadImg} uploadedImage={uploadedImage} />
                             </div>
                         </article>
                     </article>

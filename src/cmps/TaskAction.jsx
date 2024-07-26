@@ -9,6 +9,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import dayjs from "dayjs"
 import { Box } from "@mui/material"
+import { useSelector } from "react-redux"
 
 
 export function TaskAction({ action, board, group, task, getMemberById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem, dueDate }) {
@@ -16,6 +17,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
     const [labelInputValue, setLabelInputValue] = useState(labelToEdit ? labelToEdit.title : '')
     const [dueDateToEdit, setDueDateToEdit] = useState(dueDate ? dueDate : Date.now());
+    const user = useSelector(storeState => storeState.userModule.user)
 
     const checklistTitleRef = useRef()
     const dueDateInputRef = useRef()
@@ -59,7 +61,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         const updatedTask = { ...task }
         updatedTask.membersIds.push(id)
         const activityTitle = `added member (id: ${id}) to task (id: ${task.id})`
-        await updateTask(updatedTask, group, board, activityTitle)
+        await updateTask(updatedTask, group, board, activityTitle, user)
     }
 
     async function onRemoveMember(id) {
@@ -102,8 +104,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         const activity = {
             id: 'a' + makeId(),
             title: activityTitle,
-            // NOTICE TO CHANGE THE BY MEMBER TO LOGGED IN USER
-            byMember: { ...board.members[getRandomIntInclusive(0, board.members.length - 1)] },
+            byMember: user,
             group: { ...group },
             task: { ...task },
             createdAt: Date.now()
@@ -138,8 +139,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         const activity = {
             id: 'a' + makeId(),
             title: activityTitle,
-            // NOTICE TO CHANGE THE BY MEMBER TO LOGGED IN USER
-            byMember: { ...board.members[getRandomIntInclusive(0, board.members.length - 1)] },
+            byMember: user,
             group: { ...group },
             task: { ...task }
         }
@@ -194,7 +194,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         const activityTitle = `added ${checklistInputValue} to this card`
         onSetAction(ev, null)
         toggleAddingItem(newChecklist.id)
-        await updateTask(updatedTask, group, board, activityTitle)
+        await updateTask(updatedTask, group, board, activityTitle, user)
     }
 
     // Attachments
@@ -222,12 +222,12 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             if (!updatedTask.style || isCover) {
                 updatedTask = { ...updatedTask, style: { isFull: true, backgroundImage: `url(${attachment.url}`, backgroundColor: attachment.backgroundColor } }
                 if (isCover) {
-                    await updateTask(updatedTask, group, board, activityTitle)
+                    await updateTask(updatedTask, group, board, activityTitle, user)
                     break
                 }
             }
 
-            await updateTask(updatedTask, group, board, activityTitle)
+            await updateTask(updatedTask, group, board, activityTitle, user)
         }
 
         onSetAction(ev, action)

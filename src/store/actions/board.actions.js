@@ -14,34 +14,29 @@ export async function loadBoards(filterBy) {
 
 export function filterBoard(board, filterBy = {}) {
     if (!board || !board.groups) return board
+
     let filteredBoard = { ...board }
 
-    if (filterBy.title) {
-        const lowercaseFilter = filterBy.title.toLowerCase()
+    filteredBoard.groups = board.groups.map(group => {
+        const filteredTasks = group.tasks.filter(task => {
+            const titleMatch = !filterBy.title || task.title.toLowerCase().includes(filterBy.title.toLowerCase())
+            const memberMatch = !filterBy.memberIds || filterBy.memberIds.length === 0 || 
+                (task.membersIds && task.membersIds.some(id => filterBy.memberIds.includes(id)))
+            const labelMatch = !filterBy.labelIds || filterBy.labelIds.length === 0 || 
+                (task.labelsIds && task.labelsIds.some(id => filterBy.labelIds.includes(id)))
 
-        filteredBoard.groups = board.groups.map(group => {
-            // Check if the group title matches the filter
-            const groupMatches = group.title.toLowerCase().includes(lowercaseFilter)
+            return titleMatch && memberMatch && labelMatch
+        })
 
-            // Filter tasks within the group
-            const filteredTasks = group.tasks.filter(task =>
-                task.title.toLowerCase().includes(lowercaseFilter)
-            )
+        return {
+            ...group,
+            tasks: filteredTasks
+        }
+    })
 
-            // If the group title matches 
-            if (groupMatches || filteredTasks.length > 0) {
-                return {
-                    ...group,
-                    tasks: groupMatches ? group.tasks : filteredTasks
-                }
-            }
-            return null
-        }).filter(Boolean) // Remove null groups
-    } else {
-        filteredBoard.groups = [...board.groups]
-    }
+    // Remove empty groups
+    filteredBoard.groups = filteredBoard.groups.filter(group => group.tasks.length > 0)
 
-    filteredBoard.groups = filteredBoard.groups.filter(group => group.tasks && group.tasks.length > 0)
     return filteredBoard
 }
 
