@@ -46,6 +46,7 @@
                 position: relative;
 
                 display: flex;
+                align-items: center;
                 // height: 32px;
                 padding: 4px 8px 4px 4px;
                 border-radius: 8px;
@@ -73,21 +74,25 @@
                 }
 
                 .menu-text {
-                    display: flex;
-                    position: relative;
-                    flex: 1;
-                    flex-direction: column;
-                    justify-content: center;
-                    width: 100%;
                     padding: 0 0 0 8px;
                     overflow: hidden;
+                    display: block;
                     text-overflow: ellipsis;
                     white-space: nowrap;
                     font-size: .875em;
                 }
             }
         }
-
-
     }
+}
+
+.no-starred {
+    color: $txtclr2;
+    text-align: center;
+    font-size: .875em;
+    margin-block-start: 12px;
+}
+
+.no-starred-image {
+    margin-block-start: -20px;
 }
