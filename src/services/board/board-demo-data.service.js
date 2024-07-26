@@ -516,7 +516,8 @@ export function getRandomMember() {
     const member = {
         _id: 'u' + makeId(),
         fullname: _getRandomFullName(),
-        imgUrl: `../../../src/assets/imgs/user-imgs/user-img${getRandomIntInclusive(1, 3)}.jpg`
+        imgUrl: `../../../src/assets/imgs/user-imgs/user-img${getRandomIntInclusive(1, 3)}.jpg`,
+        favorites: []
     }
     return member
 }

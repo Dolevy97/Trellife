@@ -4,12 +4,43 @@ import { getAverageColorFromAttachment, getRandomIntInclusive, makeId } from "..
 import { cloudinaryService } from "../services/cloudinary.service"
 import { updateBoard } from "../store/actions/board.actions"
 
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
+import dayjs from "dayjs"
+import { Box } from "@mui/material"
+import { TimePicker } from "@mui/x-date-pickers"
 
-export function TaskAction({ action, board, group, task, getMemberById, getLabelById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem }) {
+
+export function TaskAction({ action, board, group, task, getMemberById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem, dateToEdit, setDateToEdit }) {
 
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
     const [labelInputValue, setLabelInputValue] = useState(labelToEdit ? labelToEdit.title : '')
+    const [dateInputValue, setDateInputValue] = useState(dateToEdit ? dayjs(dateToEdit) : dayjs());
     const checklistTitleRef = useRef()
+
+    function getDueDate(timeStamp) {
+        if (!timeStamp) return
+        const date = new Date(timeStamp)
+        const isoString = date.toISOString()
+        return isoString.slice(0, 10)
+    }
+
+    async function onSaveDueDate(ev) {
+        console.log(dateInputValue)
+        const { $y, $M, $D } = dateInputValue
+        console.log($y, $M, $D)
+        return
+        const dateStr = dateInputValue
+        const dateObj = new Date(dateStr)
+        const timestamp = dateObj.getTime()
+        const updatedTask = { ...task }
+        updatedTask.dueDate = timestamp
+        const activityTitle = `changed the due date of task (id: ${updatedTask.id}) to ${dateStr}`
+        // await updateTask(updatedTask, group, board, activityTitle, user)
+        await updateTask(updatedTask, group, board, activityTitle)
+        onSetAction(ev, null)
+    }
 
     useEffect(() => {
         if (labelToEdit) setLabelInputValue(labelToEdit.title)
@@ -201,6 +232,17 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         document.querySelector('.input-file-upload').click()
     }
 
+    async function onChangeDueDate({ target }) {
+        const dateStr = target.value
+        const dateObj = new Date(dateStr)
+        const timestamp = dateObj.getTime()
+        dateToEdit = timestamp
+        setDateInputValue(dateObj)
+        // taskToEdit.dueDate = timestamp
+        // const activityTitle = `changed the due date of task (id: ${taskToEdit.id}) to ${dateStr}`
+        // await updateTask(taskToEdit, group, board, activityTitle, user)
+    }
+
     return (
         <section className="task-action" onClick={(ev) => ev.stopPropagation()}>
             <header className="action-header">
@@ -388,6 +430,78 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                             {action === 'attach' ? 'Choose a file' : 'Upload a cover image'}
                         </button>
                     </div>
+                </>
+            }
+            {action === 'dates' &&
+                <>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <Box sx={{ width: '100%', display: 'flex', flexDirection:'column',alignItems:'center', overflow: 'hidden' }}>
+                                <StaticDatePicker
+                                    value={dateInputValue}
+                                    onChange={(newValue) => {
+                                        setDateInputValue(newValue);
+                                    }}
+                                    sx={{
+                                        backgroundColor: 'inherit',
+                                        '& .MuiPickersToolbar-root': {
+                                            display: 'none',
+                                        },
+                                        '& .MuiTypography-root': {
+                                            color: 'inherit',
+                                        },
+                                        '& .MuiButtonBase-root': {
+                                            color: 'inherit',
+                                        },
+                                        '& .MuiPickerStaticWrapper-actionBar': {
+                                            display: 'none',
+                                        },
+                                        '& .MuiDialogActions-root': {
+                                            display: 'none',
+                                        }
+                                    }}
+                                />
+                                {/* <TimePicker
+                                    value={dateInputValue}
+                                    onChange={(newValue) => {
+                                        setDateInputValue(newValue);
+                                    }}
+                                    sx={{
+                                        '& .MuiOutlinedInput-root': {
+                                            '& fieldset': {
+                                                borderColor: '#b6c2cf',
+                                            },
+                                            '&:hover fieldset': {
+                                                borderColor: '#b6c2cf',
+                                            },
+                                            '&.Mui-focused fieldset': {
+                                                borderColor: '#b6c2cf',
+                                            },
+                                        },
+                                        '& .MuiInputBase-root': {
+                                            color: 'inherit',
+                                            width: '134px',
+                                            height: '36px'
+                                        },
+                                        '& .MuiTypography-root': {
+                                            color: 'inherit',
+                                        },
+                                        '& .MuiButtonBase-root': {
+                                            color: 'inherit',
+                                        },
+                                        '& .MuiSvgIcon-root': {
+                                            color: '#b6c2cf',
+                                            scale: '0.85',
+                                        }
+                                    }} /> */}
+                            </Box>
+                        </LocalizationProvider>
+                        <div className="date">
+                            <input className="checkbox" type="checkbox" />
+                            <input className="text date-text" type="text" />
+                            <input className="text date-text" type="text" />
+                        </div>
+                        <button className="btn-blue btn-full" onClick={(ev) => onSaveDueDate(ev)}>Save</button>
+                        <button className="btn-dark-grey btn-full">Remove</button>
                 </>
             }
         </section>

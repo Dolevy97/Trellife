@@ -14,7 +14,6 @@ export function TaskDetails() {
 
     const board = useSelector(storeState => storeState.boardModule.board)
     const user = useSelector(storeState => storeState.userModule.user)
-    console.log(board)
 
     const textareaRef = useRef(null)
     const textareaCommentRef = useRef(null)
@@ -38,6 +37,7 @@ export function TaskDetails() {
     const [tempDescription, setTempDescription] = useState('')
     const [commentToEdit, setCommentToEdit] = useState('')
     const [labelToEdit, setLabelToEdit] = useState(null)
+    const [dateToEdit, setDateToEdit] = useState(null)
 
     const [isEditingComment, setIsEditingComment] = useState(false)
     const [editCommentInputValue, setEditCommentInputValue] = useState('')
@@ -890,9 +890,9 @@ export function TaskDetails() {
                                 <span className="action-title">Labels</span>
                             </button>
                             {action === 'labels'
-                                && <TaskAction action="labels" getLabelById={getLabelById} {...taskActionProps} setLabelToEdit={setLabelToEdit} />}
+                                && <TaskAction action="labels" {...taskActionProps} setLabelToEdit={setLabelToEdit} />}
                             {action === 'edit label'
-                                && <TaskAction action="edit label" getLabelById={getLabelById} labelToEdit={labelToEdit} setLabelToEdit={setLabelToEdit} {...taskActionProps} />}
+                                && <TaskAction action="edit label" labelToEdit={labelToEdit} setLabelToEdit={setLabelToEdit} {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
                             <button type='button' className="action" name="checklist" onClick={onSetAction}>
@@ -904,11 +904,12 @@ export function TaskDetails() {
                         </div>
                         <div className="task-action-container">
 
-                            <button type='button' className="action" name="dates" onClick={onSetAction} style={{ cursor: 'not-allowed' }}>
+                            <button type='button' className="action" name="dates" onClick={(ev)=>{onSetAction(ev);setDateToEdit(taskToEdit.dueDate)}}>
                                 <img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" alt="dates icon" />
                                 <span className="action-title">Dates</span>
                             </button>
-                            {/* Enter task action rendering for date */}
+                            {action === 'dates'
+                                && <TaskAction action="dates" {...taskActionProps} dateToEdit={dateToEdit} setDateToEdit={setDateToEdit}/>}
                         </div>
                         <div className="task-action-container">
                             <button type='button' className="action" name="attachment" onClick={onSetAction}>
