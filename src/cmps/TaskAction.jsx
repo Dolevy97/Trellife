@@ -14,8 +14,6 @@ import { useSelector } from "react-redux"
 
 export function TaskAction({ action, board, group, task, getMemberById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem, dueDate, style, attachmentToEdit }) {
 
-    console.log('TaskAction')
-
     const user = useSelector(storeState => storeState.userModule.user)
 
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
@@ -73,6 +71,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     }
 
     // Members
+
     async function onAddMember(id) {
         const updatedTask = { ...task }
         updatedTask.membersIds.push(id)
@@ -86,6 +85,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     }
 
     // Labels
+
     async function onToggleLabel(ev, id) {
         const { checked } = ev.target
         let updatedTask = { ...task }
@@ -410,8 +410,6 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             target.value = formatTimestampToTimeString(dueDateToEdit);
         }
     }
-
-
 
     return (
         <section className="task-action" onClick={(ev) => ev.stopPropagation()} style={style ? { ...style } : {}}>
