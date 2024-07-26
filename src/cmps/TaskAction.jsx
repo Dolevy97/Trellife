@@ -327,7 +327,6 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                             <span className="title">Size</span>
                             <div className="size-btns">
                                 <div>
-                                    {console.log(task.style.isFull)}
                                     <div className="cover-pic">
                                         <div className={`header-cover ${task.style.isFull? '' : 'focused'}`} data-name="false" onClick={onUpdateCoverIsFull}>
                                             <div className="card-header" style={task.style}>
