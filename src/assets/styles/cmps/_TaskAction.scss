@@ -332,6 +332,7 @@
         .size-btns {
             display: flex;
             justify-content: space-between;
+            margin-block-start: 4px;
 
             .btn-size {
                 height: em(62, 14);
@@ -391,5 +392,128 @@
         font-size: 14px;
         color: $txtclr2;
         font-weight: 500;
+    }
+}
+
+.cover-pic {
+    display: grid;
+    grid-gap: 8px;
+    grid-template-columns: 1fr 1fr;
+
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background: #fff;
+    border: 1px solid rgba(9, 30, 66, .08);
+    border-radius: 3px;
+    box-shadow: none;
+    cursor: pointer;
+    gap: 8px;
+    height: 62px;
+    position: relative;
+    width: 134px;
+
+    .header-cover {
+
+        &.focused {
+            box-shadow: 0 0 0 2px #161A1D, 0 0 0 4px #579DFF;
+            border-radius: 3px;
+        }
+
+        .card-header {
+            background: #6b778c;
+            background-size: cover;
+            border-radius: 3px 3px 0 0;
+            height: 28px;
+        }
+
+        .card-body {
+            position: relative;
+
+            padding: 6px 4px 4px 6px;
+
+            .top-line {
+                background: rgba(107, 119, 140, .42);
+                border-radius: 2px;
+                height: 4px;
+                width: 122px;
+            }
+
+            .middle-line {
+                background: rgba(107, 119, 140, .42);
+                border-radius: 2px;
+                height: 4px;
+                margin-top: 4px;
+                width: 98px;
+            }
+
+            .bottom-line {
+                display: flex;
+                margin-top: 6px;
+
+                & * {
+                    background: #6b778c;
+                    border-radius: 2px;
+                    height: 6px;
+                    margin-right: 2px;
+                    opacity: .3;
+                    width: 16px;
+                }
+            }
+
+            .dot-corner {
+                background: #6b778c;
+                border-radius: 5px;
+                bottom: 4px;
+                height: 10px;
+                opacity: .3;
+                position: absolute;
+                right: 4px;
+                width: 10px;
+            }
+        }
+
+    }
+}
+
+.body {
+    .body-cover {
+        background: #5e6c84;
+        background-size: cover;
+        border: 1px solid rgba(9, 30, 66, .08);
+        border-radius: 3px;
+        box-shadow: none;
+        height: 62px;
+        margin: 0;
+        position: relative;
+        width: 134px;
+
+        &.focused {
+            box-shadow: 0 0 0 2px #161A1D, 0 0 0 4px #579DFF;
+            border-radius: 3px;
+        }
+
+        .card-body {
+            bottom: 4px;
+            padding: 6px 4px 4px 6px;
+            position: absolute;
+
+            & * {
+                background: #fff;
+                border-radius: 2px;
+                height: 4px;
+                opacity: 1;
+            }
+
+            .top-line {
+                width: 116px;
+            }
+
+            .middle-line {
+                margin-top: 4px;
+                width: 92px;
+            }
+        }
+
+
     }
 }
