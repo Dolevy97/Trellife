@@ -26,7 +26,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        
+
         font-weight: 500;
         font-size: 16px;
         height: 5em;
@@ -100,7 +100,7 @@
 
     .right-nav-bar-body {
         position: absolute;
-        top: 5em; 
+        top: 5em;
         bottom: 0;
         left: 0;
         right: 0;
@@ -375,7 +375,7 @@
 
     .color-button {
         position: relative;
-    
+
         background-size: cover;
         border-radius: 8px;
         height: 96px;
@@ -399,5 +399,61 @@
     &::after {
         content: '';
         width: 142px;
+    }
+}
+
+.change-photo-background {
+    padding: 12px 6px 8px 12px;
+
+    .photos-bgc-container {
+        display: flex;
+        flex-wrap: wrap;
+        height: calc(100% - 40px);
+
+        padding: 0px 6px 8px 12px;
+        text-align: center;
+        width: 100%;
+        max-width: 338px;
+
+        .photo-container {
+            border-radius: 8px;
+            box-sizing: border-box;
+            display: inline-block;
+            padding: 0 4px 8px;
+            position: relative;
+            text-align: left;
+            vertical-align: top;
+            width: 50%;
+            z-index: 1;
+
+            cursor: pointer;
+
+            .photo {
+                background-color: #A1BDD914;
+                background-size: cover;
+                border-radius: 8px;
+                display: block;
+                height: 96px;
+                overflow: hidden;
+                position: relative;
+                width: 100%;
+            }
+        }
+    }
+}
+
+
+.photos-footer {
+    color: $txtclr1;
+    padding-top: 8px;
+
+    .unsplash-disclaimer {
+        font-size: 12px;
+        line-height: 16px;
+        text-align: left;
+
+        a {
+            color: #579DFF;
+        }
     }
 }
