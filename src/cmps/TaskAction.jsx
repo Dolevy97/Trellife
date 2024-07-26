@@ -13,12 +13,13 @@ import { useSelector } from "react-redux"
 
 
 export function TaskAction({ action, board, group, task, getMemberById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem, dueDate }) {
+    
+    const user = useSelector(storeState => storeState.userModule.user)
 
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
     const [labelInputValue, setLabelInputValue] = useState(labelToEdit ? labelToEdit.title : '')
     const [dueDateToEdit, setDueDateToEdit] = useState(dueDate ? dueDate : Date.now());
-    const user = useSelector(storeState => storeState.userModule.user)
-
+    
     const checklistTitleRef = useRef()
     const dueDateInputRef = useRef()
     const dueTimeInputRef = useRef()
@@ -85,33 +86,19 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         if (!labelToEdit.color && !labelToEdit.title) return
         let label
         let labels
-        let activityTitle
         if (labelToEdit.id) {
             label = { ...labelToEdit, title: labelInputValue }
             labels = board.labels.map(l => {
                 if (l.id !== label.id) return l
                 return label
             })
-            activityTitle = `updated label (id: ${label.id}) on this board`
         } else {
             label = { ...labelToEdit, title: labelInputValue, id: 'l' + makeId() }
             labels = [...board.labels]
             labels.push(label)
-            activityTitle = `added label (id: ${label.id}) on this board`
         }
 
-        const activities = [...board.activities]
-        const activity = {
-            id: 'a' + makeId(),
-            title: activityTitle,
-            byMember: user,
-            group: { ...group },
-            task: { ...task },
-            createdAt: Date.now()
-        }
-        activities.push(activity)
-
-        const updatedBoard = { ...board, labels, activities }
+        const updatedBoard = { ...board, labels }
 
         await updateBoard(updatedBoard)
         if (!labelToEdit.id) {
@@ -134,18 +121,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             return { ...g, tasks: tasks }
         })
 
-        const activityTitle = `Label (id: ${labelToEdit.id}) removed from board`
-        const activities = [...board.activities]
-        const activity = {
-            id: 'a' + makeId(),
-            title: activityTitle,
-            byMember: user,
-            group: { ...group },
-            task: { ...task }
-        }
-        activities.push(activity)
-
-        const updatedBoard = { ...board, groups, labels: updatedLabels, activities }
+        const updatedBoard = { ...board, groups, labels: updatedLabels }
 
         await updateBoard(updatedBoard)
         onSetAction(ev, null)
@@ -241,10 +217,9 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
 
     async function onSaveDueDate(ev) {
         const updatedTask = { ...task }
-        updatedTask.dueDate = timestamp
-        const activityTitle = `changed the due date of task (id: ${updatedTask.id})`
-        // await updateTask(updatedTask, group, board, activityTitle, user)
-        await updateTask(updatedTask, group, board, activityTitle)
+        updatedTask.dueDate = dueDateToEdit
+        const activityTitle = `changed the due date of task ${updatedTask.id} to ${dueDateToEdit}`
+        await updateTask(updatedTask, group, board, activityTitle, user)
         onSetAction(ev, null)
     }
 
@@ -393,17 +368,6 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             // Reset the input to the current time part of dueDateToEdit
             target.value = formatTimestampToTimeString(dueDateToEdit);
         }
-    }
-
-    async function onChangeDueDate({ target }) {
-        const dateStr = target.value
-        const dateObj = new Date(dateStr)
-        const timestamp = dateObj.getTime()
-        dueDate = timestamp
-        setDueDateToEdit(dateObj)
-        // taskToEdit.dueDate = timestamp
-        // const activityTitle = `changed the due date of task (id: ${taskToEdit.id}) to ${dateStr}`
-        // await updateTask(taskToEdit, group, board, activityTitle, user)
     }
 
     return (
