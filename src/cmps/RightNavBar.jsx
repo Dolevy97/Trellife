@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollapse, board }) {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
     const [isCollapseOpen, setIsCollapseOpen] = useState(false)
+    const [field, setField] = useState('Menu')
 
     const navigate = useNavigate()
 
@@ -32,53 +33,94 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
         setIsCollapseOpen(prevState => {
             const newState = !prevState
             toggleAllGroupsCollapse(newState)
-            return newState;
+            return newState
         })
     }
+
 
     return (
         <section className={`right-nav-bar-container ${!isRightNavBarOpen ? 'is-close' : ''}`}>
             <section className="right-nav-bar-header">
                 <div>
-                    <span>Menu</span>
+                    <span>{field}</span>
                 </div>
+                {field !== 'Menu' && (
+                    <div className="to-menu-btn-wrapper" onClick={() => setField('Menu')}>
+                        <img src="../../../src\assets\imgs\Icons\arrow-down.svg" alt="Back to Menu" />
+                    </div>
+                )}
                 <div className="close-btn-wrapper" onClick={onClose}>
                     <img src="../../../src/assets/imgs/Icons/close.svg" alt="Close" />
                 </div>
                 <hr className="header-sep" />
             </section>
             <section className="right-nav-bar-body">
+                {field === 'Menu' && (
+                    <>
+                        <div className="activity-container" onClick={() => setField('Activity')}>
+                            <div className="activity-wrapper">
+                                <img src="../../../src\assets\imgs\TaskDetails-icons\activity.svg" alt="" />
+                                <span>Activity</span>
+                            </div>
+                        </div>
 
-                <div className="activity-container">
-                    <div className="activity-wrapper">
-                        <img src="../../../src\assets\imgs\TaskDetails-icons\activity.svg" alt="" />
-                        <span>Activity</span>
-                    </div>
-                </div>
+                        <div className="change-background-container" onClick={() => setField('Change background')}>
+                            <div className="change-background-wrapper" >
+                                <div className="bgc-img" style={board.style}></div>
+                                <span>Change background</span>
+                            </div>
+                        </div>
 
-                <div className="change-background-container">
-                    <div className="change-background-wrapper" >
-                        <div className="bgc-img" style={board.style}></div>
-                        <span>Change background</span>
-                    </div>
-                </div>
-                <div className="collapse-all-container" onClick={onCollapseToggle}>
-                    <div className="collapse-all-wrapper">
-                        <img
-                            src={`../../../src/assets/imgs/Icons/${isCollapseOpen ? 'expand' : 'collapse'}.svg`}
-                            alt={isCollapseOpen ? "Expand" : "Collapse"}
-                        />
-                        <span>{isCollapseOpen ? 'Expand all' : 'Collapse all'}</span>
-                    </div>
-                </div>
+                        <div className="collapse-all-container" onClick={onCollapseToggle}>
+                            <div className="collapse-all-wrapper">
+                                <img
+                                    src={`../../../src/assets/imgs/Icons/${isCollapseOpen ? 'expand' : 'collapse'}.svg`}
+                                    alt={isCollapseOpen ? "Expand" : "Collapse"}
+                                />
+                                <span>{isCollapseOpen ? 'Expand all' : 'Collapse all'}</span>
+                            </div>
+                        </div>
 
-                <div className="delete-board-container" onClick={() => setIsDeleteModalOpen(true)}>
-                    <div className="delete-board-wrapper">
-                        <img src="../../../src\assets\imgs\TaskDetails-icons\trash.svg" alt="" />
-                        <span> Delete board</span>
+                        <div className="delete-board-container" onClick={() => setIsDeleteModalOpen(true)}>
+                            <div className="delete-board-wrapper">
+                                <img src="../../../src\assets\imgs\TaskDetails-icons\trash.svg" alt="" />
+                                <span> Delete board</span>
+                            </div>
+                        </div>
+                    </>
+                )}
+
+                {/* Acticity body */}
+                {field === 'Activity' && (
+                    <div className="activity-log">
+                        {board.activities && board.activities.length > 0 ? (
+                            board.activities.map((activity, index) => (
+                                <div key={index} className="activity-item">
+                                    <span>{activity.title}</span>
+
+                                </div>
+                            ))
+                        ) : (
+                            <p>No activities to show</p>
+                        )}
                     </div>
-                </div>
+                )}
+
+                {/* Change background body*/}
+                {field === 'Change background' && (
+                    <div className="background-options">
+                        <div className="imgs-option">
+                            <img src="../../../src/assets/imgs/photosoption.jpg" alt="" />
+                            <span>Phothos</span>
+                        </div>
+                        <div className="colors-option">
+                            <img src="../../../src\assets\imgs\colorsoption.png" alt="" />
+                            <span>Colors</span>
+                        </div>
+                    </div>
+                )}
             </section>
+
             {isDeleteModalOpen && (
                 <div className="delete-modal">
                     <div className="delete-modal-content">

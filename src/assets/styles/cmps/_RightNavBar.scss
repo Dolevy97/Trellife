@@ -1,4 +1,3 @@
-
 .right-nav-bar-container {
     display: flex;
     flex-direction: column;
@@ -27,10 +26,39 @@
         font-weight: 500;
         font-size: 16px;
 
+        .to-menu-btn-wrapper {
+            position: absolute;
+            position: absolute;
+            left: 17px;
+            top: 16px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            transition: background-color 0.1s ease;
+            cursor: pointer;
+
+            &:hover {
+                background-color: lighten($btnhoverclr, 10%);
+            }
+
+            img {
+                transform: rotate(90deg);
+                height: 20px;
+                width: 20px;
+                filter: brightness(0) saturate(100%) invert(73%) sepia(21%) saturate(206%) hue-rotate(170deg) brightness(90%) contrast(90%);
+
+            }
+        }
+
         .close-btn-wrapper {
             position: absolute;
             right: 17px;
-            top: 17px;
+            top: 16px;
 
             display: flex;
             align-items: center;
@@ -216,8 +244,9 @@
                 border-radius: 2px;
                 height: 32px;
                 width: 80%;
-                &:hover{
-                    background-color: lighten( #F87168,3%);
+
+                &:hover {
+                    background-color: lighten(#F87168, 3%);
                 }
             }
 
@@ -251,5 +280,61 @@
         }
     }
 
+    .activity-log {
+        display: flex;
+        flex-direction: column;
+
+        .activity-item {
+            padding: 8px 6px 8px 27px;
+        }
+    }
+
+    .background-options {
+        display: flex;
+        padding: 0px 18px;
+
+        .imgs-option {
+            cursor: pointer;
+            float: left;
+            padding: 0 4px;
+            position: relative;
+            text-align: center;
+            width: 50%;
+
+            img {
+                background-size: cover;
+                border-radius: 8px;
+                height: 96px;
+                margin-bottom: 8px;
+                position: relative;
+                width: 100%;
+                &:hover{
+                    opacity: 0.7;
+                }
+            }
+        }
+
+        .colors-option {
+            cursor: pointer;
+            float: left;
+            padding: 0 4px;
+            position: relative;
+            text-align: center;
+            width: 50%;
+
+            img {
+                background-size: cover;
+                border-radius: 8px;
+                height: 96px;
+                margin-bottom: 8px;
+                position: relative;
+                width: 100%;
+                &:hover{
+                    opacity: 0.7;
+                }
+            }
+        }
+
+    }
 
 }
