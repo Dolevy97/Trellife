@@ -544,7 +544,7 @@ export function TaskDetails() {
         } else if (timeDiff < 0) {
             // Overdue by less than a day
             return {
-                text: 'This card is recently overdue!',
+                text: 'Overdue',
                 style: { backgroundColor: '#F87168' }
             };
         } else if (timeDiff <= dayInMilliseconds) {
