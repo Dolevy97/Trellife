@@ -731,7 +731,7 @@ export function TaskDetails() {
                                                     <article className="attachment-link" onClick={() => onRemoveAttachment(a)}><span className='attachment-link-text'>Delete</span></article>
                                                     <article className="attachment-link" onClick={(ev) => onSetAction(ev, 'edit attachment', i)} style={{ position: 'relative' }}><span className='attachment-link-text'>Edit</span>
                                                         {action === 'edit attachment' && actionPosition === i
-                                                            && <TaskAction action="edit attachment" {...taskActionProps} style={{ left: '12px', top: '22px' }} />}
+                                                            && <TaskAction action="edit attachment" {...taskActionProps} style={{ left: '12px', top: '22px' }} attachmentToEdit={a}/>}
                                                     </article>
                                                 </div>
                                                 {a.type.slice(0, 5) === 'image' &&

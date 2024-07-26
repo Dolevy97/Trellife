@@ -12,18 +12,20 @@ import { Box } from "@mui/material"
 import { useSelector } from "react-redux"
 
 
-export function TaskAction({ action, board, group, task, getMemberById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem, dueDate, style }) {
+export function TaskAction({ action, board, group, task, getMemberById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem, dueDate, style, attachmentToEdit }) {
 
     console.log('TaskAction')
 
     const user = useSelector(storeState => storeState.userModule.user)
 
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
+    const [attachmentInputValue, setAttachmentInputValue] = useState(attachmentToEdit ? attachmentToEdit.title : '')
     const [labelInputValue, setLabelInputValue] = useState(labelToEdit ? labelToEdit.title : '')
     const [dueDateToEdit, setDueDateToEdit] = useState(dueDate ? dueDate : Date.now());
 
     const searchInputRef = useRef()
     const checklistTitleRef = useRef()
+    const attachmentTitleRef = useRef()
     const dueDateInputRef = useRef()
     const dueTimeInputRef = useRef()
     const dueDateCheckboxRef = useRef()
@@ -39,6 +41,10 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         if (checklistTitleRef.current) {
             checklistTitleRef.current.focus()
             checklistTitleRef.current.select()
+        }
+        if (attachmentTitleRef.current) {
+            attachmentTitleRef.current.focus()
+            attachmentTitleRef.current.select()
         }
     }, [])
 
@@ -220,6 +226,19 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
 
     function onUpload() {
         document.querySelector('.input-file-upload').click()
+    }
+
+    async function onUpdateAttachment(ev) {
+        const updatedAttachment = { ...attachmentToEdit, title: attachmentInputValue }
+        const attachments = task.attachments.map(a => {
+            if (a.url !== attachmentToEdit.url) return a
+            else return updatedAttachment
+        })
+        const updatedTask = {...task,attachments}
+        const activityTitle = `updated attachment's link name from ${attachmentToEdit.title} to ${attachmentInputValue} on card (id: ${task.id})`
+        console.log(updatedTask.attachments[0])
+        await updateTask(updatedTask, group, board, activityTitle, user)
+        onSetAction(ev, null)
     }
 
     // Dates
@@ -617,6 +636,19 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                     </div>
                 </>
             }
+            {action === 'edit attachment' &&
+                <>
+                    <div className="edit-attachment">
+                        <span className="title">Link name</span>
+                        <input
+                            ref={attachmentTitleRef}
+                            className="text"
+                            value={attachmentInputValue}
+                            onChange={(ev) => setAttachmentInputValue(ev.target.value)} />
+                    </div>
+                    <button className="btn-blue" onClick={onUpdateAttachment}>Update</button>
+                </>
+            }
             {action === 'dates' &&
                 <>
 
@@ -648,7 +680,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                             />
                         </Box>
                     </LocalizationProvider>
-                        <span className="title" style={{margin:'0'}}>Due date</span>
+                    <span className="title" style={{ margin: '0' }}>Due date</span>
                     <div className="due-date">
                         <input ref={dueDateCheckboxRef} className="checkbox" type="checkbox" />
                         <input ref={dueDateInputRef} className="text date-text" type="text" onBlur={onBlurDateInput} />
