@@ -7,11 +7,13 @@ import { login, logout } from '../store/actions/user.actions'
 
 export function AppHeader({ isHomePage }) {
 	const user = useSelector(storeState => storeState.userModule.user)
+
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 	const [menuToOpen, setMenuToOpen] = useState(null)
 	const [isAdding, setIsAdding] = useState(false)
 	const [userMenuOpen, setUserMenuOpen] = useState(false)
 	const [userMenuStyle, setUserMenuStyle] = useState({});
+	const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
 
 	const userMenuRef = useRef()
 	const appHeaderRef = useRef()
@@ -58,11 +60,16 @@ export function AppHeader({ isHomePage }) {
 		}
 	}
 
-	function handleMenuChange(menu) {
+	function handleMenuChange(menu, event) {
 		if (menuToOpen === menu) {
 			setIsMenuOpen(false)
 			setMenuToOpen(null)
 		} else {
+			const rect = event.currentTarget.getBoundingClientRect()
+			setMenuPosition({
+				top: rect.bottom,
+				left: rect.left
+			});
 			setIsMenuOpen(true)
 			setMenuToOpen(menu)
 		}
@@ -82,27 +89,19 @@ export function AppHeader({ isHomePage }) {
 						<span className='logo-text'>Trellife</span>
 					</div>
 					<section className={`header-links ${isHomePage ? 'homepage' : ''}`}>
-						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Boards' ? 'active' : ''}`} onClick={() => {
-							handleMenuChange('Boards')
-						}}>
+						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Boards' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Boards', e)}>
 							<p className='header-link-text' title='Boards'>Boards</p>
 							<img src="../../../src\assets\imgs\Icons\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
 						</article>
-						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Recent' ? 'active' : ''}`} onClick={() => {
-							handleMenuChange('Recent')
-						}}>
+						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Recent' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Recent', e)}>
 							<p className='header-link-text' title='Recent'>Recent</p>
 							<img src="../../../src\assets\imgs\Icons\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
 						</article>
-						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Starred' ? 'active' : ''}`} onClick={() => {
-							handleMenuChange('Starred')
-						}}>
+						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Starred' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Starred', e)}>
 							<p className='header-link-text' title='Starred'>Starred</p>
 							<img src="../../../src\assets\imgs\Icons\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
 						</article>
-						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Templates' ? 'active' : ''}`} onClick={() => {
-							handleMenuChange('Templates')
-						}}>
+						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Templates' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Templates', e)}>
 							<p className='header-link-text' title='Templates'>Templates</p>
 							<img src="../../../src\assets\imgs\Icons\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
 						</article>
@@ -125,7 +124,7 @@ export function AppHeader({ isHomePage }) {
 				{!isHomePage && user && <section ref={accountProfileRef} title='account' onClick={() => setUserMenuOpen(!userMenuOpen)} className="user-profile">
 					<img className='user-profile-img' src={user.imgUrl} />
 				</section>}
-				{isMenuOpen && <DropdownMenu menu={menuToOpen} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />}
+				{isMenuOpen && <DropdownMenu menu={menuToOpen} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} position={menuPosition} />}
 			</header>
 			{userMenuOpen &&
 				<section className='user-menu' ref={userMenuRef} style={userMenuStyle}>

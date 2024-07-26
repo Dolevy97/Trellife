@@ -412,7 +412,7 @@
             transition-timing-function: ease;
             padding: 0;
 
-            &:checked{
+            &:checked {
                 background-color: #99C8FF;
             }
 
@@ -431,11 +431,11 @@
 
         .date-text {
             color: inherit;
-            margin:0 8px;
+            margin: 0 8px;
             width: 7em;
             border: 0.8px solid currentColor;
             border-radius: 5px;
-    
+
         }
     }
 
@@ -456,7 +456,7 @@
 
     background-position: 50%;
     background-repeat: no-repeat;
-    background: #22272B;
+    // background: #22272B;
     border: 1px solid rgba(9, 30, 66, .08);
     border-radius: 3px;
     box-shadow: none;
@@ -467,7 +467,6 @@
     width: 134px;
 
     .header-cover {
-
         &.focused {
             box-shadow: 0 0 0 2px #161A1D, 0 0 0 4px #579DFF;
             border-radius: 3px;
@@ -476,6 +475,7 @@
         .card-header {
             background: #6b778c;
             background-size: cover;
+            background-position: center;
             border-radius: 3px 3px 0 0;
             height: 28px;
         }
@@ -531,6 +531,7 @@
     .body-cover {
         background: #5e6c84;
         background-size: cover;
+        background-position: center;
         border: 1px solid rgba(9, 30, 66, .08);
         border-radius: 3px;
         box-shadow: none;

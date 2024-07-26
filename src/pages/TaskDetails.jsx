@@ -514,6 +514,44 @@ export function TaskDetails() {
         }
     }
 
+    function getTaskStatus(task) {
+        if (task.isDone) {
+            return {
+                text: 'Complete',
+                style: { backgroundColor: '#4BCE97' }
+            };
+        }
+
+        if (!task.dueDate) {
+            return null
+        }
+
+        const now = new Date()
+        const dueDate = new Date(task.dueDate)
+        const timeDiff = dueDate - now
+        const dayInMilliseconds = 24 * 60 * 60 * 1000
+
+        if (timeDiff < -dayInMilliseconds) {
+            // Overdue by more than a day
+            return {
+                text: 'Overdue',
+                style: { backgroundColor: '#42221F', color: '#FD9891' }
+            };
+        } else if (timeDiff < 0) {
+            // Overdue by less than a day
+            return {
+                text: 'This card is recently overdue!',
+                style: { backgroundColor: '#F87168' }
+            };
+        } else if (timeDiff <= dayInMilliseconds) {
+            return {
+                text: 'Due soon',
+                style: { backgroundColor: '#F5CD47' }
+            };
+        }
+
+        return { text: '', style: {} }
+    }
 
 
     if (!taskToEdit || !group) return null
@@ -521,6 +559,8 @@ export function TaskDetails() {
     const { title, description, membersIds, labelsIds, style } = taskToEdit
 
     const taskActionProps = { task: taskToEdit, board, group, onSetAction }
+
+    const taskStatus = getTaskStatus(taskToEdit)
 
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
@@ -602,7 +642,7 @@ export function TaskDetails() {
                                                 value={getDueDate(taskToEdit.dueDate)}
                                                 onChange={onChangeDueDate}
                                             />
-                                            <span className='inside-input-is-done' style={!taskToEdit.isDone ? { backgroundColor: '#F5CD47' } : { backgroundColor: '#4BCE97' }}>{taskToEdit.isDone ? 'Complete' : 'Due soon'}</span>
+                                            <span className='inside-input-is-done' style={taskStatus.style}>{taskStatus.text}</span>
                                             <img className="arrow-down" src="../../../src/assets/imgs/TaskDetails-icons/arrow-down.svg" alt="description icon" />
                                         </div>
                                     </section>

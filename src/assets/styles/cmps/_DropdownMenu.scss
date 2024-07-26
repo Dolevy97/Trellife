@@ -6,25 +6,6 @@
     border-radius: 8px;
     z-index: 20;
 
-    position: absolute;
-    top: 48px;
-
-    &.Boards {
-        left: 146px;
-    }
-
-    &.Recent {
-        left: 245px;
-    }
-
-    &.Starred {
-        left: 344px;
-    }
-
-    &.Templates {
-        left: 445px;
-    }
-
     .menu-content {
         padding: 10px;
 
