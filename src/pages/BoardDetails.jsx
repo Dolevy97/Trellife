@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
-import { loadBoard, updateBoard, removeBoard } from '../store/actions/board.actions'
+import { loadBoard, updateBoard, removeBoard, filterBoard } from '../store/actions/board.actions'
 import { boardService } from '../services/board/'
 import { GroupPreview } from "../cmps/GroupPreview.jsx"
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
@@ -25,18 +25,30 @@ export function BoardDetails() {
   const [areLabelsExpanded, setAreLabelsExpanded] = useState(false)
   const [isRightNavBarOpen, setIsRightNavBarOpen] = useState(false)
   const [areAllGroupsCollapsed, setAreAllGroupsCollapsed] = useState(false)
-  const [isFilterOpen, setIsFilterOpen] = useState(false)
-
+  
   const groupListContainer = useRef()
   const groupListHeader = useRef()
   const addGroupRef = useRef(null)
+  
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
+  const [filterBy, setFilterBy] = useState(boardService.getDefaultFilter())
+  const [filteredBoard, setFilteredBoard] = useState(null)
 
   const { boardId } = useParams()
 
+
+  
   useEffect(() => {
     loadBoard(boardId)
   }, [boardId])
 
+  useEffect(() => {
+    if (board) {
+        const filtered = filterBoard(board, filterBy)
+        setFilteredBoard(filtered)
+    }
+}, [filterBy, board])
+  
   useEffect(() => {
     if (!user) {
       console.log('details no user apparently')
@@ -148,8 +160,8 @@ export function BoardDetails() {
     setAreAllGroupsCollapsed(newCollapseState)
   }
 
-  const groups = board?.groups || []
-  //needs layers
+  const groups = filteredBoard?.groups || board?.groups || []
+    //needs layers
   if (!board) return <img src="../../../src\assets\imgs\TaskDetails-icons\loading animation.svg" />
 
   return (
@@ -174,6 +186,10 @@ export function BoardDetails() {
       {isFilterOpen &&
         <BoardHederFilter
           onClose={() => setIsFilterOpen(false)}
+          filterBy={filterBy}
+          setFilterBy={setFilterBy}
+          board={board}
+
         />
       }
       <section ref={groupListContainer} className="group-list-container">
