@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from "react"
-import { updateTask } from "../store/actions/task.actions"
-import { getAverageColorFromAttachment, getRandomIntInclusive, makeId } from "../services/util.service"
-import { cloudinaryService } from "../services/cloudinary.service"
-import { updateBoard } from "../store/actions/board.actions"
+import { useSelector } from "react-redux"
 
+import dayjs from "dayjs"
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
-import dayjs from "dayjs"
 import { Box } from "@mui/material"
-import { useSelector } from "react-redux"
 
+import { cloudinaryService } from "../services/cloudinary.service"
+
+import { updateBoard } from "../store/actions/board.actions"
+import { updateTask } from "../store/actions/task.actions"
+import { getAverageColorFromAttachment, makeId } from "../services/util.service"
 
 export function TaskAction({ action, board, group, task, getMemberById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem, dueDate, style, attachmentToEdit }) {
 
