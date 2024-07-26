@@ -2,19 +2,11 @@
     position: relative;
 
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
 
-    height: 40px;
-    padding: 9px 4px;
-    margin: 4px 4px 0;
-
-
-    // .collapsed{
-    //     transform: rotate(90deg);
-    // }
-
-
+    padding: 8px 8px 0;
+    // margin: 4px 4px 0;
 
     input {
         border: none;
@@ -44,22 +36,22 @@
         align-items: center;
 
         width: 77%;
-        height: 20px;
 
         font-weight: 600;
         font-size: 14px;
-        color: $textclr2;
+        color: $txtclr1;
+        line-height: 20px;
         
-        padding: 9px 8px 9px 12px;
+        padding: 6px 8px 6px 12px;
         cursor: pointer;
         overflow-wrap: anywhere;
 
     }
 
     .header-svg-container {
-        display: flex;
-        align-items: center;
-        gap: 2px;
+        display: inline-flex;
+        // align-items: center;
+        // gap: 2px;
 
         .collapse-wrapper {
             display: flex;
@@ -70,6 +62,8 @@
             transition: background-color 0.1s ease;
             border-radius: 4px;
             cursor: pointer;
+
+            padding: 4px;
     
             &:hover {
                 background-color: $btnhoverclr;
@@ -92,6 +86,7 @@
             transition: background-color 0.1s ease;
             border-radius: 4px;
             cursor: pointer;
+            padding: 4px;
     
             &:hover {
                 background-color: $btnhoverclr;

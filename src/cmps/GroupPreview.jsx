@@ -55,10 +55,8 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
 
     async function onAddTask() {
         if (!newTaskTitle.trim()) return
-        const newBoard = await addTask(newTaskTitle, group, board)
-        if (newBoard) {
-            setNewTaskTitle('')
-        }
+        setNewTaskTitle('')
+        await addTask(newTaskTitle, group, board)
     }
 
     function handleTitleKeyPress(e) {
@@ -160,7 +158,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
 
                                                     <section className={`task-info-container ${task.style && task.style.backgroundImage && task.style.isFull ? 'is-full' : ''}`}
                                                         style={{
-                                                            padding: task.style?.isFull ? '8px 8px 8px 12px' : '8px 6px 8px 12px',
+                                                            padding: task.style?.isFull ? '8px 8px 8px 12px' : '8px 12px 4px',
                                                             minHeight: task.style?.isFull ? '40px' : '',
                                                             marginTop: task.style?.isFull ? '15px' : ''
                                                         }}>
