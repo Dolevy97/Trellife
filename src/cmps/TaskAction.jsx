@@ -22,7 +22,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     const [labelInputValue, setLabelInputValue] = useState(labelToEdit ? labelToEdit.title : '')
     const [dueDateToEdit, setDueDateToEdit] = useState(dueDate ? dueDate : Date.now());
 
-    const searchMembersInputRef = useRef()
+    const searchInputRef = useRef()
     const checklistTitleRef = useRef()
     const dueDateInputRef = useRef()
     const dueTimeInputRef = useRef()
@@ -30,9 +30,9 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     const isFirstRenderRef = useRef(true)
 
     useEffect(() => {
-        if (action === 'members' && isFirstRenderRef.current) {
-            searchMembersInputRef.current.focus()
-            searchMembersInputRef.current.setSelectionRange(searchMembersInputRef.current.value.length, searchMembersInputRef.current.value.length);
+        if ((action === 'members' || action === 'labels') && isFirstRenderRef.current) {
+            searchInputRef.current.focus()
+            searchInputRef.current.setSelectionRange(searchInputRef.current.value.length, searchInputRef.current.value.length);
             isFirstRenderRef.current = false
         }
         if (labelToEdit) setLabelInputValue(labelToEdit.title)
@@ -403,7 +403,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                 <div onClick={(ev) => onSetAction(ev, null)} className="close-action-container"> <img className="close-action icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" /> </div>
             </header>
 
-            {(action === 'members' || action === 'labels') && <input ref={searchMembersInputRef} className="text" placeholder={`Search ${action}`} />}
+            {(action === 'members' || action === 'labels') && <input ref={searchInputRef} className="text" placeholder={`Search ${action}`} />}
             {action === 'members' &&
                 <>
                     <div className="card-members">
@@ -619,6 +619,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             }
             {action === 'dates' &&
                 <>
+
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', overflow: 'hidden' }}>
                             <StaticDatePicker
@@ -647,6 +648,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                             />
                         </Box>
                     </LocalizationProvider>
+                        <span className="title" style={{margin:'0'}}>Due date</span>
                     <div className="date">
                         <input ref={dueDateCheckboxRef} className="checkbox" type="checkbox" />
                         <input ref={dueDateInputRef} className="text date-text" type="text" onBlur={onBlurDateInput} />
