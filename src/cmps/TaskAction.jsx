@@ -19,6 +19,8 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         }
     }, [])
 
+    // Getters
+
     function getBoardMembers() {
         const boardMembers = board.members.filter(member => !task.membersIds.includes(member._id))
         return boardMembers
@@ -28,6 +30,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         return task.membersIds.map(getMemberById)
     }
 
+    // Members
     async function onAddMember(id) {
         const updatedTask = { ...task }
         updatedTask.membersIds.push(id)
@@ -40,6 +43,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         await updateTask(task, group, board)
     }
 
+    // Labels
     async function onToggleLabel(ev, id) {
         const { checked } = ev.target
         let updatedTask = { ...task }
@@ -49,39 +53,6 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             updatedTask = { ...updatedTask, labelsIds: updatedTask.labelsIds.filter(labelId => labelId !== id) }
         }
         await updateTask(updatedTask, group, board)
-    }
-
-    async function onUpdateCoverColor({ target }) {
-        const backgroundColor = target.style.backgroundColor
-        const backgroundImage = ''
-        const background = { backgroundColor, backgroundImage }
-        if (!task.style) {
-            task = { ...task, style: { isFull: false, ...background } }
-        } else {
-            task = { ...task, style: { ...task.style, ...background } }
-        }
-        await updateTask(task, group, board)
-    }
-
-    async function onUpdateCoverIsFull(ev) {
-        if (!task.style) return
-        const targetName = ev.currentTarget.getAttribute('data-name')
-        const isFull = JSON.parse(targetName)
-        task = { ...task, style: { ...task.style, isFull } }
-        await updateTask(task, group, board)
-        // const isFull = JSON.parse(target.name)
-        // task = { ...task, style: { ...task.style, isFull } }
-        // await updateTask(task, group, board)
-    }
-
-    async function onAddChecklist(ev) {
-        const updatedTask = { ...task }
-        const newChecklist = { id: 'cl' + makeId(), title: checklistInputValue, todos: [] }
-        updatedTask.checklists.push(newChecklist)
-        const activityTitle = `added ${checklistInputValue} to this card`
-        onSetAction(ev, null)
-        toggleAddingItem(newChecklist.id)
-        await updateTask(updatedTask, group, board, activityTitle)
     }
 
     async function onSaveLabel(ev) {
@@ -167,6 +138,42 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         document.querySelectorAll('.color').forEach(elColor => elColor.classList.remove('selected'))
         setLabelToEdit({ ...labelToEdit, color: null })
     }
+
+    // Cover
+
+    async function onUpdateCoverColor({ target }) {
+        const backgroundColor = target.style.backgroundColor
+        const backgroundImage = ''
+        const background = { backgroundColor, backgroundImage }
+        if (!task.style) {
+            task = { ...task, style: { isFull: false, ...background } }
+        } else {
+            task = { ...task, style: { ...task.style, ...background } }
+        }
+        await updateTask(task, group, board)
+    }
+
+    async function onUpdateCoverIsFull(ev) {
+        if (!task.style) return
+        const targetName = ev.currentTarget.getAttribute('data-name')
+        const isFull = JSON.parse(targetName)
+        task = { ...task, style: { ...task.style, isFull } }
+        await updateTask(task, group, board)
+    }
+
+    // Checklists
+
+    async function onAddChecklist(ev) {
+        const updatedTask = { ...task }
+        const newChecklist = { id: 'cl' + makeId(), title: checklistInputValue, todos: [] }
+        updatedTask.checklists.push(newChecklist)
+        const activityTitle = `added ${checklistInputValue} to this card`
+        onSetAction(ev, null)
+        toggleAddingItem(newChecklist.id)
+        await updateTask(updatedTask, group, board, activityTitle)
+    }
+
+    // Attachments
 
     async function onAddAttachment(ev, isCover) {
         const files = ev.target.files
@@ -328,7 +335,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                             <div className="size-btns">
                                 <div>
                                     <div className="cover-pic">
-                                        <div className={`header-cover ${task.style.isFull? '' : 'focused'}`} data-name="false" onClick={onUpdateCoverIsFull}>
+                                        <div className={`header-cover ${task.style.isFull ? '' : 'focused'}`} data-name="false" onClick={onUpdateCoverIsFull}>
                                             <div className="card-header" style={task.style}>
                                             </div>
                                             <div className="card-body">
@@ -347,7 +354,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                                             </div>
                                         </div>
                                         <div className="body" data-name="true" onClick={onUpdateCoverIsFull} >
-                                            <div className={`body-cover ${task.style.isFull? 'focused' : ''}`} style={task.style} >
+                                            <div className={`body-cover ${task.style.isFull ? 'focused' : ''}`} style={task.style} >
                                                 <div className="card-body">
                                                     <div className="top-line">
                                                     </div>
