@@ -22,7 +22,8 @@ export async function updateTask(task, group, board, activityTitle = '', user) {
             title: activityTitle,
             byMember: user,
             group: { ...group },
-            task: { ...task }
+            task: { ...task },
+            createdAt: Date.now()
         }
         activities.push(activity)
     }
