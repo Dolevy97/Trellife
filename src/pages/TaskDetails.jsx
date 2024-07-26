@@ -20,7 +20,6 @@ export function TaskDetails() {
     const editCommentRef = useRef(null)
     const editTodoItemRef = useRef(null);
 
-    const dateInputRef = useRef(null)
     const checklistItemRefs = useRef({})
 
     const [group, setGroup] = useState(null)
@@ -191,16 +190,6 @@ export function TaskDetails() {
 
     // Due date
 
-    async function onChangeDueDate() {
-        const dateStr = dateInputRef.current.value
-        const dateObj = new Date(dateStr)
-        const timestamp = dateObj.getTime()
-        taskToEdit.dueDate = timestamp
-        const activityTitle = `changed the due date of task (id: ${taskToEdit.id}) to ${dateStr}`
-        await updateTask(taskToEdit, group, board, activityTitle, user)
-
-    }
-
     function getDueDate(timeStamp) {
         if (!timeStamp) return;
 
@@ -212,12 +201,6 @@ export function TaskDetails() {
         const minutes = String(date.getMinutes()).padStart(2, '0');
 
         return `${year}-${month}-${day}T${hours}:${minutes}`;
-    }
-
-    function onShowDatePicker() {
-        if (dateInputRef.current) {
-            dateInputRef.current.showPicker()
-        }
     }
 
     async function onChangeIsDone({ target }) {
@@ -530,22 +513,20 @@ export function TaskDetails() {
         const dayInMilliseconds = 24 * 60 * 60 * 1000
 
         if (timeDiff < -dayInMilliseconds) {
-            // Overdue by more than a day
             return {
                 text: 'Overdue',
                 style: { backgroundColor: '#42221F', color: '#FD9891' }
-            };
+            }
         } else if (timeDiff < 0) {
-            // Overdue by less than a day
             return {
                 text: 'Overdue',
                 style: { backgroundColor: '#F87168' }
-            };
+            }
         } else if (timeDiff <= dayInMilliseconds) {
             return {
                 text: 'Due soon',
                 style: { backgroundColor: '#F5CD47' }
-            };
+            }
         }
 
         return { text: '', style: {} }
@@ -635,17 +616,13 @@ export function TaskDetails() {
                                             onChange={onChangeIsDone}
                                             checked={taskToEdit.isDone}
                                         />
-                                        {/* <div onClick={onShowDatePicker} className="date"> */}
                                         <div className="date">
                                             <input
-                                                ref={dateInputRef}
                                                 className="date-input"
                                                 type="datetime-local"
                                                 value={getDueDate(taskToEdit.dueDate)}
-                                                // onChange={onChangeDueDate}
                                                 readOnly
                                             />
-                                            {/* <span>{getDueDate(taskToEdit.dueDate)}</span> */}
                                             <span className='inside-input-is-done' style={taskStatus.style}>{taskStatus.text}</span>
                                             <img className="arrow-down" src="../../../src/assets/imgs/TaskDetails-icons/arrow-down.svg" alt="description icon" />
                                         </div>
