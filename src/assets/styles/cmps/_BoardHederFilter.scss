@@ -1,40 +1,229 @@
 .BoardHederFilter {
     position: fixed;
-    width: 384px;
     top: 6em;
     right: 1em;
 
+
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    background-color: $bgclr1;
-    z-index: 1000;
-    padding: 4px 12px 12px 12px;
 
-    .close-btn-wrapper {
-        position: absolute;
-        right: 6px;
-        top: 6px;
+    width: 384px;
+    max-height: 400px;
+
+    background-color: $bgclr1;
+    z-index: 100;
+    border-radius: 3px;
+    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 0, 0, 0.2);
+    padding: 0px 12px 12px 12px;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-color: rgb(255 255 255 / 20%) rgb(233 255 236 / 2%);
+    scrollbar-width: thin;
+
+
+    header {
+        position: sticky;
+        top: 0;
+        right: 1em;
 
         display: flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
 
-        width: 28px;
-        height: 28px;
-        border-radius: 4px;
-        transition: background-color 0.1s ease;
-        cursor: pointer;
+        padding: 12px;
+        background-color: $bgclr1;
+        z-index: 100;
 
-        &:hover {
-            background-color: $btnhoverclr;
+        span {
+            font-size: 14px;
+            font-weight: 600;
+            color: $txtclr1;
         }
 
-        img {
-            height: 16px;
-            width: 16px;
+        .close-btn-wrapper {
+            position: absolute;
+            right: 11px;
+            top: 9px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            transition: background-color 0.1s ease;
+            cursor: pointer;
+
+            &:hover {
+                background-color: $btnhoverclr;
+            }
+
+            img {
+                height: 16px;
+                width: 16px;
+            }
+
+        }
+    }
+
+    .filter-info {
+        padding: 12px;
+
+        .search-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+
+            span {
+                font-size: 12px;
+                font-weight: 600;
+                color: $txtclr1;
+                margin-bottom: 4px;
+            }
+
+            input {
+                width: 100%;
+                height: 32px;
+                padding: 8px;
+
+                border: 2px solid $hrclr;
+                border-radius: 3px;
+                font-size: 14px;
+                background-color: #23262a;
+                color: $txtclr1;
+                overflow: hidden;
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+                &:focus {
+                    border: 2px solid #86b6f4;
+                    outline: none;
+                }
+            }
+
+            .input-details {
+                margin-block-start: 6px;
+                margin-bottom: 0px;
+                font-weight: 400;
+            }
+        }
+    }
+
+    .members-container,
+    .labels-container {
+        padding: 12px;
+        border-top: 1px solid $hrclr;
+
+        >span {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: $txtclr1;
+            margin-bottom: 8px;
+            text-align: left;
         }
 
+        label {
+            display: flex;
+            align-items: center;
+            padding: 6px 0;
+            cursor: pointer;
+
+            input[type="checkbox"] {
+                margin-inline-end: 16px;
+                appearance: none;
+                width: 16px;
+                height: 16px;
+                border: 2px solid $hrclr;
+                border-radius: 2px;
+                background-color: $hrclr;
+                cursor: pointer;
+                transition: all 0.3s;
+
+                &:hover {
+                    background-color: lighten($hrclr, 20%);
+                }
+
+                &:checked {
+                    position: relative;
+                    background-color: #579dff;
+                    border-color: #579dff;
+                    transition: all 0.3s;
+
+                    &::after {
+                        content: '\2714';
+                        position: absolute;
+                        font-size: 12px;
+                        color: black;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+
+                    &:hover {
+                        background-color: lighten(#579dff, 20%);
+                        border-color: lighten(#579dff, 20%);
+                    }
+                }
+            }
+
+            .member-thumbnail {
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                margin-right: 8px;
+            }
+
+            .label-color {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                width: 278px;
+                height: 32px;
+                border-radius: 3px;
+                margin-right: 8px;
+
+                &:hover {
+                    opacity: 0.8;
+                }
+
+                span {
+                    margin-inline-start: 12px;
+                    color: inherit;
+                    font-size: 14px;
+                    font-weight: 500;
+                }
+
+                input[type="checkbox"] {
+                    margin-right: 8px;
+                    appearance: none;
+                    width: 16px;
+                    height: 16px;
+                    border: 2px solid #a1a1a1;
+                    border-radius: 2px;
+                    background-color: #3d3d3d;
+                    cursor: pointer;
+
+                    &:checked {
+                        background-color: #579dff;
+                        border-color: #579dff;
+                        position: relative;
+
+                        &::after {
+                            content: '\2714';
+                            font-size: 12px;
+                            color: black;
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                        }
+                    }
+                }
+
+            }
+
+        }
     }
 }
