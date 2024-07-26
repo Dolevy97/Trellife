@@ -2,7 +2,7 @@ import { useState } from "react"
 import { removeBoard } from '../store/actions/board.actions'
 import { removeBoardFromFavorites } from '../store/actions/user.actions'
 import { useNavigate } from "react-router";
-
+import { ChangeColorBackground } from './ChangeColorBackground'
 
 export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollapse, board }) {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
@@ -113,12 +113,20 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
                             <img src="../../../src/assets/imgs/photosoption.jpg" alt="" />
                             <span>Phothos</span>
                         </div>
-                        <div className="colors-option">
+                        <div className="colors-option" onClick={() => setField('Change color background')}>
                             <img src="../../../src\assets\imgs\colorsoption.png" alt="" />
                             <span>Colors</span>
                         </div>
                     </div>
                 )}
+
+                {field === 'Change color background' && (
+                    <ChangeColorBackground
+                        board={board}
+                        onOpenMenuCmp={() => setField('Menu')}
+                    />
+                )}
+
             </section>
 
             {isDeleteModalOpen && (

@@ -59,6 +59,23 @@ export async function updateBoard(board) {
     }
 }
 
+
+export async function updateBoardBgc(board, bgc) {
+    try {
+        const updatedBoard = { 
+            ...board, 
+            style: { 
+                ...board.style, 
+                background: bgc
+            } 
+        }
+        await updateBoard(updatedBoard)
+    } catch (err) {
+        console.log('Cannot update bgc board', err)
+        throw err
+    }
+}
+
 // Command Creators:
 function getCmdSetBoards(boards) {
     return {
