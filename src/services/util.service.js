@@ -293,8 +293,12 @@ export function clearUnsplashCache() {
 }
 
 
-export function getBackgroundImages() {
+export async function getBackgroundImages() {
     const cacheKey = 'all_images'
-
-    return getFromLocalCache(cacheKey)
+    let images = getFromLocalCache(cacheKey)
+    if (!images) {
+        images = await getUnsplashImages('nature', 40)
+        saveToLocalCache(cacheKey, images)
+    }
+    return images
 }

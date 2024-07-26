@@ -14,8 +14,9 @@ export async function loadBoards(filterBy) {
 
 export function filterBoard(board, filterBy = {}) {
     if (!board || !board.groups) return board
-
+    
     let filteredBoard = { ...board }
+
 
     filteredBoard.groups = board.groups.map(group => {
         const filteredTasks = group.tasks.filter(task => {
@@ -35,7 +36,7 @@ export function filterBoard(board, filterBy = {}) {
     })
 
     // Remove empty groups
-    filteredBoard.groups = filteredBoard.groups.filter(group => group.tasks.length > 0)
+    if (filterBy.title) filteredBoard.groups = filteredBoard.groups.filter(group => group.tasks.length > 0)
 
     return filteredBoard
 }

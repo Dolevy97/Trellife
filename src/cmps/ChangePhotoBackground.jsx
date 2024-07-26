@@ -7,7 +7,7 @@ export function ChangePhotoBackground({ board }) {
     const [images, setImages] = useState()
 
     useEffect(() => {
-        setImages(getBackgroundImages())
+        getBackgroundImages().then(setImages)
     }, [])
 
     async function onUpdateBgc(img) {
