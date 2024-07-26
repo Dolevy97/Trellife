@@ -3,8 +3,9 @@ import { updateBoard } from '../store/actions/board.actions'
 import { useSelector } from 'react-redux'
 import { RightNavBar } from '../cmps/RightNavBar';
 import { showSuccessMsg } from '../services/event-bus.service'
+import { updateUser } from '../store/actions/user.actions';
 
-export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen,isFilterOpen }) {
+export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen }) {
   const board = useSelector(storeState => storeState.boardModule.board)
   const user = useSelector(storeState => storeState.userModule.user)
 
@@ -49,13 +50,11 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
   async function onClickStar(ev) {
     ev.stopPropagation()
     ev.preventDefault()
-    const updatedBoard = { ...board, isStarred: !board.isStarred }
-
-    try {
-      await updateBoard(updatedBoard)
-    } catch (error) {
-      console.error('Failed to update board:', error)
+    if (!user.favorites.includes(board._id)) user.favorites.push(board._id)
+    else {
+      user.favorites = user.favorites.filter(id => id !== board._id)
     }
+    await updateUser(user)
   }
 
   async function onShareJoinClick() {
@@ -107,6 +106,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
   function toggleFilterOpen() {
     setIsFilterOpen(!isFilterOpen)
   }
+
   return (
     <section className={`groups-header ${isRightNavBarOpen ? 'right-nav-open' : ''}`}>
       <div className='groups-header-leftside'>
@@ -128,14 +128,14 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
           title='Click to star or unstar this board. Starred boards show up at the top of your boards list.'
         >
           <img
-            className={`groupsheader-preview-star ${board.isStarred ? 'starred' : ''}`}
-            src={board.isStarred ? "../../../src/assets/imgs/Icons/fullstar.svg" : '../../../src/assets/imgs/Icons/star.svg'}
+            className={`groupsheader-preview-star ${user.favorites.includes(board._id) ? 'starred' : ''}`}
+            src={user.favorites.includes(board._id) ? "../../../src/assets/imgs/Icons/fullstar.svg" : '../../../src/assets/imgs/Icons/star.svg'}
             alt="star icon"
           />
         </div>
       </div>
       <div className='groups-header-rightside'>
-        <div className='filter-container'  onClick={toggleFilterOpen}>
+        <div className='filter-container' onClick={toggleFilterOpen}>
           <img src="../../../src\assets\imgs\Icons\filter.svg" />
           <span>Filters</span>
         </div>

@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { removeBoard } from '../store/actions/board.actions'
+import { removeBoardFromFavorites } from '../store/actions/user.actions'
 import { useNavigate } from "react-router";
 
 
@@ -10,9 +11,9 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
     const navigate = useNavigate()
 
     async function onRemoveBoard() {
-        console.log(board._id)
         try {
             await removeBoard(board._id)
+            await removeBoardFromFavorites(board._id)
             console.log('Board removed successfully')
             navigate('/board')
             //add msg

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { DropdownMenu } from './DropdownMenu'
 import { BoardCreate } from './BoardCreate'
 import { useSelector } from 'react-redux'
-import { guestLogin, logout } from '../store/actions/user.actions'
+import { login, logout } from '../store/actions/user.actions'
 
 export function AppHeader({ isHomePage }) {
 	const user = useSelector(storeState => storeState.userModule.user)
@@ -38,6 +38,10 @@ export function AppHeader({ isHomePage }) {
 		}
 	}, [user])
 
+	async function guestLogin() {
+		await login({ username: 'Guest', password: '1234' })
+	}
+
 	function handleResize() {
 		const headerWidth = appHeaderRef.current.offsetWidth;
 		const screenWidth = window.innerWidth;
@@ -68,7 +72,7 @@ export function AppHeader({ isHomePage }) {
 		logout()
 		navigate('/')
 	}
-	
+
 	return (
 		<section className={`outer-header ${isHomePage ? 'homepage' : ''}`}>
 			<header className={`app-header full ${isHomePage ? 'homepage' : ''}`} ref={appHeaderRef}>

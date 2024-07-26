@@ -3,7 +3,6 @@ export const SET_BOARD = 'SET_BOARD'
 export const REMOVE_BOARD = 'REMOVE_BOARD'
 export const ADD_BOARD = 'ADD_BOARD'
 export const UPDATE_BOARD = 'UPDATE_BOARD'
-export const ADD_BOARD_MSG = 'ADD_BOARD_MSG'
 export const UPDATE_BOARD_FAILED = 'UPDATE_BOARD_FAILED';
 
 const initialState = {
@@ -34,9 +33,6 @@ export function boardReducer(state = initialState, action) {
             // newState = { ...state, board: action.board }
             newState = { ...state, boards, board: action.board }
             break
-        case ADD_BOARD_MSG:
-            newState = { ...state, board: { ...state.board, msgs: [...state.board.msgs || [], action.msg] } }
-            break
         case UPDATE_BOARD_FAILED:
             newState = { ...state, board: action.originalBoard };
             break;
@@ -63,10 +59,6 @@ function unitTestReducer() {
 
     state = boardReducer(state, { type: REMOVE_BOARD, boardId: board2._id })
     console.log('After REMOVE_BOARD:', state)
-
-    const msg = { id: 'm' + parseInt(Math.random() * 100), txt: 'Some msg' }
-    state = boardReducer(state, { type: ADD_BOARD_MSG, boardId: board1._id, msg })
-    console.log('After ADD_BOARD_MSG:', state)
 
     state = boardReducer(state, { type: REMOVE_BOARD, boardId: board1._id })
     console.log('After REMOVE_BOARD:', state)

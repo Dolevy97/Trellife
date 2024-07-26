@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux"
-import { guestLogin, login } from "../store/actions/user.actions"
+import { login } from "../store/actions/user.actions"
 import { useNavigate } from "react-router"
 
 export function HomePage() {
@@ -8,7 +8,7 @@ export function HomePage() {
 
     async function onSignIn() {
         try {
-            await guestLogin()
+            await login({ username: 'Guest', password: '1234' })
             navigate('/board')
         } catch (err) {
             console.log('error logging in:', err)

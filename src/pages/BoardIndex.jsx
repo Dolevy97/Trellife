@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-import { loadBoards, addBoard, updateBoard, removeBoard, addBoardMsg } from '../store/actions/board.actions'
+import { loadBoards} from '../store/actions/board.actions'
 
-import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { boardService } from '../services/board/'
 
 import { BoardList } from '../cmps/BoardList'

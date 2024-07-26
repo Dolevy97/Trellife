@@ -10,10 +10,8 @@ import { BoardDetailsHeader } from '../cmps/BoardDetailsHeader.jsx'
 
 import { RightNavBar } from '../cmps/RightNavBar'
 
-import { store } from '../store/store.js'
-import { SET_USER } from '../store/reducers/user.reducer.js'
-import { guestLogin } from '../store/actions/user.actions.js'
 import { BoardHederFilter } from '../cmps/BoardHederFilter.jsx'
+import { login } from '../store/actions/user.actions.js'
 // import { socketService } from '../services/socket.service.js'
 
 export function BoardDetails() {
@@ -41,6 +39,7 @@ export function BoardDetails() {
 
   useEffect(() => {
     if (!user) {
+      console.log('details no user apparently')
       guestLogin()
     }
   }, [user])
@@ -68,6 +67,10 @@ export function BoardDetails() {
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [addGroupRef])
+
+  async function guestLogin() {
+    await login({ username: 'Guest', password: '1234' })
+  }
 
   async function onAddGroup() {
     if (!newGroupTitle.trim()) return
@@ -170,7 +173,7 @@ export function BoardDetails() {
 
       {isFilterOpen &&
         <BoardHederFilter
-        onClose={() => setIsFilterOpen(false)}
+          onClose={() => setIsFilterOpen(false)}
         />
       }
       <section ref={groupListContainer} className="group-list-container">

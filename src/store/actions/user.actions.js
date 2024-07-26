@@ -40,6 +40,15 @@ export async function login(credentials) {
     }
 }
 
+export async function removeBoardFromFavorites(boardId) {
+    try {
+        await userService.removeBoardFromFavorites(boardId)
+    } catch (err) {
+        console.log('Cannot delete board from favorites', err)
+        throw err
+    }
+}
+
 export async function signup(credentials) {
     try {
         const user = await userService.signup(credentials)
@@ -89,15 +98,4 @@ export async function logout() {
         console.log('Cannot logout', err)
         throw err
     }
-}
-
-export async function guestLogin() {
-    const guest = {
-        _id: '',
-        fullname: 'Gustavo Guesto',
-        username: 'Guest',
-        imgUrl: 'https://www.shutterstock.com/image-vector/user-icon-trendy-flat-style-600nw-1697898655.jpg',
-        favorites: []
-    }
-    store.dispatch({ type: SET_USER, user: guest })
 }
