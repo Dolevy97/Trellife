@@ -4,6 +4,7 @@ import { removeBoardFromFavorites } from '../store/actions/user.actions'
 import { useNavigate } from "react-router";
 import { ChangeColorBackground } from './ChangeColorBackground'
 import { ChangePhotoBackground } from "./ChangePhotoBackground";
+import { getFormattedTime } from "../services/util.service";
 
 export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollapse, board }) {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
@@ -38,6 +39,12 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
         })
     }
 
+    function getActivityByTitle(activity) {
+        if (activity.title === 'create board') {
+            return 'created this board'
+        }
+        return activity.title.charAt(0).toLowerCase() + activity.title.slice(1) //Lowercase first letter
+    }
 
     return (
         <section className={`right-nav-bar-container ${!isRightNavBarOpen ? 'is-close' : ''}`}>
@@ -95,12 +102,18 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
                 {field === 'Activity' && (
                     <div className="activity-log">
                         {board.activities && board.activities.length > 0 ? (
-                            board.activities.map((activity, index) => (
-                                <div key={index} className="activity-item">
-                                    <span>{activity.title}</span>
-
-                                </div>
-                            ))
+                            board.activities.map((activity, idx, activities) => {
+                                const currentActivity = activities[activities.length - idx - 1];
+                                return (
+                                    <div key={currentActivity.id} className="activity-item-container">
+                                        <img className="user-img" src={currentActivity.byMember.imgUrl} />
+                                        <div className="activity-info">
+                                            <div className="activity-item">{currentActivity.byMember.fullname} {getActivityByTitle(currentActivity)}</div>
+                                            <div className="activity-time">{getFormattedTime(currentActivity.createdAt)}</div>
+                                        </div>
+                                    </div>
+                                )
+                            })
                         ) : (
                             <p>No activities to show</p>
                         )}

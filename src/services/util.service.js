@@ -78,6 +78,7 @@ export function getRandomTimestamp() {
 }
 
 export function getFormattedTime(time) {
+    if (!time) return
     const date = new Date(time)
     const today = new Date()
     const currYear = today.getFullYear()

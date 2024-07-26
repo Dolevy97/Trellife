@@ -10,6 +10,7 @@ import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import dayjs from "dayjs"
 import { Box } from "@mui/material"
 import { TimePicker } from "@mui/x-date-pickers"
+import { useSelector } from "react-redux"
 
 
 export function TaskAction({ action, board, group, task, getMemberById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem, dateToEdit, setDateToEdit }) {
@@ -17,6 +18,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
     const [labelInputValue, setLabelInputValue] = useState(labelToEdit ? labelToEdit.title : '')
     const [dateInputValue, setDateInputValue] = useState(dateToEdit ? dayjs(dateToEdit) : dayjs());
+    const user = useSelector(storeState => storeState.userModule.user)
     const checklistTitleRef = useRef()
 
     function getDueDate(timeStamp) {
@@ -38,7 +40,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         updatedTask.dueDate = timestamp
         const activityTitle = `changed the due date of task (id: ${updatedTask.id}) to ${dateStr}`
         // await updateTask(updatedTask, group, board, activityTitle, user)
-        await updateTask(updatedTask, group, board, activityTitle)
+        await updateTask(updatedTask, group, board, activityTitle, user)
         onSetAction(ev, null)
     }
 
@@ -66,7 +68,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         const updatedTask = { ...task }
         updatedTask.membersIds.push(id)
         const activityTitle = `added member (id: ${id}) to task (id: ${task.id})`
-        await updateTask(updatedTask, group, board, activityTitle)
+        await updateTask(updatedTask, group, board, activityTitle, user)
     }
 
     async function onRemoveMember(id) {
@@ -109,8 +111,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         const activity = {
             id: 'a' + makeId(),
             title: activityTitle,
-            // NOTICE TO CHANGE THE BY MEMBER TO LOGGED IN USER
-            byMember: { ...board.members[getRandomIntInclusive(0, board.members.length - 1)] },
+            byMember: user,
             group: { ...group },
             task: { ...task },
             createdAt: Date.now()
@@ -145,8 +146,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         const activity = {
             id: 'a' + makeId(),
             title: activityTitle,
-            // NOTICE TO CHANGE THE BY MEMBER TO LOGGED IN USER
-            byMember: { ...board.members[getRandomIntInclusive(0, board.members.length - 1)] },
+            byMember: user,
             group: { ...group },
             task: { ...task }
         }
@@ -201,7 +201,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         const activityTitle = `added ${checklistInputValue} to this card`
         onSetAction(ev, null)
         toggleAddingItem(newChecklist.id)
-        await updateTask(updatedTask, group, board, activityTitle)
+        await updateTask(updatedTask, group, board, activityTitle, user)
     }
 
     // Attachments
@@ -229,12 +229,12 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             if (!updatedTask.style || isCover) {
                 updatedTask = { ...updatedTask, style: { isFull: true, backgroundImage: `url(${attachment.url}`, backgroundColor: attachment.backgroundColor } }
                 if (isCover) {
-                    await updateTask(updatedTask, group, board, activityTitle)
+                    await updateTask(updatedTask, group, board, activityTitle, user)
                     break
                 }
             }
 
-            await updateTask(updatedTask, group, board, activityTitle)
+            await updateTask(updatedTask, group, board, activityTitle, user)
         }
 
         onSetAction(ev, action)
@@ -477,33 +477,33 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             }
             {action === 'dates' &&
                 <>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <Box sx={{ width: '100%', display: 'flex', flexDirection:'column',alignItems:'center', overflow: 'hidden' }}>
-                                <StaticDatePicker
-                                    value={dateInputValue}
-                                    onChange={(newValue) => {
-                                        setDateInputValue(newValue);
-                                    }}
-                                    sx={{
-                                        backgroundColor: 'inherit',
-                                        '& .MuiPickersToolbar-root': {
-                                            display: 'none',
-                                        },
-                                        '& .MuiTypography-root': {
-                                            color: 'inherit',
-                                        },
-                                        '& .MuiButtonBase-root': {
-                                            color: 'inherit',
-                                        },
-                                        '& .MuiPickerStaticWrapper-actionBar': {
-                                            display: 'none',
-                                        },
-                                        '& .MuiDialogActions-root': {
-                                            display: 'none',
-                                        }
-                                    }}
-                                />
-                                {/* <TimePicker
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', overflow: 'hidden' }}>
+                            <StaticDatePicker
+                                value={dateInputValue}
+                                onChange={(newValue) => {
+                                    setDateInputValue(newValue);
+                                }}
+                                sx={{
+                                    backgroundColor: 'inherit',
+                                    '& .MuiPickersToolbar-root': {
+                                        display: 'none',
+                                    },
+                                    '& .MuiTypography-root': {
+                                        color: 'inherit',
+                                    },
+                                    '& .MuiButtonBase-root': {
+                                        color: 'inherit',
+                                    },
+                                    '& .MuiPickerStaticWrapper-actionBar': {
+                                        display: 'none',
+                                    },
+                                    '& .MuiDialogActions-root': {
+                                        display: 'none',
+                                    }
+                                }}
+                            />
+                            {/* <TimePicker
                                     value={dateInputValue}
                                     onChange={(newValue) => {
                                         setDateInputValue(newValue);
@@ -536,15 +536,15 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                                             scale: '0.85',
                                         }
                                     }} /> */}
-                            </Box>
-                        </LocalizationProvider>
-                        <div className="date">
-                            <input className="checkbox" type="checkbox" />
-                            <input className="text date-text" type="text" />
-                            <input className="text date-text" type="text" />
-                        </div>
-                        <button className="btn-blue btn-full" onClick={(ev) => onSaveDueDate(ev)}>Save</button>
-                        <button className="btn-dark-grey btn-full">Remove</button>
+                        </Box>
+                    </LocalizationProvider>
+                    <div className="date">
+                        <input className="checkbox" type="checkbox" />
+                        <input className="text date-text" type="text" />
+                        <input className="text date-text" type="text" />
+                    </div>
+                    <button className="btn-blue btn-full" onClick={(ev) => onSaveDueDate(ev)}>Save</button>
+                    <button className="btn-dark-grey btn-full">Remove</button>
                 </>
             }
         </section>
