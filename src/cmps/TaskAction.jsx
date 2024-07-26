@@ -9,40 +9,21 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import dayjs from "dayjs"
 import { Box } from "@mui/material"
-import { TimePicker } from "@mui/x-date-pickers"
 import { useSelector } from "react-redux"
 
 
-export function TaskAction({ action, board, group, task, getMemberById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem, dateToEdit, setDateToEdit }) {
+export function TaskAction({ action, board, group, task, getMemberById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem, dueDate }) {
+    
+    const user = useSelector(storeState => storeState.userModule.user)
 
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
     const [labelInputValue, setLabelInputValue] = useState(labelToEdit ? labelToEdit.title : '')
-    const [dateInputValue, setDateInputValue] = useState(dateToEdit ? dayjs(dateToEdit) : dayjs());
-    const user = useSelector(storeState => storeState.userModule.user)
+    const [dueDateToEdit, setDueDateToEdit] = useState(dueDate ? dueDate : Date.now());
+    
     const checklistTitleRef = useRef()
-
-    function getDueDate(timeStamp) {
-        if (!timeStamp) return
-        const date = new Date(timeStamp)
-        const isoString = date.toISOString()
-        return isoString.slice(0, 10)
-    }
-
-    async function onSaveDueDate(ev) {
-        console.log(dateInputValue)
-        const { $y, $M, $D } = dateInputValue
-        console.log($y, $M, $D)
-        return
-        const dateStr = dateInputValue
-        const dateObj = new Date(dateStr)
-        const timestamp = dateObj.getTime()
-        const updatedTask = { ...task }
-        updatedTask.dueDate = timestamp
-        const activityTitle = `changed the due date of task (id: ${updatedTask.id}) to ${dateStr}`
-        // await updateTask(updatedTask, group, board, activityTitle, user)
-        await updateTask(updatedTask, group, board, activityTitle, user)
-        onSetAction(ev, null)
-    }
+    const dueDateInputRef = useRef()
+    const dueTimeInputRef = useRef()
+    const dueDateCheckboxRef = useRef()
 
     useEffect(() => {
         if (labelToEdit) setLabelInputValue(labelToEdit.title)
@@ -51,6 +32,19 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             checklistTitleRef.current.select()
         }
     }, [])
+
+    useEffect(() => {
+        if (action === 'dates') {
+            dueDateInputRef.current.value = formatTimestampToDateString(dueDateToEdit)
+            dueTimeInputRef.current.value = formatTimestampToTimeString(dueDateToEdit)
+            if (dueDateCheckboxRef.current) {
+                dueDateCheckboxRef.current.checked = true
+                dueDateCheckboxRef.current = null
+                dueDateInputRef.current.focus()
+                dueDateInputRef.current.setSelectionRange(dueDateInputRef.current.value.length, dueDateInputRef.current.value.length);
+            }
+        }
+    }, [dueDateToEdit])
 
     // Getters
 
@@ -92,33 +86,19 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         if (!labelToEdit.color && !labelToEdit.title) return
         let label
         let labels
-        let activityTitle
         if (labelToEdit.id) {
             label = { ...labelToEdit, title: labelInputValue }
             labels = board.labels.map(l => {
                 if (l.id !== label.id) return l
                 return label
             })
-            activityTitle = `updated label (id: ${label.id}) on this board`
         } else {
             label = { ...labelToEdit, title: labelInputValue, id: 'l' + makeId() }
             labels = [...board.labels]
             labels.push(label)
-            activityTitle = `added label (id: ${label.id}) on this board`
         }
 
-        const activities = [...board.activities]
-        const activity = {
-            id: 'a' + makeId(),
-            title: activityTitle,
-            byMember: user,
-            group: { ...group },
-            task: { ...task },
-            createdAt: Date.now()
-        }
-        activities.push(activity)
-
-        const updatedBoard = { ...board, labels, activities }
+        const updatedBoard = { ...board, labels }
 
         await updateBoard(updatedBoard)
         if (!labelToEdit.id) {
@@ -141,18 +121,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             return { ...g, tasks: tasks }
         })
 
-        const activityTitle = `Label (id: ${labelToEdit.id}) removed from board`
-        const activities = [...board.activities]
-        const activity = {
-            id: 'a' + makeId(),
-            title: activityTitle,
-            byMember: user,
-            group: { ...group },
-            task: { ...task }
-        }
-        activities.push(activity)
-
-        const updatedBoard = { ...board, groups, labels: updatedLabels, activities }
+        const updatedBoard = { ...board, groups, labels: updatedLabels }
 
         await updateBoard(updatedBoard)
         onSetAction(ev, null)
@@ -244,24 +213,172 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         document.querySelector('.input-file-upload').click()
     }
 
-    async function onChangeDueDate({ target }) {
-        const dateStr = target.value
-        const dateObj = new Date(dateStr)
-        const timestamp = dateObj.getTime()
-        dateToEdit = timestamp
-        setDateInputValue(dateObj)
-        // taskToEdit.dueDate = timestamp
-        // const activityTitle = `changed the due date of task (id: ${taskToEdit.id}) to ${dateStr}`
-        // await updateTask(taskToEdit, group, board, activityTitle, user)
+    // Dates
+
+    async function onSaveDueDate(ev) {
+        const updatedTask = { ...task }
+        updatedTask.dueDate = dueDateToEdit
+        const activityTitle = `changed the due date of task ${updatedTask.id} to ${dueDateToEdit}`
+        await updateTask(updatedTask, group, board, activityTitle, user)
+        onSetAction(ev, null)
+    }
+
+    function formatTimestampToDateString(timestamp) {
+        const date = new Date(timestamp);
+        const month = date.getMonth() + 1; // Months are zero indexed
+        const day = date.getDate();
+        const year = date.getFullYear();
+
+        return `${month}/${day}/${year}`;
+    }
+
+    function formatTimestampToTimeString(timestamp) {
+        const date = new Date(timestamp);
+        let hours = date.getHours();
+        const minutes = date.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+
+        return `${hours}:${minutesStr} ${ampm}`;
+    }
+
+    function onBlurDateInput({ target }) {
+        const strDate = target.value;
+        const timestamp = parseDate(strDate);
+
+        if (timestamp) {
+            const newDate = new Date(timestamp);
+            const currentDate = new Date(dueDateToEdit);
+
+            // Preserve the time from the current date
+            newDate.setHours(currentDate.getHours());
+            newDate.setMinutes(currentDate.getMinutes());
+            newDate.setSeconds(currentDate.getSeconds());
+            newDate.setMilliseconds(currentDate.getMilliseconds());
+
+            setDueDateToEdit(newDate.getTime());
+        } else {
+            // Reset the input to the current dueDateToEdit
+            target.value = formatTimestampToDateString(dueDateToEdit);
+        }
+    }
+
+    function parseDate(strDate) {
+        const dateRegex = /^(0?[1-9]|1[0-2])?\/?(0?[1-9]|[12][0-9]|3[01])\/?(\d{2}|\d{4})$/;
+        const match = strDate.match(dateRegex);
+
+        if (!match) {
+            return null; // Invalid date format
+        }
+
+        let [_, month, day, year] = match;
+
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth() + 1; // Months are zero indexed in JavaScript
+        const currentCentury = Math.floor(currentYear / 100) * 100;
+        const seventyYearsAgo = currentYear - 70;
+        const seventyYearsFromNow = currentYear + 70;
+
+        if (!month) {
+            month = currentMonth.toString();
+        }
+
+        if (!day) {
+            return null; // Day field is required
+        }
+
+        if (year.length === 4) {
+            // Use the year as is
+        } else if (year.length === 2) {
+            const fullYear = parseInt(year) + currentCentury;
+            if (fullYear >= seventyYearsAgo && fullYear <= seventyYearsFromNow) {
+                year = fullYear.toString();
+            } else {
+                year = (fullYear - 100).toString();
+            }
+        } else if (year.length === 0) {
+            year = currentYear.toString();
+        } else {
+            return null; // Invalid year format
+        }
+
+        const formattedDate = `${month.padStart(2, '0')}/${day.padStart(2, '0')}/${year}`;
+
+        const dateObj = new Date(formattedDate);
+
+        // Check if the constructed date is valid
+        if (dateObj.getMonth() + 1 !== parseInt(month) || dateObj.getDate() !== parseInt(day) || dateObj.getFullYear() !== parseInt(year)) {
+            return null; // Invalid date
+        }
+
+        return dateObj.getTime(); // Return timestamp
+    }
+
+    function parseTime(strTime) {
+        const timeRegex = /^(0?[0-9]|1[0-9]|2[0-3])?(:([0-5]?[0-9]))? ?([APap][Mm]?)?$/;
+        const match = strTime.match(timeRegex);
+
+        if (!match) {
+            return null; // Invalid time format
+        }
+
+        let [_, hour, , minute, period] = match;
+
+        if (!hour) {
+            return null; // Hour field is required
+        }
+
+        hour = parseInt(hour);
+        minute = minute ? parseInt(minute) : 0;
+
+        if (period) {
+            if (period.toLowerCase() === 'pm' && hour < 12) {
+                hour += 12;
+            } else if (period.toLowerCase() === 'am' && hour === 12) {
+                hour = 0;
+            }
+        } else if (hour < 12) {
+            period = 'am';
+        } else {
+            period = 'pm';
+        }
+
+        return { hour, minute };
+    }
+
+    function onBlurTimeInput({ target }) {
+        const strTime = target.value;
+        const parsedTime = parseTime(strTime);
+
+        if (parsedTime) {
+            const { hour, minute } = parsedTime;
+            const currentDate = new Date(dueDateToEdit);
+
+            currentDate.setHours(hour);
+            currentDate.setMinutes(minute);
+            currentDate.setSeconds(0);
+            currentDate.setMilliseconds(0);
+
+            setDueDateToEdit(currentDate.getTime());
+        } else {
+            // Reset the input to the current time part of dueDateToEdit
+            target.value = formatTimestampToTimeString(dueDateToEdit);
+        }
     }
 
     return (
         <section className="task-action" onClick={(ev) => ev.stopPropagation()}>
+
             <header className="action-header">
                 {action === 'edit label' && <div onClick={(ev) => onSetAction(ev, 'labels')} className="back-container"> <img className="back-action icon" src="../../../src/assets/imgs/TaskDetails-icons/left-arrow.svg" /> </div>}
                 {action === 'edit label' && !labelToEdit.id ? 'Create label' : (action.charAt(0).toUpperCase() + action.substring(1, action.length))}
                 <div onClick={(ev) => onSetAction(ev, null)} className="close-action-container"> <img className="close-action icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" /> </div>
             </header>
+
             {(action === 'members' || action === 'labels') && <input className="text" placeholder={`Search ${action}`} />}
             {action === 'members' &&
                 <>
@@ -480,9 +597,9 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', overflow: 'hidden' }}>
                             <StaticDatePicker
-                                value={dateInputValue}
+                                value={dayjs(dueDateToEdit)}
                                 onChange={(newValue) => {
-                                    setDateInputValue(newValue);
+                                    setDueDateToEdit(newValue);
                                 }}
                                 sx={{
                                     backgroundColor: 'inherit',
@@ -503,45 +620,12 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                                     }
                                 }}
                             />
-                            {/* <TimePicker
-                                    value={dateInputValue}
-                                    onChange={(newValue) => {
-                                        setDateInputValue(newValue);
-                                    }}
-                                    sx={{
-                                        '& .MuiOutlinedInput-root': {
-                                            '& fieldset': {
-                                                borderColor: '#b6c2cf',
-                                            },
-                                            '&:hover fieldset': {
-                                                borderColor: '#b6c2cf',
-                                            },
-                                            '&.Mui-focused fieldset': {
-                                                borderColor: '#b6c2cf',
-                                            },
-                                        },
-                                        '& .MuiInputBase-root': {
-                                            color: 'inherit',
-                                            width: '134px',
-                                            height: '36px'
-                                        },
-                                        '& .MuiTypography-root': {
-                                            color: 'inherit',
-                                        },
-                                        '& .MuiButtonBase-root': {
-                                            color: 'inherit',
-                                        },
-                                        '& .MuiSvgIcon-root': {
-                                            color: '#b6c2cf',
-                                            scale: '0.85',
-                                        }
-                                    }} /> */}
                         </Box>
                     </LocalizationProvider>
                     <div className="date">
-                        <input className="checkbox" type="checkbox" />
-                        <input className="text date-text" type="text" />
-                        <input className="text date-text" type="text" />
+                        <input ref={dueDateCheckboxRef} className="checkbox" type="checkbox" />
+                        <input ref={dueDateInputRef} className="text date-text" type="text" onBlur={onBlurDateInput} />
+                        <input ref={dueTimeInputRef} className="text date-text" type="text" onBlur={onBlurTimeInput} />
                     </div>
                     <button className="btn-blue btn-full" onClick={(ev) => onSaveDueDate(ev)}>Save</button>
                     <button className="btn-dark-grey btn-full">Remove</button>
