@@ -38,6 +38,12 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
         })
     }
 
+    function getActivityByTitle(activity) {
+        if (activity.title === 'create board') {
+            return 'created this board'
+        }
+        return activity.title
+    }
 
     return (
         <section className={`right-nav-bar-container ${!isRightNavBarOpen ? 'is-close' : ''}`}>
@@ -95,9 +101,11 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
                 {field === 'Activity' && (
                     <div className="activity-log">
                         {board.activities && board.activities.length > 0 ? (
-                            board.activities.map((activity, index) => (
-                                <div key={index} className="activity-item">
-                                    <span>{activity.title}</span>
+                            board.activities.map((activity, idx, activities) => (
+                                <div key={activity.id} className="activity-item">
+                                    {console.log(activities[activities.length - idx - 1])}
+                                    {activities[activities.length - idx - 1].byMember.fullname}
+                                    {getActivityByTitle(activities[activities.length - idx - 1])}
 
                                 </div>
                             ))

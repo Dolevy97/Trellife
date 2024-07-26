@@ -3,7 +3,7 @@ import { boardService } from "../services/board"
 import { getRandomMember } from "../services/board/board-demo-data.service"
 import { addBoard } from "../store/actions/board.actions"
 import { useNavigate } from "react-router"
-import { getUnsplashImages } from "../services/util.service"
+import { getBackgroundImages } from "../services/util.service"
 import { useSelector } from "react-redux"
 
 export function BoardCreate({ setIsAdding }) {
@@ -22,7 +22,7 @@ export function BoardCreate({ setIsAdding }) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        fetchImages('nature', 4).then(setBackgroundImages)
+        setBackgroundImages(getBackgroundImages().slice(0,4))
     }, [])
 
     useEffect(() => {
@@ -43,10 +43,6 @@ export function BoardCreate({ setIsAdding }) {
             document.removeEventListener('mousedown', handleClickOutside)
         }
     }, [isBoardCreateOpen])
-
-    async function fetchImages(query, count) {
-        return await getUnsplashImages(query, count)
-    }
 
     function handleClickOutside(event) {
         if (boardCreateRef.current && !boardCreateRef.current.contains(event.target)) {
@@ -92,6 +88,8 @@ export function BoardCreate({ setIsAdding }) {
 
     const { title } = boardToAdd
 
+    if (!backgroundImages) return null
+
     return (
         <section className={`board-create ${setIsAdding && 'from-header'}`} ref={boardCreateRef}>
             <article className="create-header">
@@ -112,7 +110,7 @@ export function BoardCreate({ setIsAdding }) {
                         key={img.id}
                         onClick={onChooseBGColor}
                         className="bg-img">
-                        <img src={img.url} alt="" />
+                        <img src={img.smallUrl} alt="" />
                     </article>
                 ))}
                 <article onClick={onChooseBGColor} className="bg" style={{ background: '#0079bf' }}></article>

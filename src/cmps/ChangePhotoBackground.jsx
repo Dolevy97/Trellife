@@ -1,11 +1,14 @@
-
-
-
+import { useEffect, useState } from "react";
+import { getBackgroundImages } from "../services/util.service";
 import { updateBoardBgc } from "../store/actions/board.actions";
 
+export function ChangePhotoBackground({ board }) {
 
-export function ChangePhotoBackground({board }) {
+    const [images, setImages] = useState()
 
+    useEffect(() => {
+        setImages(getBackgroundImages())
+    }, [])
 
     async function onUpdateBgc(img) {
         try {
@@ -15,22 +18,25 @@ export function ChangePhotoBackground({board }) {
         }
     }
 
+    if (!images) return null
+
     return (
         <section className="change-photo-background">
-
-
             <div className="photos-bgc-container">
-                {/* {imgs.map((img, index) => (
-                    <img
-                        key={index}
-                        onClick={() => onUpdateBgc(img)}
-                        src={img}
-                    ></img>
-                ))} */}
-                <span>test</span>
+                {images.map(img => (
+                    <div className="photo-container" key={img.id} onClick={() => onUpdateBgc(img.url)}>
+                        <img
+                            className="photo"
+                            src={img.smallUrl}
+                        ></img>
+                    </div>
+                ))}
             </div>
-
-
+            <div className="photos-footer">
+                <div className="unsplash-disclaimer">
+                    By using images from Unsplash, you agree to their <a href="https://unsplash.com/license" target="_blank">license</a> and <a href="https://unsplash.com/terms" target="_blank">Terms of Service</a>
+                </div>
+            </div>
         </section>
     )
 }

@@ -4,12 +4,45 @@ import { getAverageColorFromAttachment, getRandomIntInclusive, makeId } from "..
 import { cloudinaryService } from "../services/cloudinary.service"
 import { updateBoard } from "../store/actions/board.actions"
 
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
+import dayjs from "dayjs"
+import { Box } from "@mui/material"
+import { TimePicker } from "@mui/x-date-pickers"
+import { useSelector } from "react-redux"
 
-export function TaskAction({ action, board, group, task, getMemberById, getLabelById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem }) {
+
+export function TaskAction({ action, board, group, task, getMemberById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem, dateToEdit, setDateToEdit }) {
 
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
     const [labelInputValue, setLabelInputValue] = useState(labelToEdit ? labelToEdit.title : '')
+    const [dateInputValue, setDateInputValue] = useState(dateToEdit ? dayjs(dateToEdit) : dayjs());
+    const user = useSelector(storeState => storeState.userModule.user)
     const checklistTitleRef = useRef()
+
+    function getDueDate(timeStamp) {
+        if (!timeStamp) return
+        const date = new Date(timeStamp)
+        const isoString = date.toISOString()
+        return isoString.slice(0, 10)
+    }
+
+    async function onSaveDueDate(ev) {
+        console.log(dateInputValue)
+        const { $y, $M, $D } = dateInputValue
+        console.log($y, $M, $D)
+        return
+        const dateStr = dateInputValue
+        const dateObj = new Date(dateStr)
+        const timestamp = dateObj.getTime()
+        const updatedTask = { ...task }
+        updatedTask.dueDate = timestamp
+        const activityTitle = `changed the due date of task (id: ${updatedTask.id}) to ${dateStr}`
+        // await updateTask(updatedTask, group, board, activityTitle, user)
+        await updateTask(updatedTask, group, board, activityTitle, user)
+        onSetAction(ev, null)
+    }
 
     useEffect(() => {
         if (labelToEdit) setLabelInputValue(labelToEdit.title)
@@ -18,6 +51,8 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             checklistTitleRef.current.select()
         }
     }, [])
+
+    // Getters
 
     function getBoardMembers() {
         const boardMembers = board.members.filter(member => !task.membersIds.includes(member._id))
@@ -28,11 +63,12 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         return task.membersIds.map(getMemberById)
     }
 
+    // Members
     async function onAddMember(id) {
         const updatedTask = { ...task }
         updatedTask.membersIds.push(id)
         const activityTitle = `added member (id: ${id}) to task (id: ${task.id})`
-        await updateTask(updatedTask, group, board, activityTitle)
+        await updateTask(updatedTask, group, board, activityTitle, user)
     }
 
     async function onRemoveMember(id) {
@@ -40,6 +76,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         await updateTask(task, group, board)
     }
 
+    // Labels
     async function onToggleLabel(ev, id) {
         const { checked } = ev.target
         let updatedTask = { ...task }
@@ -49,39 +86,6 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             updatedTask = { ...updatedTask, labelsIds: updatedTask.labelsIds.filter(labelId => labelId !== id) }
         }
         await updateTask(updatedTask, group, board)
-    }
-
-    async function onUpdateCoverColor({ target }) {
-        const backgroundColor = target.style.backgroundColor
-        const backgroundImage = ''
-        const background = { backgroundColor, backgroundImage }
-        if (!task.style) {
-            task = { ...task, style: { isFull: false, ...background } }
-        } else {
-            task = { ...task, style: { ...task.style, ...background } }
-        }
-        await updateTask(task, group, board)
-    }
-
-    async function onUpdateCoverIsFull(ev) {
-        if (!task.style) return
-        const targetName = ev.currentTarget.getAttribute('data-name')
-        const isFull = JSON.parse(targetName)
-        task = { ...task, style: { ...task.style, isFull } }
-        await updateTask(task, group, board)
-        // const isFull = JSON.parse(target.name)
-        // task = { ...task, style: { ...task.style, isFull } }
-        // await updateTask(task, group, board)
-    }
-
-    async function onAddChecklist(ev) {
-        const updatedTask = { ...task }
-        const newChecklist = { id: 'cl' + makeId(), title: checklistInputValue, todos: [] }
-        updatedTask.checklists.push(newChecklist)
-        const activityTitle = `added ${checklistInputValue} to this card`
-        onSetAction(ev, null)
-        toggleAddingItem(newChecklist.id)
-        await updateTask(updatedTask, group, board, activityTitle)
     }
 
     async function onSaveLabel(ev) {
@@ -168,6 +172,42 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
         setLabelToEdit({ ...labelToEdit, color: null })
     }
 
+    // Cover
+
+    async function onUpdateCoverColor({ target }) {
+        const backgroundColor = target.style.backgroundColor
+        const backgroundImage = ''
+        const background = { backgroundColor, backgroundImage }
+        if (!task.style) {
+            task = { ...task, style: { isFull: false, ...background } }
+        } else {
+            task = { ...task, style: { ...task.style, ...background } }
+        }
+        await updateTask(task, group, board)
+    }
+
+    async function onUpdateCoverIsFull(ev) {
+        if (!task.style) return
+        const targetName = ev.currentTarget.getAttribute('data-name')
+        const isFull = JSON.parse(targetName)
+        task = { ...task, style: { ...task.style, isFull } }
+        await updateTask(task, group, board)
+    }
+
+    // Checklists
+
+    async function onAddChecklist(ev) {
+        const updatedTask = { ...task }
+        const newChecklist = { id: 'cl' + makeId(), title: checklistInputValue, todos: [] }
+        updatedTask.checklists.push(newChecklist)
+        const activityTitle = `added ${checklistInputValue} to this card`
+        onSetAction(ev, null)
+        toggleAddingItem(newChecklist.id)
+        await updateTask(updatedTask, group, board, activityTitle, user)
+    }
+
+    // Attachments
+
     async function onAddAttachment(ev, isCover) {
         const files = ev.target.files
         const action = !task.style ? 'cover' : null
@@ -191,12 +231,12 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
             if (!updatedTask.style || isCover) {
                 updatedTask = { ...updatedTask, style: { isFull: true, backgroundImage: `url(${attachment.url}`, backgroundColor: attachment.backgroundColor } }
                 if (isCover) {
-                    await updateTask(updatedTask, group, board, activityTitle)
+                    await updateTask(updatedTask, group, board, activityTitle, user)
                     break
                 }
             }
 
-            await updateTask(updatedTask, group, board, activityTitle)
+            await updateTask(updatedTask, group, board, activityTitle, user)
         }
 
         onSetAction(ev, action)
@@ -204,6 +244,17 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
 
     function onUpload() {
         document.querySelector('.input-file-upload').click()
+    }
+
+    async function onChangeDueDate({ target }) {
+        const dateStr = target.value
+        const dateObj = new Date(dateStr)
+        const timestamp = dateObj.getTime()
+        dateToEdit = timestamp
+        setDateInputValue(dateObj)
+        // taskToEdit.dueDate = timestamp
+        // const activityTitle = `changed the due date of task (id: ${taskToEdit.id}) to ${dateStr}`
+        // await updateTask(taskToEdit, group, board, activityTitle, user)
     }
 
     return (
@@ -328,7 +379,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                             <div className="size-btns">
                                 <div>
                                     <div className="cover-pic">
-                                        <div className={`header-cover ${task.style.isFull? '' : 'focused'}`} data-name="false" onClick={onUpdateCoverIsFull}>
+                                        <div className={`header-cover ${task.style.isFull ? '' : 'focused'}`} data-name="false" onClick={onUpdateCoverIsFull}>
                                             <div className="card-header" style={task.style}>
                                             </div>
                                             <div className="card-body">
@@ -347,7 +398,7 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                                             </div>
                                         </div>
                                         <div className="body" data-name="true" onClick={onUpdateCoverIsFull} >
-                                            <div className={`body-cover ${task.style.isFull? 'focused' : ''}`} style={task.style} >
+                                            <div className={`body-cover ${task.style.isFull ? 'focused' : ''}`} style={task.style} >
                                                 <div className="card-body">
                                                     <div className="top-line">
                                                     </div>
@@ -424,6 +475,78 @@ export function TaskAction({ action, board, group, task, getMemberById, getLabel
                             {action === 'attach' ? 'Choose a file' : 'Upload a cover image'}
                         </button>
                     </div>
+                </>
+            }
+            {action === 'dates' &&
+                <>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', overflow: 'hidden' }}>
+                            <StaticDatePicker
+                                value={dateInputValue}
+                                onChange={(newValue) => {
+                                    setDateInputValue(newValue);
+                                }}
+                                sx={{
+                                    backgroundColor: 'inherit',
+                                    '& .MuiPickersToolbar-root': {
+                                        display: 'none',
+                                    },
+                                    '& .MuiTypography-root': {
+                                        color: 'inherit',
+                                    },
+                                    '& .MuiButtonBase-root': {
+                                        color: 'inherit',
+                                    },
+                                    '& .MuiPickerStaticWrapper-actionBar': {
+                                        display: 'none',
+                                    },
+                                    '& .MuiDialogActions-root': {
+                                        display: 'none',
+                                    }
+                                }}
+                            />
+                            {/* <TimePicker
+                                    value={dateInputValue}
+                                    onChange={(newValue) => {
+                                        setDateInputValue(newValue);
+                                    }}
+                                    sx={{
+                                        '& .MuiOutlinedInput-root': {
+                                            '& fieldset': {
+                                                borderColor: '#b6c2cf',
+                                            },
+                                            '&:hover fieldset': {
+                                                borderColor: '#b6c2cf',
+                                            },
+                                            '&.Mui-focused fieldset': {
+                                                borderColor: '#b6c2cf',
+                                            },
+                                        },
+                                        '& .MuiInputBase-root': {
+                                            color: 'inherit',
+                                            width: '134px',
+                                            height: '36px'
+                                        },
+                                        '& .MuiTypography-root': {
+                                            color: 'inherit',
+                                        },
+                                        '& .MuiButtonBase-root': {
+                                            color: 'inherit',
+                                        },
+                                        '& .MuiSvgIcon-root': {
+                                            color: '#b6c2cf',
+                                            scale: '0.85',
+                                        }
+                                    }} /> */}
+                        </Box>
+                    </LocalizationProvider>
+                    <div className="date">
+                        <input className="checkbox" type="checkbox" />
+                        <input className="text date-text" type="text" />
+                        <input className="text date-text" type="text" />
+                    </div>
+                    <button className="btn-blue btn-full" onClick={(ev) => onSaveDueDate(ev)}>Save</button>
+                    <button className="btn-dark-grey btn-full">Remove</button>
                 </>
             }
         </section>
