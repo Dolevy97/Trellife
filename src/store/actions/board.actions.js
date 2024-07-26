@@ -70,6 +70,7 @@ export async function updateBoardBgc(board, bgc) {
             } 
         }
         await updateBoard(updatedBoard)
+        return updatedBoard
     } catch (err) {
         console.log('Cannot update bgc board', err)
         throw err

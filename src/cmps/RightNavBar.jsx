@@ -111,7 +111,7 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
                     <div className="background-options">
                         <div className="imgs-option">
                             <img src="../../../src/assets/imgs/photosoption.jpg" alt="" />
-                            <span>Phothos</span>
+                            <span>Photos</span>
                         </div>
                         <div className="colors-option" onClick={() => setField('Change color background')}>
                             <img src="../../../src\assets\imgs\colorsoption.png" alt="" />

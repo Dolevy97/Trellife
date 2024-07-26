@@ -20,8 +20,9 @@ export function ChangeColorBackground({ board}) {
 
     async function onUpdateBgc(bgc) {
         try {
-            await updateBoardBgc(board, `url(${bgc})`)
-            navigate(`/board/${board._id}`)
+            // await updateBoardBgc(board, `url(${bgc})`)
+            const newboard = await updateBoardBgc(board, `url(${bgc})`)
+            console.log(newboard)
         } catch (err) {
             console.log('Cannot update bgc board', err)
         }
@@ -29,7 +30,6 @@ export function ChangeColorBackground({ board}) {
 
     return (
         <section className="change-color-background">
-            <div className="colors-bgc">
                 {palette.map((colorOption, index) => (
                     <button
                         key={index}
@@ -38,7 +38,7 @@ export function ChangeColorBackground({ board}) {
                         style={{ backgroundImage: `url(${colorOption})` }}
                     ></button>
                 ))}
-            </div>
+            
         </section>
     )
 }
