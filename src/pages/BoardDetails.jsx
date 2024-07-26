@@ -55,7 +55,6 @@ export function BoardDetails() {
 
   useEffect(() => {
     if (!user) {
-      console.log('details no user apparently')
       guestLogin()
     }
   }, [user])
@@ -193,7 +192,7 @@ export function BoardDetails() {
           filterBy={filterBy}
           setFilterBy={setFilterBy}
           board={board}
-    
+
         />
       }
       <section ref={groupListContainer} className="group-list-container">

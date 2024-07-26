@@ -22,8 +22,10 @@ export function BoardCreate({ setIsAdding }) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        setBackgroundImages(getBackgroundImages().slice(0,4))
+        getBackgroundImages().then(images => setBackgroundImages(images.slice(0, 4)))
     }, [])
+
+    console.log(backgroundImages)
 
     useEffect(() => {
         if (previewRef.current) {
@@ -54,8 +56,8 @@ export function BoardCreate({ setIsAdding }) {
         }
     }
 
-    function onChooseBGColor( ev ) {
-        const {target} = ev
+    function onChooseBGColor(ev) {
+        const { target } = ev
         const imgElement = ev.currentTarget.querySelector('img')
         if (ev.target.className === 'bg-img') {
             setBackgroundImage(imgElement.src)
@@ -75,10 +77,10 @@ export function BoardCreate({ setIsAdding }) {
     }
 
     async function onAddBoard() {
-        const newBoard = { 
-            ...boardToAdd, 
-            style: { background: isImage ? `url(${backgroundImage})` : background }, 
-            createdBy: user 
+        const newBoard = {
+            ...boardToAdd,
+            style: { background: isImage ? `url(${backgroundImage})` : background },
+            createdBy: user
         }
         if (!newBoard.title) return
         const addedBoard = await addBoard(newBoard)
