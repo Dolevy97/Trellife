@@ -21,9 +21,9 @@ export async function updateTask(task, group, board, activityTitle = '', user) {
         const activity = {
             id: 'a' + makeId(),
             title: activityTitle,
-            // byMember: user,
+            byMember: user,
             // FOR LOCAL:
-            byMember: getRandomMember(),
+            // byMember: getRandomMember(),
             group: { ...group },
             task: { ...task },
             createdAt: Date.now()
