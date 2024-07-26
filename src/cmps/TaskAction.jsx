@@ -266,130 +266,127 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     }
 
     function formatTimestampToDateString(timestamp) {
-        const date = new Date(timestamp);
-        const month = date.getMonth() + 1; // Months are zero indexed
-        const day = date.getDate();
-        const year = date.getFullYear();
+        const date = new Date(timestamp)
+        const month = date.getMonth() + 1
+        const day = date.getDate()
+        const year = date.getFullYear()
 
-        return `${month}/${day}/${year}`;
+        return `${month}/${day}/${year}`
     }
 
     function formatTimestampToTimeString(timestamp) {
-        const date = new Date(timestamp);
-        let hours = date.getHours();
-        const minutes = date.getMinutes();
-        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const date = new Date(timestamp)
+        let hours = date.getHours()
+        const minutes = date.getMinutes()
+        const ampm = hours >= 12 ? 'PM' : 'AM'
 
-        hours = hours % 12;
-        hours = hours ? hours : 12; // the hour '0' should be '12'
-        const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+        hours = hours % 12
+        hours = hours ? hours : 12
+        const minutesStr = minutes < 10 ? '0' + minutes : minutes
 
-        return `${hours}:${minutesStr} ${ampm}`;
+        return `${hours}:${minutesStr} ${ampm}`
     }
 
     function onBlurDateInput({ target }) {
-        const strDate = target.value;
-        const timestamp = parseDate(strDate);
+        const strDate = target.value
+        const timestamp = parseDate(strDate)
 
         if (timestamp) {
-            const newDate = new Date(timestamp);
-            const currentDate = new Date(dueDateToEdit);
+            const newDate = new Date(timestamp)
+            const currentDate = new Date(dueDateToEdit)
 
-            // Preserve the time from the current date
-            newDate.setHours(currentDate.getHours());
-            newDate.setMinutes(currentDate.getMinutes());
-            newDate.setSeconds(currentDate.getSeconds());
-            newDate.setMilliseconds(currentDate.getMilliseconds());
+            newDate.setHours(currentDate.getHours())
+            newDate.setMinutes(currentDate.getMinutes())
+            newDate.setSeconds(currentDate.getSeconds())
+            newDate.setMilliseconds(currentDate.getMilliseconds())
 
-            setDueDateToEdit(newDate.getTime());
+            setDueDateToEdit(newDate.getTime())
         } else {
-            // Reset the input to the current dueDateToEdit
-            target.value = formatTimestampToDateString(dueDateToEdit);
+            target.value = formatTimestampToDateString(dueDateToEdit)
         }
     }
 
     function parseDate(strDate) {
-        const dateRegex = /^(0?[1-9]|1[0-2])?\/?(0?[1-9]|[12][0-9]|3[01])\/?(\d{2}|\d{4})$/;
-        const match = strDate.match(dateRegex);
+        const dateRegex = /^(0?[1-9]|1[0-2])?\/?(0?[1-9]|[12][0-9]|3[01])\/?(\d{2}|\d{4})$/
+        const match = strDate.match(dateRegex)
 
         if (!match) {
-            return null; // Invalid date format
+            return null
         }
 
-        let [_, month, day, year] = match;
+        let [_, month, day, year] = match
 
-        const currentDate = new Date();
-        const currentYear = currentDate.getFullYear();
-        const currentMonth = currentDate.getMonth() + 1; // Months are zero indexed in JavaScript
-        const currentCentury = Math.floor(currentYear / 100) * 100;
-        const seventyYearsAgo = currentYear - 70;
-        const seventyYearsFromNow = currentYear + 70;
+        const currentDate = new Date()
+        const currentYear = currentDate.getFullYear()
+        const currentMonth = currentDate.getMonth() + 1
+        const currentCentury = Math.floor(currentYear / 100) * 100
+        const seventyYearsAgo = currentYear - 70
+        const seventyYearsFromNow = currentYear + 70
 
         if (!month) {
-            month = currentMonth.toString();
+            month = currentMonth.toString()
         }
 
         if (!day) {
-            return null; // Day field is required
+            return null
         }
 
         if (year.length === 4) {
             // Use the year as is
         } else if (year.length === 2) {
-            const fullYear = parseInt(year) + currentCentury;
+            const fullYear = parseInt(year) + currentCentury
             if (fullYear >= seventyYearsAgo && fullYear <= seventyYearsFromNow) {
-                year = fullYear.toString();
+                year = fullYear.toString()
             } else {
-                year = (fullYear - 100).toString();
+                year = (fullYear - 100).toString()
             }
         } else if (year.length === 0) {
-            year = currentYear.toString();
+            year = currentYear.toString()
         } else {
-            return null; // Invalid year format
+            return null
         }
 
-        const formattedDate = `${month.padStart(2, '0')}/${day.padStart(2, '0')}/${year}`;
+        const formattedDate = `${month.padStart(2, '0')}/${day.padStart(2, '0')}/${year}`
 
-        const dateObj = new Date(formattedDate);
+        const dateObj = new Date(formattedDate)
 
-        // Check if the constructed date is valid
         if (dateObj.getMonth() + 1 !== parseInt(month) || dateObj.getDate() !== parseInt(day) || dateObj.getFullYear() !== parseInt(year)) {
-            return null; // Invalid date
+            return null 
         }
 
-        return dateObj.getTime(); // Return timestamp
+        return dateObj.getTime() 
     }
 
     function parseTime(strTime) {
-        const timeRegex = /^(0?[0-9]|1[0-9]|2[0-3])?(:([0-5]?[0-9]))? ?([APap][Mm]?)?$/;
-        const match = strTime.match(timeRegex);
+        const timeRegex = /^(0?[0-9]|1[0-9]|2[0-3])?(:([0-5]?[0-9]))? ?([APap][Mm]?)?$/
+        const match = strTime.match(timeRegex)
 
         if (!match) {
-            return null; // Invalid time format
+            return null
         }
 
-        let [_, hour, , minute, period] = match;
+        let [_, hour, , minute, period] = match
 
         if (!hour) {
-            return null; // Hour field is required
+            return null
         }
 
-        hour = parseInt(hour);
-        minute = minute ? parseInt(minute) : 0;
+        hour = parseInt(hour)
+        minute = minute ? parseInt(minute) : 0
 
         if (period) {
             if (period.toLowerCase() === 'pm' && hour < 12) {
-                hour += 12;
+                hour += 12
             } else if (period.toLowerCase() === 'am' && hour === 12) {
-                hour = 0;
+                hour = 0
             }
         } else if (hour < 12) {
-            period = 'am';
+            period = 'am'
         } else {
-            period = 'pm';
+            period = 'pm'
         }
 
-        return { hour, minute };
+        return { hour, minute }
     }
 
     function onBlurTimeInput({ target }) {
@@ -407,7 +404,6 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
 
             setDueDateToEdit(currentDate.getTime());
         } else {
-            // Reset the input to the current time part of dueDateToEdit
             target.value = formatTimestampToTimeString(dueDateToEdit);
         }
     }
