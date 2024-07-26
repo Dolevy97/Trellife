@@ -58,9 +58,11 @@ export function BoardCreate({ setIsAdding }) {
         }
     }
 
-    function onChooseBGColor({ target }) {
-        if (target.tagName === 'IMG') {
-            setBackgroundImage(target.src)
+    function onChooseBGColor( ev ) {
+        const {target} = ev
+        const imgElement = ev.currentTarget.querySelector('img')
+        if (ev.target.className === 'bg-img') {
+            setBackgroundImage(imgElement.src)
             setIsImage(true)
         } else {
             setBackground(target.style.background)
@@ -109,8 +111,7 @@ export function BoardCreate({ setIsAdding }) {
                     <article
                         key={img.id}
                         onClick={onChooseBGColor}
-                        className="bg-img"
-                        style={{ backgroundImage: `url(${img.url})` }}>
+                        className="bg-img">
                         <img src={img.url} alt="" />
                     </article>
                 ))}
