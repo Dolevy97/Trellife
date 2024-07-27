@@ -1,5 +1,5 @@
 import { getRandomMember } from "../../services/board/board-demo-data.service"
-import { getRandomIntInclusive, makeId } from "../../services/util.service"
+import { makeId } from "../../services/util.service"
 import { loadBoard, updateBoard } from "./board.actions"
 
 export async function updateTask(task, group, board, activityTitle = '', user) {
@@ -21,9 +21,9 @@ export async function updateTask(task, group, board, activityTitle = '', user) {
         const activity = {
             id: 'a' + makeId(),
             title: activityTitle,
-            // byMember: user,
+            byMember: user,
             // FOR LOCAL:
-            byMember: getRandomMember(),
+            // byMember: getRandomMember(),
             group: { ...group },
             task: { ...task },
             createdAt: Date.now()

@@ -52,11 +52,11 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
                 <div>
                     <span>{field}</span>
                 </div>
-                {field !== 'Menu' && (
-                    <div className="to-menu-btn-wrapper" onClick={() => setField('Menu')}>
+                {/* {field !== 'Menu' && ( */}
+                    <div className={`to-menu-btn-wrapper${field !== 'Menu'? '' : ' back-to'}`} onClick={() => setField('Menu')}>
                         <img src="../../../src\assets\imgs\Icons\arrow-down.svg" alt="Back to Menu" />
                     </div>
-                )}
+                {/* // )} */}
                 <div className="close-btn-wrapper" onClick={onClose}>
                     <img src="../../../src/assets/imgs/Icons/close.svg" alt="Close" />
                 </div>

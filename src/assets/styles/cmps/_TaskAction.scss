@@ -14,7 +14,7 @@
     gap: em(14);
 
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    z-index: 2;
+    z-index: 1001;
 
     &>* {
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -99,7 +99,7 @@
 
     input.text {
         font-size: em(14);
-        line-height: 3em;
+        // line-height: 3em;
         width: 100%;
         height: em(33);
         padding: em(8) em(12);
@@ -302,6 +302,10 @@
         line-height: em(20, 12);
         font-weight: 500;
         gap: em(8);
+
+        &:hover{
+            background-color: #3c474f;
+        }
     }
 
     .btn-file-upload {
@@ -313,7 +317,7 @@
         font-size: em(14, 16);
         line-height: em(20, 12);
         font-weight: 500;
-        margin-block: 12px 15px;
+        margin-block-start:8px;
     }
 
     .btn-disabled {
@@ -389,7 +393,7 @@
         position: static;
     }
 
-    .date {
+    .due-date {
         width: 100%;
         display: flex;
         align-items: center;

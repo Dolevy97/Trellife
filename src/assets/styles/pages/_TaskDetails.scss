@@ -24,7 +24,7 @@
     overflow-y: auto;
 
     background-color: rgba(0, 0, 0, 0.75);
-    z-index: 2;
+    z-index: 1001;
 
 
     .task-details {
@@ -69,7 +69,7 @@
             height: em(24);
             width: em(24);
 
-            z-index: 3;
+            z-index: 1002;
 
             &:hover {
                 cursor: pointer;
@@ -195,11 +195,15 @@
                         flex-direction: column;
                     }
 
+                    .members-container {
+                        position: relative;
+                    }
+
                     .members-img-container {
                         display: flex;
                         // gap: em(2);
 
-                        .member-thumbnail {
+                        .task-member-thumbnail {
                             height: em(32);
                             width: em(32);
                             border-radius: 50%;
@@ -220,17 +224,21 @@
 
                             background-color: #A1BDD914;
 
-                            img {
+                            .add-member-icon {
                                 width: 16px;
                                 height: 16px;
                             }
 
                             &:hover {
                                 cursor: pointer;
+                                background-color: #45505a;
                             }
                         }
                     }
 
+                    .labels-container {
+                        position: relative;
+                    }
 
                     .labels {
                         display: flex;
@@ -252,9 +260,34 @@
                                 opacity: 0.7;
                             }
                         }
+
+                        .add-label-thumbnail {
+                            position: relative;
+
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+
+                            height: 32px;
+                            width: 32px;
+                            border-radius: 3px;
+
+                            background-color: #A1BDD914;
+
+                            .add-label-icon {
+                                width: 16px;
+                                height: 16px;
+                            }
+
+                            &:hover {
+                                cursor: pointer;
+                                background-color: #45505a;
+                            }
+                        }
                     }
 
                     .due-date-inner-container {
+                        position: relative;
                         display: flex;
                         gap: 5px;
 
@@ -283,6 +316,8 @@
 
                             &:hover {
                                 cursor: pointer;
+                                background-color: #45505a;
+
                             }
                         }
 
@@ -449,6 +484,10 @@
                             background-color: rgba(161, 189, 217, 0.0784313725);
                             color: #b6c2cf;
                             font-weight: 500;
+
+                            &:hover{
+                                background-color: rgba(166, 197, 226, 0.1607843137);
+                            }
                         }
                     }
 
@@ -456,6 +495,7 @@
                         display: flex;
                         flex-direction: column;
                         align-items: flex-start;
+
 
                         .attachment {
                             display: flex;
@@ -963,7 +1003,7 @@
             position: relative;
 
             display: inline-flex;
-            width: 101.5%;
+            width: 102%;
 
             margin: 0 0 0 -8px;
             padding: 6px 8px;
@@ -1229,7 +1269,7 @@
     box-shadow: 0px 8px 12px #091e4226, 0px 0px 1px #091e424f;
     border-radius: 8px;
 
-    z-index: 10;
+    z-index: 1003;
 
     .item-actions-header {
         display: grid;

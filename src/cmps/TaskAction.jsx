@@ -1,44 +1,49 @@
 import { useEffect, useRef, useState } from "react"
-import { updateTask } from "../store/actions/task.actions"
-import { getAverageColorFromAttachment, getRandomIntInclusive, makeId } from "../services/util.service"
-import { cloudinaryService } from "../services/cloudinary.service"
-import { updateBoard } from "../store/actions/board.actions"
+import { useSelector } from "react-redux"
 
+import dayjs from "dayjs"
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
-import dayjs from "dayjs"
 import { Box } from "@mui/material"
-import { useSelector } from "react-redux"
 
+import { cloudinaryService } from "../services/cloudinary.service"
 
-export function TaskAction({ action, board, group, task, getMemberById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem, dueDate, style }) {
+import { updateBoard } from "../store/actions/board.actions"
+import { updateTask } from "../store/actions/task.actions"
+import { getAverageColorFromAttachment, makeId } from "../services/util.service"
 
-    console.log('TaskAction')
+export function TaskAction({ action, board, group, task, getMemberById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem, dueDate, style, attachmentToEdit }) {
 
     const user = useSelector(storeState => storeState.userModule.user)
 
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
+    const [attachmentInputValue, setAttachmentInputValue] = useState(attachmentToEdit ? attachmentToEdit.title : '')
     const [labelInputValue, setLabelInputValue] = useState(labelToEdit ? labelToEdit.title : '')
-    const [dueDateToEdit, setDueDateToEdit] = useState(dueDate ? dueDate : Date.now());
+    const [dueDateToEdit, setDueDateToEdit] = useState(dueDate ? dueDate : getDefaultDueDate());
 
-    const searchMembersInputRef = useRef()
+    const searchInputRef = useRef()
     const checklistTitleRef = useRef()
+    const attachmentTitleRef = useRef()
     const dueDateInputRef = useRef()
     const dueTimeInputRef = useRef()
     const dueDateCheckboxRef = useRef()
     const isFirstRenderRef = useRef(true)
 
     useEffect(() => {
-        if (action === 'members' && isFirstRenderRef.current) {
-            searchMembersInputRef.current.focus()
-            searchMembersInputRef.current.setSelectionRange(searchMembersInputRef.current.value.length, searchMembersInputRef.current.value.length);
+        if ((action === 'members' || action === 'labels') && isFirstRenderRef.current) {
+            searchInputRef.current.focus()
+            searchInputRef.current.setSelectionRange(searchInputRef.current.value.length, searchInputRef.current.value.length);
             isFirstRenderRef.current = false
         }
         if (labelToEdit) setLabelInputValue(labelToEdit.title)
         if (checklistTitleRef.current) {
             checklistTitleRef.current.focus()
             checklistTitleRef.current.select()
+        }
+        if (attachmentTitleRef.current) {
+            attachmentTitleRef.current.focus()
+            attachmentTitleRef.current.select()
         }
     }, [])
 
@@ -67,6 +72,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     }
 
     // Members
+
     async function onAddMember(id) {
         const updatedTask = { ...task }
         updatedTask.membersIds.push(id)
@@ -80,6 +86,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     }
 
     // Labels
+
     async function onToggleLabel(ev, id) {
         const { checked } = ev.target
         let updatedTask = { ...task }
@@ -222,6 +229,18 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         document.querySelector('.input-file-upload').click()
     }
 
+    async function onUpdateAttachment(ev) {
+        const updatedAttachment = { ...attachmentToEdit, title: attachmentInputValue }
+        const attachments = task.attachments.map(a => {
+            if (a.url !== attachmentToEdit.url) return a
+            else return updatedAttachment
+        })
+        const updatedTask = { ...task, attachments }
+        const activityTitle = `updated attachment's link name from ${attachmentToEdit.title} to ${attachmentInputValue} on card (id: ${task.id})`
+        await updateTask(updatedTask, group, board, activityTitle, user)
+        onSetAction(ev, null)
+    }
+
     // Dates
 
     async function onSaveDueDate(ev) {
@@ -231,6 +250,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             return
         }
         const updatedTask = { ...task }
+        if (!task.dueDate) updatedTask.isDone = false
         updatedTask.dueDate = dueDateToEdit
         const activityTitle = `changed the due date of task ${updatedTask.id} to ${dueDateToEdit}`
         await updateTask(updatedTask, group, board, activityTitle, user)
@@ -246,130 +266,127 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     }
 
     function formatTimestampToDateString(timestamp) {
-        const date = new Date(timestamp);
-        const month = date.getMonth() + 1; // Months are zero indexed
-        const day = date.getDate();
-        const year = date.getFullYear();
+        const date = new Date(timestamp)
+        const month = date.getMonth() + 1
+        const day = date.getDate()
+        const year = date.getFullYear()
 
-        return `${month}/${day}/${year}`;
+        return `${month}/${day}/${year}`
     }
 
     function formatTimestampToTimeString(timestamp) {
-        const date = new Date(timestamp);
-        let hours = date.getHours();
-        const minutes = date.getMinutes();
-        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const date = new Date(timestamp)
+        let hours = date.getHours()
+        const minutes = date.getMinutes()
+        const ampm = hours >= 12 ? 'PM' : 'AM'
 
-        hours = hours % 12;
-        hours = hours ? hours : 12; // the hour '0' should be '12'
-        const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+        hours = hours % 12
+        hours = hours ? hours : 12
+        const minutesStr = minutes < 10 ? '0' + minutes : minutes
 
-        return `${hours}:${minutesStr} ${ampm}`;
+        return `${hours}:${minutesStr} ${ampm}`
     }
 
     function onBlurDateInput({ target }) {
-        const strDate = target.value;
-        const timestamp = parseDate(strDate);
+        const strDate = target.value
+        const timestamp = parseDate(strDate)
 
         if (timestamp) {
-            const newDate = new Date(timestamp);
-            const currentDate = new Date(dueDateToEdit);
+            const newDate = new Date(timestamp)
+            const currentDate = new Date(dueDateToEdit)
 
-            // Preserve the time from the current date
-            newDate.setHours(currentDate.getHours());
-            newDate.setMinutes(currentDate.getMinutes());
-            newDate.setSeconds(currentDate.getSeconds());
-            newDate.setMilliseconds(currentDate.getMilliseconds());
+            newDate.setHours(currentDate.getHours())
+            newDate.setMinutes(currentDate.getMinutes())
+            newDate.setSeconds(currentDate.getSeconds())
+            newDate.setMilliseconds(currentDate.getMilliseconds())
 
-            setDueDateToEdit(newDate.getTime());
+            setDueDateToEdit(newDate.getTime())
         } else {
-            // Reset the input to the current dueDateToEdit
-            target.value = formatTimestampToDateString(dueDateToEdit);
+            target.value = formatTimestampToDateString(dueDateToEdit)
         }
     }
 
     function parseDate(strDate) {
-        const dateRegex = /^(0?[1-9]|1[0-2])?\/?(0?[1-9]|[12][0-9]|3[01])\/?(\d{2}|\d{4})$/;
-        const match = strDate.match(dateRegex);
+        const dateRegex = /^(0?[1-9]|1[0-2])?\/?(0?[1-9]|[12][0-9]|3[01])\/?(\d{2}|\d{4})$/
+        const match = strDate.match(dateRegex)
 
         if (!match) {
-            return null; // Invalid date format
+            return null
         }
 
-        let [_, month, day, year] = match;
+        let [_, month, day, year] = match
 
-        const currentDate = new Date();
-        const currentYear = currentDate.getFullYear();
-        const currentMonth = currentDate.getMonth() + 1; // Months are zero indexed in JavaScript
-        const currentCentury = Math.floor(currentYear / 100) * 100;
-        const seventyYearsAgo = currentYear - 70;
-        const seventyYearsFromNow = currentYear + 70;
+        const currentDate = new Date()
+        const currentYear = currentDate.getFullYear()
+        const currentMonth = currentDate.getMonth() + 1
+        const currentCentury = Math.floor(currentYear / 100) * 100
+        const seventyYearsAgo = currentYear - 70
+        const seventyYearsFromNow = currentYear + 70
 
         if (!month) {
-            month = currentMonth.toString();
+            month = currentMonth.toString()
         }
 
         if (!day) {
-            return null; // Day field is required
+            return null
         }
 
         if (year.length === 4) {
             // Use the year as is
         } else if (year.length === 2) {
-            const fullYear = parseInt(year) + currentCentury;
+            const fullYear = parseInt(year) + currentCentury
             if (fullYear >= seventyYearsAgo && fullYear <= seventyYearsFromNow) {
-                year = fullYear.toString();
+                year = fullYear.toString()
             } else {
-                year = (fullYear - 100).toString();
+                year = (fullYear - 100).toString()
             }
         } else if (year.length === 0) {
-            year = currentYear.toString();
+            year = currentYear.toString()
         } else {
-            return null; // Invalid year format
+            return null
         }
 
-        const formattedDate = `${month.padStart(2, '0')}/${day.padStart(2, '0')}/${year}`;
+        const formattedDate = `${month.padStart(2, '0')}/${day.padStart(2, '0')}/${year}`
 
-        const dateObj = new Date(formattedDate);
+        const dateObj = new Date(formattedDate)
 
-        // Check if the constructed date is valid
         if (dateObj.getMonth() + 1 !== parseInt(month) || dateObj.getDate() !== parseInt(day) || dateObj.getFullYear() !== parseInt(year)) {
-            return null; // Invalid date
+            return null
         }
 
-        return dateObj.getTime(); // Return timestamp
+        return dateObj.getTime()
     }
 
     function parseTime(strTime) {
-        const timeRegex = /^(0?[0-9]|1[0-9]|2[0-3])?(:([0-5]?[0-9]))? ?([APap][Mm]?)?$/;
-        const match = strTime.match(timeRegex);
+        const timeRegex = /^(0?[0-9]|1[0-9]|2[0-3])?(:([0-5]?[0-9]))? ?([APap][Mm]?)?$/
+        const match = strTime.match(timeRegex)
 
         if (!match) {
-            return null; // Invalid time format
+            return null
         }
 
-        let [_, hour, , minute, period] = match;
+        let [_, hour, , minute, period] = match
 
         if (!hour) {
-            return null; // Hour field is required
+            return null
         }
 
-        hour = parseInt(hour);
-        minute = minute ? parseInt(minute) : 0;
+        hour = parseInt(hour)
+        minute = minute ? parseInt(minute) : 0
 
         if (period) {
             if (period.toLowerCase() === 'pm' && hour < 12) {
-                hour += 12;
+                hour += 12
             } else if (period.toLowerCase() === 'am' && hour === 12) {
-                hour = 0;
+                hour = 0
             }
         } else if (hour < 12) {
-            period = 'am';
+            period = 'am'
         } else {
-            period = 'pm';
+            period = 'pm'
         }
 
-        return { hour, minute };
+        return { hour, minute }
     }
 
     function onBlurTimeInput({ target }) {
@@ -387,12 +404,17 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
 
             setDueDateToEdit(currentDate.getTime());
         } else {
-            // Reset the input to the current time part of dueDateToEdit
             target.value = formatTimestampToTimeString(dueDateToEdit);
         }
     }
 
-
+    function getDefaultDueDate() {
+        const now = new Date()
+        const nextDay = new Date(now)
+        nextDay.setDate(now.getDate() + 1)
+        nextDay.setHours(19, 0, 0, 0)
+        return nextDay.getTime()
+    }
 
     return (
         <section className="task-action" onClick={(ev) => ev.stopPropagation()} style={style ? { ...style } : {}}>
@@ -403,7 +425,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                 <div onClick={(ev) => onSetAction(ev, null)} className="close-action-container"> <img className="close-action icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" /> </div>
             </header>
 
-            {(action === 'members' || action === 'labels') && <input ref={searchMembersInputRef} className="text" placeholder={`Search ${action}`} />}
+            {(action === 'members' || action === 'labels') && <input ref={searchInputRef} className="text" placeholder={`Search ${action}`} />}
             {action === 'members' &&
                 <>
                     <div className="card-members">
@@ -610,11 +632,24 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                             onChange={(ev) => onAddAttachment(ev, (action === 'attach' ? undefined : true))}
                             multiple
                         />
-                        <button className="btn-file-upload"
+                        <button className="btn-file-upload btn-dark-grey"
                             onClick={onUpload}>
                             {action === 'attach' ? 'Choose a file' : 'Upload a cover image'}
                         </button>
                     </div>
+                </>
+            }
+            {action === 'edit attachment' &&
+                <>
+                    <div className="edit-attachment">
+                        <span className="title">Link name</span>
+                        <input
+                            ref={attachmentTitleRef}
+                            className="text"
+                            value={attachmentInputValue}
+                            onChange={(ev) => setAttachmentInputValue(ev.target.value)} />
+                    </div>
+                    <button className="btn-blue" onClick={onUpdateAttachment}>Update</button>
                 </>
             }
             {action === 'dates' &&
@@ -642,12 +677,25 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                                     },
                                     '& .MuiDialogActions-root': {
                                         display: 'none',
+                                    },
+                                    '& .MuiPickersDay-root': {
+                                        borderRadius: '3px',
+                                        '&:hover': {
+                                            backgroundColor: '#323940',
+                                        },
+                                        '&.Mui-selected:hover': {
+                                            backgroundColor: '#1876d2',
+                                        },
+                                    },
+                                    '& .MuiPickersCalendarHeader-root': {
+                                        mt: '0',
                                     }
                                 }}
                             />
                         </Box>
                     </LocalizationProvider>
-                    <div className="date">
+                    <span className="title" style={{ margin: '0' }}>Due date</span>
+                    <div className="due-date">
                         <input ref={dueDateCheckboxRef} className="checkbox" type="checkbox" />
                         <input ref={dueDateInputRef} className="text date-text" type="text" onBlur={onBlurDateInput} />
                         <input ref={dueTimeInputRef} className="text date-text" type="text" onBlur={onBlurTimeInput} />

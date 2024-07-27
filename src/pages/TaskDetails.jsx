@@ -20,12 +20,12 @@ export function TaskDetails() {
     const editCommentRef = useRef(null)
     const editTodoItemRef = useRef(null);
 
-    const dateInputRef = useRef(null)
     const checklistItemRefs = useRef({})
 
     const [group, setGroup] = useState(null)
     const [taskToEdit, setTaskToEdit] = useState(null)
     const [action, setAction] = useState(null)
+    const [actionPosition, setActionPosition] = useState(null)
     const [isSettingDescription, setIsSettingDescription] = useState(false)
     const [isAddingComment, setIsAddingComment] = useState(false)
 
@@ -136,7 +136,7 @@ export function TaskDetails() {
     }
 
     function handleCommentChange({ target }) {
-        const { type, name: field } = target
+        const { type } = target
         let { value } = target
         if (type === 'number') {
             value = +value || ''
@@ -145,12 +145,12 @@ export function TaskDetails() {
     }
 
     function handleEditCommentChange({ target }) {
-        let { value } = target
+        const { value } = target
         setEditCommentInputValue(value)
     }
 
     function handleItemEditTitle({ target }) {
-        let { value } = target
+        const { value } = target
         setEditItemTitleValue(value)
     }
 
@@ -164,10 +164,11 @@ export function TaskDetails() {
 
     // Action - Dynamic Component
 
-    function onSetAction(ev, act) {
+    function onSetAction(ev, act, position = actionPosition) {
         ev.stopPropagation()
-        const actionName = action === act ? null : act
+        const actionName = action === act && actionPosition === position ? null : act
         setAction(actionName)
+        setActionPosition(position)
     }
 
     // Description
@@ -189,16 +190,6 @@ export function TaskDetails() {
 
     // Due date
 
-    async function onChangeDueDate() {
-        const dateStr = dateInputRef.current.value
-        const dateObj = new Date(dateStr)
-        const timestamp = dateObj.getTime()
-        taskToEdit.dueDate = timestamp
-        const activityTitle = `changed the due date of task (id: ${taskToEdit.id}) to ${dateStr}`
-        await updateTask(taskToEdit, group, board, activityTitle, user)
-
-    }
-
     function getDueDate(timeStamp) {
         if (!timeStamp) return;
 
@@ -210,12 +201,6 @@ export function TaskDetails() {
         const minutes = String(date.getMinutes()).padStart(2, '0');
 
         return `${year}-${month}-${day}T${hours}:${minutes}`;
-    }
-
-    function onShowDatePicker() {
-        if (dateInputRef.current) {
-            dateInputRef.current.showPicker()
-        }
     }
 
     async function onChangeIsDone({ target }) {
@@ -452,10 +437,6 @@ export function TaskDetails() {
         updateTask({ ...updatedTask, attachments }, group, board, activity, user)
     }
 
-    function onAddAttachment() {
-
-    }
-
     function getAddedAt(createdAt) {
         const timestamp = (createdAt - Date.now()) * -1
         return 'Added ' + (ms(timestamp, { long: true })) + ' ago'
@@ -532,22 +513,20 @@ export function TaskDetails() {
         const dayInMilliseconds = 24 * 60 * 60 * 1000
 
         if (timeDiff < -dayInMilliseconds) {
-            // Overdue by more than a day
             return {
                 text: 'Overdue',
                 style: { backgroundColor: '#42221F', color: '#FD9891' }
-            };
+            }
         } else if (timeDiff < 0) {
-            // Overdue by less than a day
             return {
                 text: 'Overdue',
                 style: { backgroundColor: '#F87168' }
-            };
+            }
         } else if (timeDiff <= dayInMilliseconds) {
             return {
                 text: 'Due soon',
                 style: { backgroundColor: '#F5CD47' }
-            };
+            }
         }
 
         return { text: '', style: {} }
@@ -570,7 +549,7 @@ export function TaskDetails() {
                     <div className="task-details-cover" style={{ ...style, height: style.backgroundImage ? '160px' : '' }}>
                         {style &&
                             <div className="task-header-action-container">
-                                <button className="action" onClick={(ev)=>onSetAction(ev,'cover')}>
+                                <button className="action" onClick={(ev) => onSetAction(ev, 'cover')}>
                                     <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover-white.svg" alt="cover icon" />
                                     <span className="action-title">Cover</span>
                                 </button>
@@ -604,11 +583,14 @@ export function TaskDetails() {
                                     <div className="members-img-container">
                                         {membersIds.map(id => {
                                             const member = getMemberById(id)
-                                            return <img key={member._id} className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
+                                            return <img key={member._id} className="task-member-thumbnail" src={member.imgUrl} title={member.fullname} />
                                         }
                                         )}
-                                        <div onClick={(ev)=>onSetAction(ev,'members')} className="add-member-thumbnail"><img src="../../../src/assets/imgs/TaskDetails-icons/add.svg" alt="add plus icon" /></div>
+                                        <div onClick={(ev) => onSetAction(ev, 'members', 2)} className="add-member-thumbnail"><img className="add-member-icon" src="../../../src/assets/imgs/TaskDetails-icons/add.svg" alt="add plus icon" />
+                                        </div>
                                     </div>
+                                    {action === 'members' && actionPosition === 2
+                                        && <TaskAction action="members" getMemberById={getMemberById} {...taskActionProps} style={{ top: '61px' }} />}
                                 </div> : ''}
 
                             {labelsIds.length ?
@@ -618,13 +600,19 @@ export function TaskDetails() {
                                         {labelsIds && labelsIds.map(id => {
                                             const label = getLabelById(id)
                                             if (!label) return null
-                                            return <span className="label" key={id} style={{ backgroundColor: label.color ? label.color : '#3a444c' }}>{label.title}</span>
+                                            return <span onClick={(ev) => onSetAction(ev, 'labels', 2)} className="label" key={id} style={{ backgroundColor: label.color ? label.color : '#3a444c' }}>{label.title}</span>
                                         })}
+                                        <div onClick={(ev) => onSetAction(ev, 'labels', 2)} className="add-label-thumbnail"><img className="add-label-icon" src="../../../src/assets/imgs/TaskDetails-icons/add.svg" alt="add plus icon" />
+                                        </div>
                                     </div>
+                                    {action === 'labels' && actionPosition === 2
+                                        && <TaskAction action="labels" {...taskActionProps} setLabelToEdit={setLabelToEdit} style={{ top: '61px' }} />}
+                                    {action === 'edit label' && actionPosition === 2
+                                        && <TaskAction action="edit label" labelToEdit={labelToEdit} setLabelToEdit={setLabelToEdit} {...taskActionProps} style={{ top: '61px' }} />}
                                 </div> : ''}
 
                             {taskToEdit.dueDate &&
-                                <div className="date-container">
+                                <div onClick={(ev) => onSetAction(ev, 'dates', 2)} className="date-container">
                                     <span className="fs12">Due date</span>
                                     <section className="due-date-inner-container">
                                         <input
@@ -634,18 +622,19 @@ export function TaskDetails() {
                                             onChange={onChangeIsDone}
                                             checked={taskToEdit.isDone}
                                         />
-                                        <div onClick={onShowDatePicker} className="date">
+                                        <div className="date">
                                             <input
-                                                ref={dateInputRef}
                                                 className="date-input"
                                                 type="datetime-local"
                                                 value={getDueDate(taskToEdit.dueDate)}
-                                                onChange={onChangeDueDate}
+                                                readOnly
                                             />
                                             <span className='inside-input-is-done' style={taskStatus.style}>{taskStatus.text}</span>
                                             <img className="arrow-down" src="../../../src/assets/imgs/TaskDetails-icons/arrow-down.svg" alt="description icon" />
                                         </div>
                                     </section>
+                                    {action === 'dates' && actionPosition === 2
+                                        && <TaskAction action="dates" {...taskActionProps} dueDate={taskToEdit.dueDate} style={{ top: '63px', left: '20px' }} />}
                                 </div>}
 
                         </div>
@@ -689,10 +678,12 @@ export function TaskDetails() {
                                 <div className='attachments-title'>
                                     <img className="attachments-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/paperclip.svg" alt="attachment icon" />
                                     <span>Attachments</span>
-                                    <button onClick={onAddAttachment} style={{ cursor: 'not-allowed' }}>Add</button>
+                                    <button onClick={(ev) => onSetAction(ev, 'attachment', 2)}>Add</button>
+                                    {action === 'attachment' && actionPosition === 2
+                                        && <TaskAction action="attach" {...taskActionProps} style={{ top: '45px', right: '-254px' }} />}
                                 </div>
                                 <div className="attachments">
-                                    {taskToEdit.attachments.map(a =>
+                                    {taskToEdit.attachments.map((a, i) =>
                                         <div key={a.url} className="attachment">
                                             {a.type.slice(0, 5) === 'image' ?
                                                 <a
@@ -721,9 +712,9 @@ export function TaskDetails() {
                                                     {a.type.slice(0, 5) === 'image' &&
                                                         <article className="attachment-link" onClick={() => onDownloadUrl(a.url, a.title)}><span className='attachment-link-text'>Download</span></article>}
                                                     <article className="attachment-link" onClick={() => onRemoveAttachment(a)}><span className='attachment-link-text'>Delete</span></article>
-                                                    <article className="attachment-link" onClick={(ev) => onSetAction(ev, 'edit attachment')} style={{position:'relative'}}><span className='attachment-link-text'>Edit</span>
-                                                    {action === 'edit attachment'
-                                                            && <TaskAction action="edit attachment" {...taskActionProps} style={{left: '12px', top: '22px'}}/>}
+                                                    <article className="attachment-link" onClick={(ev) => onSetAction(ev, 'edit attachment', i)} style={{ position: 'relative' }}><span className='attachment-link-text'>Edit</span>
+                                                        {action === 'edit attachment' && actionPosition === i
+                                                            && <TaskAction action="edit attachment" {...taskActionProps} style={{ left: '12px', top: '22px' }} attachmentToEdit={a} />}
                                                     </article>
                                                 </div>
                                                 {a.type.slice(0, 5) === 'image' &&
@@ -921,25 +912,25 @@ export function TaskDetails() {
                     <section className="task-actions">
                         <span className="add-to-card fs12">Add to card</span>
                         <div className="task-action-container">
-                            <button type='button' className="action" onClick={(ev)=>onSetAction(ev,'members')}>
+                            <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'members', 1)}>
                                 <img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" alt="members icon" />
                                 <span className="action-title">Members</span>
                             </button>
-                            {action === 'members'
+                            {action === 'members' && actionPosition === 1
                                 && <TaskAction action="members" getMemberById={getMemberById} {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
-                            <button type='button' className="action" onClick={(ev)=>onSetAction(ev,'labels')}>
+                            <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'labels', 1)}>
                                 <img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" alt="labels icon" />
                                 <span className="action-title">Labels</span>
                             </button>
-                            {action === 'labels'
+                            {action === 'labels' && actionPosition === 1
                                 && <TaskAction action="labels" {...taskActionProps} setLabelToEdit={setLabelToEdit} />}
-                            {action === 'edit label'
+                            {action === 'edit label' && actionPosition === 1
                                 && <TaskAction action="edit label" labelToEdit={labelToEdit} setLabelToEdit={setLabelToEdit} {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
-                            <button type='button' className="action" onClick={(ev)=>onSetAction(ev,'checklist')}>
+                            <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'checklist')}>
                                 <img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="checklist icon" />
                                 <span className="action-title">Checklist</span>
                             </button>
@@ -947,23 +938,23 @@ export function TaskDetails() {
                                 && <TaskAction action="add checklist" toggleAddingItem={toggleAddingItem} {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
-                            <button type='button' className="action" onClick={(ev)=>onSetAction(ev,'dates')}>
+                            <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'dates', 1)}>
                                 <img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" alt="dates icon" />
                                 <span className="action-title">Dates</span>
                             </button>
-                            {action === 'dates'
+                            {action === 'dates' && actionPosition === 1
                                 && <TaskAction action="dates" {...taskActionProps} dueDate={taskToEdit.dueDate} />}
                         </div>
                         <div className="task-action-container">
-                            <button type='button' className="action" onClick={(ev)=>onSetAction(ev,'attachment')}>
+                            <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'attachment', 1)}>
                                 <img className="attachment-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/attachment.svg" alt="attachment icon" />
                                 <span className="action-title">Attachment</span>
                             </button>
-                            {action === 'attachment'
+                            {action === 'attachment' && actionPosition === 1
                                 && <TaskAction action="attach" {...taskActionProps} />}
                         </div>
                         <div className="task-action-container">
-                            <button type='button' className="action" onClick={(ev)=>onSetAction(ev,'location')} style={{ cursor: 'not-allowed' }}>
+                            <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'location')} style={{ cursor: 'not-allowed' }}>
                                 <img className="location-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/location.svg" alt="location icon" />
                                 <span className="action-title">Location</span>
                             </button>
@@ -972,7 +963,7 @@ export function TaskDetails() {
                         {!taskToEdit.style
                             &&
                             <div className="task-action-container">
-                                <button type='button' className="action" name="cover" onClick={(ev)=>onSetAction(ev,'cover')}>
+                                <button type='button' className="action" name="cover" onClick={(ev) => onSetAction(ev, 'cover')}>
                                     <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
                                     <span className="action-title">Cover</span>
                                 </button>
