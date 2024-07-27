@@ -472,18 +472,32 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                         {board.labels.map(label => {
                             return (
                                 <div key={label.id} className="label-container">
-                                    <input className={`label-checkbox ${label.id}`} type="checkbox" checked={task.labelsIds.includes(label.id)} onChange={(ev) => onToggleLabel(ev, label.id)} />
-                                    <div className="label" style={{ backgroundColor: label.color ? label.color : '#323940' }} onClick={() => document.querySelector(`.label-checkbox.${label.id}`).click()}>{label.title}</div>
+                                    <input
+                                        id={`label-checkbox-${label.id}`}
+                                        className={`label-checkbox ${label.id}`}
+                                        type="checkbox"
+                                        checked={task.labelsIds.includes(label.id)}
+                                        onChange={(ev) => onToggleLabel(ev, label.id)}
+                                    />
+                                    <label
+                                        htmlFor={`label-checkbox-${label.id}`}
+                                        className="label"
+                                        style={{ backgroundColor: label.color || '#323940' }}
+                                    >
+                                        {label.title}
+                                    </label>
                                     <div
                                         className="pen-icon-container"
-                                        onClick={(ev) => { setLabelToEdit({ ...label }); onSetAction(ev, 'edit label'); }}>
-                                        <img className="pen-icon" src={penIcon}></img>
+                                        onClick={(ev) => {
+                                            setLabelToEdit({ ...label });
+                                            onSetAction(ev, 'edit label');
+                                        }}
+                                    >
+                                        <img className="pen-icon" src={penIcon} alt="Edit" />
                                     </div>
                                 </div>
                             )
-                        })
-
-                        }
+                        })}
                     </div>
                     <button className="btn-dark-grey" onClick={(ev) => { setLabelToEdit({ color: '#206e4e' }); onSetAction(ev, 'edit label') }}>Create a new label</button>
                 </>
