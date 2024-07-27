@@ -186,6 +186,8 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
 
     const labelsIds = taskToEdit?.labelsIds || []
 
+    if (!board || !tasks.length) return <div className='isloading-container'> <img className='isLoading' src={loadingAnimation} /> </div>
+
     return (
         <section className={`group-preview-container ${group.style.isCollapse ? 'collapsed' : ''}`}
             style={group.style}>
