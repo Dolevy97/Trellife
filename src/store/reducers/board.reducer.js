@@ -1,13 +1,19 @@
+import { boardService } from "../../services/board"
+
 export const SET_BOARDS = 'SET_BOARDS'
 export const SET_BOARD = 'SET_BOARD'
 export const REMOVE_BOARD = 'REMOVE_BOARD'
 export const ADD_BOARD = 'ADD_BOARD'
 export const UPDATE_BOARD = 'UPDATE_BOARD'
 export const UPDATE_BOARD_FAILED = 'UPDATE_BOARD_FAILED';
+export const SET_SORT_BY = 'SET_SORT_BY'
+export const SET_FILTER_BY = 'SET_FILTER_BY'
 
 const initialState = {
     boards: [],
-    board: null
+    board: null,
+    sortBy: { field: 'title', dir: 1 },
+    filterBy: boardService.getDefaultFilter()
 }
 
 export function boardReducer(state = initialState, action) {
@@ -35,6 +41,12 @@ export function boardReducer(state = initialState, action) {
             break
         case UPDATE_BOARD_FAILED:
             newState = { ...state, board: action.originalBoard };
+            break;
+        case SET_SORT_BY:
+            newState = { ...state, sortBy: action.sortBy }
+            break;
+        case SET_FILTER_BY:
+            newState = { ...state, filterBy: action.filterBy }
             break;
         default:
     }

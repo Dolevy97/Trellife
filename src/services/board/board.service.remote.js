@@ -1,5 +1,7 @@
 import { httpService } from '../http.service'
 
+const BASE_URL = 'board/'
+
 export const boardService = {
     query,
     getById,
@@ -7,23 +9,24 @@ export const boardService = {
     remove,
 }
 
-async function query(filterBy = { title: '' }) {
-    return httpService.get(`board`, filterBy)
+async function query(filterBy = {}, sortBy = {}) {
+    const filterAndSort = { ...filterBy, ...sortBy }
+    return httpService.get(BASE_URL, filterAndSort)
 }
 
 function getById(boardId) {
-    return httpService.get(`board/${boardId}`)
+    return httpService.get(BASE_URL + boardId)
 }
 
 async function remove(boardId) {
-    return httpService.delete(`board/${boardId}`)
+    return httpService.delete(BASE_URL + boardId)
 }
 async function save(board) {
     var savedBoard
     if (board._id) {
-        savedBoard = await httpService.put(`board/${board._id}`, board)
+        savedBoard = await httpService.put(BASE_URL + board._id, board)
     } else {
-        savedBoard = await httpService.post('board', board)
+        savedBoard = await httpService.post(BASE_URL, board)
     }
     return savedBoard
 }
