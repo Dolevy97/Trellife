@@ -11,9 +11,13 @@ export function AppHeader({ isHomePage }) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 	const [menuToOpen, setMenuToOpen] = useState(null)
 	const [isAdding, setIsAdding] = useState(false)
+	
 	const [userMenuOpen, setUserMenuOpen] = useState(false)
-	const [userMenuStyle, setUserMenuStyle] = useState({});
-	const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+	const [userMenuStyle, setUserMenuStyle] = useState({})
+	const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 })
+
+	const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false)
+	const [isHamburgerMenuAnimating, setIsHamburgerMenuAnimating] = useState(false)
 
 	const userMenuRef = useRef()
 	const appHeaderRef = useRef()
@@ -35,10 +39,33 @@ export function AppHeader({ isHomePage }) {
 	}, [userMenuRef, appHeaderRef])
 
 	useEffect(() => {
+		return () => {
+			document.body.classList.remove('no-scroll')
+		}
+	}, [])
+
+	useEffect(() => {
 		if (!user) {
 			guestLogin()
 		}
 	}, [user])
+
+	function toggleHamburgerMenu() {
+		if (isHamburgerMenuAnimating) return
+
+		setIsHamburgerMenuAnimating(true)
+		setIsHamburgerMenuOpen(!isHamburgerMenuOpen)
+
+		if (!isHamburgerMenuOpen) {
+			document.body.classList.add('no-scroll')
+		} else {
+			document.body.classList.remove('no-scroll')
+		}
+
+		setTimeout(() => {
+			setIsHamburgerMenuAnimating(false)
+		}, 500)
+	}
 
 	async function guestLogin() {
 		await login({ username: 'Guest', password: '1234' })
@@ -124,6 +151,27 @@ export function AppHeader({ isHomePage }) {
 				{!isHomePage && user && <section ref={accountProfileRef} title='account' onClick={() => setUserMenuOpen(!userMenuOpen)} className="user-profile">
 					<img className='user-profile-img' src={user.imgUrl} />
 				</section>}
+
+				{isHomePage && <article className="hamburger-container" onClick={toggleHamburgerMenu}>
+					<div className={`hamburger ${isHamburgerMenuOpen ? 'is-open' : ''}`}>
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
+				</article>}
+
+				{isHomePage &&
+					<nav className={`hamburger-menu ${isHamburgerMenuOpen ? 'is-open' : ''} ${isHamburgerMenuAnimating ? 'is-animating' : ''}`}>
+						<div className="login-signup-homepage-container">
+							<article onClick={() => navigate('/signup')} className="btn-register">
+								Get Trellife for free
+							</article>
+							<article onClick={() => navigate('/login')} className="btn-login">
+								Log in
+							</article>
+						</div>
+					</nav>}
+
 				{isMenuOpen && <DropdownMenu menu={menuToOpen} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} position={menuPosition} />}
 			</header>
 			{userMenuOpen &&

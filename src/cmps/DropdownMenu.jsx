@@ -76,7 +76,6 @@ export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen, position }) {
                         </ul>
                     </div>
                 )
-
             case 'Recent':
                 const sortedboards = sortBoardsByRecent()
                 return (
@@ -106,7 +105,6 @@ export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen, position }) {
                         </ul>
                     </div>
                 )
-
             case 'Starred':
                 const filteredBoards = boards.filter(board => user.favorites.includes(board._id))
                 return (
@@ -137,8 +135,6 @@ export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen, position }) {
                     </div>
 
                 )
-
-
             case 'Templates':
                 return (
                     <div className="menu-content">
@@ -147,8 +143,6 @@ export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen, position }) {
                         </ul>
                     </div>
                 )
-
-
             default:
                 return null
         }
