@@ -670,7 +670,16 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                                     },
                                     '& .MuiDialogActions-root': {
                                         display: 'none',
-                                    }
+                                    },
+                                    '& .MuiPickersDay-root': {
+                                        borderRadius: '3px',
+                                        '&:hover': {
+                                            backgroundColor: '#323940',
+                                        },
+                                        '&.Mui-selected:hover': {
+                                            backgroundColor: '#1876d2',
+                                        },
+                                    },
                                 }}
                             />
                         </Box>
