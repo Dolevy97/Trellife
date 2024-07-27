@@ -388,6 +388,27 @@
             }
         }
     }
+    
+    .unsplash-imgs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+
+        .unsplash-img{
+            margin: 0;
+            border-radius: 3px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            box-shadow: none;
+            width: 88px;
+            height: 48px;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
 
     .icon.remove-icon {
         position: static;

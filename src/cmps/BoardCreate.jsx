@@ -25,8 +25,6 @@ export function BoardCreate({ setIsAdding }) {
         getBackgroundImages().then(images => setBackgroundImages(images.slice(0, 4)))
     }, [])
 
-    console.log(backgroundImages)
-
     useEffect(() => {
         if (previewRef.current) {
             previewRef.current.style.backgroundSize = 'cover'

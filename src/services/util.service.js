@@ -229,8 +229,16 @@ export async function getUnsplashImages(query = 'random', count = 1) {
             url: image.urls.raw,
             smallUrl: image.urls.small,
             thumbnailUrl: image.urls.thumb,
-            description: image.description || image.alt_description
-        }))
+            description: image.description || image.alt_description,
+            type: 'image'
+        })
+        )
+
+        for (let i = 0; i < images.length; i++) {
+            images[i].backgroundColor = await getAverageColorFromAttachment(images[i])
+            // FOR DEV
+            if (i >= 6) break
+        }
 
         saveToLocalCache(cacheKey, images)
         images.forEach(image => {
