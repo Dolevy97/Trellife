@@ -1,10 +1,12 @@
 .dropdown-menu {
     width: 304px;
 
-    background: $bgclr2;
+    background: $bgclr4;
     box-shadow: 0px 5px 8px rgb(9 30 66 / 0.2);
     border-radius: 8px;
     z-index: 20;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
 
     .menu-content {
         padding: 10px;
@@ -105,4 +107,32 @@
 
 .no-starred-image {
     margin-block-start: -20px;
+}
+
+.more-menu {
+    position: fixed;
+    inset: 46px auto auto 148px;
+    width: 304px;
+    
+    padding-block: 8px;
+
+    background-color: $bgclr4;
+    z-index: 50;
+
+    box-shadow: 0px 8px 12px #091e4226, 0px 0px 1px #091e424f;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    
+    border-radius: 8px;
+
+    & .logo-wrapper {
+        margin-inline-end: 0;
+        height: 32px;
+    }
+    @media (min-width:991px) {
+        display: none;
+    }
+
+    & .svg-arrow-down {
+        rotate: -90deg;
+    }
 }

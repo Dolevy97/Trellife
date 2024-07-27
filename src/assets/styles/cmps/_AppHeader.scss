@@ -42,6 +42,14 @@
         @media (max-width:991px) {
             height: 70px;
         }
+        
+        .btn-create {
+            display: none;
+        }
+
+        .more {
+            display: none;
+        }
     }
 
     a,
@@ -176,6 +184,7 @@
     font-weight: 500;
 
     &.more {
+        position: relative;
         @media (min-width:991px) {
             display: none;
         }
@@ -328,7 +337,7 @@
     overflow: hidden;
     border-radius: 8px;
     outline: 0;
-    background-color: #282E33;
+    background-color: $bgclr4;
     box-shadow: 0px 8px 12px #091e4226, 0px 0px 1px #091e424f;
 
     padding: 12px;
