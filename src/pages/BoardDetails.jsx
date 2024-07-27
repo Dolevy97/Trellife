@@ -13,7 +13,6 @@ import { RightNavBar } from '../cmps/RightNavBar'
 import { BoardHederFilter } from '../cmps/BoardHederFilter.jsx'
 import { login } from '../store/actions/user.actions.js'
 import { SOCKET_EMIT_SET_WATCHED_BOARED, SOCKET_EVENT_WATCHED_BOARD_UPDATED, socketService } from '../services/socket.service.js'
-import { store } from '../store/store.js'
 import { useDispatch } from 'react-redux'
 
 import loadingAnimation from '../assets/imgs/TaskDetails-icons/loading animation.svg'
@@ -24,7 +23,7 @@ export function BoardDetails() {
 
   const user = useSelector(storeState => storeState.userModule.user)
   const board = useSelector(storeState => storeState.boardModule.board)
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [newGroupTitle, setNewGroupTitle] = useState('')

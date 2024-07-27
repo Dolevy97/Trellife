@@ -18,13 +18,8 @@ import arrowDownIcon from '../assets/imgs/TaskDetails-icons/arrow-down.svg'
 import descriptionIcon from '../assets/imgs/TaskDetails-icons/description.svg'
 import attachmentIcon from '../assets/imgs/TaskDetails-icons/paperclip.svg'
 import coverIcon from '../assets/imgs/TaskDetails-icons/cover.svg'
-import penIcon from '../assets/imgs/Icons/pen.svg'
-import clockIcon from '../assets/imgs/Icons/clock.svg'
-import commentIcon from '../assets/imgs/Icons/comment.svg'
 import checklistIcon from '../assets/imgs/TaskDetails-icons/checklist.svg'
 import closeIcon from '../assets/imgs/TaskDetails-icons/close.svg'
-import addIcon from '../assets/imgs/Icons/add.svg'
-import expandIcon from '../assets/imgs/Icons/expand.svg'
 import dotsIcon from '../assets/imgs/TaskDetails-icons/3dots.svg'
 import activityIcon from '../assets/imgs/TaskDetails-icons/activity.svg'
 import membersIcon from '../assets/imgs/TaskDetails-icons/members.svg'
@@ -296,9 +291,8 @@ export function TaskDetails() {
     async function onRemoveTask() {
         const newTasks = group.tasks.filter(task => task.id !== taskToEdit.id)
         const newGroup = { ...group, tasks: newTasks }
-        // const activityTitle = `removed task (id: ${taskToEdit.id})`
-        // NEED TO REFACTOR updateGroup SO IT UPDATES THE ACTIVITIES OF THE BOARD
-        await updateGroup(newGroup.id, newGroup, board)
+        const activityTitle = `removed task (id: ${taskToEdit.id})`
+        await updateGroup(newGroup.id, newGroup, board,activityTitle)
         onBackdropClicked()
     }
 
