@@ -210,6 +210,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                 >
                                                     {quickEditTaskId === task.id && (
                                                         <QuickEditTask
+                                                            // style={{style:()=>{}}}
                                                             task={tasks.find(t => t.id === quickEditTaskId)}
                                                             onClose={(e) => {
                                                                 e.stopPropagation()

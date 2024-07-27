@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
 
 const options = [
-    { label: 'Least recently active', value: 'least-recent-active' },
     { label: 'Most recently active', value: 'most-recent-active' },
+    { label: 'Least recently active', value: 'least-recent-active' },
     { label: 'Alphabetically A-Z', value: 'alphabet-a-z' },
     { label: 'Alphabetically Z-A', value: 'alphabet-z-a' }
 ]
