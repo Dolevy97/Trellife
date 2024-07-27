@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { CustomSelect } from './CustomSelect'
 
 export function Filter({ filterBy, onSetFilter, onSortBy, onSetSort }) {
 
@@ -59,12 +60,9 @@ export function Filter({ filterBy, onSetFilter, onSortBy, onSetSort }) {
         <section className="board-filter">
             <article className="sort-container">
                 <label className='short-label' htmlFor="sort">Sort by</label>
-                <select name="sortBy" onChange={(e) => onSortBy(e.target.value)}>
-                    <option value="most-recent-active">Most recently active</option>
-                    <option value="least-recent-active">Least recently active</option>
-                    <option value="alphabet-a-z">Alphabetically A-Z</option>
-                    <option value="alphabet-z-a">Alphabetically Z-A</option>
-                </select>
+                <CustomSelect
+                    onSortBy={onSortBy}
+                />
             </article>
 
             <article className="search-filter-container">
