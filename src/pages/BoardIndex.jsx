@@ -1,14 +1,27 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
+import { getCmdAddBoard, loadBoards, setFilterBy, setSortBy } from '../store/actions/board.actions'
+import { boardService } from '../services/board/'
 import { loadBoards, setFilterBy, setSortBy } from '../store/actions/board.actions'
 import { BoardList } from '../cmps/BoardList'
 import { Filter } from '../cmps/BoardFilter'
+import { SOCKET_EVENT_BOARD_ADDED, socketService } from '../services/socket.service'
+import { useDispatch } from 'react-redux'
 
 export function BoardIndex() {
     const boards = useSelector(storeState => storeState.boardModule.boards)
     const sortBy = useSelector(storeState => storeState.boardModule.sortBy)
     const filterBy = useSelector(storeState => storeState.boardModule.filterBy)
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        socketService.on(SOCKET_EVENT_BOARD_ADDED, addedBoard => dispatch(getCmdAddBoard(addedBoard)))
+        return () => {
+            socketService.off(SOCKET_EVENT_BOARD_ADDED)
+        }
+    }, [])
 
     useEffect(() => {
         loadBoards(filterBy, sortBy)
@@ -37,7 +50,7 @@ export function BoardIndex() {
             <section className="board-main">
                 <h2 className='boards-header'>Boards</h2>
                 <section>
-                    <Filter filterBy={filterBy} onSetFilter={onSetFilter} sortBy={sortBy} onSetSort={onSetSort}/>
+                    <Filter filterBy={filterBy} onSetFilter={onSetFilter} sortBy={sortBy} onSetSort={onSetSort} />
                 </section>
                 <BoardList
                     boards={boards}
