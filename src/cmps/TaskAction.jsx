@@ -14,7 +14,7 @@ import { updateTask } from "../store/actions/task.actions"
 import { getAverageColorFromAttachment, makeId } from "../services/util.service"
 
 export function TaskAction({ action, board, group, task, getMemberById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem, dueDate, style, attachmentToEdit }) {
-
+    
     const user = useSelector(storeState => storeState.userModule.user)
 
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
@@ -533,14 +533,14 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             }
             {action === 'cover' &&
                 <>
-                    <div className="cover">
+                    {/* <div className="cover"> */}
 
                         <div className="size-container">
                             <span className="title">Size</span>
                             <div className="size-btns">
                                 <div>
                                     <div className="cover-pic">
-                                        <div className={`header-cover ${task.style?.isFull ? '' : 'focused'}`} data-name="false" onClick={onUpdateCoverIsFull}>
+                                        <div className={`header-cover ${!task.style || task.style?.isFull ? '' : 'focused'}`} data-name="false" onClick={onUpdateCoverIsFull}>
                                             <div className="card-header" style={task.style}>
                                             </div>
                                             <div className="card-body">
@@ -603,7 +603,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                                 </div>
                             </div>
                             : null}
-                    </div>
+                    {/* </div> */}
                 </>
             }
             {action === 'add checklist' &&
