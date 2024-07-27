@@ -20,7 +20,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     const [checklistInputValue, setChecklistInputValue] = useState('Checklist')
     const [attachmentInputValue, setAttachmentInputValue] = useState(attachmentToEdit ? attachmentToEdit.title : '')
     const [labelInputValue, setLabelInputValue] = useState(labelToEdit ? labelToEdit.title : '')
-    const [dueDateToEdit, setDueDateToEdit] = useState(dueDate ? dueDate : Date.now());
+    const [dueDateToEdit, setDueDateToEdit] = useState(dueDate ? dueDate : getDefaultDueDate());
 
     const searchInputRef = useRef()
     const checklistTitleRef = useRef()
@@ -406,6 +406,14 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         } else {
             target.value = formatTimestampToTimeString(dueDateToEdit);
         }
+    }
+
+    function getDefaultDueDate() {
+        const now = new Date()
+        const nextDay = new Date(now)
+        nextDay.setDate(now.getDate() + 1)
+        nextDay.setHours(19, 0, 0, 0)
+        return nextDay.getTime()
     }
 
     return (
