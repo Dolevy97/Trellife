@@ -24,7 +24,7 @@
     overflow-y: auto;
 
     background-color: rgba(0, 0, 0, 0.75);
-    z-index: 2;
+    z-index: 1001;
 
 
     .task-details {
@@ -69,7 +69,7 @@
             height: em(24);
             width: em(24);
 
-            z-index: 3;
+            z-index: 1002;
 
             &:hover {
                 cursor: pointer;
@@ -1264,7 +1264,7 @@
     box-shadow: 0px 8px 12px #091e4226, 0px 0px 1px #091e424f;
     border-radius: 8px;
 
-    z-index: 10;
+    z-index: 1003;
 
     .item-actions-header {
         display: grid;
