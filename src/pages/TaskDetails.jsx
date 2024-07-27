@@ -566,11 +566,12 @@ export function TaskDetails() {
                     <div className="task-details-cover" style={{ ...style, height: style.backgroundImage ? '160px' : '' }}>
                         {style &&
                             <div className="task-header-action-container">
-                                <button className="action" onClick={(ev) => onSetAction(ev, 'cover')}>
+                                <button className="action" onClick={(ev) => onSetAction(ev, 'cover', 2)}>
                                     <img className="cover-icon icon" src={isLightColor(style?.backgroundColor) ? coverDarkIcon : coverWhiteIcon} alt="cover icon" />
-                                    <span className="action-title" style={{color: isLightColor(style?.backgroundColor) ? '#182a4e' : 'currentColor'}}>Cover</span>
+                                    <span className="action-title" style={{ color: isLightColor(style?.backgroundColor) ? '#182a4e' : 'currentColor' }}>Cover</span>
                                 </button>
-                                {action === 'cover' && <TaskAction action="cover" onSetCover={onSetCover} onRemoveCover={onRemoveCover} {...taskActionProps} />}
+                                {action === 'cover' && actionPosition === 2
+                                    && <TaskAction action="cover" onSetCover={onSetCover} onRemoveCover={onRemoveCover} {...taskActionProps} />}
                             </div>
                         }
                     </div>}
@@ -617,7 +618,7 @@ export function TaskDetails() {
                                         {labelsIds && labelsIds.map(id => {
                                             const label = getLabelById(id)
                                             if (!label) return null
-                                            return <span onClick={(ev) => onSetAction(ev, 'labels', 2)} className="label" key={id} style={{ backgroundColor: label.color ? label.color : '#3a444c' ,color: isLightColor(label.color) ? '#1d2125' : 'currentColor'}}>{label.title}</span>
+                                            return <span onClick={(ev) => onSetAction(ev, 'labels', 2)} className="label" key={id} style={{ backgroundColor: label.color ? label.color : '#3a444c', color: isLightColor(label.color) ? '#1d2125' : 'currentColor' }}>{label.title}</span>
                                         })}
                                         <div onClick={(ev) => onSetAction(ev, 'labels', 2)} className="add-label-thumbnail"><img className="add-label-icon" src={addMemberIcon} alt="add plus icon" />
                                         </div>
@@ -981,11 +982,11 @@ export function TaskDetails() {
                         {!taskToEdit.style
                             &&
                             <div className="task-action-container">
-                                <button type='button' className="action" name="cover" onClick={(ev) => onSetAction(ev, 'cover')}>
+                                <button type='button' className="action" name="cover" onClick={(ev) => onSetAction(ev, 'cover', 1)}>
                                     <img className="cover-icon icon" src={coverIcon} alt="cover icon" />
                                     <span className="action-title">Cover</span>
                                 </button>
-                                {action === 'cover'
+                                {action === 'cover' && actionPosition === 1
                                     && <TaskAction action="cover" onSetCover={onSetCover} onRemoveCover={onRemoveCover} {...taskActionProps} />}
                             </div>
                         }
