@@ -47,7 +47,15 @@
             width: 32px;
             height: 32px;
             border-radius: 4px;
-            transition: background-color 0.1s ease;
+            transition: transform 0.2s, opacity 0.2s;
+            opacity: 1;
+            transform: translateX(0);
+
+            &.back-to {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+
             cursor: pointer;
 
             &:hover {
@@ -303,7 +311,7 @@
         .activity-log {
             display: flex;
             flex-direction: column;
-            
+
             .activity-item-container {
                 display: flex;
                 align-items: center;
@@ -383,6 +391,7 @@
         }
 
     }
+
     .delete-modal {
         position: relative;
         display: flex;
