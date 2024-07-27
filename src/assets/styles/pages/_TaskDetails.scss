@@ -195,7 +195,7 @@
                         flex-direction: column;
                     }
 
-                    .members-container{
+                    .members-container {
                         position: relative;
                     }
 
@@ -236,7 +236,7 @@
                         }
                     }
 
-                    .labels-container{
+                    .labels-container {
                         position: relative;
                     }
 
@@ -316,6 +316,8 @@
 
                             &:hover {
                                 cursor: pointer;
+                                background-color: #45505a;
+
                             }
                         }
 
