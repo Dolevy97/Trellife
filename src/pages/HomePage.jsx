@@ -2,6 +2,8 @@ import { useSelector } from "react-redux"
 import { login } from "../store/actions/user.actions"
 import { useNavigate } from "react-router"
 
+import homepageImage from '../assets/imgs/homepage.png'
+
 export function HomePage() {
     const loggedInUser = useSelector(storeState => storeState.userModule.user)
     const navigate = useNavigate()
@@ -32,7 +34,7 @@ export function HomePage() {
                         </div>
                     </div>
                     <div className="right-container">
-                        <img src="../../../src/assets/imgs/homepage.png" alt="" />
+                        <img src={homepageImage} alt="" />
                     </div>
                 </div>
             </section>

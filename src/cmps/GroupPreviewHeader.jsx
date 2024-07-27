@@ -2,6 +2,14 @@ import { useState, useEffect, useRef } from 'react'
 import { updateBoard } from '../store/actions/board.actions'
 import { useSelector } from 'react-redux'
 import { updateGroup } from '../store/actions/group.actions'
+
+import closeIcon from '../assets/imgs/Icons/close.svg'
+import expandIcon from '../assets/imgs/Icons/expand.svg'
+import collapseIcon from '../assets/imgs/Icons/collapse.svg'
+import arrowDownIcon from '../assets/imgs/Icons/arrow-down.svg'
+import arrowUpIcon from '../assets/imgs/Icons/arrow-up.svg'
+import dotsIcon from '../assets/imgs/Icons/3dots.svg'
+
 export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId, onAddTaskClick }) {
     const board = useSelector(storeState => storeState.boardModule.board)
 
@@ -107,10 +115,10 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
         };
         await updateGroup(updatedGroup.id, updatedGroup, board);
     }
-    
+
     return (
         <header className={`group-preview-header`}>
-             {isEditing ? (
+            {isEditing ? (
                 <input
                     type="text"
                     value={newTitle}
@@ -130,26 +138,26 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
                 <div onClick={toggleCollapse} className='collapse-wrapper' >
                     <img
                         className='collapse-icon'
-                        src={group.style.isCollapse ? "../../../src/assets/imgs/Icons/expand.svg" : "../../../src/assets/imgs/Icons/collapse.svg"}
+                        src={group.style.isCollapse ? expandIcon : collapseIcon}
                         alt={group.style.isCollapse ? "expand" : "collapse"}
                         title={group.style.isCollapse ? "expand" : "collapse"}
-                        
+
                     />
                 </div>
-                    <div onClick={toggleOptions} className='three-dots-wrapper'>
-                        <img
-                            className='svg-size three-dots-icon'
-                            src="../../../src/assets/imgs/Icons/3dots.svg"
-                            alt="options"
-                        />
-                    </div>
+                <div onClick={toggleOptions} className='three-dots-wrapper'>
+                    <img
+                        className='svg-size three-dots-icon'
+                        src={dotsIcon}
+                        alt="options"
+                    />
+                </div>
             </div>
             {openMenuGroupId === group.id && (
                 <div ref={menuRef} className="header-options-menu">
                     <header className='menu-header'>
                         List actions
                         <div className="close-btn-wrapper" onClick={toggleOptions}>
-                            <img src="../../../src/assets/imgs/Icons/close.svg" alt="" />
+                            <img src={closeIcon} alt="" />
                         </div>
                     </header>
 
@@ -161,8 +169,8 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
                                 <span className='color-picker-btn' >
                                     Change color list
                                 </span>
-                                <span className='color-picker-arrow'>{isColorPickerOpen ? <img src="../../../src\assets\imgs\Icons\arrow-up.svg" /> :
-                                    <img src="../../../src\assets\imgs\Icons\arrow-down.svg" alt="" />}</span>
+                                <span className='color-picker-arrow'>{isColorPickerOpen ? <img src={arrowUpIcon} /> :
+                                    <img src={arrowDownIcon} alt="" />}</span>
                             </p>
                             {isColorPickerOpen && (
                                 <div className="colors-grid">

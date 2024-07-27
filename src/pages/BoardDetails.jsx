@@ -14,6 +14,10 @@ import { BoardHederFilter } from '../cmps/BoardHederFilter.jsx'
 import { login } from '../store/actions/user.actions.js'
 // import { socketService } from '../services/socket.service.js'
 
+import loadingAnimation from '../assets/imgs/TaskDetails-icons/loading animation.svg'
+import closeIcon from '../assets/imgs/Icons/close.svg'
+import addIcon from '../assets/imgs/Icons/add.svg'
+
 export function BoardDetails() {
 
   const user = useSelector(storeState => storeState.userModule.user)
@@ -165,7 +169,7 @@ export function BoardDetails() {
 
   const groups = filteredBoard?.groups || board?.groups || []
   //needs layers
-  if (!board) return <div className='isloading-container'> <img className='isLoading' src="../../../src\assets\imgs\TaskDetails-icons\loading animation.svg" /> </div> 
+  if (!board) return <div className='isloading-container'> <img className='isLoading' src={loadingAnimation} /> </div> 
 
   return (
     // <section className="main-display-container">
@@ -242,14 +246,14 @@ export function BoardDetails() {
                             setIsAddingGroup(false)
                             setNewGroupTitle('')
                           }}>
-                            <img src="../../../src/assets/imgs/Icons/close.svg" alt="" />
+                            <img src={closeIcon} alt="" />
                           </div>
                         </div>
                       </form>
                     </div>
                   ) : (
                     <div className='add-group' onClick={() => setIsAddingGroup(true)}>
-                      <img src="../../../src/assets/imgs/Icons/add.svg" alt="add" />
+                      <img src={addIcon} alt="add" />
                       <span>Add another list</span>
                     </div>
                   )}

@@ -3,6 +3,9 @@ import { useSelector } from 'react-redux';
 import { updateUser } from '../store/actions/user.actions';
 import { useEffect, useRef } from 'react';
 
+import star from '../assets/imgs/Icons/star.svg'
+import fullStar from '../assets/imgs/Icons/fullstar.svg'
+
 export function BoardPreview({ board }) {
     const user = useSelector(storeState => storeState.userModule.user)
 
@@ -42,14 +45,13 @@ export function BoardPreview({ board }) {
 
                             className={`board-preview-star ${user && user.favorites.includes(board._id) ? 'starred' : ''}`}
 
-                            src={user && user.favorites.includes(board._id) ? "../src/assets/imgs/Icons/fullstar.svg"
-                                : '../../../src/assets/imgs/Icons/star.svg'}
+                            src={user && user.favorites.includes(board._id) ? fullStar : star}
 
                             alt="star icon" />
 
                         <img onClick={(ev) => onClickStar(ev, board._id)}
                             className='empty-starred'
-                            src="../../../src/assets/imgs/Icons/star.svg"
+                            src={star}
                             alt="star"
                             title='Click to unstar this board. It will be removed from your starred list.' />
                     </div>

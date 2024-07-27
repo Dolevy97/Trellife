@@ -5,6 +5,9 @@ import { BoardCreate } from './BoardCreate'
 import { useSelector } from 'react-redux'
 import { login, logout } from '../store/actions/user.actions'
 
+import arrowDownIcon from '../assets/imgs/Icons/arrow-down.svg'
+import addIcon from '../assets/imgs/Icons/add.svg'
+
 export function AppHeader({ isHomePage }) {
 	const user = useSelector(storeState => storeState.userModule.user)
 
@@ -130,24 +133,24 @@ export function AppHeader({ isHomePage }) {
 					<section className={`header-links ${isHomePage ? 'homepage' : ''}`}>
 						{/* <article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Boards' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Boards', e)}>
 							<p className='header-link-text' title='Boards'>Boards</p>
-							<img src="../../../src/assets/imgs/Icons/arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+							<img src={arrowDownIcon} className='svg-arrow-down' alt="arrow-down" />
 						</article> */}
 						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Recent' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Recent', e)}>
 							<p className='header-link-text' title='Recent'>Recent</p>
-							<img src="../../../src/assets/imgs/Icons/arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+							<img src={arrowDownIcon} className='svg-arrow-down' alt="arrow-down" />
 						</article>
 						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Starred' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Starred', e)}>
 							<p className='header-link-text' title='Starred'>Starred</p>
-							<img src="../../../src/assets/imgs/Icons/arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+							<img src={arrowDownIcon} className='svg-arrow-down' alt="arrow-down" />
 						</article>
 						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Templates' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Templates', e)}>
 							<p className='header-link-text' title='Templates'>Templates</p>
-							<img src="../../../src/assets/imgs/Icons/arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+							<img src={arrowDownIcon} className='svg-arrow-down' alt="arrow-down" />
 						</article>
 					</section>
 					<article className={`logo-wrapper more ${(isMoreMenuOpen || isMenuOpen) ? 'active' : ''}`} onClick={toggleMoreMenu}>
 						<p className='header-link-text' title='More'>More</p>
-						<img src="../../../src/assets/imgs/Icons/arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+						<img src={arrowDownIcon} className='svg-arrow-down' alt="arrow-down" />
 					</article>
 
 
@@ -155,15 +158,15 @@ export function AppHeader({ isHomePage }) {
 						<section className="more-menu">
 							<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Recent' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Recent', e, true)}>
 								<p className='header-link-text' title='Recent'>Recent</p>
-								<img src="../../../src/assets/imgs/Icons/arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+								<img src={arrowDownIcon} className='svg-arrow-down' alt="arrow-down" />
 							</article>
 							<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Starred' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Starred', e, true)}>
 								<p className='header-link-text' title='Starred'>Starred</p>
-								<img src="../../../src/assets/imgs/Icons/arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+								<img src={arrowDownIcon} className='svg-arrow-down' alt="arrow-down" />
 							</article>
 							<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Templates' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Templates', e, true)}>
 								<p className='header-link-text' title='Templates'>Templates</p>
-								<img src="../../../src/assets/imgs/Icons/arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+								<img src={arrowDownIcon} className='svg-arrow-down' alt="arrow-down" />
 							</article>
 						</section>
 					</>}
@@ -175,7 +178,7 @@ export function AppHeader({ isHomePage }) {
 						setIsAdding(true)
 					}} className="btn-create">
 						<span className='desktop-create'>Create</span>
-						<span className='mobile-create'><img src="../../../src/assets/imgs/Icons/add.svg" /></span>
+						<span className='mobile-create'><img src={addIcon} /></span>
 					</button>
 					{isAdding && <BoardCreate setIsAdding={setIsAdding} createButtonPosition={createButtonPosition} />}
 				</div>

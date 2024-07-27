@@ -2,6 +2,8 @@ import { eventBus, showSuccessMsg } from '../services/event-bus.service'
 import { useState, useEffect, useRef } from 'react'
 // import { socketService, SOCKET_EVENT_REVIEW_ABOUT_YOU } from '../services/socket.service'
 
+import successIcon from '../assets/imgs/Icons/success.svg'
+
 export function UserMsg() {
 	const [msg, setMsg] = useState(null)
 	const timeoutIdRef = useRef()
@@ -35,7 +37,7 @@ export function UserMsg() {
     }
 	return (
 		<section className={`user-msg ${msg?.type} ${msgClass()}`}>
-			<img className='user-msg-icon' src="../../../src/assets/imgs/Icons/success.svg" alt="" />
+			<img className='user-msg-icon' src={successIcon} alt="success icon" />
 			{msg?.txt}
 		</section>
 	)

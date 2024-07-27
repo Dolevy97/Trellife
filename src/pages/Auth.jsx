@@ -4,6 +4,7 @@ import { LoginForm } from "../cmps/LoginForm.jsx";
 import { login, signup } from '../store/actions/user.actions.js';
 import { cloudinaryService } from '../services/cloudinary.service.js';
 
+import trelloLogo from '../assets/imgs/icons/trello-logo.svg'
 
 export function Auth() {
     const path = window.location.pathname
@@ -60,7 +61,7 @@ export function Auth() {
                             <div className="login-signup-container">
                                 <div className="login-header">
                                     <div className='logo-container'>
-                                        <img className='logo-icon' src='../../../src/assets/imgs/icons/trello-logo.svg' alt='logo' />
+                                        <img className='logo-icon' src={trelloLogo} alt='logo' />
                                         <span className='logo-text'>Trellife</span>
                                     </div>
                                     <h5>{isSignup === 'signup' ? 'Sign up to continue' : 'Log in to continue'}</h5>

@@ -10,6 +10,30 @@ import { updateGroup } from '../store/actions/group.actions'
 import autosize from 'autosize'
 import ms from 'ms'
 
+import closeWhiteIcon from '../assets/imgs/TaskDetails-icons/close-white.svg'
+import coverWhiteIcon from '../assets/imgs/TaskDetails-icons/cover-white.svg'
+import cardIcon from '../assets/imgs/TaskDetails-icons/card.svg'
+import addMemberIcon from '../assets/imgs/TaskDetails-icons/add.svg'
+import arrowDownIcon from '../assets/imgs/TaskDetails-icons/arrow-down.svg'
+import descriptionIcon from '../assets/imgs/TaskDetails-icons/description.svg'
+import attachmentIcon from '../assets/imgs/TaskDetails-icons/paperclip.svg'
+import coverIcon from '../assets/imgs/TaskDetails-icons/cover.svg'
+import penIcon from '../assets/imgs/Icons/pen.svg'
+import clockIcon from '../assets/imgs/Icons/clock.svg'
+import commentIcon from '../assets/imgs/Icons/comment.svg'
+import checklistIcon from '../assets/imgs/TaskDetails-icons/checklist.svg'
+import closeIcon from '../assets/imgs/TaskDetails-icons/close.svg'
+import addIcon from '../assets/imgs/Icons/add.svg'
+import expandIcon from '../assets/imgs/Icons/expand.svg'
+import dotsIcon from '../assets/imgs/TaskDetails-icons/3dots.svg'
+import activityIcon from '../assets/imgs/TaskDetails-icons/activity.svg'
+import membersIcon from '../assets/imgs/TaskDetails-icons/members.svg'
+import labelsIcon from '../assets/imgs/TaskDetails-icons/labels.svg'
+import datesIcon from '../assets/imgs/TaskDetails-icons/dates.svg'
+import attachmentIcon2 from '../assets/imgs/TaskDetails-icons/attachment.svg'
+import locationIcon from '../assets/imgs/TaskDetails-icons/location.svg'
+import trashIcon from '../assets/imgs/TaskDetails-icons/trash.svg'
+
 export function TaskDetails() {
 
     const board = useSelector(storeState => storeState.boardModule.board)
@@ -544,13 +568,13 @@ export function TaskDetails() {
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
             <section className="task-details" onClick={onTaskDetailsClicked}>
-                <img onClick={onBackdropClicked} className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close-white.svg" alt="close icon" />
+                <img onClick={onBackdropClicked} className="close-icon icon" src={closeWhiteIcon} alt="close icon" />
                 {style &&
                     <div className="task-details-cover" style={{ ...style, height: style.backgroundImage ? '160px' : '' }}>
                         {style &&
                             <div className="task-header-action-container">
                                 <button className="action" onClick={(ev) => onSetAction(ev, 'cover')}>
-                                    <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover-white.svg" alt="cover icon" />
+                                    <img className="cover-icon icon" src={coverWhiteIcon} alt="cover icon" />
                                     <span className="action-title">Cover</span>
                                 </button>
                                 {action === 'cover' && <TaskAction action="cover" onSetCover={onSetCover} onRemoveCover={onRemoveCover} {...taskActionProps} />}
@@ -558,7 +582,7 @@ export function TaskDetails() {
                         }
                     </div>}
                 <header className="task-header">
-                    <img className="card-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/card.svg" alt="card icon" />
+                    <img className="card-icon icon" src={cardIcon} alt="card icon" />
                     {isEditingTitle ? (
                         <input
                             type="text"
@@ -586,7 +610,7 @@ export function TaskDetails() {
                                             return <img key={member._id} className="task-member-thumbnail" src={member.imgUrl} title={member.fullname} />
                                         }
                                         )}
-                                        <div onClick={(ev) => onSetAction(ev, 'members', 2)} className="add-member-thumbnail"><img className="add-member-icon" src="../../../src/assets/imgs/TaskDetails-icons/add.svg" alt="add plus icon" />
+                                        <div onClick={(ev) => onSetAction(ev, 'members', 2)} className="add-member-thumbnail"><img className="add-member-icon" src={addMemberIcon} alt="add plus icon" />
                                         </div>
                                     </div>
                                     {action === 'members' && actionPosition === 2
@@ -602,7 +626,7 @@ export function TaskDetails() {
                                             if (!label) return null
                                             return <span onClick={(ev) => onSetAction(ev, 'labels', 2)} className="label" key={id} style={{ backgroundColor: label.color ? label.color : '#3a444c' }}>{label.title}</span>
                                         })}
-                                        <div onClick={(ev) => onSetAction(ev, 'labels', 2)} className="add-label-thumbnail"><img className="add-label-icon" src="../../../src/assets/imgs/TaskDetails-icons/add.svg" alt="add plus icon" />
+                                        <div onClick={(ev) => onSetAction(ev, 'labels', 2)} className="add-label-thumbnail"><img className="add-label-icon" src={addMemberIcon} alt="add plus icon" />
                                         </div>
                                     </div>
                                     {action === 'labels' && actionPosition === 2
@@ -630,7 +654,7 @@ export function TaskDetails() {
                                                 readOnly
                                             />
                                             <span className='inside-input-is-done' style={taskStatus.style}>{taskStatus.text}</span>
-                                            <img className="arrow-down" src="../../../src/assets/imgs/TaskDetails-icons/arrow-down.svg" alt="description icon" />
+                                            <img className="arrow-down" src={arrowDownIcon} alt="arrow down icon" />
                                         </div>
                                     </section>
                                     {action === 'dates' && actionPosition === 2
@@ -640,7 +664,7 @@ export function TaskDetails() {
                         </div>
                         <div className="description-container">
                             <div className="description-title">
-                                <img className="description-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/description.svg" alt="description icon" />
+                                <img className="description-icon icon" src={descriptionIcon} alt="description icon" />
                                 <span>Description</span>
                                 {!isSettingDescription && description.length ?
                                     <button type='button' onClick={startSetDescription}>Edit</button>
@@ -676,7 +700,7 @@ export function TaskDetails() {
                         {taskToEdit.attachments && taskToEdit.attachments.length ?
                             <div className="attachments-container">
                                 <div className='attachments-title'>
-                                    <img className="attachments-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/paperclip.svg" alt="attachment icon" />
+                                    <img className="attachments-icon icon" src={attachmentIcon} alt="attachment icon" />
                                     <span>Attachments</span>
                                     <button onClick={(ev) => onSetAction(ev, 'attachment', 2)}>Add</button>
                                     {action === 'attachment' && actionPosition === 2
@@ -719,7 +743,7 @@ export function TaskDetails() {
                                                 </div>
                                                 {a.type.slice(0, 5) === 'image' &&
                                                     <div className="attachment-set-remove-cover">
-                                                        <img className="attachment-set-remove-cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
+                                                        <img className="attachment-set-remove-cover-icon icon" src={coverIcon} alt="cover icon" />
                                                         <span className="attachment-span-set-remove-cover"
                                                             onClick={isCover(a) ? onRemoveCover : () => onSetCover(a)}>
                                                             {(isCover(a) ? 'Remove' : 'Make') + ' cover'}
@@ -737,7 +761,7 @@ export function TaskDetails() {
                                     taskToEdit.checklists.map(checklist =>
                                         <div className="checklist-container" key={checklist.id}>
                                             <div className="checklist-title-container">
-                                                <img className="checklists-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="attachment icon" />
+                                                <img className="checklists-icon icon" src={checklistIcon} alt="attachment icon" />
                                                 <span className='checklist-title'>{checklist.title}</span>
                                                 <button onClick={() => onDeleteChecklist(checklist.id)} className='btn-delete-checklist'>Delete</button>
                                             </div>
@@ -775,7 +799,7 @@ export function TaskDetails() {
                                                                 ></textarea>
                                                                 <article className="btns">
                                                                     <button type='button' onClick={() => saveEditedItem(todo, checklist)} className='btn-save'>Save</button>
-                                                                    <img onClick={closeAllEditingItems} src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="" />
+                                                                    <img onClick={closeAllEditingItems} src={closeIcon} alt="close icon" />
                                                                 </article>
                                                             </>
 
@@ -786,7 +810,7 @@ export function TaskDetails() {
                                                                 style={todo.isDone ? { textDecoration: 'line-through' } : {}}>
                                                                 <div className="todo-actions">
                                                                     <div className="action-container">
-                                                                        <img onClick={(ev) => onClickMenu(ev, todo.id)} src="../../../src/assets/imgs/TaskDetails-icons/3dots.svg" alt="" />
+                                                                        <img onClick={(ev) => onClickMenu(ev, todo.id)} src={dotsIcon} alt="dots icon" />
                                                                     </div>
                                                                 </div>
                                                                 <span className='todo-title'>{todo.title}</span>
@@ -806,7 +830,7 @@ export function TaskDetails() {
                                                         }}>
                                                         <header className="item-actions-header">
                                                             <h2>Item actions</h2>
-                                                            <button><img onClick={() => setIsTodoMenuOpen(false)} src="../../../src/assets/imgs/TaskDetails-icons/close.svg" alt="" /></button>
+                                                            <button><img onClick={() => setIsTodoMenuOpen(false)} src={closeIcon} alt="" /></button>
                                                         </header>
                                                         <div className="item-actions-body">
                                                             <button onClick={(ev) => onDeleteTodo(ev, checklist)} className='item-action'>Delete</button>
@@ -842,7 +866,7 @@ export function TaskDetails() {
                             ''}
                         <div className="activity-container">
                             <div className="activity-title">
-                                <img className="activity-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/activity.svg" alt="activity icon" />
+                                <img className="activity-icon icon" src={activityIcon} alt="activity icon" />
                                 <span className='activity-title-text'>Activity</span>
                             </div>
                             <div className="input-container">
@@ -913,7 +937,8 @@ export function TaskDetails() {
                         <span className="add-to-card fs12">Add to card</span>
                         <div className="task-action-container">
                             <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'members', 1)}>
-                                <img className="members-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/members.svg" alt="members icon" />
+
+                                <img className="members-icon icon" src={membersIcon} alt="members icon" />
                                 <span className="action-title">Members</span>
                             </button>
                             {action === 'members' && actionPosition === 1
@@ -921,7 +946,7 @@ export function TaskDetails() {
                         </div>
                         <div className="task-action-container">
                             <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'labels', 1)}>
-                                <img className="labels-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/labels.svg" alt="labels icon" />
+                                <img className="labels-icon icon" src={labelsIcon} alt="labels icon" />
                                 <span className="action-title">Labels</span>
                             </button>
                             {action === 'labels' && actionPosition === 1
@@ -931,7 +956,7 @@ export function TaskDetails() {
                         </div>
                         <div className="task-action-container">
                             <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'checklist')}>
-                                <img className="checklist-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/checklist.svg" alt="checklist icon" />
+                                <img className="checklist-icon icon" src={checklistIcon} alt="checklist icon" />
                                 <span className="action-title">Checklist</span>
                             </button>
                             {action === 'checklist'
@@ -939,7 +964,7 @@ export function TaskDetails() {
                         </div>
                         <div className="task-action-container">
                             <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'dates', 1)}>
-                                <img className="dates-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/dates.svg" alt="dates icon" />
+                                <img className="dates-icon icon" src={datesIcon} alt="dates icon" />
                                 <span className="action-title">Dates</span>
                             </button>
                             {action === 'dates' && actionPosition === 1
@@ -947,7 +972,7 @@ export function TaskDetails() {
                         </div>
                         <div className="task-action-container">
                             <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'attachment', 1)}>
-                                <img className="attachment-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/attachment.svg" alt="attachment icon" />
+                                <img className="attachment-icon icon" src={attachmentIcon2} alt="attachment icon" />
                                 <span className="action-title">Attachment</span>
                             </button>
                             {action === 'attachment' && actionPosition === 1
@@ -955,7 +980,7 @@ export function TaskDetails() {
                         </div>
                         <div className="task-action-container">
                             <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'location')} style={{ cursor: 'not-allowed' }}>
-                                <img className="location-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/location.svg" alt="location icon" />
+                                <img className="location-icon icon" src={locationIcon} alt="location icon" />
                                 <span className="action-title">Location</span>
                             </button>
                             {/* Enter location action rendering */}
@@ -964,7 +989,7 @@ export function TaskDetails() {
                             &&
                             <div className="task-action-container">
                                 <button type='button' className="action" name="cover" onClick={(ev) => onSetAction(ev, 'cover')}>
-                                    <img className="cover-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/cover.svg" alt="cover icon" />
+                                    <img className="cover-icon icon" src={coverIcon} alt="cover icon" />
                                     <span className="action-title">Cover</span>
                                 </button>
                                 {action === 'cover'
@@ -975,7 +1000,7 @@ export function TaskDetails() {
                         <hr className='sidebar-hr' />
 
                         <button className="action remove-task" onClick={onRemoveTask}>
-                            <img className="icon" src="../../../src/assets/imgs/TaskDetails-icons/trash.svg" alt="close icon" />
+                            <img className="icon" src={trashIcon} alt="trash icon" />
                             <span className="action-title">Delete card</span>
                         </button>
 
