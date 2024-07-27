@@ -133,7 +133,7 @@ function getCmdRemoveBoard(boardId) {
         boardId
     }
 }
-function getCmdAddBoard(board) {
+export function getCmdAddBoard(board) {
     return {
         type: ADD_BOARD,
         board
