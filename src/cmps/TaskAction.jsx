@@ -230,7 +230,6 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                     break
                 }
             }
-
             await updateTask(updatedTask, group, board, activityTitle, user)
         }
 
@@ -249,8 +248,8 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         })
         const updatedTask = { ...task, attachments }
         const activityTitle = `updated attachment's link name from ${attachmentToEdit.title} to ${attachmentInputValue} on card (id: ${task.id})`
-        await updateTask(updatedTask, group, board, activityTitle, user)
         onSetAction(ev, null)
+        await updateTask(updatedTask, group, board, activityTitle, user)
     }
 
     // Dates
@@ -265,16 +264,16 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         if (!task.dueDate) updatedTask.isDone = false
         updatedTask.dueDate = dueDateToEdit
         const activityTitle = `changed the due date of task ${updatedTask.id} to ${dueDateToEdit}`
-        await updateTask(updatedTask, group, board, activityTitle, user)
         onSetAction(ev, null)
+        await updateTask(updatedTask, group, board, activityTitle, user)
     }
 
     async function onRemoveDueDate(ev) {
         const updatedTask = { ...task }
         updatedTask.dueDate = null
         const activityTitle = `removed the due date of task ${updatedTask.id}`
-        await updateTask(updatedTask, group, board, activityTitle, user)
         onSetAction(ev, null)
+        await updateTask(updatedTask, group, board, activityTitle, user)
     }
 
     function formatTimestampToDateString(timestamp) {

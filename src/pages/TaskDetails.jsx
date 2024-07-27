@@ -198,8 +198,8 @@ export function TaskDetails() {
     }
 
     async function onSaveDescription() {
-        await updateTask(taskToEdit, group, board)
         setIsSettingDescription(false)
+        await updateTask(taskToEdit, group, board)
     }
 
     function cancelSetDescription() {
@@ -376,8 +376,8 @@ export function TaskDetails() {
             }
         }
 
-        await updateTask(updatedTask, group, board)
         setIsTodoMenuOpen(false)
+        await updateTask(updatedTask, group, board)
     }
 
     async function onChangeTodo({ target }, todo, checklist) {
