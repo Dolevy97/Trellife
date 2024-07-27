@@ -30,6 +30,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
 
     const searchInputRef = useRef()
     const checklistTitleRef = useRef()
+    const labelToEditTitleRef = useRef()
     const attachmentTitleRef = useRef()
     const dueDateInputRef = useRef()
     const dueTimeInputRef = useRef()
@@ -43,6 +44,10 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             isFirstRenderRef.current = false
         }
         if (labelToEdit) setLabelInputValue(labelToEdit.title)
+        if (labelToEditTitleRef.current) {
+            labelToEditTitleRef.current.focus()
+            labelToEditTitleRef.current.select()
+        }
         if (checklistTitleRef.current) {
             checklistTitleRef.current.focus()
             checklistTitleRef.current.select()
@@ -490,7 +495,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                     </div>
                     <div className="edit-label">
                         <span className="title">Title</span>
-                        <input className="text" value={labelInputValue} onChange={(ev) => setLabelInputValue(ev.target.value)} />
+                        <input ref={labelToEditTitleRef} className="text" value={labelInputValue} onChange={(ev) => setLabelInputValue(ev.target.value)} />
                     </div>
                     <div className="colors-container">
                         <span className="title">Select a color</span>
