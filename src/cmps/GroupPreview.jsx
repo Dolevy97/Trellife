@@ -28,9 +28,11 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [taskToEdit, setTaskToEdit] = useState(null)
     const [quickEditTaskId, setQuickEditTaskId] = useState(null)
+    const [quickEditTaskPosition, setQuickEditTaskPosition] = useState(null);
 
 
 
+    const buttonRef = useRef(null)
     const textareaRef = useRef(null)
     const addTaskRef = useRef(null)
 
@@ -173,6 +175,14 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
         };
     }
 
+
+    function getQuickEditPosition() {
+        const buttonRect = buttonRef.current.getBoundingClientRect()
+        const positionX = buttonRect.right
+        const positionY = buttonRect.top
+        return ({ left: positionX, top: positionY })
+    }
+
     const labelsIds = taskToEdit?.labelsIds || []
 
     return (
@@ -209,12 +219,14 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                 >
                                                     {quickEditTaskId === task.id && (
                                                         <QuickEditTask
+                                                            // style={{style:()=>{}}}
                                                             task={tasks.find(t => t.id === quickEditTaskId)}
                                                             onClose={(e) => {
                                                                 e.stopPropagation()
                                                                 setQuickEditTaskId(null)
+                                                                setQuickEditTaskPosition(null)
                                                             }}
-
+                                                            taskPosition={quickEditTaskPosition}
                                                         />
                                                     )}
                                                     <div
@@ -231,8 +243,15 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                         <div
                                                             className='pen-display'
                                                             onClick={(e) => {
-                                                                e.stopPropagation()
-                                                                setQuickEditTaskId(task.id)
+                                                                e.stopPropagation();
+                                                                const taskElement = e.currentTarget.closest('.task-container');
+                                                                const rect = taskElement.getBoundingClientRect();
+                                                                setQuickEditTaskPosition({
+                                                                    left: rect.left,
+                                                                    top: rect.top,
+                                                                    width: rect.width
+                                                                });
+                                                                setQuickEditTaskId(task.id);
                                                             }}
                                                         >
                                                             <img src={penIcon} />
