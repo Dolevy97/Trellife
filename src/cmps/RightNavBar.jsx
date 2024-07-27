@@ -13,6 +13,8 @@ import arrowDownIcon from '../assets/imgs/Icons/arrow-down.svg'
 import activityIcon from '../assets/imgs/TaskDetails-icons/activity.svg'
 import trashIcon from '../assets/imgs/TaskDetails-icons/trash.svg'
 
+import photosOptions from '../assets/imgs/photosoption.jpg'
+import colorsOptions from '../assets/imgs/colorsoption.png'
 
 export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollapse, board }) {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
@@ -131,12 +133,12 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
                 {field === 'Change background' && (
                     <div className="background-options" >
                         <div className="imgs-option" onClick={() => setField('Photos by Unsplash')}>
-                            <img src="../assets/imgs/photosoption.jpg" alt="" />
+                            <img src={photosOptions} alt="" />
                             <span>Photos</span>
                         </div>
 
                         <div className="colors-option" onClick={() => setField('Colors')}>
-                            <img src="../assets/imgs/colorsoption.png" alt="" />
+                            <img src={colorsOptions} alt="" />
                             <span>Colors</span>
                         </div>
                     </div>

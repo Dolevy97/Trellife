@@ -28,7 +28,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [taskToEdit, setTaskToEdit] = useState(null)
     const [quickEditTaskId, setQuickEditTaskId] = useState(null)
-    const [quickEditTaskPosition, setQuickEditTaskPosition] = useState(null);
+    const [quickEditTaskPosition, setQuickEditTaskPosition] = useState(null)
 
 
 
@@ -127,13 +127,13 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
 
     function getTaskStatus(task) {
         if (!task.dueDate) {
-            return null;
+            return null
         }
 
-        const now = new Date();
-        const dueDate = new Date(task.dueDate);
-        const timeDiff = dueDate - now;
-        const dayInMilliseconds = 24 * 60 * 60 * 1000;
+        const now = new Date()
+        const dueDate = new Date(task.dueDate)
+        const timeDiff = dueDate - now
+        const dayInMilliseconds = 24 * 60 * 60 * 1000
 
         if (task.isDone) {
             return {
@@ -141,7 +141,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                 style: { backgroundColor: '#4BCE97' },
                 textColor: '#1d2125',
                 iconFilter: 'brightness(0) saturate(100%) invert(9%) sepia(13%) saturate(697%) hue-rotate(169deg) brightness(97%) contrast(91%)'
-            };
+            }
         } else if (timeDiff < -dayInMilliseconds) {
             // Overdue by more than a day
             return {
@@ -149,7 +149,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                 style: { backgroundColor: '#42221F' },
                 textColor: '#ffffff',
                 iconFilter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)'
-            };
+            }
         } else if (timeDiff < 0) {
             // Overdue by less than a day
             return {
@@ -157,14 +157,14 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                 style: { backgroundColor: '#F87462' },
                 textColor: '#ffffff',
                 iconFilter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)'
-            };
+            }
         } else if (timeDiff <= dayInMilliseconds) {
             return {
                 title: 'This card is due soon.',
                 style: { backgroundColor: '#F5CD47' },
                 textColor: '#1d2125',
                 iconFilter: 'none'
-            };
+            }
         }
 
         return {
@@ -172,16 +172,16 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
             style: {},
             textColor: '',
             iconFilter: 'none'
-        };
+        }
     }
 
 
-    function getQuickEditPosition() {
-        const buttonRect = buttonRef.current.getBoundingClientRect()
-        const positionX = buttonRect.right
-        const positionY = buttonRect.top
-        return ({ left: positionX, top: positionY })
-    }
+    // function getQuickEditPosition() {
+    //     const buttonRect = buttonRef.current.getBoundingClientRect()
+    //     const positionX = buttonRect.right
+    //     const positionY = buttonRect.top
+    //     return ({ left: positionX, top: positionY })
+    // }
 
     const labelsIds = taskToEdit?.labelsIds || []
 
@@ -206,7 +206,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                 {...provided.droppableProps}
                             >
                                 {tasks.map((task, index) => {
-                                    const taskStatus = getTaskStatus(task);
+                                    const taskStatus = getTaskStatus(task)
                                     return (
                                         <Draggable key={task.id} draggableId={task.id} index={index}>
                                             {(provided, snapshot) => (
@@ -219,14 +219,14 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                 >
                                                     {quickEditTaskId === task.id && (
                                                         <QuickEditTask
-                                                            // style={{style:()=>{}}}
-                                                            task={tasks.find(t => t.id === quickEditTaskId)}
-                                                            onClose={(e) => {
-                                                                e.stopPropagation()
-                                                                setQuickEditTaskId(null)
-                                                                setQuickEditTaskPosition(null)
-                                                            }}
-                                                            taskPosition={quickEditTaskPosition}
+                                                        task={tasks.find(t => t.id === quickEditTaskId)}
+                                                        onClose={(e) => {
+                                                            e.stopPropagation()
+                                                            setQuickEditTaskId(null)
+                                                            setQuickEditTaskPosition(null)
+                                                        }}
+                                                        taskPosition={quickEditTaskPosition}
+                                                    
                                                         />
                                                     )}
                                                     <div
@@ -243,15 +243,15 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                         <div
                                                             className='pen-display'
                                                             onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                const taskElement = e.currentTarget.closest('.task-container');
-                                                                const rect = taskElement.getBoundingClientRect();
+                                                                e.stopPropagation()
+                                                                const taskElement = e.currentTarget.closest('.task-container')
+                                                                const rect = taskElement.getBoundingClientRect()
                                                                 setQuickEditTaskPosition({
-                                                                    left: rect.left,
-                                                                    top: rect.top,
-                                                                    width: rect.width
-                                                                });
-                                                                setQuickEditTaskId(task.id);
+                                                                  left: rect.left,
+                                                                  top: rect.top,
+                                                                  width: rect.width
+                                                                })
+                                                                setQuickEditTaskId(task.id)
                                                             }}
                                                         >
                                                             <img src={penIcon} />
@@ -444,7 +444,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                     ...group.style,
                                     isCollapse: false
                                 }
-                            };
+                            }
                             updateGroup(updatedGroup.id, updatedGroup, board)
                         }}
                     />
