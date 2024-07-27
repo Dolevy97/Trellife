@@ -237,7 +237,6 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         })
         const updatedTask = {...task,attachments}
         const activityTitle = `updated attachment's link name from ${attachmentToEdit.title} to ${attachmentInputValue} on card (id: ${task.id})`
-        console.log(updatedTask.attachments[0])
         await updateTask(updatedTask, group, board, activityTitle, user)
         onSetAction(ev, null)
     }
@@ -251,6 +250,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             return
         }
         const updatedTask = { ...task }
+        if (!task.dueDate) updatedTask.isDone = false
         updatedTask.dueDate = dueDateToEdit
         const activityTitle = `changed the due date of task ${updatedTask.id} to ${dueDateToEdit}`
         await updateTask(updatedTask, group, board, activityTitle, user)
