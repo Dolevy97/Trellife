@@ -227,10 +227,14 @@
 
                             &:hover {
                                 cursor: pointer;
+                                background-color: #45505a;
                             }
                         }
                     }
 
+                    .labels-container{
+                        position: relative;
+                    }
 
                     .labels {
                         display: flex;
@@ -250,6 +254,30 @@
                             &:hover {
                                 cursor: pointer;
                                 opacity: 0.7;
+                            }
+                        }
+
+                        .add-label-thumbnail {
+                            position: relative;
+
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+
+                            height: 32px;
+                            width: 32px;
+                            border-radius: 3px;
+
+                            background-color: #A1BDD914;
+
+                            .add-label-icon {
+                                width: 16px;
+                                height: 16px;
+                            }
+
+                            &:hover {
+                                cursor: pointer;
+                                background-color: #45505a;
                             }
                         }
                     }
@@ -964,7 +992,7 @@
             position: relative;
 
             display: inline-flex;
-            width: 101.5%;
+            width: 102%;
 
             margin: 0 0 0 -8px;
             padding: 6px 8px;

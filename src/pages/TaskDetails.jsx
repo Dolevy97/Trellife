@@ -164,7 +164,7 @@ export function TaskDetails() {
 
     // Action - Dynamic Component
 
-    function onSetAction(ev, act, position) {
+    function onSetAction(ev, act, position=actionPosition) {
         ev.stopPropagation()
         const actionName = action === act && actionPosition === position ? null : act
         setAction(actionName)
@@ -600,9 +600,15 @@ export function TaskDetails() {
                                         {labelsIds && labelsIds.map(id => {
                                             const label = getLabelById(id)
                                             if (!label) return null
-                                            return <span className="label" key={id} style={{ backgroundColor: label.color ? label.color : '#3a444c' }}>{label.title}</span>
+                                            return <span onClick={(ev)=>onSetAction(ev,'labels',2)} className="label" key={id} style={{ backgroundColor: label.color ? label.color : '#3a444c' }}>{label.title}</span>
                                         })}
+                                         <div onClick={(ev) => onSetAction(ev, 'labels', 2)} className="add-label-thumbnail"><img className="add-label-icon" src="../../../src/assets/imgs/TaskDetails-icons/add.svg" alt="add plus icon" />
+                                        </div>
                                     </div>
+                                    {action === 'labels' && actionPosition === 2
+                                        && <TaskAction action="labels" {...taskActionProps} setLabelToEdit={setLabelToEdit} style={{top:'61px'}}/>}
+                                    {action === 'edit label' && actionPosition === 2
+                                        && <TaskAction action="edit label" labelToEdit={labelToEdit} setLabelToEdit={setLabelToEdit} {...taskActionProps} style={{top:'61px'}}/>}
                                 </div> : ''}
 
                             {taskToEdit.dueDate &&
@@ -674,7 +680,7 @@ export function TaskDetails() {
                                     <span>Attachments</span>
                                     <button onClick={(ev) => onSetAction(ev, 'attachment', 2)}>Add</button>
                                     {action === 'attachment' && actionPosition === 2
-                                        && <TaskAction action="attach" {...taskActionProps} style={{top: '45px',right: '-254px'}} />}
+                                        && <TaskAction action="attach" {...taskActionProps} style={{ top: '45px', right: '-254px' }} />}
                                 </div>
                                 <div className="attachments">
                                     {taskToEdit.attachments.map((a, i) =>
@@ -708,7 +714,7 @@ export function TaskDetails() {
                                                     <article className="attachment-link" onClick={() => onRemoveAttachment(a)}><span className='attachment-link-text'>Delete</span></article>
                                                     <article className="attachment-link" onClick={(ev) => onSetAction(ev, 'edit attachment', i)} style={{ position: 'relative' }}><span className='attachment-link-text'>Edit</span>
                                                         {action === 'edit attachment' && actionPosition === i
-                                                            && <TaskAction action="edit attachment" {...taskActionProps} style={{ left: '12px', top: '22px' }} attachmentToEdit={a}/>}
+                                                            && <TaskAction action="edit attachment" {...taskActionProps} style={{ left: '12px', top: '22px' }} attachmentToEdit={a} />}
                                                     </article>
                                                 </div>
                                                 {a.type.slice(0, 5) === 'image' &&
