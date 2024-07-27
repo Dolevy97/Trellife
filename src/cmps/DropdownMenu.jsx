@@ -127,7 +127,7 @@ export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen, position }) {
                             ))}
                         </ul>
                         {!filteredBoards.length && <>
-                            <img className="no-starred-image" src="https://trello.com/assets/cc47d0a8c646581ccd08.svg" alt="Starred board" className="EZxUf8UFUR9nEe" />
+                            <img className="no-starred-image" src="https://trello.com/assets/cc47d0a8c646581ccd08.svg" alt="Starred board" />
                             <p className="no-starred">Star important boards to access them quickly and easily.</p>
                         </>}
                     </div>
