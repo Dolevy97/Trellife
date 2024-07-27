@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { addTask } from "../store/actions/task.actions"
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import { updateGroup } from '../store/actions/group.actions'
+import { QuickEditTask } from './QuickEditTask'
 
 
 export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpansion, areLabelsExpanded }) {
@@ -16,9 +17,13 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
     const [openMenuGroupId, setOpenMenuGroupId] = useState(null)
     const [isAddingTask, setIsAddingTask] = useState(false)
     const [newTaskTitle, setNewTaskTitle] = useState('')
-    const addTaskRef = useRef(null)
     const [taskToEdit, setTaskToEdit] = useState(null)
+    const [quickEditTaskId, setQuickEditTaskId] = useState(null)
+
+
+
     const textareaRef = useRef(null)
+    const addTaskRef = useRef(null)
 
     const navigate = useNavigate()
 
@@ -193,6 +198,16 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                     className={`task-container ${snapshot.isDragging ? 'dragging' : ''}`}
                                                     onClick={() => handleTaskClick(task.id)}
                                                 >
+                                                    {quickEditTaskId === task.id && (
+                                                        <QuickEditTask
+                                                            task={tasks.find(t => t.id === quickEditTaskId)}
+                                                            onClose={(e) => {
+                                                                e.stopPropagation()
+                                                                setQuickEditTaskId(null)
+                                                            }}
+
+                                                        />
+                                                    )}
                                                     <div
                                                         className={`task-inner-container ${task.style?.backgroundImage ? 'task-inner-container-img' : ''}`}
                                                         style={task.style && task.style.isFull ? { ...task.style, borderRadius: '8px' } : {}}
@@ -204,9 +219,16 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                             </section>
                                                         )}
 
-                                                        <div className='pen-display'>
+                                                        <div
+                                                            className='pen-display'
+                                                            onClick={(e) => {
+                                                                e.stopPropagation()
+                                                                setQuickEditTaskId(task.id)
+                                                            }}
+                                                        >
                                                             <img src="../../../src\assets\imgs\Icons\pen.svg" />
                                                         </div>
+
 
                                                         <section className={`task-info-container ${task.style && task.style.backgroundImage && task.style.isFull ? 'is-full' : ''}`}
                                                             style={{
