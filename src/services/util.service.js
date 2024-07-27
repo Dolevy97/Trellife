@@ -1,7 +1,7 @@
 import axios from "axios"
 import { FastAverageColor } from "fast-average-color"
 
-const UNSPLASH_ACCESS_KEY = 'dIHvSGsD7Z5x5tywZlJyMnmP-EvfROP6G5veUCw73nk'
+const UNSPLASH_ACCESS_KEY = import.meta.env.VITE_UNSPLASH_ACCESS_KEY || process.env.VITE_UNSPLASH_ACCESS_KEY
 
 export function makeId(length = 6) {
     var txt = ''
