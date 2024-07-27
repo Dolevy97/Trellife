@@ -6,7 +6,7 @@ import { boardService as local } from './board.service.local'
 import { boardService as remote } from './board.service.remote'
 
 const service = VITE_LOCAL === 'true' ? local : remote
-export const boardService = { getEmptyTask, getEmptyGroup, getEmptyBoard, getDefaultFilter, ...service }
+export const boardService = { getEmptyTask, getEmptyGroup, getEmptyBoard, getDefaultFilter, getDefaultSort, ...service }
 
 // Easy access to this service from the dev tools console
 // when using script - dev / dev:local
@@ -54,6 +54,10 @@ function getEmptyTask() {
 
 
     }
+}
+
+function getDefaultSort() {
+    return { field: 'name', dir: 1 }
 }
 
 if (DEV) window.boardService = boardService

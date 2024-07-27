@@ -1,11 +1,17 @@
 import { useState, useEffect } from 'react'
 
-export function Filter({ filterBy, setFilterBy }) {
+export function Filter({ filterBy, onSetFilter, onSortBy, onSetSort }) {
+
     const [filterToEdit, setFilterToEdit] = useState(structuredClone(filterBy))
+    const [sortByToEdit, setSortByToEdit] = useState(boardService.getDefaultSort())
 
     useEffect(() => {
-        setFilterBy(filterToEdit)
+        onSetFilter(filterToEdit)
     }, [filterToEdit])
+
+    useEffect(() => {
+        onSetSort(sortByToEdit)
+    }, [sortByToEdit])
 
     function handleChange(ev) {
         const type = ev.target.type
@@ -29,20 +35,37 @@ export function Filter({ filterBy, setFilterBy }) {
         setFilterToEdit({ ...filterToEdit, title: '' })
     }
 
+    function onSortBy(sortOption) {
+        switch (sortOption) {
+            case 'most-recent-active':
+                setSortByToEdit({ field: 'activity', dir: -1 })
+                break;
+            case 'least-recent-active':
+                setSortByToEdit({ field: 'activity', dir: 1 })
+                break;
+            case 'alphabet-a-z':
+                setSortByToEdit({ field: 'alphabet', dir: 1 })
+                break;
+            case 'alphabet-z-a':
+                setSortByToEdit({ field: 'alphabet', dir: -1 })
+                break;
+            default:
+        }
+    }
+
     const { title } = filterToEdit
 
     return (
         <section className="board-filter">
             <article className="sort-container">
                 <label className='short-label' htmlFor="sort">Sort by</label>
-                <select name="sortBy" id="">
+                <select name="sortBy" onChange={(e) => onSortBy(e.target.value)}>
                     <option value="most-recent-active">Most recently active</option>
                     <option value="least-recent-active">Least recently active</option>
                     <option value="alphabet-a-z">Alphabetically A-Z</option>
                     <option value="alphabet-z-a">Alphabetically Z-A</option>
                 </select>
             </article>
-            {/* <label className='short-label' htmlFor="filter">Filter by</label> */}
 
             <article className="search-filter-container">
                 <label className='long-label' htmlFor="search">Search</label>

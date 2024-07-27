@@ -1,22 +1,27 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-import { loadBoards} from '../store/actions/board.actions'
-
+import { loadBoards, setFilterBy, setSortBy } from '../store/actions/board.actions'
 import { boardService } from '../services/board/'
-
 import { BoardList } from '../cmps/BoardList'
 import { Filter } from '../cmps/BoardFilter'
 
 export function BoardIndex() {
     const boards = useSelector(storeState => storeState.boardModule.boards)
-    
-    const [filterBy, setFilterBy] = useState(boardService.getDefaultFilter())
+    const sortBy = useSelector(storeState => storeState.boardModule.sortBy)
+    const filterBy = useSelector(storeState => storeState.boardModule.filterBy)
 
     useEffect(() => {
-        loadBoards(filterBy)
-    }, [filterBy])
+        loadBoards(filterBy, sortBy)
+    }, [filterBy, sortBy])
 
+    function onSetSort(sort) {
+        setSortBy(sort)
+    }
+
+    function onSetFilter(filter) {
+        setFilterBy(filter)
+    }
 
     return (
         <main className="board-index">
@@ -33,7 +38,7 @@ export function BoardIndex() {
             <section className="board-main">
                 <h2 className='boards-header'>Boards</h2>
                 <section>
-                    <Filter filterBy={filterBy} setFilterBy={setFilterBy} />
+                    <Filter filterBy={filterBy} onSetFilter={onSetFilter} sortBy={sortBy} onSetSort={onSetSort}/>
                 </section>
                 <BoardList
                     boards={boards}
