@@ -4,14 +4,16 @@ import { useSelector } from 'react-redux'
 import { updateBoard } from '../store/actions/board.actions'
 import { updateTask } from '../store/actions/task.actions'
 import { TaskAction } from '../cmps/TaskAction'
-import { getFormattedTime, makeId, onDownloadUrl } from '../services/util.service'
+import { getFormattedTime, isLightColor, makeId, onDownloadUrl } from '../services/util.service'
 import { updateGroup } from '../store/actions/group.actions'
 
 import autosize from 'autosize'
 import ms from 'ms'
 
 import closeWhiteIcon from '../assets/imgs/TaskDetails-icons/close-white.svg'
+import closeDarkIcon from '../assets/imgs/TaskDetails-icons/close-dark.svg'
 import coverWhiteIcon from '../assets/imgs/TaskDetails-icons/cover-white.svg'
+import coverDarkIcon from '../assets/imgs/TaskDetails-icons/cover-dark.svg'
 import cardIcon from '../assets/imgs/TaskDetails-icons/card.svg'
 import addMemberIcon from '../assets/imgs/TaskDetails-icons/add.svg'
 import arrowDownIcon from '../assets/imgs/TaskDetails-icons/arrow-down.svg'
@@ -548,7 +550,6 @@ export function TaskDetails() {
         return { text: '', style: {} }
     }
 
-
     if (!taskToEdit || !group) return null
 
     const { title, description, membersIds, labelsIds, style } = taskToEdit
@@ -560,14 +561,14 @@ export function TaskDetails() {
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
             <section className="task-details" onClick={onTaskDetailsClicked}>
-                <img onClick={onBackdropClicked} className="close-icon icon" src={closeWhiteIcon} alt="close icon" />
+                <img onClick={onBackdropClicked} className="close-icon icon" src={isLightColor(style.backgroundColor) ? closeDarkIcon : closeWhiteIcon} alt="close icon" />
                 {style &&
                     <div className="task-details-cover" style={{ ...style, height: style.backgroundImage ? '160px' : '' }}>
                         {style &&
                             <div className="task-header-action-container">
                                 <button className="action" onClick={(ev) => onSetAction(ev, 'cover')}>
-                                    <img className="cover-icon icon" src={coverWhiteIcon} alt="cover icon" />
-                                    <span className="action-title">Cover</span>
+                                    <img className="cover-icon icon" src={isLightColor(style.backgroundColor) ? coverDarkIcon : coverWhiteIcon} alt="cover icon" />
+                                    <span className="action-title" style={{color: isLightColor(style.backgroundColor) ? '#182a4e' : 'currentColor'}}>Cover</span>
                                 </button>
                                 {action === 'cover' && <TaskAction action="cover" onSetCover={onSetCover} onRemoveCover={onRemoveCover} {...taskActionProps} />}
                             </div>
@@ -616,7 +617,7 @@ export function TaskDetails() {
                                         {labelsIds && labelsIds.map(id => {
                                             const label = getLabelById(id)
                                             if (!label) return null
-                                            return <span onClick={(ev) => onSetAction(ev, 'labels', 2)} className="label" key={id} style={{ backgroundColor: label.color ? label.color : '#3a444c' }}>{label.title}</span>
+                                            return <span onClick={(ev) => onSetAction(ev, 'labels', 2)} className="label" key={id} style={{ backgroundColor: label.color ? label.color : '#3a444c' ,color: isLightColor(label.color) ? '#1d2125' : 'currentColor'}}>{label.title}</span>
                                         })}
                                         <div onClick={(ev) => onSetAction(ev, 'labels', 2)} className="add-label-thumbnail"><img className="add-label-icon" src={addMemberIcon} alt="add plus icon" />
                                         </div>
