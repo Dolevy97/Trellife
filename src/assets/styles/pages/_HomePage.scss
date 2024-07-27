@@ -30,8 +30,6 @@
 
             width: 100%;
 
-            max-width: 1140px;
-
 
             @media (min-width: 576px) {
                 max-width: 540px;
@@ -48,6 +46,11 @@
             @media (max-width: 992px) {
                 flex-direction: column;
             }
+
+            @media (min-width:1200px) {
+                max-width: 1140px;
+            }
+
 
             .left-container {
 
