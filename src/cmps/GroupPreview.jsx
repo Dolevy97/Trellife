@@ -22,6 +22,7 @@ import expandIcon from '../assets/imgs/Icons/expand.svg'
 export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpansion, areLabelsExpanded }) {
     const tasks = group?.tasks || []
     const board = useSelector(storeState => storeState.boardModule.board)
+    const user = useSelector(storeState => storeState.userModule.user)
 
     const [openMenuGroupId, setOpenMenuGroupId] = useState(null)
     const [isAddingTask, setIsAddingTask] = useState(false)
@@ -219,14 +220,16 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                 >
                                                     {quickEditTaskId === task.id && (
                                                         <QuickEditTask
-                                                        task={tasks.find(t => t.id === quickEditTaskId)}
-                                                        onClose={(e) => {
-                                                            e.stopPropagation()
-                                                            setQuickEditTaskId(null)
-                                                            setQuickEditTaskPosition(null)
-                                                        }}
-                                                        taskPosition={quickEditTaskPosition}
-                                                    
+                                                            task={tasks.find(t => t.id === quickEditTaskId)}
+                                                            onClose={(e) => {
+                                                                e.stopPropagation()
+                                                                setQuickEditTaskId(null)
+                                                                setQuickEditTaskPosition(null)
+                                                            }}
+                                                            taskPosition={quickEditTaskPosition}
+                                                            group={group}
+                                                            board={board}
+                                                            user={user}
                                                         />
                                                     )}
                                                     <div
@@ -247,9 +250,9 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                                 const taskElement = e.currentTarget.closest('.task-container')
                                                                 const rect = taskElement.getBoundingClientRect()
                                                                 setQuickEditTaskPosition({
-                                                                  left: rect.left,
-                                                                  top: rect.top,
-                                                                  width: rect.width
+                                                                    left: rect.left,
+                                                                    top: rect.top,
+                                                                    width: rect.width
                                                                 })
                                                                 setQuickEditTaskId(task.id)
                                                             }}
