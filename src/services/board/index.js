@@ -57,7 +57,7 @@ function getEmptyTask() {
 }
 
 function getDefaultSort() {
-    return { field: 'name', dir: 1 }
+    return { field: 'activity', dir: -1 }
 }
 
 if (DEV) window.boardService = boardService
