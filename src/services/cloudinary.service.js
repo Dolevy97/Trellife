@@ -6,7 +6,7 @@ export const cloudinaryService = {
 async function uploadImg(img) {
     //Defining our variables
     // const CLOUD_NAME = 'insert1'
-    const CLOUD_NAME = import.meta.env.CLOUD_NAME || process.env.CLOUD_NAME
+    const CLOUD_NAME = import.meta.env.CLOUD_NAME || process.env.CLOUD_NAME || 'dw5vg4xiv'
     const UPLOAD_PRESET = 'trellife_uploads'
     // const UPLOAD_PRESET = 'insert2'
     const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`

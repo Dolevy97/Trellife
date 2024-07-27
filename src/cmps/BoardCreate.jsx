@@ -55,14 +55,12 @@ export function BoardCreate({ setIsAdding, createButtonPosition }) {
         }
     }
 
-    function onChooseBGColor(ev) {
-        const { target } = ev
-        const imgElement = ev.currentTarget.querySelector('img')
-        if (ev.target.className === 'bg-img') {
-            setBackgroundImage(imgElement.src)
+    function onChooseBGColor(ev, fullSizeUrl) {
+        if (ev.target.className === 'bg-img' || ev.target.parentElement.className === 'bg-img') {
+            setBackgroundImage(fullSizeUrl)
             setIsImage(true)
         } else {
-            setBackground(target.style.background)
+            setBackground(ev.target.style.background)
             setBackgroundImage("")
             setIsImage(false)
         }
@@ -113,7 +111,7 @@ export function BoardCreate({ setIsAdding, createButtonPosition }) {
                 {backgroundImages.map(img => (
                     <article
                         key={img.id}
-                        onClick={onChooseBGColor}
+                        onClick={(ev) => onChooseBGColor(ev, img.url)}
                         className="bg-img">
                         <img src={img.smallUrl} alt="" />
                     </article>

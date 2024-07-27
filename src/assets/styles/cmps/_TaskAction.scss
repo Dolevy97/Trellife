@@ -4,14 +4,14 @@
 
 .task-action {
     position: absolute;
-    width: em(304);
-    padding: em(12);
+    width: 304px;
+    padding: 12px;
     background-color: rgb(40, 46, 51);
     border-radius: 8px;
 
     display: flex;
     flex-direction: column;
-    gap: em(14);
+    gap: 14px;
 
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     z-index: 1001;
@@ -38,7 +38,7 @@
         top: 0;
         left: 0;
 
-        padding: em(12);
+        padding: 12px;
         border-radius: 3px;
 
         display: flex;
@@ -58,7 +58,7 @@
         top: 0;
         right: 0;
 
-        padding: em(12);
+        padding: 12px;
         border-radius: 3px;
 
         display: flex;
@@ -74,7 +74,7 @@
     }
 
     .action-header {
-        font-size: em(14);
+        font-size: 14px;
         position: relative;
         font-weight: 600;
         text-align: center;
@@ -83,10 +83,10 @@
     }
 
     .title {
-        font-size: em(12);
+        font-size: 12px;
         font-weight: 600;
-        line-height: em(16);
-        margin-block-end: em(14);
+        line-height: 16px;
+        margin-block-end: 14px;
 
         button {
             font-family: inherit;
@@ -94,15 +94,15 @@
     }
 
     .name {
-        font-size: em(14);
+        font-size: 14px;
     }
 
     input.text {
-        font-size: em(14);
+        font-size: 14px;
         // line-height: 3em;
         width: 100%;
-        height: em(33);
-        padding: em(8) em(12);
+        height: 33px;
+        padding: 8px 12px;
         color: inherit;
         background-color: #23262a;
         border: none;
@@ -136,7 +136,7 @@
     }
 
     .member {
-        padding: em(4) em(8) em(4) em(4);
+        padding: 4px 8px 4px 4px;
         border-radius: 4px;
 
         display: flex;
@@ -145,10 +145,10 @@
         cursor: pointer;
 
         .member-thumbnail {
-            height: em(32);
-            width: em(32);
+            height: 32px;
+            width: 32px;
             border-radius: 50%;
-            margin-inline-end: em(8);
+            margin-inline-end: 8px;
         }
 
         &:hover {
@@ -160,7 +160,7 @@
 
         display: flex;
         flex-direction: column;
-        gap: em(4);
+        gap: 4px;
 
         .label-container {
             display: flex;
@@ -168,15 +168,15 @@
             align-items: center;
 
             .label {
-                font-size: em(14);
+                font-size: 14px;
                 font-weight: 500;
                 width: 100%;
                 height: 32px;
-                line-height: em(14);
-                padding: em(12);
+                line-height: 14px;
+                padding: 12px;
                 border-radius: 3px;
-                margin-inline: em(12) em(4);
-                min-height: em(34, 14);
+                margin-inline: 12px 4px;
+                min-height: 34px;
 
                 &:hover {
                     cursor: pointer;
@@ -195,7 +195,7 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                padding: em(9);
+                padding: 9px;
                 border-radius: 3px;
 
 
@@ -205,8 +205,8 @@
                 }
 
                 .pen-icon {
-                    height: em(16);
-                    width: em(16);
+                    height: 16px;
+                    width: 16px;
 
                 }
 
@@ -217,7 +217,7 @@
 
     .label-preview-container {
         margin: 0 em(-12);
-        padding: em(32);
+        padding: 32px;
         background-color: #161a1d;
     }
 
@@ -225,17 +225,17 @@
         display: inline-block;
         position: relative;
         box-sizing: border-box;
-        min-width: em(48);
+        min-width: 48px;
         max-width: 100%;
-        height: em(32);
+        height: 32px;
         margin-bottom: 0;
-        padding: 0 em(12);
+        padding: 0 12px;
         overflow: hidden;
         border-radius: 3px;
         color: inherit;
-        font-size: em(14);
+        font-size: 14px;
         font-weight: 500;
-        line-height: em(32);
+        line-height: 32px;
         text-align: left;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -246,18 +246,18 @@
         display: grid;
         grid-template-columns: repeat(5, auto);
         grid-template-rows: repeat(2, auto);
-        gap: em(8, 14);
+        gap: 8px;
 
         .color {
-            width: em(48, 16);
-            height: em(32, 16);
+            width: 48px;
+            height: 32px;
             border-radius: 3px;
             cursor: pointer;
 
 
             &.selected {
                 outline-color: #579dff;
-                outline-width: em(2);
+                outline-width: 2px;
                 outline-style: solid;
             }
 
@@ -265,7 +265,7 @@
     }
 
     .btn-blue {
-        width: em(74, 14);
+        width: 74px;
         color: rgb(40, 46, 51);
         background-color: #579dff;
         border-radius: 3px;
@@ -279,7 +279,7 @@
     }
 
     .btn-red {
-        width: em(74, 14);
+        width: 74px;
         color: rgb(40, 46, 51);
         background-color: #f87168;
         border-radius: 3px;
@@ -298,10 +298,10 @@
         text-align: center;
         width: 100%;
         border-radius: 3px;
-        font-size: em(14, 16);
-        line-height: em(20, 12);
+        font-size: 14px;
+        line-height: 20px;
         font-weight: 500;
-        gap: em(8);
+        gap: 8px;
 
         &:hover{
             background-color: #3c474f;
@@ -314,8 +314,8 @@
         text-align: center;
         width: 100%;
         border-radius: 3px;
-        font-size: em(14, 16);
-        line-height: em(20, 12);
+        font-size: 14px;
+        line-height: 20px;
         font-weight: 500;
         margin-block-start:8px;
     }
@@ -343,8 +343,8 @@
             margin-block-start: 4px;
 
             .btn-size {
-                height: em(62, 14);
-                width: em(140, 14);
+                height: 62px;
+                width: 140px;
                 background-color: #454e59;
                 color: inherit;
                 border-radius: 3px;
@@ -364,7 +364,7 @@
             border-radius: 3px;
             font-size: 0.875em;
             line-height: 1.6666666667em;
-            margin-block-start: em(12, 14);
+            margin-block-start: 12px;
         }
     }
 
