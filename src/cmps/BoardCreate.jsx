@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import { boardService } from "../services/board"
-import { getRandomMember } from "../services/board/board-demo-data.service"
 import { addBoard } from "../store/actions/board.actions"
 import { useNavigate } from "react-router"
 import { getBackgroundImages } from "../services/util.service"
 import { useSelector } from "react-redux"
 
-export function BoardCreate({ setIsAdding }) {
+export function BoardCreate({ setIsAdding, createButtonPosition }) {
     const [background, setBackground] = useState(`#0079bf`)
     const [backgroundImage, setBackgroundImage] = useState("")
     const [boardToAdd, setBoardToAdd] = useState(boardService.getEmptyBoard())
@@ -91,7 +90,11 @@ export function BoardCreate({ setIsAdding }) {
     if (!backgroundImages) return null
 
     return (
-        <section className={`board-create ${setIsAdding && 'from-header'}`} ref={boardCreateRef}>
+        <section
+            className={`board-create ${setIsAdding && 'from-header'}`}
+            ref={boardCreateRef}
+            style={{ top: createButtonPosition?.top + 10, left: createButtonPosition?.left - 10 }}
+        >
             <article className="create-header">
                 <h1>Create board</h1>
             </article>

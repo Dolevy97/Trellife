@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 import { loadBoards, setFilterBy, setSortBy } from '../store/actions/board.actions'
-import { boardService } from '../services/board/'
 import { BoardList } from '../cmps/BoardList'
 import { Filter } from '../cmps/BoardFilter'
 
