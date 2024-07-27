@@ -5,6 +5,8 @@ import { useNavigate } from "react-router"
 import { getBackgroundImages } from "../services/util.service"
 import { useSelector } from "react-redux"
 
+import addPreview from '../assets/imgs/add-preview.svg'
+
 export function BoardCreate({ setIsAdding, createButtonPosition }) {
     const [background, setBackground] = useState(`#0079bf`)
     const [backgroundImage, setBackgroundImage] = useState("")
@@ -103,7 +105,7 @@ export function BoardCreate({ setIsAdding, createButtonPosition }) {
                     ref={previewRef}
                     className="preview"
                     style={{ backgroundColor: isImage ? 'transparent' : background, backgroundImage: isImage ? `url(${backgroundImage})` : 'none', backgroundSize: 'cover' }}>
-                    <img src="../src/assets/imgs/add-preview.svg" alt="" />
+                    <img src={addPreview} alt="" />
                 </div>
             </div>
             <label htmlFor="bg-picker" className="bg-picker-label">Background</label>

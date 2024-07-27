@@ -9,6 +9,15 @@ import { Droppable, Draggable } from 'react-beautiful-dnd'
 import { updateGroup } from '../store/actions/group.actions'
 import { QuickEditTask } from './QuickEditTask'
 
+import penIcon from '../assets/imgs/Icons/pen.svg'
+import clockIcon from '../assets/imgs/Icons/clock.svg'
+import descriptionIcon from '../assets/imgs/Icons/description.svg'
+import commentIcon from '../assets/imgs/Icons/comment.svg'
+import attachmentIcon from '../assets/imgs/TaskDetails-icons/attachment.svg'
+import checklistIcon from '../assets/imgs/Icons/checklist.svg'
+import closeIcon from '../assets/imgs/Icons/close.svg'
+import addIcon from '../assets/imgs/Icons/add.svg'
+import expandIcon from '../assets/imgs/Icons/expand.svg'
 
 export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpansion, areLabelsExpanded }) {
     const tasks = group?.tasks || []
@@ -245,7 +254,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                                 setQuickEditTaskId(task.id)
                                                             }}
                                                         >
-                                                            <img src="../../../src\assets\imgs\Icons\pen.svg" />
+                                                            <img src={penIcon} />
                                                         </div>
 
 
@@ -303,7 +312,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                                                 style={taskStatus.style}
                                                                             >
                                                                                 <img
-                                                                                    src="../../../src/assets/imgs/Icons/clock.svg"
+                                                                                    src={clockIcon}
                                                                                     alt="clock icon"
                                                                                     style={{ filter: taskStatus.iconFilter }}
                                                                                 />
@@ -315,17 +324,17 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                                             </div>
                                                                         )}
                                                                         {task.description && task.description.trim() !== '' && (
-                                                                            <img title='This card has a description.' src="../../../src/assets/imgs/Icons/description.svg" alt="description" />
+                                                                            <img title='This card has a description.' src={descriptionIcon} alt="description" />
                                                                         )}
                                                                         {getComments(task.id).length ?
                                                                             <div title='Comments' className='comment-container'>
-                                                                                <img src="../../../src\assets\imgs\Icons\comment.svg" />
+                                                                                <img src={commentIcon} />
                                                                                 <span className='task-comment'>{getComments(task.id).length} </span>
                                                                             </div> : ''
                                                                         }
                                                                         {task.attachments.length ?
                                                                             <div title='Attachments' className='attachment-container'>
-                                                                                <img src="../../../src\assets\imgs\TaskDetails-icons\attachment.svg" />
+                                                                                <img src={attachmentIcon} />
                                                                                 <span className='task-comment'>{task.attachments.length}</span>
                                                                             </div> : ''
                                                                         }
@@ -341,7 +350,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                                                 }}
                                                                             >
                                                                                 <img
-                                                                                    src="../../../src\assets\imgs\Icons\checklist.svg"
+                                                                                    src={checklistIcon}
                                                                                     style={{
                                                                                         filter: getDoneInChecklist(task.id, group.id) === getAllTodosInChecklist(task.id, group.id)
                                                                                             ? 'brightness(0) saturate(100%) invert(9%) sepia(13%) saturate(697%) hue-rotate(169deg) brightness(97%) contrast(91%)'
@@ -402,7 +411,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                     setIsAddingTask(false)
                                                     setNewTaskTitle('')
                                                 }}>
-                                                    <img src="../../../src/assets/imgs/Icons/close.svg" alt="" />
+                                                    <img src={closeIcon} alt="" />
                                                 </div>
                                             </div>
                                         </form>
@@ -411,10 +420,11 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                             </div>
                         )}
                     </Droppable>
+
                     {!isAddingTask && (
                         <footer className='group-preview-footer'>
                             <span className="add-icon" onClick={() => setIsAddingTask(true)}>
-                                <img src="../../../src/assets/imgs/Icons/add.svg" alt="add" />
+                                <img src={addIcon} alt="add" />
                                 Add a card
                             </span>
                         </footer>
@@ -424,7 +434,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                 <div className="collapsed-group-container">
                     <img
                         className="collapse-icon "
-                        src="../../../src/assets/imgs/Icons/expand.svg"
+                        src={expandIcon}
                         alt="expand"
                         title="expand"
                         onClick={() => {

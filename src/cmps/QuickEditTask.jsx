@@ -1,5 +1,9 @@
 import { TaskAction } from '../cmps/TaskAction'
 
+import membersIcon from '../assets/imgs/TaskDetails-icons/members.svg'
+import labelIcon from '../assets/imgs/TaskDetails-icons/labels.svg'
+import checklistIcon from '../assets/imgs/Icons/checklist.svg'
+import clockIcon from '../assets/imgs/Icons/clock.svg'
 
 
 export function QuickEditTask({ task, onClose, taskPosition }) {

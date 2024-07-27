@@ -1,10 +1,20 @@
 import { useState } from "react"
 import { removeBoard } from '../store/actions/board.actions'
 import { removeBoardFromFavorites } from '../store/actions/user.actions'
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router"
 import { ChangeColorBackground } from './ChangeColorBackground'
-import { ChangePhotoBackground } from "./ChangePhotoBackground";
-import { getFormattedTime } from "../services/util.service";
+import { ChangePhotoBackground } from "./ChangePhotoBackground"
+import { getFormattedTime } from "../services/util.service"
+
+import closeIcon from '../assets/imgs/Icons/close.svg'
+import expandIcon from '../assets/imgs/Icons/expand.svg'
+import collapseIcon from '../assets/imgs/Icons/collapse.svg'
+import arrowDownIcon from '../assets/imgs/Icons/arrow-down.svg'
+import activityIcon from '../assets/imgs/TaskDetails-icons/activity.svg'
+import trashIcon from '../assets/imgs/TaskDetails-icons/trash.svg'
+
+import photosOptions from '../assets/imgs/photosoption.jpg'
+import colorsOptions from '../assets/imgs/colorsoption.png'
 
 export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollapse, board }) {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
@@ -52,12 +62,12 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
                 <div>
                     <span>{field}</span>
                 </div>
-                    <div className={`to-menu-btn-wrapper${field !== 'Menu'? '' : ' back-to'}`} onClick={() => setField('Menu')}>
-                        <img src="../../../src\assets\imgs\Icons\arrow-down.svg" alt="Back to Menu" />
-                    </div>
-           
+                <div className={`to-menu-btn-wrapper${field !== 'Menu' ? '' : ' back-to'}`} onClick={() => setField('Menu')}>
+                    <img src={arrowDownIcon} alt="Back to Menu" />
+                </div>
+
                 <div className="close-btn-wrapper" onClick={onClose}>
-                    <img src="../../../src/assets/imgs/Icons/close.svg" alt="Close" />
+                    <img src={closeIcon} alt="Close" />
                 </div>
                 <hr className="header-sep" />
             </section>
@@ -66,7 +76,7 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
                     <>
                         <div className="activity-container" onClick={() => setField('Activity')}>
                             <div className="activity-wrapper">
-                                <img src="../../../src\assets\imgs\TaskDetails-icons\activity.svg" alt="" />
+                                <img src={activityIcon} alt="" />
                                 <span>Activity</span>
                             </div>
                         </div>
@@ -81,7 +91,7 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
                         <div className="collapse-all-container" onClick={onCollapseToggle}>
                             <div className="collapse-all-wrapper">
                                 <img
-                                    src={`../../../src/assets/imgs/Icons/${isCollapseOpen ? 'expand' : 'collapse'}.svg`}
+                                    src={isCollapseOpen ? expandIcon : collapseIcon}
                                     alt={isCollapseOpen ? "Expand" : "Collapse"}
                                 />
                                 <span>{isCollapseOpen ? 'Expand all' : 'Collapse all'}</span>
@@ -90,7 +100,7 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
 
                         <div className="delete-board-container" onClick={() => setIsDeleteModalOpen(true)}>
                             <div className="delete-board-wrapper">
-                                <img src="../../../src\assets\imgs\TaskDetails-icons\trash.svg" alt="" />
+                                <img src={trashIcon} alt="" />
                                 <span> Delete board</span>
                             </div>
                         </div>
@@ -123,12 +133,12 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
                 {field === 'Change background' && (
                     <div className="background-options" >
                         <div className="imgs-option" onClick={() => setField('Photos by Unsplash')}>
-                            <img src="../../../src/assets/imgs/photosoption.jpg" alt="" />
+                            <img src={photosOptions} alt="" />
                             <span>Photos</span>
                         </div>
 
                         <div className="colors-option" onClick={() => setField('Colors')}>
-                            <img src="../../../src\assets\imgs\colorsoption.png" alt="" />
+                            <img src={colorsOptions} alt="" />
                             <span>Colors</span>
                         </div>
                     </div>
@@ -152,7 +162,7 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
                 <div className="delete-modal">
                     <div className="delete-modal-content">
                         <div className="close-btn-wrapper" onClick={() => setIsDeleteModalOpen(false)}>
-                            <img src="../../../src/assets/imgs/Icons/close.svg" alt="Close" />
+                            <img src={closeIcon} alt="Close" />
                         </div>
                         <p>Delete board?</p>
                         <p>This action will permanently delete the board</p>

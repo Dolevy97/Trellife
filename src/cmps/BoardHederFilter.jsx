@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import closeIcon from '../assets/imgs/Icons/close.svg'
 
 export function BoardHederFilter({ onClose, filterBy, setFilterBy, board }) {
     const [filterToEdit, setFilterToEdit] = useState(filterBy)
@@ -36,7 +37,7 @@ export function BoardHederFilter({ onClose, filterBy, setFilterBy, board }) {
             <header>
                 <span>Filter</span>
                 <div className="close-btn-wrapper" onClick={onClose}>
-                    <img src="../../../src/assets/imgs/Icons/close.svg" alt="Close" />
+                    <img src={closeIcon} alt="Close" />
                 </div>
             </header>
             <div className="filter-info">

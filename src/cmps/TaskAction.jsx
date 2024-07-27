@@ -13,6 +13,11 @@ import { updateBoard } from "../store/actions/board.actions"
 import { updateTask } from "../store/actions/task.actions"
 import { getAverageColorFromAttachment, getBackgroundImages, getUnsplashImages, makeId } from "../services/util.service"
 
+import closeIcon from '../assets/imgs/Icons/close.svg'
+import closeDisabledIcon from '../assets/imgs/TaskDetails-icons/close-disabled.svg'
+import leftArrowIcon from '../assets/imgs/TaskDetails-icons/left-arrow.svg'
+import penIcon from '../assets/imgs/TaskDetails-icons/pen.svg'
+
 export function TaskAction({ action, board, group, task, getMemberById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem, dueDate, style, attachmentToEdit }) {
 
     const user = useSelector(storeState => storeState.userModule.user)
@@ -422,9 +427,9 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         <section className="task-action" onClick={(ev) => ev.stopPropagation()} style={style ? { ...style } : {}}>
 
             <header className="action-header">
-                {action === 'edit label' && <div onClick={(ev) => onSetAction(ev, 'labels')} className="back-container"> <img className="back-action icon" src="../../../src/assets/imgs/TaskDetails-icons/left-arrow.svg" /> </div>}
+                {action === 'edit label' && <div onClick={(ev) => onSetAction(ev, 'labels')} className="back-container"> <img className="back-action icon" src={leftArrowIcon} /> </div>}
                 {action === 'edit label' && !labelToEdit.id ? 'Create label' : (action.charAt(0).toUpperCase() + action.substring(1, action.length))}
-                <div onClick={(ev) => onSetAction(ev, null)} className="close-action-container"> <img className="close-action icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" /> </div>
+                <div onClick={(ev) => onSetAction(ev, null)} className="close-action-container"> <img className="close-action icon" src={closeIcon} /> </div>
             </header>
 
             {(action === 'members' || action === 'labels') && <input ref={searchInputRef} className="text" placeholder={`Search ${action}`} />}
@@ -437,7 +442,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                                 <div key={member._id} className="member card-member" onClick={() => onRemoveMember(member._id)}>
                                     <img className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
                                     <span className="name">{member.fullname}</span>
-                                    <img className="close-icon icon" src="../../../src/assets/imgs/TaskDetails-icons/close.svg" />
+                                    <img className="close-icon icon" src={closeIcon} />
                                 </div>
                             )
                         })}
@@ -467,7 +472,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                                     <div
                                         className="pen-icon-container"
                                         onClick={(ev) => { setLabelToEdit({ ...label }); onSetAction(ev, 'edit label'); }}>
-                                        <img className="pen-icon" src="../../../src/assets/imgs/TaskDetails-icons/pen.svg"></img>
+                                        <img className="pen-icon" src={penIcon}></img>
                                     </div>
                                 </div>
                             )
@@ -524,7 +529,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                         </div>
                     </div>
                     <button className={`btn-dark-grey flex align-center justify-center ${!labelToEdit.color ? 'btn-disabled' : ''}`} onClick={onRemoveLabelToEditColor}>
-                        <img className="icon remove-icon" src={`../../../src/assets/imgs/TaskDetails-icons/close${!labelToEdit.color ? '-disabled' : ''}.svg`} />
+                        <img className="icon remove-icon" src={!labelToEdit.color ? closeDisabledIcon : closeIcon} />
                         <span>Remove color</span>
                     </button>
                     <div className="flex space-between">

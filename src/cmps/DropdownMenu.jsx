@@ -3,6 +3,10 @@ import { useSelector } from "react-redux"
 import { useNavigate } from "react-router"
 import { updateUser } from "../store/actions/user.actions";
 
+import star from '../assets/imgs/Icons/star.svg'
+import fullStar from '../assets/imgs/Icons/fullstar.svg'
+
+
 export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen, position }) {
     const boards = useSelector(storeState => storeState.boardModule.boards)
     const user = useSelector(storeState => storeState.userModule.user)
@@ -65,7 +69,7 @@ export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen, position }) {
             //                         <div className={`star-icon-container ${user.favorites.includes(board._id) ? 'is-starred' : ''}`}>
             //                             <img
             //                                 className={`star-icon`}
-            //                                 src={user.favorites.includes(board._id) ? "../../../src/assets/imgs/Icons/fullstar.svg" : '../../../src/assets/imgs/Icons/star.svg'}
+            //                                 src={user.favorites.includes(board._id) ? fullStar : star}
             //                                 onClick={ev => onClickStar(ev, board._id)}
             //                             >
             //                             </img>
@@ -93,7 +97,7 @@ export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen, position }) {
                                     <div className={`star-icon-container ${user.favorites.includes(board._id) ? 'is-starred' : ''}`}>
                                         <img
                                             className={`star-icon`}
-                                            src={user.favorites.includes(board._id) ? "../../../src/assets/imgs/Icons/fullstar.svg" : '../../../src/assets/imgs/Icons/star.svg'}
+                                            src={user.favorites.includes(board._id) ? fullStar : star}
                                             onClick={ev => onClickStar(ev, board._id)}
                                         >
                                         </img>
@@ -118,7 +122,7 @@ export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen, position }) {
                                     <div className={`star-icon-container ${user.favorites.includes(board._id) ? 'is-starred' : ''}`}>
                                         <img
                                             className={`star-icon`}
-                                            src={user.favorites.includes(board._id) ? "../../../src/assets/imgs/Icons/fullstar.svg" : '../../../src/assets/imgs/Icons/star.svg'}
+                                            src={user.favorites.includes(board._id) ? fullStar : star}
                                             onClick={ev => onClickStar(ev, board._id)}
                                         >
                                         </img>

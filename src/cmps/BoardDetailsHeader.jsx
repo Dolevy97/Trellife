@@ -5,10 +5,17 @@ import { RightNavBar } from '../cmps/RightNavBar';
 import { showSuccessMsg } from '../services/event-bus.service'
 import { updateUser } from '../store/actions/user.actions';
 
-export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen,onFilterClick,
+import star from '../assets/imgs/Icons/star.svg'
+import fullStar from '../assets/imgs/Icons/fullstar.svg'
+import filter from "../assets/imgs/Icons/filter.svg"
+import share from "../assets/imgs/Icons/share.svg"
+import dots from "../assets/imgs/icons/3dots.svg"
+
+export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, onFilterClick,
   filterButtonRef }) {
   const board = useSelector(storeState => storeState.boardModule.board)
   const user = useSelector(storeState => storeState.userModule.user)
+
 
   const [isEditing, setIsEditing] = useState(false)
   const [newTitle, setNewTitle] = useState(board.title)
@@ -131,14 +138,14 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
         >
           <img
             className={`groupsheader-preview-star ${user.favorites.includes(board._id) ? 'starred' : ''}`}
-            src={user.favorites.includes(board._id) ? "../../../src/assets/imgs/Icons/fullstar.svg" : '../../../src/assets/imgs/Icons/star.svg'}
+            src={user.favorites.includes(board._id) ? fullStar : star}
             alt="star icon"
           />
         </div>
       </div>
       <div className='groups-header-rightside'>
         <div className='filter-container' onClick={toggleFilterOpen} >
-          <img src="../../../src\assets\imgs\Icons\filter.svg" />
+          <img src={filter} />
           <span>Filters</span>
         </div>
         <span className="sep">
@@ -156,13 +163,13 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
           })}
         </div>
         <button onClick={onShareJoinClick} className='btn-share-join'>
-          <img className="share-join-icon" src="../../../src\assets\imgs\Icons\share.svg"></img>
+          <img className="share-join-icon" src={share}></img>
           <span className='share-join-text'>{canUserJoinBoard() ? 'Share' : 'Join'}</span></button>
         {!isRightNavBarOpen && (
           <div className='open-right-nav-wrapper'>
             <img
               onClick={toggleRightNavBar}
-              src="../../../src\assets\imgs\Icons\3dots.svg" alt=""
+              src={dots} alt=""
               className='open-right-nav-icon' />
           </div>
 
