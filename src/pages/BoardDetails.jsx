@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
-import { loadBoard, updateBoard, removeBoard, filterBoard } from '../store/actions/board.actions'
+import { loadBoard, updateBoard, removeBoard, filterBoard, getCmdUpdateBoard } from '../store/actions/board.actions'
 import { boardService } from '../services/board/'
 import { GroupPreview } from "../cmps/GroupPreview.jsx"
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
@@ -12,7 +12,9 @@ import { RightNavBar } from '../cmps/RightNavBar'
 
 import { BoardHederFilter } from '../cmps/BoardHederFilter.jsx'
 import { login } from '../store/actions/user.actions.js'
-// import { socketService } from '../services/socket.service.js'
+import { SOCKET_EMIT_SET_WATCHED_BOARED, SOCKET_EVENT_WATCHED_BOARD_UPDATED, socketService } from '../services/socket.service.js'
+import { store } from '../store/store.js'
+import { useDispatch } from 'react-redux'
 
 export function BoardDetails() {
 
@@ -40,7 +42,17 @@ export function BoardDetails() {
 
   const { boardId } = useParams()
 
+  const dispatch = useDispatch()
 
+  useEffect(()=>{
+    if(board){
+      socketService.emit(SOCKET_EMIT_SET_WATCHED_BOARED,board._id)
+      socketService.on(SOCKET_EVENT_WATCHED_BOARD_UPDATED,(board)=>dispatch(getCmdUpdateBoard(board)))
+    }
+    return ()=>{
+      socketService.off(SOCKET_EVENT_WATCHED_BOARD_UPDATED)
+    }
+  },[board])
 
   useEffect(() => {
     loadBoard(boardId)
