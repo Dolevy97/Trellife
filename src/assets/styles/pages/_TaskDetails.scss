@@ -484,6 +484,10 @@
                             background-color: rgba(161, 189, 217, 0.0784313725);
                             color: #b6c2cf;
                             font-weight: 500;
+
+                            &:hover{
+                                background-color: rgba(166, 197, 226, 0.1607843137);
+                            }
                         }
                     }
 
@@ -491,6 +495,7 @@
                         display: flex;
                         flex-direction: column;
                         align-items: flex-start;
+
 
                         .attachment {
                             display: flex;
