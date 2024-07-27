@@ -165,7 +165,7 @@ export function BoardDetails() {
 
   const groups = filteredBoard?.groups || board?.groups || []
   //needs layers
-  if (!board) return <img src="../../../src\assets\imgs\TaskDetails-icons\loading animation.svg" />
+  if (!board) return <div className='isloading-container'> <img className='isLoading' src="../../../src\assets\imgs\TaskDetails-icons\loading animation.svg" /> </div> 
 
   return (
     // <section className="main-display-container">

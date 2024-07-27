@@ -5,7 +5,8 @@ import { RightNavBar } from '../cmps/RightNavBar';
 import { showSuccessMsg } from '../services/event-bus.service'
 import { updateUser } from '../store/actions/user.actions';
 
-export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen }) {
+export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen,onFilterClick,
+  filterButtonRef }) {
   const board = useSelector(storeState => storeState.boardModule.board)
   const user = useSelector(storeState => storeState.userModule.user)
 
@@ -136,7 +137,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
         </div>
       </div>
       <div className='groups-header-rightside'>
-        <div className='filter-container' onClick={toggleFilterOpen}>
+        <div className='filter-container' onClick={toggleFilterOpen} >
           <img src="../../../src\assets\imgs\Icons\filter.svg" />
           <span>Filters</span>
         </div>
