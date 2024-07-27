@@ -17,7 +17,6 @@
 .app-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
 
 
     background-color: $bgclr1;
@@ -43,7 +42,6 @@
         @media (max-width:991px) {
             height: 70px;
         }
-
     }
 
     a,
@@ -58,6 +56,10 @@
         display: flex;
         align-items: center;
         gap: .25em;
+
+        @media (max-width:991px) {
+            display: none;
+        }
 
         &.homepage {
             display: none;
@@ -89,9 +91,70 @@
         white-space: nowrap;
         font-family: inherit;
 
+        @media (max-width:991px) {
+            width: 32px;
+        }
+
         &:hover {
             background-color: #85B8FF;
         }
+
+        & .desktop-create {
+            @media (max-width:991px) {
+                display: none;
+            }
+        }
+
+        & .mobile-create {
+            @media (min-width:991px) {
+                display: none;
+            }
+
+            line-height: 32px;
+            width: 20px;
+            height: 20px;
+
+            & img {
+                width: 20px;
+                height: 20px;
+
+                filter: brightness(0) saturate(100%) invert(9%) sepia(9%) saturate(871%) hue-rotate(169deg) brightness(102%) contrast(92%);
+            }
+        }
+    }
+}
+
+.trellife-logo-wrapper {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 5px;
+
+    padding: 6px 10px 6px 12px;
+    border-radius: 3px;
+    margin-inline-end: .25em;
+
+    font-weight: 500;
+
+    &.homepage {
+        font-size: 1.2em;
+    }
+
+    &:hover {
+        cursor: pointer;
+        background-color: #A6C5E229;
+        user-select: none;
+    }
+
+    .logo-text {
+        font-family: 'Charlie';
+        font-weight: 600;
+        font-size: 1.2em;
+        line-height: 16px;
+        letter-spacing: .1em;
     }
 }
 
@@ -111,6 +174,12 @@
     // height: 32px;
 
     font-weight: 500;
+
+    &.more {
+        @media (min-width:991px) {
+            display: none;
+        }
+    }
 
     &.homepage {
         font-size: 1.2em;
