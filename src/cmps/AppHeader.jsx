@@ -20,6 +20,7 @@ export function AppHeader({ isHomePage }) {
 	const [isHamburgerMenuAnimating, setIsHamburgerMenuAnimating] = useState(false)
 
 	const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false)
+	const [createButtonPosition, setCreateButtonPosition] = useState(null)
 
 	const userMenuRef = useRef()
 	const appHeaderRef = useRef()
@@ -168,11 +169,15 @@ export function AppHeader({ isHomePage }) {
 					</>}
 
 
-					<button onClick={() => { setIsAdding(true) }} className="btn-create">
+					<button onClick={(e) => {
+						const rect = e.target.getBoundingClientRect()
+						setCreateButtonPosition({ top: rect.bottom, left: rect.left })
+						setIsAdding(true)
+					}} className="btn-create">
 						<span className='desktop-create'>Create</span>
 						<span className='mobile-create'><img src="../../../src/assets/imgs/Icons/add.svg" /></span>
 					</button>
-					{isAdding && <BoardCreate setIsAdding={setIsAdding} />}
+					{isAdding && <BoardCreate setIsAdding={setIsAdding} createButtonPosition={createButtonPosition} />}
 				</div>
 				<nav>
 					<section className={`homepage-links ${isHomePage ? 'homepage' : ''}`}>

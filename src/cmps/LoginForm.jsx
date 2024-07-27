@@ -40,7 +40,7 @@ export function LoginForm({ onSubmit, handleChange, isSignup, onUploadImg, uploa
                         {errors.fullname && touched.fullname && (
                             <div>{errors.fullname}</div>
                         )}
-                        <div className="profile-pic-container">
+                        {isSignup === 'signup' && <div className="profile-pic-container">
                             <input
                                 type="file"
                                 id="profile-pic"
@@ -55,7 +55,7 @@ export function LoginForm({ onSubmit, handleChange, isSignup, onUploadImg, uploa
                                     <span>Upload Profile Picture</span>
                                 )}
                             </label>
-                        </div>
+                        </div>}
                         <button type="submit">{isSignup === 'signup' ? 'Sign up' : 'Continue'}</button>
                     </Form>
                 )}

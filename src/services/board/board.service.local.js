@@ -12,7 +12,6 @@ export const boardService = {
     getById,
     save,
     remove,
-
 }
 
 window.cs = boardService

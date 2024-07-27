@@ -6,7 +6,7 @@
     width: 304px;
     background-color: $bgclr2;
     border-radius: 8px;
-    z-index: 10;
+    z-index: 20;
 
     padding: 12px;
 
@@ -19,8 +19,7 @@
     box-shadow: 0px 0px 0px 1px #39424a, 0px 8px 12px #0304045C, 0px 0px 1px 1px #03040480;
 
     &.from-header {
-        top: 40px;
-        right: -248px;
+        position: fixed;
     }
 
     @media (max-height: 600px) {
