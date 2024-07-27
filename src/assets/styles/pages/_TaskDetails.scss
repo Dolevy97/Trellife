@@ -195,6 +195,10 @@
                         flex-direction: column;
                     }
 
+                    .members-container{
+                        position: relative;
+                    }
+
                     .members-img-container {
                         display: flex;
                         // gap: em(2);

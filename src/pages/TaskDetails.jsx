@@ -164,7 +164,7 @@ export function TaskDetails() {
 
     // Action - Dynamic Component
 
-    function onSetAction(ev, act, position=actionPosition) {
+    function onSetAction(ev, act, position = actionPosition) {
         ev.stopPropagation()
         const actionName = action === act && actionPosition === position ? null : act
         setAction(actionName)
@@ -587,10 +587,10 @@ export function TaskDetails() {
                                         }
                                         )}
                                         <div onClick={(ev) => onSetAction(ev, 'members', 2)} className="add-member-thumbnail"><img className="add-member-icon" src="../../../src/assets/imgs/TaskDetails-icons/add.svg" alt="add plus icon" />
-                                            {action === 'members' && actionPosition === 2
-                                                && <TaskAction action="members" getMemberById={getMemberById} {...taskActionProps} style={{ top: '38px', left: '1px' }} />}
                                         </div>
                                     </div>
+                                    {action === 'members' && actionPosition === 2
+                                        && <TaskAction action="members" getMemberById={getMemberById} {...taskActionProps} style={{ top: '61px' }} />}
                                 </div> : ''}
 
                             {labelsIds.length ?
@@ -600,15 +600,15 @@ export function TaskDetails() {
                                         {labelsIds && labelsIds.map(id => {
                                             const label = getLabelById(id)
                                             if (!label) return null
-                                            return <span onClick={(ev)=>onSetAction(ev,'labels',2)} className="label" key={id} style={{ backgroundColor: label.color ? label.color : '#3a444c' }}>{label.title}</span>
+                                            return <span onClick={(ev) => onSetAction(ev, 'labels', 2)} className="label" key={id} style={{ backgroundColor: label.color ? label.color : '#3a444c' }}>{label.title}</span>
                                         })}
-                                         <div onClick={(ev) => onSetAction(ev, 'labels', 2)} className="add-label-thumbnail"><img className="add-label-icon" src="../../../src/assets/imgs/TaskDetails-icons/add.svg" alt="add plus icon" />
+                                        <div onClick={(ev) => onSetAction(ev, 'labels', 2)} className="add-label-thumbnail"><img className="add-label-icon" src="../../../src/assets/imgs/TaskDetails-icons/add.svg" alt="add plus icon" />
                                         </div>
                                     </div>
                                     {action === 'labels' && actionPosition === 2
-                                        && <TaskAction action="labels" {...taskActionProps} setLabelToEdit={setLabelToEdit} style={{top:'61px'}}/>}
+                                        && <TaskAction action="labels" {...taskActionProps} setLabelToEdit={setLabelToEdit} style={{ top: '61px' }} />}
                                     {action === 'edit label' && actionPosition === 2
-                                        && <TaskAction action="edit label" labelToEdit={labelToEdit} setLabelToEdit={setLabelToEdit} {...taskActionProps} style={{top:'61px'}}/>}
+                                        && <TaskAction action="edit label" labelToEdit={labelToEdit} setLabelToEdit={setLabelToEdit} {...taskActionProps} style={{ top: '61px' }} />}
                                 </div> : ''}
 
                             {taskToEdit.dueDate &&
