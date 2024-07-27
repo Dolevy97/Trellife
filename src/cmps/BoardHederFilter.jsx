@@ -32,7 +32,7 @@ export function BoardHederFilter({ onClose, filterBy, setFilterBy, board }) {
     }
 
     return (
-        <section className="BoardHederFilter">
+        <section className="BoardHederFilter" >
             <header>
                 <span>Filter</span>
                 <div className="close-btn-wrapper" onClick={onClose}>

@@ -73,10 +73,9 @@
 
             &:hover {
                 cursor: pointer;
-                background-color: #45505a;
-                border-radius: 50%;
+                // background-color: #45505a;
+                // border-radius: 50%;
                 // padding: em(20);
-                // NEED TO REFACTOR
             }
         }
 
@@ -108,9 +107,9 @@
                     color: white;
                     border-radius: 3px;
 
-                    &:hover {
-                        background-color: #45505a;
-                    }
+                    // &:hover {
+                    //     background-color: #45505a;
+                    // }
 
                     .icon {
                         position: static;

@@ -11,7 +11,7 @@ import { cloudinaryService } from "../services/cloudinary.service"
 
 import { updateBoard } from "../store/actions/board.actions"
 import { updateTask } from "../store/actions/task.actions"
-import { getAverageColorFromAttachment, makeId } from "../services/util.service"
+import { getAverageColorFromAttachment, getBackgroundImages, getUnsplashImages, makeId } from "../services/util.service"
 
 export function TaskAction({ action, board, group, task, getMemberById, onSetAction, onRemoveCover, onSetCover, labelToEdit, setLabelToEdit, toggleAddingItem, dueDate, style, attachmentToEdit }) {
 
@@ -21,6 +21,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     const [attachmentInputValue, setAttachmentInputValue] = useState(attachmentToEdit ? attachmentToEdit.title : '')
     const [labelInputValue, setLabelInputValue] = useState(labelToEdit ? labelToEdit.title : '')
     const [dueDateToEdit, setDueDateToEdit] = useState(dueDate ? dueDate : getDefaultDueDate());
+    const [backgroundImages, setBackgroundImages] = useState([])
 
     const searchInputRef = useRef()
     const checklistTitleRef = useRef()
@@ -45,6 +46,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             attachmentTitleRef.current.focus()
             attachmentTitleRef.current.select()
         }
+        if (action === 'cover') getBackgroundImages().then(images => setBackgroundImages(images.slice(0, 6)))
     }, [])
 
     useEffect(() => {
@@ -533,76 +535,87 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             }
             {action === 'cover' &&
                 <>
-                    <div className="cover">
-
-                        <div className="size-container">
-                            <span className="title">Size</span>
-                            <div className="size-btns">
-                                <div>
-                                    <div className="cover-pic">
-                                        <div className={`header-cover ${task.style?.isFull ? '' : 'focused'}`} data-name="false" onClick={onUpdateCoverIsFull}>
-                                            <div className="card-header" style={task.style}>
+                    <div className="size-container">
+                        <span className="title">Size</span>
+                        <div className="size-btns">
+                            <div>
+                                <div className="cover-pic">
+                                    <div className={`header-cover ${!task.style || task.style?.isFull ? '' : 'focused'}`} data-name="false" onClick={onUpdateCoverIsFull}>
+                                        <div className="card-header" style={task.style}>
+                                        </div>
+                                        <div className="card-body">
+                                            <div className="top-line">
                                             </div>
-                                            <div className="card-body">
-                                                <div className="top-line">
+                                            <div className="middle-line">
+                                            </div>
+                                            <div className="bottom-line">
+                                                <div className="left">
                                                 </div>
-                                                <div className="middle-line">
+                                                <div className="right">
                                                 </div>
-                                                <div className="bottom-line">
-                                                    <div className="left">
-                                                    </div>
-                                                    <div className="right">
-                                                    </div>
-                                                </div>
-                                                <div className="dot-corner">
-                                                </div>
+                                            </div>
+                                            <div className="dot-corner">
                                             </div>
                                         </div>
-                                        <div className="body" data-name="true" onClick={onUpdateCoverIsFull} >
-                                            <div className={`body-cover ${task.style?.isFull ? 'focused' : ''}`} style={task.style} >
-                                                <div className="card-body">
-                                                    <div className="top-line">
+                                    </div>
+                                    <div className="body" data-name="true" onClick={onUpdateCoverIsFull} >
+                                        <div className={`body-cover ${task.style?.isFull ? 'focused' : ''}`} style={task.style} >
+                                            <div className="card-body">
+                                                <div className="top-line">
 
-                                                    </div>
-                                                    <div className="middle-line">
-                                                    </div>
+                                                </div>
+                                                <div className="middle-line">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {task.style && <button className="remove-cover" onClick={onRemoveCover}>Remove cover</button>}
                         </div>
-                        <div className="colors-container">
-                            <span className="title">Colors</span>
-                            <div className="colors">
-                                <div className="color" style={{ backgroundColor: '#206e4e' }} onClick={onUpdateCoverColor}></div>
-                                <div className="color" style={{ backgroundColor: '#7f5f02' }} onClick={onUpdateCoverColor}></div>
-                                <div className="color" style={{ backgroundColor: '#a64700' }} onClick={onUpdateCoverColor}></div>
-                                <div className="color" style={{ backgroundColor: '#ae2e24' }} onClick={onUpdateCoverColor}></div>
-                                <div className="color" style={{ backgroundColor: '#5e4db2' }} onClick={onUpdateCoverColor}></div>
-                                <div className="color" style={{ backgroundColor: '#0055cc' }} onClick={onUpdateCoverColor}></div>
-                                <div className="color" style={{ backgroundColor: '#1f6a83' }} onClick={onUpdateCoverColor}></div>
-                                <div className="color" style={{ backgroundColor: '#4d6b1f' }} onClick={onUpdateCoverColor}></div>
-                                <div className="color" style={{ backgroundColor: '#943d73' }} onClick={onUpdateCoverColor}></div>
-                                <div className="color" style={{ backgroundColor: '#596773' }} onClick={onUpdateCoverColor}></div>
+                        {task.style && <button className="remove-cover" onClick={onRemoveCover}>Remove cover</button>}
+                    </div>
+                    <div className="colors-container">
+                        <span className="title">Colors</span>
+                        <div className="colors">
+                            <div className="color" style={{ backgroundColor: '#206e4e' }} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#7f5f02' }} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#a64700' }} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#ae2e24' }} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#5e4db2' }} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#0055cc' }} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#1f6a83' }} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#4d6b1f' }} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#943d73' }} onClick={onUpdateCoverColor}></div>
+                            <div className="color" style={{ backgroundColor: '#596773' }} onClick={onUpdateCoverColor}></div>
+                        </div>
+                    </div>
+                    {task.attachments && task.attachments.length ?
+                        <div className="cover-attachments-container">
+                            <span className="title">Attachments</span>
+                            <div className="cover-attachments">
+                                {task.attachments.map(a =>
+                                    <div
+                                        key={a.url}
+                                        className="cover-attachment"
+                                        style={{ backgroundImage: `url(${a.url})`, backgroundColor: a.backgroundColor }}
+                                        onClick={() => onSetCover(a)}
+                                    />
+                                )}
                             </div>
                         </div>
-                        {task.attachments && task.attachments.length ?
-                            <div className="cover-attachments-container">
-                                <span className="title">Attachments</span>
-                                <div className="cover-attachments">
-                                    {task.attachments.map(a =>
-                                        <div
-                                            key={a.url}
-                                            className="cover-attachment"
-                                            style={{ backgroundImage: `url(${a.url})`, backgroundColor: a.backgroundColor }}
-                                            onClick={() => onSetCover(a)}
-                                        />)}
-                                </div>
-                            </div>
-                            : null}
+                        : null}
+                    <div className="cover-unsplash-container">
+                        <span className="title">Photos from Unsplash</span>
+                        <div className="unsplash-imgs">
+                            {backgroundImages.map(img =>
+                                <div
+                                    key={img.id}
+                                    className="unsplash-img"
+                                    style={{ backgroundImage: `url(${img.smallUrl})` }}
+                                    onClick={() => onSetCover(img)}
+                                />
+                            )}
+                        </div>
                     </div>
                 </>
             }
