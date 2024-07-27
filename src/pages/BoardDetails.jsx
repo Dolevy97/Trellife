@@ -47,15 +47,15 @@ export function BoardDetails() {
 
   const dispatch = useDispatch()
 
-  useEffect(()=>{
-    if(board){
-      socketService.emit(SOCKET_EMIT_SET_WATCHED_BOARED,board._id)
-      socketService.on(SOCKET_EVENT_WATCHED_BOARD_UPDATED,(board)=>dispatch(getCmdUpdateBoard(board)))
+  useEffect(() => {
+    if (board) {
+      socketService.emit(SOCKET_EMIT_SET_WATCHED_BOARED, board._id)
+      socketService.on(SOCKET_EVENT_WATCHED_BOARD_UPDATED, (board) => dispatch(getCmdUpdateBoard(board)))
     }
-    return ()=>{
+    return () => {
       socketService.off(SOCKET_EVENT_WATCHED_BOARD_UPDATED)
     }
-  },[board])
+  }, [board])
 
   useEffect(() => {
     loadBoard(boardId)
@@ -174,13 +174,13 @@ export function BoardDetails() {
       groups: updatedGroups
     }
 
-    await updateBoard(updatedBoard)
     setAreAllGroupsCollapsed(newCollapseState)
+    await updateBoard(updatedBoard)
   }
 
   const groups = filteredBoard?.groups || board?.groups || []
   //needs layers
-  if (!board) return <div className='isloading-container'> <img className='isLoading' src={loadingAnimation} /> </div> 
+  if (!board) return <div className='isloading-container'> <img className='isLoading' src={loadingAnimation} /> </div>
 
   return (
     // <section className="main-display-container">
