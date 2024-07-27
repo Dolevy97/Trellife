@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
 			outDir: '../backend/public',
 			emptyOutDir: true,
 			assetsDir: 'assets',
-			// sourcemap: true, // Enable source maps for debugging
+			sourcemap: true, // Enable source maps for debugging
 		},
 	}
 })

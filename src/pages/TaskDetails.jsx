@@ -333,10 +333,8 @@ export function TaskDetails() {
         if (checklistIndex !== -1) {
             taskToEdit.checklists[checklistIndex].todos.push(newTodo)
         }
-
-        await updateTask(taskToEdit, group, board)
-
         textareaElement.value = ''
+        await updateTask(taskToEdit, group, board)
     }
 
     function toggleAddingItem(checklistId) {
