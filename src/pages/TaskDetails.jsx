@@ -258,8 +258,8 @@ export function TaskDetails() {
         }
         const updatedBoard = { ...board }
         updatedBoard.activities.unshift(newActivity)
-        await updateBoard(updatedBoard)
         setIsAddingComment(false)
+        await updateBoard(updatedBoard)
     }
 
     async function onStartEditComment(comment) {
@@ -282,8 +282,8 @@ export function TaskDetails() {
     async function onSaveEdittedComment(commentId) {
         const commentIdx = board.activities.findIndex(activity => activity.id === commentId)
         board.activities[commentIdx].txt = editCommentInputValue
-        await updateBoard(board)
         setIsEditingComment(false)
+        await updateBoard(board)
     }
 
     // Remove task
@@ -292,7 +292,7 @@ export function TaskDetails() {
         const newTasks = group.tasks.filter(task => task.id !== taskToEdit.id)
         const newGroup = { ...group, tasks: newTasks }
         const activityTitle = `removed task (id: ${taskToEdit.id})`
-        await updateGroup(newGroup.id, newGroup, board,activityTitle)
+        await updateGroup(newGroup.id, newGroup, board, activityTitle)
         onBackdropClicked()
     }
 

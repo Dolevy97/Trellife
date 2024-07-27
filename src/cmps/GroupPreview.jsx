@@ -18,6 +18,8 @@ import checklistIcon from '../assets/imgs/Icons/checklist.svg'
 import closeIcon from '../assets/imgs/Icons/close.svg'
 import addIcon from '../assets/imgs/Icons/add.svg'
 import expandIcon from '../assets/imgs/Icons/expand.svg'
+import loadingAnimation from '../assets/imgs/TaskDetails-icons/loading animation.svg'
+
 
 export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpansion, areLabelsExpanded }) {
     const tasks = group?.tasks || []
@@ -186,7 +188,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
 
     const labelsIds = taskToEdit?.labelsIds || []
 
-    if (!board || !tasks.length) return <div className='isloading-container'> <img className='isLoading' src={loadingAnimation} /> </div>
+    if (!board || !tasks) return <div className='isloading-container'> <img className='isLoading' src={loadingAnimation} /> </div>
 
     return (
         <section className={`group-preview-container ${group.style.isCollapse ? 'collapsed' : ''}`}

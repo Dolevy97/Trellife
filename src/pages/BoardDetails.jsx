@@ -112,8 +112,8 @@ export function BoardDetails() {
         ...board,
         groups: [...board.groups, newGroup]
       }
-      const savedBoard = await updateBoard(updatedBoard)
       setNewGroupTitle('')
+      await updateBoard(updatedBoard)
 
       if (addGroupRef.current) {
         const input = addGroupRef.current.querySelector('input')

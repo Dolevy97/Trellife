@@ -36,9 +36,9 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
       title: titleToSet
     }
     try {
-      await updateBoard(updatedBoard)
       setNewTitle(titleToSet)
       setIsEditing(false)
+      await updateBoard(updatedBoard)
     } catch (error) {
       console.error('Failed to update board title:', error)
     }
