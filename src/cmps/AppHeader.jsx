@@ -19,6 +19,8 @@ export function AppHeader({ isHomePage }) {
 	const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false)
 	const [isHamburgerMenuAnimating, setIsHamburgerMenuAnimating] = useState(false)
 
+	const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false)
+
 	const userMenuRef = useRef()
 	const appHeaderRef = useRef()
 	const accountProfileRef = useRef()
@@ -87,16 +89,21 @@ export function AppHeader({ isHomePage }) {
 		}
 	}
 
-	function handleMenuChange(menu, event) {
+	function handleMenuChange(menu, event, fromMore = false) {
 		if (menuToOpen === menu) {
 			setIsMenuOpen(false)
 			setMenuToOpen(null)
+		} else if (fromMore) {
+			setMenuPosition({ top: 40.703125, left: 148.28125 })
+			setIsMenuOpen(true)
+			setMenuToOpen(menu)
+			setIsMoreMenuOpen(false)
 		} else {
 			const rect = event.currentTarget.getBoundingClientRect()
 			setMenuPosition({
 				top: rect.bottom,
 				left: rect.left
-			});
+			})
 			setIsMenuOpen(true)
 			setMenuToOpen(menu)
 		}
@@ -105,6 +112,10 @@ export function AppHeader({ isHomePage }) {
 	function onLogout() {
 		logout()
 		navigate('/')
+	}
+
+	function toggleMoreMenu() {
+		setIsMoreMenuOpen(!isMoreMenuOpen)
 	}
 
 	return (
@@ -118,25 +129,45 @@ export function AppHeader({ isHomePage }) {
 					<section className={`header-links ${isHomePage ? 'homepage' : ''}`}>
 						{/* <article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Boards' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Boards', e)}>
 							<p className='header-link-text' title='Boards'>Boards</p>
-							<img src="../../../src\assets\imgs\Icons\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+							<img src="../../../src/assets/imgs/Icons/arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
 						</article> */}
 						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Recent' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Recent', e)}>
 							<p className='header-link-text' title='Recent'>Recent</p>
-							<img src="../../../src\assets\imgs\Icons\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+							<img src="../../../src/assets/imgs/Icons/arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
 						</article>
 						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Starred' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Starred', e)}>
 							<p className='header-link-text' title='Starred'>Starred</p>
-							<img src="../../../src\assets\imgs\Icons\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+							<img src="../../../src/assets/imgs/Icons/arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
 						</article>
 						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Templates' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Templates', e)}>
 							<p className='header-link-text' title='Templates'>Templates</p>
-							<img src="../../../src\assets\imgs\Icons\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+							<img src="../../../src/assets/imgs/Icons/arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
 						</article>
 					</section>
-					<article className={`logo-wrapper more ${isMenuOpen && menuToOpen === 'More' ? 'active' : ''}`} onClick={(e) => handleMenuChange('More', e)}>
+					<article className={`logo-wrapper more ${(isMoreMenuOpen || isMenuOpen) ? 'active' : ''}`} onClick={toggleMoreMenu}>
 						<p className='header-link-text' title='More'>More</p>
-						<img src="../../../src\assets\imgs\Icons\arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+						<img src="../../../src/assets/imgs/Icons/arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
 					</article>
+
+
+					{isMoreMenuOpen && <>
+						<section className="more-menu">
+							<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Recent' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Recent', e, true)}>
+								<p className='header-link-text' title='Recent'>Recent</p>
+								<img src="../../../src/assets/imgs/Icons/arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+							</article>
+							<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Starred' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Starred', e, true)}>
+								<p className='header-link-text' title='Starred'>Starred</p>
+								<img src="../../../src/assets/imgs/Icons/arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+							</article>
+							<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Templates' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Templates', e, true)}>
+								<p className='header-link-text' title='Templates'>Templates</p>
+								<img src="../../../src/assets/imgs/Icons/arrow-down.svg" className='svg-arrow-down' alt="arrow-down" />
+							</article>
+						</section>
+					</>}
+
+
 					<button onClick={() => { setIsAdding(true) }} className="btn-create">
 						<span className='desktop-create'>Create</span>
 						<span className='mobile-create'><img src="../../../src/assets/imgs/Icons/add.svg" /></span>
