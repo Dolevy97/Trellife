@@ -235,7 +235,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             if (a.url !== attachmentToEdit.url) return a
             else return updatedAttachment
         })
-        const updatedTask = {...task,attachments}
+        const updatedTask = { ...task, attachments }
         const activityTitle = `updated attachment's link name from ${attachmentToEdit.title} to ${attachmentInputValue} on card (id: ${task.id})`
         await updateTask(updatedTask, group, board, activityTitle, user)
         onSetAction(ev, null)
@@ -351,10 +351,10 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         const dateObj = new Date(formattedDate)
 
         if (dateObj.getMonth() + 1 !== parseInt(month) || dateObj.getDate() !== parseInt(day) || dateObj.getFullYear() !== parseInt(year)) {
-            return null 
+            return null
         }
 
-        return dateObj.getTime() 
+        return dateObj.getTime()
     }
 
     function parseTime(strTime) {
@@ -654,7 +654,6 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             }
             {action === 'dates' &&
                 <>
-
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', overflow: 'hidden' }}>
                             <StaticDatePicker
@@ -688,6 +687,9 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                                             backgroundColor: '#1876d2',
                                         },
                                     },
+                                    '& .MuiPickersCalendarHeader-root': {
+                                        mt: '0',
+                                    }
                                 }}
                             />
                         </Box>
