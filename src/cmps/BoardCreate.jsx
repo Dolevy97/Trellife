@@ -93,7 +93,7 @@ export function BoardCreate({ setIsAdding, createButtonPosition }) {
         <section
             className={`board-create ${setIsAdding && 'from-header'}`}
             ref={boardCreateRef}
-            style={{ top: createButtonPosition?.top + 10, left: createButtonPosition?.left - 10 }}
+            style={{ top: createButtonPosition?.top + 10, left: createButtonPosition?.left - 140 }}
         >
             <article className="create-header">
                 <h1>Create board</h1>

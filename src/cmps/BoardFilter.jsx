@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { CustomSelect } from './CustomSelect'
+import { boardService } from '../services/board'
 
 export function Filter({ filterBy, onSetFilter, onSortBy, onSetSort }) {
 
