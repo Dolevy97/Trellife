@@ -190,7 +190,39 @@ export async function getAverageColorFromAttachment(attachment) {
         console.log(er)
         throw (er)
     }
+}
 
+export async function getAverageColorFromUrl(styleObject) {
+    if (!styleObject || !styleObject.background) {
+        console.log('Invalid style object or missing background property');
+        return 'transparent';
+    }
+
+    const urlMatch = styleObject.background.match(/url\(["']?(.+?)["']?\)/);
+    if (!urlMatch) {
+        console.log('No URL found in background property');
+        return 'transparent';
+    }
+
+    const imageUrl = urlMatch[1];
+
+    try {
+        const img = new Image();
+        img.crossOrigin = "Anonymous";
+        img.src = imageUrl;
+
+        await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+        });
+
+        const fac = new FastAverageColor();
+        const color = await fac.getColorAsync(img);
+        return color.hexa;
+    } catch (er) {
+        console.log('Error getting average color:', er);
+        return 'transparent'; // Return a default color instead of throwing
+    }
 }
 
 export async function onDownloadUrl(url, filename) {
