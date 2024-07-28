@@ -10,6 +10,7 @@ import fullStar from '../assets/imgs/Icons/fullstar.svg'
 import filter from "../assets/imgs/Icons/filter.svg"
 import share from "../assets/imgs/Icons/share.svg"
 import dots from "../assets/imgs/icons/3dots.svg"
+import { getAverageColorFromAttachment, isLightColor } from '../services/util.service';
 
 export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, onFilterClick,
   filterButtonRef }) {
