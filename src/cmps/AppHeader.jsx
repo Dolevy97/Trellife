@@ -173,9 +173,10 @@ export function AppHeader({ isHomePage }) {
 
 
 					<button onClick={(e) => {
+						e.stopPropagation()
 						const rect = e.target.getBoundingClientRect()
 						setCreateButtonPosition({ top: rect.bottom, left: rect.left })
-						setIsAdding(true)
+						setIsAdding(!isAdding)
 					}} className="btn-create">
 						<span className='desktop-create'>Create</span>
 						<span className='mobile-create'><img src={addIcon} /></span>
