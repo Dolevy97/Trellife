@@ -36,7 +36,7 @@
         }
 
         position: relative;
-        min-height: 600px;
+        min-height: 520px;
         height: max-content;
         width: 768px;
         margin-block-end: auto;
@@ -516,8 +516,6 @@
                             align-items: center;
                             font-size: 14px;
                             padding: 4px 8px 4px 0;
-                            //  width: 512px; //Somewhy looks better without this
-
 
                             .attachment-file-preview {
                                 display: block;
@@ -540,8 +538,6 @@
                                 background-size: contain;
                                 border-radius: 3px;
 
-
-                                // flex-grow: 1;
                             }
 
                             .attachment-details {
@@ -550,7 +546,7 @@
                                 align-items: flex-start;
                                 padding: 8px 8px 8px 16px;
                                 width: 400px;
-                                width: 100%;
+                                width: calc(100% - 112px);
                                 // flex-shrink: 1;
 
                                 .attachment-header {
@@ -782,6 +778,7 @@
 
                 @media (max-width:991px) {
                     width: auto;
+                    padding-inline-end: 20px;
                 }
 
                 .icon {
