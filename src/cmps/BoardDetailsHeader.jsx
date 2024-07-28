@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { updateBoard } from '../store/actions/board.actions'
 import { useSelector } from 'react-redux'
 import { RightNavBar } from '../cmps/RightNavBar';
@@ -11,24 +11,39 @@ import filter from "../assets/imgs/Icons/filter.svg"
 import share from "../assets/imgs/Icons/share.svg"
 import dots from "../assets/imgs/icons/3dots.svg"
 import { getAverageColorFromAttachment, getAverageColorFromUrl, isLightColor } from '../services/util.service';
+import autosize from 'autosize';
 
 export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, onFilterClick,
   filterButtonRef }) {
   const board = useSelector(storeState => storeState.boardModule.board)
   const user = useSelector(storeState => storeState.userModule.user)
 
+  const boardTitleRef = useRef(null)
 
   const [isEditing, setIsEditing] = useState(false)
   const [newTitle, setNewTitle] = useState(board.title)
   const [buttonColor, setButtonColor] = useState('')
   const [textColor, setTextColor] = useState('')
   const [iconColor, setIconColor] = useState({})
+  const [inputWidth, setInputWidth] = useState(() => `${Math.max(board.title.length * 9, 100)}px`);
 
   useEffect(() => {
     if (board) {
       setNewTitle(board.title)
     }
   }, [board])
+
+  useEffect(() => {
+    updateInputWidth()
+  }, [newTitle])
+
+
+  function updateInputWidth() {
+    if (boardTitleRef.current) {
+      const newWidth = Math.max(newTitle.length * 9, 100) // Minimum width of 100px
+      setInputWidth(`${newWidth}px`)
+    }
+  }
 
   useEffect(() => {
     async function updateButtonColor() {
@@ -124,17 +139,19 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
       <div className='groups-header-leftside'>
         {isEditing ? (
           <input
-            type="text"
+            ref={boardTitleRef}
             value={newTitle}
             onChange={(ev) => setNewTitle(ev.target.value)}
             onBlur={handleBlur}
             onKeyPress={handleKeyPress}
             autoFocus
+            className='groups-title-input'
+            style={{ width: inputWidth }}
           />
         ) : (
           <span
-          onClick={() => setIsEditing(true)}
-          className='groups-header-title'>{board.title}</span>
+            onClick={() => setIsEditing(true)}
+            className='groups-header-title'>{board.title}</span>
         )}
         <div
           className='star-container'
