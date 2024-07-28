@@ -10,7 +10,7 @@ import fullStar from '../assets/imgs/Icons/fullstar.svg'
 import filter from "../assets/imgs/Icons/filter.svg"
 import share from "../assets/imgs/Icons/share.svg"
 import dots from "../assets/imgs/icons/3dots.svg"
-import { getAverageColorFromAttachment, isLightColor } from '../services/util.service';
+import { getAverageColorFromAttachment, getAverageColorFromUrl, isLightColor } from '../services/util.service';
 
 export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, onFilterClick,
   filterButtonRef }) {
@@ -20,11 +20,34 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
   const [isEditing, setIsEditing] = useState(false)
   const [newTitle, setNewTitle] = useState(board.title)
+  const [buttonColor, setButtonColor] = useState('')
+  const [textColor, setTextColor] = useState('')
+  const [iconColor, setIconColor] = useState({})
 
   useEffect(() => {
     if (board) {
       setNewTitle(board.title)
     }
+  }, [board])
+
+  useEffect(() => {
+    async function updateButtonColor() {
+      try {
+        const avgColor = await getAverageColorFromUrl(board.style)
+        setButtonColor(isLightColor(avgColor) ? '#091e42e3' : '#DCDFE4')
+        setTextColor(isLightColor(avgColor) ? '#FFFFFF' : '#172B4D')
+        setIconColor(isLightColor(avgColor) ?
+          { filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7489%) hue-rotate(29deg) brightness(100%) contrast(103%)' }
+          :
+          { filter: 'brightness(0) saturate(100%) invert(12%) sepia(53%) saturate(1411%) hue-rotate(192deg) brightness(94%) contrast(92%)' })
+      } catch (error) {
+        console.error('Error getting average color:', error)
+        setButtonColor('transparent')
+        setTextColor('#000000')
+      }
+    }
+
+    updateButtonColor()
   }, [board])
 
   async function handleTitleUpdate() {
@@ -64,27 +87,6 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
       user.favorites = user.favorites.filter(id => id !== board._id)
     }
     await updateUser(user)
-  }
-
-  async function onShareJoinClick() {
-    const userIsInBoard = canUserJoinBoard()
-    if (!userIsInBoard) {
-      board.members.push(user)
-      await updateBoard(board)
-      return
-    }
-    const currentURL = window.location.href
-
-    try {
-      await navigator.clipboard.writeText(currentURL)
-      showSuccessMsg('Board link copied to clipboard')
-    } catch (error) {
-      console.error('Failed to copy URL:', error)
-    }
-  }
-
-  function canUserJoinBoard() {
-    return board.members.find(u => u._id === user._id)
   }
 
   async function onShareJoinClick() {
@@ -163,8 +165,15 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
               style={{ zIndex: members.length - idx }} />
           })}
         </div>
-        <button onClick={onShareJoinClick} className='btn-share-join'>
-          <img className="share-join-icon" src={share}></img>
+        <button
+          onClick={onShareJoinClick}
+          className='btn-share-join'
+          style={{
+            backgroundColor: buttonColor,
+            color: textColor
+          }}
+        >
+          <img className="share-join-icon" src={share} style={iconColor}></img>
           <span className='share-join-text'>{canUserJoinBoard() ? 'Share' : 'Join'}</span></button>
         {!isRightNavBarOpen && (
           <div className='open-right-nav-wrapper'>

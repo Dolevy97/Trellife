@@ -1,9 +1,9 @@
+import { makeId } from "../../services/util.service"
 import { loadBoard, updateBoard } from "./board.actions"
 
-export async function updateGroup(groupId, updatedGroup, board,activityTitle='') {
+export async function updateGroup(groupId, updatedGroup, board, activityTitle = '', user) {
     try {
         let updatedBoard
-
         if (groupId) {
             updatedBoard = {
                 ...board,
@@ -24,15 +24,15 @@ export async function updateGroup(groupId, updatedGroup, board,activityTitle='')
                 byMember: user,
                 // FOR LOCAL:
                 // byMember: getRandomMember(),
-                group: { ...group },
+                group: { ...updatedGroup },
                 task: null,
                 createdAt: Date.now()
             }
             activities.push(activity)
-            updatedBoard = { ...updatedBoard, groups, activities }
+            updatedBoard = { ...updatedBoard, activities }
         }
 
-    
+
 
         const savedBoard = await updateBoard(updatedBoard)
         // console.log(savedBoard)
