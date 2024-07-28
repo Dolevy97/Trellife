@@ -24,7 +24,9 @@
     scrollbar-width: thin;
 
     @media (max-width:430px) {
-        height: calc(100vh - 105px);
+        height: calc(100vh - 104px);
+        width: 100vw;
+        border-radius:0;
     }
 
     header {
