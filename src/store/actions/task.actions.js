@@ -39,7 +39,7 @@ export async function updateTask(task, group, board, activityTitle = '', user) {
 
         await updateBoard(boardToSave)
         const newBoard = await loadBoard(boardToSave._id)
-        console.log('Task updated')
+        // console.log('Task updated')
         return newBoard
     } catch (er) {
         console.log('err: ' + er)

@@ -122,7 +122,21 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
 
     function getAllTodosInChecklist(taskId, groupId) {
         const group = board.groups.find(group => group.id === groupId)
+        if (!group) {
+            console.error(`Group with id ${groupId} not found`)
+            return 0
+        }
+
         const task = group.tasks.find(task => task.id === taskId)
+        if (!task) {
+            return 0
+        }
+
+        if (!task.checklists) {
+            console.warn(`Task ${taskId} has no checklists`)
+            return 0
+        }
+
         return task.checklists.reduce((total, checklist) => {
             return total + (Array.isArray(checklist.todos) ? checklist.todos.length : 0)
         }, 0)
