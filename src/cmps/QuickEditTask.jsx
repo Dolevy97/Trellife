@@ -66,16 +66,16 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user 
           onKeyPress={handleTitleKeyPress}
           autoFocus
         />
-          {task.membersIds && task.membersIds.length > 0 && (
-            <div className="members-container">
-              <div className="members-img-container">
-                {task.membersIds.map(id => {
-                  const member = getMemberById(id)
-                  return <img key={member._id} className="task-member-thumbnail" src={member.imgUrl} title={member.fullname} alt={member.fullname} />
-                })}
-              </div>
+        {task.membersIds && task.membersIds.length > 0 && (
+          <div className="members-container">
+            <div className="members-img-container">
+              {task.membersIds.map(id => {
+                const member = getMemberById(id)
+                return <img key={member._id} className="task-member-thumbnail" src={member.imgUrl} title={member.fullname} alt={member.fullname} />
+              })}
             </div>
-          )}
+          </div>
+        )}
         <span className="save-btn" onClick={() => {
           onClose
           handleTitleUpdate()
@@ -98,7 +98,7 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user 
               />
             }
           </div>
-        
+
         </div>
       </div>
     </div>

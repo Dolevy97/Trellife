@@ -41,7 +41,7 @@
         font-size: 14px;
         color: $txtclr1;
         line-height: 20px;
-        
+
         padding: 6px 8px 6px 12px;
         cursor: pointer;
         overflow-wrap: anywhere;
@@ -64,19 +64,19 @@
             cursor: pointer;
 
             padding: 4px;
-    
+
             &:hover {
                 background-color: $btnhoverclr;
             }
-    
+
             .collapse-icon {
                 height: 24px;
                 width: 24px;
                 cursor: pointer;
             }
-    
+
         }
-    
+
         .three-dots-wrapper {
             display: flex;
             align-items: center;
@@ -87,11 +87,11 @@
             border-radius: 4px;
             cursor: pointer;
             padding: 4px;
-    
+
             &:hover {
                 background-color: $btnhoverclr;
             }
-    
+
             .three-dots-icon {
                 height: 16px;
                 width: 16px;
@@ -170,7 +170,7 @@
                 font-size: 14px;
                 color: $textclr2;
 
-                padding: 4px 8px;
+                padding: 4px 14px;
                 margin: 0;
                 margin-bottom: 5px;
                 cursor: pointer;
@@ -188,7 +188,7 @@
                     justify-content: space-between;
                     align-items: center;
 
-                    padding: 4px 8px;
+                    padding: 4px 14px;
                     margin-block-end: 0em;
 
                     color: $textclr2;
@@ -225,8 +225,7 @@
                     display: flex;
                     flex-wrap: wrap;
                     gap: 4px;
-                    padding: 4px 8px;
-
+                    padding: 4px 14px;
 
                     .color-option {
                         width: calc(20% - 4px);
@@ -268,7 +267,7 @@
                 left: 0;
                 width: 100%;
 
-                padding: 4px 8px;
+                padding: 4px 14px;
                 margin-bottom: 8px;
                 cursor: pointer;
 

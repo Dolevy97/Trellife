@@ -1,7 +1,7 @@
 .BoardHederFilter {
     position: fixed;
-    top: 6em;
-    right: 1em;
+    top: 6.36em;
+    right: 0;
 
 
     display: flex;
@@ -45,7 +45,7 @@
 
         .close-btn-wrapper {
             position: absolute;
-            right: 11px;
+            right: -2px;
             top: 9px;
 
             display: flex;
@@ -115,7 +115,6 @@
     .members-container,
     .labels-container {
         padding: 12px;
-        border-top: 1px solid $hrclr;
 
         >span {
             display: block;

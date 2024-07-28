@@ -36,15 +36,13 @@
         }
 
         position: relative;
-        min-height: calc((100vh - 64px));
-        width: em(768, 16);
+        min-height: 520px;
+        height: max-content;
+        width: 768px;
         margin-block-end: auto;
-
         display: flex;
         flex-direction: column;
-        // justify-content: center;
-
-        background-color: rgb(50 57 64);
+        background-color: rgb(50, 57, 64);
         font-family: inherit;
         color: rgb(182, 194, 207);
         border-radius: 12px;
@@ -519,7 +517,6 @@
                             font-size: 14px;
                             padding: 4px 8px 4px 0;
 
-
                             .attachment-file-preview {
                                 display: block;
                                 font-size: 18px;
@@ -541,8 +538,6 @@
                                 background-size: contain;
                                 border-radius: 3px;
 
-
-                                // flex-grow: 1;
                             }
 
                             .attachment-details {
@@ -551,7 +546,7 @@
                                 align-items: flex-start;
                                 padding: 8px 8px 8px 16px;
                                 width: 400px;
-                                width: 100%;
+                                width: calc(100% - 112px);
                                 // flex-shrink: 1;
 
                                 .attachment-header {
@@ -766,7 +761,7 @@
 
                 font-family: inherit;
                 font-weight: 500;
-
+                width: 168px;
                 font-size: 14px;
                 color: inherit;
                 background-color: rgba(161, 189, 217, 0.08);
@@ -783,6 +778,7 @@
 
                 @media (max-width:991px) {
                     width: auto;
+                    padding-inline-end: 20px;
                 }
 
                 .icon {
