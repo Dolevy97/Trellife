@@ -36,15 +36,13 @@
         }
 
         position: relative;
-        min-height: calc((100vh - 64px));
-        width: em(768, 16);
+        min-height: 0px;
+        height: max-content;
+        width: 768px;
         margin-block-end: auto;
-
         display: flex;
         flex-direction: column;
-        // justify-content: center;
-
-        background-color: rgb(50 57 64);
+        background-color: rgb(50, 57, 64);
         font-family: inherit;
         color: rgb(182, 194, 207);
         border-radius: 12px;
