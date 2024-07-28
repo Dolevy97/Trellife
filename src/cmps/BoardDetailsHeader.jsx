@@ -4,14 +4,15 @@ import { useSelector } from 'react-redux'
 import { RightNavBar } from '../cmps/RightNavBar';
 import { showSuccessMsg } from '../services/event-bus.service'
 import { updateUser } from '../store/actions/user.actions';
+import { getAverageColorFromUrl, isLightColor } from '../services/util.service';
 
 import star from '../assets/imgs/Icons/star.svg'
 import fullStar from '../assets/imgs/Icons/fullstar.svg'
 import filter from "../assets/imgs/Icons/filter.svg"
 import share from "../assets/imgs/Icons/share.svg"
 import dots from "../assets/imgs/icons/3dots.svg"
-import { getAverageColorFromAttachment, getAverageColorFromUrl, isLightColor } from '../services/util.service';
-import autosize from 'autosize';
+import boardIcon from '../assets/imgs/Icons/boardIcon.svg'
+import tableIcon from '../assets/imgs/Icons/tableIcon.svg'
 
 export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, onFilterClick,
   filterButtonRef }) {
@@ -152,7 +153,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
             onKeyPress={handleKeyPress}
             autoFocus
             className='groups-title-input'
-            style={{ width: inputWidth, color: buttonColor }}
+            style={{ width: inputWidth }}
           />
         ) : (
           <span
@@ -168,9 +169,23 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
           <img
             className={`groupsheader-preview-star ${user.favorites.includes(board._id) ? 'starred' : ''}`}
             src={user.favorites.includes(board._id) ? fullStar : star}
-            style={outsideIconColor} 
+            style={outsideIconColor}
             alt="star icon"
           />
+        </div>
+        <div className="board-icon-container" style={{
+          backgroundColor: buttonColor,
+          color: textColor
+        }}>
+          <img className='board-icon' src={boardIcon} alt="board icon" style={iconColor} />
+          <span className='board-icon-text'>Board</span>
+        </div>
+        <div className="table-icon-container" style={{
+          backgroundColor: buttonColor,
+          color: textColor
+        }}>
+          <img className='board-icon' src={tableIcon} alt="table icon" style={iconColor} />
+          <span className='board-icon-text'>Table</span>
         </div>
       </div>
       <div className='groups-header-rightside'>
@@ -207,7 +222,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
             <img
               onClick={toggleRightNavBar}
               src={dots} alt=""
-              style={outsideIconColor} 
+              style={outsideIconColor}
               className='open-right-nav-icon' />
           </div>
 
