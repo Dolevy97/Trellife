@@ -16,6 +16,10 @@
         margin-inline-end: 21.188em;
     }
 
+    // &.right-nav-open .groups-header-title {
+
+    // }
+
     .groups-header-title {
         font-size: 18px;
         white-space: nowrap;
@@ -29,20 +33,18 @@
         align-items: center;
         gap: 4px;
         padding-inline-start: 15px;
-        width:70%;
-
 
         & .groups-title-input {
             border: none;
             outline: none;
             background-color: transparent;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            font-weight: 600;
+            font-family: inherit;
+            font-weight: 700;
             font-size: 18px;
             color: white;
             height: 30px;
             margin: 0;
-            padding: 9px 6px;
+            padding: 9px 8px;
             overflow: hidden;
             border-radius: 5px;
             background-color: #23262a;
@@ -126,6 +128,7 @@
             }
 
             span {
+                font-size: 14px;
                 font-weight: 500;
             }
         }

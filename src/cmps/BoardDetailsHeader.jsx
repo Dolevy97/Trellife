@@ -25,7 +25,8 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
   const [buttonColor, setButtonColor] = useState('')
   const [textColor, setTextColor] = useState('')
   const [iconColor, setIconColor] = useState({})
-  const [inputWidth, setInputWidth] = useState(() => `${Math.max(board.title.length * 9, 100)}px`);
+  const [outsideIconColor, setOutsideIconColor] = useState({})
+  const [inputWidth, setInputWidth] = useState(() => `${Math.max(board.title.length * 9.2, 100)}px`);
 
   useEffect(() => {
     if (board) {
@@ -40,7 +41,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
   function updateInputWidth() {
     if (boardTitleRef.current) {
-      const newWidth = Math.max(newTitle.length * 9, 100) // Minimum width of 100px
+      const newWidth = Math.max(newTitle.length * 9.2, 100) // Minimum width of 100px
       setInputWidth(`${newWidth}px`)
     }
   }
@@ -55,6 +56,11 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
           { filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7489%) hue-rotate(29deg) brightness(100%) contrast(103%)' }
           :
           { filter: 'brightness(0) saturate(100%) invert(12%) sepia(53%) saturate(1411%) hue-rotate(192deg) brightness(94%) contrast(92%)' })
+        setOutsideIconColor(isLightColor(avgColor) ?
+          { filter: 'brightness(0) saturate(100%) invert(12%) sepia(53%) saturate(1411%) hue-rotate(192deg) brightness(94%) contrast(92%)' }
+          :
+          { filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7489%) hue-rotate(29deg) brightness(100%) contrast(103%)' }
+        )
       } catch (error) {
         console.error('Error getting average color:', error)
         setButtonColor('transparent')
@@ -146,11 +152,12 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
             onKeyPress={handleKeyPress}
             autoFocus
             className='groups-title-input'
-            style={{ width: inputWidth }}
+            style={{ width: inputWidth, color: buttonColor }}
           />
         ) : (
           <span
             onClick={() => setIsEditing(true)}
+            style={{ color: buttonColor }}
             className='groups-header-title'>{board.title}</span>
         )}
         <div
@@ -161,14 +168,15 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
           <img
             className={`groupsheader-preview-star ${user.favorites.includes(board._id) ? 'starred' : ''}`}
             src={user.favorites.includes(board._id) ? fullStar : star}
+            style={outsideIconColor} 
             alt="star icon"
           />
         </div>
       </div>
       <div className='groups-header-rightside'>
         <div className='filter-container' onClick={toggleFilterOpen} >
-          <img src={filter} />
-          <span>Filters</span>
+          <img style={outsideIconColor} src={filter} />
+          <span style={{ color: buttonColor }}>Filters</span>
         </div>
         <span className="sep">
 
@@ -199,6 +207,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
             <img
               onClick={toggleRightNavBar}
               src={dots} alt=""
+              style={outsideIconColor} 
               className='open-right-nav-icon' />
           </div>
 

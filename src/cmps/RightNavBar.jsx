@@ -70,22 +70,22 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
             <section className="right-nav-bar-body">
                 {field === 'Menu' && (
                     <>
-                        <div className="activity-container" onClick={() => setField('Activity')}>
-                            <div className="activity-wrapper">
+                        <div className="activity-container" >
+                            <div className="activity-wrapper" onClick={() => setField('Activity')}>
                                 <img src={activityIcon} alt="" />
                                 <span>Activity</span>
                             </div>
                         </div>
 
-                        <div className="change-background-container" onClick={() => setField('Change background')}>
-                            <div className="change-background-wrapper" >
+                        <div className="change-background-container" >
+                            <div className="change-background-wrapper" onClick={() => setField('Change background')}>
                                 <div className="bgc-img" style={board.style}></div>
                                 <span>Change background</span>
                             </div>
                         </div>
 
-                        <div className="collapse-all-container" onClick={onCollapseToggle}>
-                            <div className="collapse-all-wrapper">
+                        <div className="collapse-all-container" >
+                            <div className="collapse-all-wrapper" onClick={onCollapseToggle}>
                                 <img
                                     src={isCollapseOpen ? expandIcon : collapseIcon}
                                     alt={isCollapseOpen ? "Expand" : "Collapse"}
