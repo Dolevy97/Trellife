@@ -95,7 +95,12 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
     }
 
     function getMemberById(id) {
-        return board.members.find(member => member._id === id)
+        const member = board.members.find(member => member._id === id)
+        return member || {
+            _id: 'unknown',
+            imgUrl: 'path/to/default/image.png',
+            fullname: 'Unknown Member'
+        }
     }
 
     function getLabelById(id) {
@@ -123,7 +128,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
     function getAllTodosInChecklist(taskId, groupId) {
         const group = board.groups.find(group => group.id === groupId)
         if (!group) {
-            console.error(`Group with id ${groupId} not found`)
+            // console.error(`Group with id ${groupId} not found`)
             return 0
         }
 
@@ -392,9 +397,10 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                                     </div>
 
                                                                     <div className='members-container'>
-                                                                        {task.membersIds && task.membersIds.map(id => {
-                                                                            const member = getMemberById(id)
-                                                                            return (
+                                                                        {task.membersIds && task.membersIds
+                                                                            .map(getMemberById)
+                                                                            .filter(member => member._id !== 'unknown')
+                                                                            .map(member => (
                                                                                 <img
                                                                                     key={member._id}
                                                                                     className="member-thumbnail"
@@ -402,8 +408,8 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                                                     title={member.fullname}
                                                                                     alt={member.fullname}
                                                                                 />
-                                                                            )
-                                                                        })}
+                                                                            ))
+                                                                        }
                                                                     </div>
                                                                 </div>
                                                             )}

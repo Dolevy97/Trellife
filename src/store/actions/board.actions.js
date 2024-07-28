@@ -35,9 +35,13 @@ export function filterBoard(board, filterBy = {}) {
         }
     })
 
-    // Remove empty groups
-    if (filterBy.title || filterBy.memberIds || filterBy.labelsIds) filteredBoard.groups = filteredBoard.groups.filter(group => group.tasks.length > 0)
-
+    if (filterBy.title ||
+        (Array.isArray(filterBy.memberIds) && filterBy.memberIds.length > 0) ||
+        (Array.isArray(filterBy.labelIds) && filterBy.labelIds.length > 0)) {
+        filteredBoard.groups = filteredBoard.groups.filter(group => group.tasks.length > 0)
+    } else {
+        filteredBoard.groups = filteredBoard.groups
+    }
     return filteredBoard
 }
 

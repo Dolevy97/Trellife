@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import closeIcon from '../assets/imgs/Icons/close.svg'
+import { isLightColor } from '../services/util.service'
 
 export function BoardHederFilter({ onClose, filterBy, setFilterBy, board }) {
     const [filterToEdit, setFilterToEdit] = useState(filterBy)
@@ -88,7 +89,7 @@ export function BoardHederFilter({ onClose, filterBy, setFilterBy, board }) {
                         />
                         <div
                             className="label-color"
-                            style={{ backgroundColor: label.color }}
+                            style={{ backgroundColor: label.color,color: isLightColor(label.color) ? '#1d2125' : 'currentColor' }}
                             title={label.title} >
                             <span>{label.title}</span>
                         </div>

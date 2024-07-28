@@ -36,7 +36,7 @@
         }
 
         position: relative;
-        min-height: 0px;
+        min-height: 520px;
         height: max-content;
         width: 768px;
         margin-block-end: auto;
@@ -322,7 +322,7 @@
                             display: flex;
                             align-items: center;
                             margin: 0 8px 8px 0;
-                            padding: 8px 12px 8px 6px;
+                            padding: 8px 12px;
                             border-radius: 3px;
                             margin-block: auto;
 
@@ -345,12 +345,9 @@
                         }
 
 
-                        .date-input {
-                            // direction: rtl;
+                        .date-span {
                             font-family: inherit;
                             padding-inline-end: 6px;
-                            width: 140.5px;
-
                             background-color: transparent;
                             color: $txtclr1;
                             font-size: 14px;
@@ -517,7 +514,6 @@
                             font-size: 14px;
                             padding: 4px 8px 4px 0;
 
-
                             .attachment-file-preview {
                                 display: block;
                                 font-size: 18px;
@@ -539,8 +535,6 @@
                                 background-size: contain;
                                 border-radius: 3px;
 
-
-                                // flex-grow: 1;
                             }
 
                             .attachment-details {
@@ -549,7 +543,7 @@
                                 align-items: flex-start;
                                 padding: 8px 8px 8px 16px;
                                 width: 400px;
-                                width: 100%;
+                                width: calc(100% - 112px);
                                 // flex-shrink: 1;
 
                                 .attachment-header {
@@ -764,7 +758,7 @@
 
                 font-family: inherit;
                 font-weight: 500;
-
+                width: 168px;
                 font-size: 14px;
                 color: inherit;
                 background-color: rgba(161, 189, 217, 0.08);
@@ -781,6 +775,7 @@
 
                 @media (max-width:991px) {
                     width: auto;
+                    padding-inline-end: 20px;
                 }
 
                 .icon {

@@ -57,9 +57,7 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
     return (
         <section className={`right-nav-bar-container ${!isRightNavBarOpen ? 'is-close' : ''}`}>
             <section className="right-nav-bar-header">
-                <div>
-                    <span>{field}</span>
-                </div>
+                <span className="menu-title">{field}</span>
                 <div className={`to-menu-btn-wrapper${field !== 'Menu' ? '' : ' back-to'}`} onClick={() => setField('Menu')}>
                     <img src={arrowDownIcon} alt="Back to Menu" />
                 </div>
@@ -67,8 +65,8 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
                 <div className="close-btn-wrapper" onClick={onClose}>
                     <img src={closeIcon} alt="Close" />
                 </div>
-                <hr className="header-sep" />
             </section>
+            <hr className="header-sep" />
             <section className="right-nav-bar-body">
                 {field === 'Menu' && (
                     <>
