@@ -26,7 +26,7 @@
     background-color: rgba(0, 0, 0, 0.75);
     z-index: 1001;
 
-    @media (max-width: 991px) {
+    @media (max-width: 768px) {
         padding: 0;
     }
 
@@ -47,7 +47,7 @@
         color: rgb(182, 194, 207);
         border-radius: 12px;
 
-        @media (max-width: 991px) {
+        @media (max-width: 768px) {
             height: max-content;
             min-height: 100vh;
             width: 100vw;
@@ -86,7 +86,7 @@
             background-repeat: no-repeat;
             background-size: contain;
 
-            @media (max-width: 991px) {
+            @media (max-width: 768px) {
                 border-radius: 0;
             }
 
@@ -139,7 +139,7 @@
             border-top-right-radius: 12px;
             margin-block-end: 24px;
 
-            @media (max-width: 991px) {
+            @media (max-width: 768px) {
                 border-radius: 0;
             }
 
@@ -184,7 +184,7 @@
         .task-container {
             display: flex;
 
-            @media (max-width:991px) {
+            @media (max-width:768px) {
                 flex-direction: column;
             }
 
@@ -193,7 +193,7 @@
                 width: 576px;
                 padding: 0 8px 8px 57px;
 
-                @media (max-width:991px) {
+                @media (max-width:768px) {
                     width: 100%;
                     padding-inline-end: 20px;
                 }
@@ -734,7 +734,7 @@
             flex-direction: column;
             padding: 2px 16px 8px 8px;
 
-            @media (max-width:991px) {
+            @media (max-width:768px) {
                 flex-direction: row;
                 gap: .5em;
                 height: max-content;
@@ -745,7 +745,7 @@
             .add-to-card {
                 color: $txtclr2;
 
-                @media (max-width:991px) {
+                @media (max-width:768px) {
                     width: 100%;
                 }
             }
@@ -773,7 +773,7 @@
                 transition-timing-function: ease;
                 white-space: nowrap;
 
-                @media (max-width:991px) {
+                @media (max-width:768px) {
                     width: auto;
                     padding-inline-end: 20px;
                 }

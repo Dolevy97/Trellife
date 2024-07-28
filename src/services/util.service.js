@@ -302,6 +302,7 @@ export async function getUnsplashImages(query = 'random', count = 1) {
 
         const images = response.data.map(image => ({
             id: image.id,
+            title: image.description || image.alt_description || 'Untitled',
             url: image.urls.raw,
             smallUrl: image.urls.small,
             thumbnailUrl: image.urls.thumb,
@@ -353,6 +354,7 @@ export async function getUnsplashImageById(imageId) {
         const image = {
             id: response.data.id,
             url: response.data.urls.regular,
+            title: image.description || image.alt_description || 'Untitled',
             smallUrl: response.data.urls.small,
             thumbnailUrl: response.data.urls.thumb,
             description: response.data.description || response.data.alt_description
