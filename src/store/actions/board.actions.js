@@ -36,7 +36,7 @@ export function filterBoard(board, filterBy = {}) {
     })
 
     // Remove empty groups
-    if (filterBy.title) filteredBoard.groups = filteredBoard.groups.filter(group => group.tasks.length > 0)
+    if (filterBy.title || filterBy.memberIds || filterBy.labelsIds) filteredBoard.groups = filteredBoard.groups.filter(group => group.tasks.length > 0)
 
     return filteredBoard
 }
