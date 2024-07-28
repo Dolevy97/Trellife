@@ -28,6 +28,11 @@
         background-color: $bgclr4;
         z-index: 1;
 
+        @media (max-width:500px) {
+            margin-inline:0; 
+        }
+    
+
         .menu-title {
             height: 20px;
         }
