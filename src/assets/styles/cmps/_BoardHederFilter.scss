@@ -7,7 +7,6 @@
 
 .BoardHederFilter {
     position: fixed;
-    top: 6.36em;
     right: 0;
 
 
@@ -29,6 +28,9 @@
     scrollbar-color: rgb(255 255 255 / 20%) rgb(233 255 236 / 2%);
     scrollbar-width: thin;
 
+    @media (max-width:991px) {
+        height: calc(100vh - 105px);
+    }
 
     header {
         position: sticky;
