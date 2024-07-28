@@ -254,6 +254,8 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                             board={board}
                                                             user={user}
                                                             handleTaskClick={handleTaskClick}
+                                                            toggleLabelExpansion={toggleLabelExpansion}
+                                                            areLabelsExpanded={areLabelsExpanded}
                                                         />
                                                     )}
                                                     <div

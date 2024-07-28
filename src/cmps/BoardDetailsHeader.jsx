@@ -1,34 +1,51 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { updateBoard } from '../store/actions/board.actions'
 import { useSelector } from 'react-redux'
 import { RightNavBar } from '../cmps/RightNavBar';
 import { showSuccessMsg } from '../services/event-bus.service'
 import { updateUser } from '../store/actions/user.actions';
+import { getAverageColorFromUrl, isLightColor } from '../services/util.service';
 
 import star from '../assets/imgs/Icons/star.svg'
 import fullStar from '../assets/imgs/Icons/fullstar.svg'
 import filter from "../assets/imgs/Icons/filter.svg"
 import share from "../assets/imgs/Icons/share.svg"
 import dots from "../assets/imgs/icons/3dots.svg"
-import { getAverageColorFromAttachment, getAverageColorFromUrl, isLightColor } from '../services/util.service';
+import boardIcon from '../assets/imgs/Icons/boardIcon.svg'
+import tableIcon from '../assets/imgs/Icons/tableIcon.svg'
 
 export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, onFilterClick,
   filterButtonRef }) {
   const board = useSelector(storeState => storeState.boardModule.board)
   const user = useSelector(storeState => storeState.userModule.user)
 
+  const boardTitleRef = useRef(null)
 
   const [isEditing, setIsEditing] = useState(false)
   const [newTitle, setNewTitle] = useState(board.title)
   const [buttonColor, setButtonColor] = useState('')
   const [textColor, setTextColor] = useState('')
   const [iconColor, setIconColor] = useState({})
+  const [outsideIconColor, setOutsideIconColor] = useState({})
+  const [inputWidth, setInputWidth] = useState(() => `${Math.max(board.title.length * 9.2, 100)}px`);
 
   useEffect(() => {
     if (board) {
       setNewTitle(board.title)
     }
   }, [board])
+
+  useEffect(() => {
+    updateInputWidth()
+  }, [newTitle])
+
+
+  function updateInputWidth() {
+    if (boardTitleRef.current) {
+      const newWidth = Math.max(newTitle.length * 9.2, 100) // Minimum width of 100px
+      setInputWidth(`${newWidth}px`)
+    }
+  }
 
   useEffect(() => {
     async function updateButtonColor() {
@@ -40,6 +57,11 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
           { filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7489%) hue-rotate(29deg) brightness(100%) contrast(103%)' }
           :
           { filter: 'brightness(0) saturate(100%) invert(12%) sepia(53%) saturate(1411%) hue-rotate(192deg) brightness(94%) contrast(92%)' })
+        setOutsideIconColor(isLightColor(avgColor) ?
+          { filter: 'brightness(0) saturate(100%) invert(12%) sepia(53%) saturate(1411%) hue-rotate(192deg) brightness(94%) contrast(92%)' }
+          :
+          { filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7489%) hue-rotate(29deg) brightness(100%) contrast(103%)' }
+        )
       } catch (error) {
         console.error('Error getting average color:', error)
         setButtonColor('transparent')
@@ -124,17 +146,20 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
       <div className='groups-header-leftside'>
         {isEditing ? (
           <input
-            type="text"
+            ref={boardTitleRef}
             value={newTitle}
             onChange={(ev) => setNewTitle(ev.target.value)}
             onBlur={handleBlur}
             onKeyPress={handleKeyPress}
             autoFocus
+            className='groups-title-input'
+            style={{ width: inputWidth }}
           />
         ) : (
           <span
-          onClick={() => setIsEditing(true)}
-          className='groups-header-title'>{board.title}</span>
+            onClick={() => setIsEditing(true)}
+            style={{ color: buttonColor }}
+            className='groups-header-title'>{board.title}</span>
         )}
         <div
           className='star-container'
@@ -144,14 +169,41 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
           <img
             className={`groupsheader-preview-star ${user.favorites.includes(board._id) ? 'starred' : ''}`}
             src={user.favorites.includes(board._id) ? fullStar : star}
+            style={outsideIconColor}
             alt="star icon"
           />
         </div>
+        <div className="board-icon-container" style={{
+          backgroundColor: buttonColor,
+          color: textColor
+        }}>
+          <img className='board-icon' src={boardIcon} alt="board icon" style={iconColor} />
+          <span className='board-icon-text'>Board</span>
+        </div>
+        <div className="table-icon-container" style={{
+          backgroundColor: buttonColor,
+          color: textColor
+        }}>
+          <img className='board-icon' src={tableIcon} alt="table icon" style={iconColor} />
+          <span className='board-icon-text'>Table</span>
+        </div>
+
+        <div className='chat-trellife-container'style={{
+          backgroundColor: buttonColor,
+          color: textColor
+        }} >
+        <span className='chat-trellife-text'>Chat Trellife</span>
+
       </div>
+
+      </div>
+
+
+
       <div className='groups-header-rightside'>
         <div className='filter-container' onClick={toggleFilterOpen} >
-          <img src={filter} />
-          <span>Filters</span>
+          <img style={outsideIconColor} src={filter} />
+          <span style={{ color: buttonColor }}>Filters</span>
         </div>
         <span className="sep">
 
@@ -182,6 +234,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
             <img
               onClick={toggleRightNavBar}
               src={dots} alt=""
+              style={outsideIconColor}
               className='open-right-nav-icon' />
           </div>
 
