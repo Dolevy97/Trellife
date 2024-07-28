@@ -29,7 +29,7 @@ export function Auth() {
 
         if (isSignup) {
             newUser.fullname = fullname
-            newUser.imgUrl = uploadedImage
+            newUser.imgUrl = uploadedImage || `https://ui-avatars.com/api/?name=${fullname}&background=random&color=random`
         }
 
         try {

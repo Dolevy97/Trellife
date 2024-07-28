@@ -156,7 +156,8 @@
             max-width: 400px;
             padding-inline-start: 8px;
             background-color: #DCDFE4;
-
+            
+            transition: background-color 0.3s ease, color 0.3s ease;
             &:hover {
                 background-color: #FFFFFF;
             }

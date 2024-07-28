@@ -1,3 +1,10 @@
+.board-filter-body {
+    overflow-y: auto;    
+    @media (max-width:991px) {
+        max-height: 436px;
+    }
+}
+
 .BoardHederFilter {
     position: fixed;
     top: 6.36em;
@@ -8,7 +15,7 @@
     flex-direction: column;
 
     width: 384px;
-    
+
     min-height: 400px;
     height: max-content;
 
@@ -19,7 +26,6 @@
     padding: 0px 12px 12px 12px;
 
     overflow-x: hidden;
-    overflow-y: auto;
     scrollbar-color: rgb(255 255 255 / 20%) rgb(233 255 236 / 2%);
     scrollbar-width: thin;
 
