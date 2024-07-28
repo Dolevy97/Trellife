@@ -193,6 +193,15 @@ export function BoardDetails() {
         isFilterOpen={isFilterOpen}
         setIsFilterOpen={setIsFilterOpen}
       />
+        {isFilterOpen &&
+          <BoardHederFilter
+            onClose={() => setIsFilterOpen(false)}
+            filterBy={filterBy}
+            setFilterBy={setFilterBy}
+            board={board}
+  
+          />
+        }
       <RightNavBar
         onClose={() => setIsRightNavBarOpen(false)}
         isRightNavBarOpen={isRightNavBarOpen}
@@ -201,15 +210,6 @@ export function BoardDetails() {
         board={board}
       />
 
-      {isFilterOpen &&
-        <BoardHederFilter
-          onClose={() => setIsFilterOpen(false)}
-          filterBy={filterBy}
-          setFilterBy={setFilterBy}
-          board={board}
-
-        />
-      }
       <section ref={groupListContainer} className="group-list-container">
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId='groups' direction='horizontal' type='GROUP'>
