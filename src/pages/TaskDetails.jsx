@@ -618,7 +618,12 @@ export function TaskDetails() {
                                         {labelsIds && labelsIds.map(id => {
                                             const label = getLabelById(id)
                                             if (!label) return null
-                                            return <span onClick={(ev) => onSetAction(ev, 'labels', 2)} className="label" key={id} style={{ backgroundColor: label.color ? label.color : '#3a444c', color: isLightColor(label.color) ? '#1d2125' : 'currentColor' }}>{label.title}</span>
+                                            return <span
+                                                onClick={(ev) => onSetAction(ev, 'labels', 2)}
+                                                className="label" key={id}
+                                                style={{ backgroundColor: label.color ? label.color : '#3a444c', color: isLightColor(label.color) ? '#1d2125' : 'currentColor' }}>
+                                                {label.title}
+                                            </span>
                                         })}
                                         <div onClick={(ev) => onSetAction(ev, 'labels', 2)} className="add-label-thumbnail"><img className="add-label-icon" src={addMemberIcon} alt="add plus icon" />
                                         </div>
