@@ -158,19 +158,29 @@
     display: flex;
     flex-direction: column;
     gap: .6em;
+    width: 100%;
 
     input {
         @include input;
         padding: 8px 6px;
         font-size: 14px;
+        width: 100%;
 
         &::placeholder {
             font-size: 14px;
         }
 
-        &:-webkit-autofill {
-            background-color: red;
+        @media (max-width:991px) {
+            margin-inline: auto;
         }
+    }
+
+    & div {
+            width: 100%;
+    }
+
+    @media (max-width:991px) {
+        margin-inline: auto;
     }
 }
 
@@ -185,7 +195,6 @@
 }
 
 .profile-pic-label {
-    // @include btn;
     display: inline-block;
     width: 100px;
     height: 100px;
@@ -196,7 +205,6 @@
     align-items: center;
     cursor: pointer;
     overflow: hidden;
-    // outline: 1px solid rgb(29 33 37 / 0.5);
 
     transition: background-color .3s;
 
