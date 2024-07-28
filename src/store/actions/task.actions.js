@@ -68,17 +68,19 @@ export async function updateTask(task, group, board, activityTitle = '', user) {
 
     const updatedBoard = { ...board, groups, activities }
 
+    // Optimistic update
     store.dispatch({ type: UPDATE_BOARD, board: updatedBoard })
 
     try {
-        await updateBoard(updatedBoard)
-        const latestBoard = await loadBoard(updatedBoard._id)
-        store.dispatch({ type: UPDATE_BOARD, board: latestBoard })
+        // console.log('Sending updated board to server:', updatedBoard._id);
+        const savedBoard = await updateBoard(updatedBoard)
+        // console.log('Board updated successfully on server');
+        store.dispatch({ type: UPDATE_BOARD, board: savedBoard })
 
-        return latestBoard
+        return savedBoard
     } catch (error) {
         console.error('Error updating task:', error)
-        store.dispatch({ type: UPDATE_BOARD_FAILED, originalBoard: board })
+        store.dispatch({ type: UPDATE_BOARD_FAILED, originalBoard: board, error: error.message })
         throw error
     }
 }
