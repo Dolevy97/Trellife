@@ -179,13 +179,18 @@
         .task-container {
             display: flex;
 
+            @media (max-width:991px) {
+                flex-direction: column;
+            }
+
             .task-content {
                 position: relative;
                 width: 576px;
                 padding: 0 8px 8px 57px;
-                
+
                 @media (max-width:991px) {
                     width: 100%;
+                    padding-inline-end: 20px;
                 }
 
                 .members-labels-notifications-date-container {
@@ -489,7 +494,7 @@
                             color: $txtclr1;
                             font-weight: 500;
 
-                            &:hover{
+                            &:hover {
                                 background-color: rgba(166, 197, 226, 0.1607843137);
                             }
                         }
@@ -539,6 +544,7 @@
                                 align-items: flex-start;
                                 padding: 8px 8px 8px 16px;
                                 width: 400px;
+                                width: 100%;
                                 // flex-shrink: 1;
 
                                 .attachment-header {
@@ -617,11 +623,14 @@
 
                     margin-block-end: 24px;
 
+
                     .input-container {
                         display: flex;
                         flex-direction: column;
 
                         position: relative;
+                        width: 100%;
+
 
                         .comment {
                             @include textarea;
@@ -727,10 +736,19 @@
             padding: 2px 16px 8px 8px;
 
             @media (max-width:991px) {
+                flex-direction: row;
+                gap: .5em;
                 height: max-content;
+                flex-wrap: wrap;
+                padding-inline: 2em;
             }
+
             .add-to-card {
                 color: $txtclr2;
+
+                @media (max-width:991px) {
+                    width: 100%;
+                }
             }
 
             .action {
@@ -779,6 +797,7 @@
 }
 
 .comments-container {
+    width: 100%;
 
     .comment-container {
         position: relative;
@@ -786,7 +805,7 @@
         min-height: 32px;
         padding: 8px 0;
 
-        width: 510px;
+        width: 100%;
 
         .btns {
             margin-block-start: 4px;
