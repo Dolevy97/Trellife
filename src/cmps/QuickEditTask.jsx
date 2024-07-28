@@ -1,8 +1,3 @@
-import { TaskAction } from '../cmps/TaskAction'
-
-import { useState, useEffect, useRef } from "react"
-import { updateBoard } from '../store/actions/board.actions'
-import { updateTask } from '../store/actions/task.actions'
 
 import attachmentIcon from '../assets/imgs/TaskDetails-icons/attachment.svg'
 import descriptionIcon from '../assets/imgs/Icons/description.svg'
@@ -19,11 +14,19 @@ import trashIcon from '../assets/imgs/TaskDetails-icons/trash.svg'
 import { updateGroup } from '../store/actions/group.actions'
 import { getFormattedShortTime } from '../services/util.service'
 
+import { TaskAction } from '../cmps/TaskAction'
+
+import { useState, useEffect, useRef } from "react"
+import { updateBoard } from '../store/actions/board.actions'
+import { updateTask } from '../store/actions/task.actions'
+
 export function QuickEditTask({ task, onClose, taskPosition, group, board, user, handleTaskClick, onSetCover, onRemoveCover }) {
 
   const [taskTitleInputValue, setTaskTitleInputValue] = useState(task?.title || '')
   const [action, setAction] = useState(null)
   const [labelToEdit, setLabelToEdit] = useState(null)
+  const [coverStyle, setCoverStyle] = useState(task.style || {})
+
 
   /* Set Action */
   function onSetAction(ev, act) {
