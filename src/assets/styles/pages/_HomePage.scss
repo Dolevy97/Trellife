@@ -239,6 +239,10 @@
 
 .inner-header {
     .text-block {
+        p {
+            margin: 0;
+        }
+
         .trellife-101 {
             font-weight: 500;
             margin-bottom: 0.5rem;
@@ -251,6 +255,8 @@
         .subtitle {
             padding-bottom: 1rem;
             font-size: 2.25em;
+            margin: 0;
+            margin-block-end: 8px;
         }
 
         .text-content {
@@ -259,11 +265,16 @@
     }
 }
 
-.swiper {
-    width: 100%;
-    height: 500px;
+.carousal {
+    padding: 16px;
+    .swiper {
+        border-radius: 6px;
+        width: 728px;
+        height: 488.5px;
+        padding-block-end: 47.5;
 
-    img {
-       height: 100%;
+        img {
+            height: 100%;
+        }
     }
 }

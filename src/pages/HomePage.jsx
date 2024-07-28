@@ -65,11 +65,7 @@ export function HomePage() {
                         </div>
                     </div>
                 </div>
-
-
-
-            </section>
-                <>
+                <div className="carousal">
                     <Swiper
                         pagination={{
                             dynamicBullets: true,
@@ -81,7 +77,9 @@ export function HomePage() {
                         <SwiperSlide><img src='../../../src/assets/imgs/drag-and-drop-screenshot.png'></img></SwiperSlide>
                         <SwiperSlide>Slide 3</SwiperSlide>
                     </Swiper>
-                </>
+                </div>
+            </section>
+
         </section >
     )
 }
