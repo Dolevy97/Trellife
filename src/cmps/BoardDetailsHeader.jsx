@@ -187,7 +187,19 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
           <img className='board-icon' src={tableIcon} alt="table icon" style={iconColor} />
           <span className='board-icon-text'>Table</span>
         </div>
+
+        <div className='chat-trellife-container'style={{
+          backgroundColor: buttonColor,
+          color: textColor
+        }} >
+        <span className='chat-trellife-text'>Chat Trellife</span>
+
       </div>
+
+      </div>
+
+
+
       <div className='groups-header-rightside'>
         <div className='filter-container' onClick={toggleFilterOpen} >
           <img style={outsideIconColor} src={filter} />
