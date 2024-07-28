@@ -211,17 +211,19 @@ export function TaskDetails() {
 
     // Due date
 
-    function getDueDate(timeStamp) {
-        if (!timeStamp) return;
-
-        const date = new Date(timeStamp);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-
-        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    function getDueDate(timestamp) {
+        if (!timestamp) return
+        const date = new Date(timestamp)
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        const month = months[date.getMonth()]
+        const day = date.getDate()
+        let hours = date.getHours()
+        const minutes = date.getMinutes()
+        const ampm = hours >= 12 ? 'PM' : 'AM'
+        hours = hours % 12
+        hours = hours ? hours : 12 // the hour '0' should be '12'
+        const minutesStr = minutes < 10 ? '0' + minutes : minutes
+        return `${month} ${day}, ${hours}:${minutesStr} ${ampm}`
     }
 
     async function onChangeIsDone({ target }) {
@@ -646,12 +648,7 @@ export function TaskDetails() {
                                             checked={taskToEdit.isDone}
                                         />
                                         <div className="date">
-                                            <input
-                                                className="date-input"
-                                                type="datetime-local"
-                                                value={getDueDate(taskToEdit.dueDate)}
-                                                readOnly
-                                            />
+                                            <span className="date-span">{getDueDate(taskToEdit.dueDate)}</span>
                                             <span className='inside-input-is-done' style={taskStatus.style}>{taskStatus.text}</span>
                                             <img className="arrow-down" src={arrowDownIcon} alt="arrow down icon" />
                                         </div>
