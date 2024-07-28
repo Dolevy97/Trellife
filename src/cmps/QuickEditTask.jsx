@@ -64,6 +64,11 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
     
 }
 
+async function onSetCover(attachment) {
+  const updatedTask = { ...task, style: { ...task.style, backgroundImage: `url(${attachment.url})`, backgroundColor: attachment.backgroundColor } }
+  const activityTitle = `set ${attachment.title} as a cover for task (id: ${updatedTask.id})`
+  await updateTask(updatedTask, group, board, activityTitle, user)
+}
 
 
   const taskActionProps = { task, group, board, user, onClose: () => setAction(null) }
@@ -170,24 +175,9 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
           </div>
 
           <div className="task-action-container">
-            <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'dates')}>
-              <img className="dates-icon icon" src={datesIcon} alt="dates icon" />
-              <span className="action-title">Dates</span>
-            </button>
-            {action === 'dates' &&
-              <TaskAction
-                action="dates"
-                {...taskActionProps}
-                dueDate={task.dueDate}
-                onSetAction={onSetAction}
-              />
-            }
-          </div>
-         
-            <div className="task-action-container">
               <button type='button' className="action" name="cover" onClick={(ev) => onSetAction(ev, 'cover')}>
                 <img className="cover-icon icon" src={coverIcon} alt="cover icon" />
-                <span className="action-title">Cover</span>
+                <span className="action-title">change cover</span>
               </button>
               {action === 'cover' &&
                 <TaskAction
@@ -199,6 +189,22 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
                 />
               }
             </div>
+
+          <div className="task-action-container">
+            <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'dates')}>
+              <img className="dates-icon icon" src={datesIcon} alt="dates icon" />
+              <span className="action-title">Edit dates</span>
+            </button>
+            {action === 'dates' &&
+              <TaskAction
+                action="dates"
+                {...taskActionProps}
+                dueDate={task.dueDate}
+                onSetAction={onSetAction}
+              />
+            }
+          </div>
+         
          
           <button className="action remove-task" onClick={onRemoveTask}>
             <img className="icon" src={trashIcon} alt="trash icon" />
