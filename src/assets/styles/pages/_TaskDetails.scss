@@ -36,7 +36,7 @@
         }
 
         position: relative;
-        min-height: 0px;
+        min-height: 600px;
         height: max-content;
         width: 768px;
         margin-block-end: auto;
@@ -516,6 +516,7 @@
                             align-items: center;
                             font-size: 14px;
                             padding: 4px 8px 4px 0;
+                            //  width: 512px; //Somewhy looks better without this
 
 
                             .attachment-file-preview {
@@ -764,7 +765,7 @@
 
                 font-family: inherit;
                 font-weight: 500;
-
+                width: 168px;
                 font-size: 14px;
                 color: inherit;
                 background-color: rgba(161, 189, 217, 0.08);
