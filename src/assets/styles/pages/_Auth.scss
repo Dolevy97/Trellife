@@ -25,6 +25,8 @@
                 background-size: 368px, 368px;
                 background-position: left bottom, right bottom;
 
+
+
                 .black-box-container {
                     min-height: calc(100% - 100px);
                     display: flex;
@@ -32,6 +34,10 @@
                     -webkit-box-pack: center;
                     justify-content: center;
                     margin: 50px 0px;
+
+                    @media (max-width: 991px) {
+                        margin: 0;
+                    }
                 }
             }
         }
@@ -84,6 +90,14 @@
     box-shadow: rgba(255, 255, 255, 0.3) 0px 0px 10px;
 
     margin: 50px auto;
+
+    @media (max-width: 991px) {
+        width: 100%;
+        min-height: 100vh;
+        height: max-content;
+        // padding: 0;
+        margin: 0;
+    }
 
     .login-header {
         display: flex;
