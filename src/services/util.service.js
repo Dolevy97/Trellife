@@ -114,19 +114,63 @@ export function getFormattedShortTime(time) {
     }
 }
 
-// export async function getAverageColorsFromImgsUrls(imgsUrls){
+function parseColor(color) {
+    if (/^#/.test(color)) {
+        return hexToRgb(color)
+    }
+    if (/^rgb/.test(color)) {
+        return rgbStringToRgb(color)
+    }
+    return colorNameToRgb(color)
+}
 
-//     try {
-//         const avgColors = []
-//         imgsUrls.forEach(imgUrl=>{
-//             return await getAverageColorFromAttachmentUrl(imgUrl)
-//         })
-//     } catch (er) {
-//         console.log(er)
-//         throw (er)
-//     }
+function hexToRgb(hex) {
+    hex = hex.replace(/^#/, '')
+    let r = parseInt(hex.substring(0, 2), 16)
+    let g = parseInt(hex.substring(2, 4), 16)
+    let b = parseInt(hex.substring(4, 6), 16)
 
-// }
+    return { r, g, b }
+}
+
+function rgbStringToRgb(rgb) {
+    const result = rgb.match(/(\d+),\s*(\d+),\s*(\d+)/)
+    return {
+        r: parseInt(result[1]),
+        g: parseInt(result[2]),
+        b: parseInt(result[3])
+    }
+}
+
+function colorNameToRgb(color) {
+    let dummy = document.createElement("div")
+    dummy.style.color = color
+    document.body.appendChild(dummy)
+    let rgb = window.getComputedStyle(dummy).color
+    document.body.removeChild(dummy)
+    return rgbStringToRgb(rgb)
+}
+
+function getLuminance({ r, g, b }) {
+    r = r / 255
+    g = g / 255
+    b = b / 255
+    if (r <= 0.03928) r = r / 12.92
+    else r = Math.pow((r + 0.055) / 1.055, 2.4)
+    if (g <= 0.03928) g = g / 12.92
+    else g = Math.pow((g + 0.055) / 1.055, 2.4)
+    if (b <= 0.03928) b = b / 12.92
+    else b = Math.pow((b + 0.055) / 1.055, 2.4)
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+}
+
+export function isLightColor(color) {
+    if (!color) return false
+    const rgb = parseColor(color)
+    const luminance = getLuminance(rgb)
+    const threshold = 0.179
+    return luminance > threshold
+}
 
 export async function getAverageColorFromAttachment(attachment) {
 

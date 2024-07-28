@@ -41,12 +41,10 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
         onClose()
     }
 
-    function onCollapseToggle() {
-        setIsCollapseOpen(prevState => {
-            const newState = !prevState
-            toggleAllGroupsCollapse(newState)
-            return newState
-        })
+    async function onCollapseToggle() {
+        const newState = !isCollapseOpen
+        setIsCollapseOpen(newState)
+        await toggleAllGroupsCollapse(newState)
     }
 
     function getActivityByTitle(activity) {

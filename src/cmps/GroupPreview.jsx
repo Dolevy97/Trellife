@@ -18,6 +18,8 @@ import checklistIcon from '../assets/imgs/Icons/checklist.svg'
 import closeIcon from '../assets/imgs/Icons/close.svg'
 import addIcon from '../assets/imgs/Icons/add.svg'
 import expandIcon from '../assets/imgs/Icons/expand.svg'
+import loadingAnimation from '../assets/imgs/TaskDetails-icons/loading animation.svg'
+
 
 export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpansion, areLabelsExpanded }) {
     const tasks = group?.tasks || []
@@ -120,7 +122,21 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
 
     function getAllTodosInChecklist(taskId, groupId) {
         const group = board.groups.find(group => group.id === groupId)
+        if (!group) {
+            console.error(`Group with id ${groupId} not found`)
+            return 0
+        }
+
         const task = group.tasks.find(task => task.id === taskId)
+        if (!task) {
+            return 0
+        }
+
+        if (!task.checklists) {
+            console.warn(`Task ${taskId} has no checklists`)
+            return 0
+        }
+
         return task.checklists.reduce((total, checklist) => {
             return total + (Array.isArray(checklist.todos) ? checklist.todos.length : 0)
         }, 0)
@@ -185,6 +201,8 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
     // }
 
     const labelsIds = taskToEdit?.labelsIds || []
+
+    if (!board || !tasks) return <div className='isloading-container'> <img className='isLoading' src={loadingAnimation} /> </div>
 
     return (
         <section className={`group-preview-container ${group.style.isCollapse ? 'collapsed' : ''}`}

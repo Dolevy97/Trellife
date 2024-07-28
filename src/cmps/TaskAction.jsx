@@ -11,7 +11,7 @@ import { cloudinaryService } from "../services/cloudinary.service"
 
 import { updateBoard } from "../store/actions/board.actions"
 import { updateTask } from "../store/actions/task.actions"
-import { getAverageColorFromAttachment, getBackgroundImages, getUnsplashImages, makeId } from "../services/util.service"
+import { getAverageColorFromAttachment, getBackgroundImages, getUnsplashImages, isLightColor, makeId } from "../services/util.service"
 
 import closeIcon from '../assets/imgs/Icons/close.svg'
 import closeDisabledIcon from '../assets/imgs/TaskDetails-icons/close-disabled.svg'
@@ -230,7 +230,6 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                     break
                 }
             }
-
             await updateTask(updatedTask, group, board, activityTitle, user)
         }
 
@@ -249,8 +248,8 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         })
         const updatedTask = { ...task, attachments }
         const activityTitle = `updated attachment's link name from ${attachmentToEdit.title} to ${attachmentInputValue} on card (id: ${task.id})`
-        await updateTask(updatedTask, group, board, activityTitle, user)
         onSetAction(ev, null)
+        await updateTask(updatedTask, group, board, activityTitle, user)
     }
 
     // Dates
@@ -265,16 +264,16 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         if (!task.dueDate) updatedTask.isDone = false
         updatedTask.dueDate = dueDateToEdit
         const activityTitle = `changed the due date of task ${updatedTask.id} to ${dueDateToEdit}`
-        await updateTask(updatedTask, group, board, activityTitle, user)
         onSetAction(ev, null)
+        await updateTask(updatedTask, group, board, activityTitle, user)
     }
 
     async function onRemoveDueDate(ev) {
         const updatedTask = { ...task }
         updatedTask.dueDate = null
         const activityTitle = `removed the due date of task ${updatedTask.id}`
-        await updateTask(updatedTask, group, board, activityTitle, user)
         onSetAction(ev, null)
+        await updateTask(updatedTask, group, board, activityTitle, user)
     }
 
     function formatTimestampToDateString(timestamp) {
@@ -482,7 +481,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                                     <label
                                         htmlFor={`label-checkbox-${label.id}`}
                                         className="label"
-                                        style={{ backgroundColor: label.color || '#323940' }}
+                                        style={{ backgroundColor: label.color || '#323940', color: isLightColor(label.color) ? '#1d2125' : 'currentColor' }}
                                     >
                                         {label.title}
                                     </label>
@@ -505,7 +504,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             {action === 'edit label' &&
                 <>
                     <div className="label-preview-container flex">
-                        <span className="label-preview" style={{ backgroundColor: labelToEdit.color ? labelToEdit.color : '#3a444c' }}>{labelInputValue}</span>
+                        <span className="label-preview" style={{ backgroundColor: labelToEdit.color ? labelToEdit.color : '#3a444c', color: isLightColor(labelToEdit.color) ? '#1d2125' : 'currentColor' }}>{labelInputValue}</span>
                     </div>
                     <div className="edit-label">
                         <span className="title">Title</span>
@@ -524,12 +523,13 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                             <div className="color" style={{ backgroundColor: '#a64700' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#ae2e24' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#5e4db2' }} onClick={onSetLabelToEditColor}></div>
-                            {//LIGHT COLORS
-                            /* <div className="color" style={{ backgroundColor: '#4cce97' }} onClick={onSetLabelToEditColor}></div>
+
+                            <div className="color" style={{ backgroundColor: '#4cce97' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#e1b205' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#fea363' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#f87168' }} onClick={onSetLabelToEditColor}></div>
-                            <div className="color" style={{ backgroundColor: '#9f8fef' }} onClick={onSetLabelToEditColor}></div> */}
+                            <div className="color" style={{ backgroundColor: '#9f8fef' }} onClick={onSetLabelToEditColor}></div>
+
                             <div className="color" style={{ backgroundColor: '#0a326c' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#154555' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#37471f' }} onClick={onSetLabelToEditColor}></div>
@@ -540,11 +540,12 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                             <div className="color" style={{ backgroundColor: '#4d6b1f' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#943d73' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#596773' }} onClick={onSetLabelToEditColor}></div>
-                            {/* <div className="color" style={{ backgroundColor: '#579dff' }} onClick={onSetLabelToEditColor}></div>
+
+                            <div className="color" style={{ backgroundColor: '#579dff' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#6cc3e0' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#94c747' }} onClick={onSetLabelToEditColor}></div>
                             <div className="color" style={{ backgroundColor: '#e774bb' }} onClick={onSetLabelToEditColor}></div>
-                            <div className="color" style={{ backgroundColor: '#8c9baa' }} onClick={onSetLabelToEditColor}></div> */}
+                            <div className="color" style={{ backgroundColor: '#8c9baa' }} onClick={onSetLabelToEditColor}></div>
                         </div>
                     </div>
                     <button className={`btn-dark-grey flex align-center justify-center ${!labelToEdit.color ? 'btn-disabled' : ''}`} onClick={onRemoveLabelToEditColor}>

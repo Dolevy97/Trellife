@@ -4,14 +4,16 @@ import { useSelector } from 'react-redux'
 import { updateBoard } from '../store/actions/board.actions'
 import { updateTask } from '../store/actions/task.actions'
 import { TaskAction } from '../cmps/TaskAction'
-import { getFormattedTime, makeId, onDownloadUrl } from '../services/util.service'
+import { getFormattedTime, isLightColor, makeId, onDownloadUrl } from '../services/util.service'
 import { updateGroup } from '../store/actions/group.actions'
 
 import autosize from 'autosize'
 import ms from 'ms'
 
 import closeWhiteIcon from '../assets/imgs/TaskDetails-icons/close-white.svg'
+import closeDarkIcon from '../assets/imgs/TaskDetails-icons/close-dark.svg'
 import coverWhiteIcon from '../assets/imgs/TaskDetails-icons/cover-white.svg'
+import coverDarkIcon from '../assets/imgs/TaskDetails-icons/cover-dark.svg'
 import cardIcon from '../assets/imgs/TaskDetails-icons/card.svg'
 import addMemberIcon from '../assets/imgs/TaskDetails-icons/add.svg'
 import arrowDownIcon from '../assets/imgs/TaskDetails-icons/arrow-down.svg'
@@ -198,8 +200,8 @@ export function TaskDetails() {
     }
 
     async function onSaveDescription() {
-        await updateTask(taskToEdit, group, board)
         setIsSettingDescription(false)
+        await updateTask(taskToEdit, group, board)
     }
 
     function cancelSetDescription() {
@@ -258,8 +260,8 @@ export function TaskDetails() {
         }
         const updatedBoard = { ...board }
         updatedBoard.activities.unshift(newActivity)
-        await updateBoard(updatedBoard)
         setIsAddingComment(false)
+        await updateBoard(updatedBoard)
     }
 
     async function onStartEditComment(comment) {
@@ -282,8 +284,8 @@ export function TaskDetails() {
     async function onSaveEdittedComment(commentId) {
         const commentIdx = board.activities.findIndex(activity => activity.id === commentId)
         board.activities[commentIdx].txt = editCommentInputValue
-        await updateBoard(board)
         setIsEditingComment(false)
+        await updateBoard(board)
     }
 
     // Remove task
@@ -292,7 +294,7 @@ export function TaskDetails() {
         const newTasks = group.tasks.filter(task => task.id !== taskToEdit.id)
         const newGroup = { ...group, tasks: newTasks }
         const activityTitle = `removed task (id: ${taskToEdit.id})`
-        await updateGroup(newGroup.id, newGroup, board,activityTitle)
+        await updateGroup(newGroup.id, newGroup, board, activityTitle)
         onBackdropClicked()
     }
 
@@ -376,8 +378,8 @@ export function TaskDetails() {
             }
         }
 
-        await updateTask(updatedTask, group, board)
         setIsTodoMenuOpen(false)
+        await updateTask(updatedTask, group, board)
     }
 
     async function onChangeTodo({ target }, todo, checklist) {
@@ -548,7 +550,6 @@ export function TaskDetails() {
         return { text: '', style: {} }
     }
 
-
     if (!taskToEdit || !group) return null
 
     const { title, description, membersIds, labelsIds, style } = taskToEdit
@@ -560,16 +561,17 @@ export function TaskDetails() {
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
             <section className="task-details" onClick={onTaskDetailsClicked}>
-                <img onClick={onBackdropClicked} className="close-icon icon" src={closeWhiteIcon} alt="close icon" />
+                <img onClick={onBackdropClicked} className="close-icon icon" src={isLightColor(style?.backgroundColor) ? closeDarkIcon : closeWhiteIcon} alt="close icon" />
                 {style &&
                     <div className="task-details-cover" style={{ ...style, height: style.backgroundImage ? '160px' : '' }}>
                         {style &&
                             <div className="task-header-action-container">
-                                <button className="action" onClick={(ev) => onSetAction(ev, 'cover')}>
-                                    <img className="cover-icon icon" src={coverWhiteIcon} alt="cover icon" />
-                                    <span className="action-title">Cover</span>
+                                <button className="action" onClick={(ev) => onSetAction(ev, 'cover', 2)}>
+                                    <img className="cover-icon icon" src={isLightColor(style?.backgroundColor) ? coverDarkIcon : coverWhiteIcon} alt="cover icon" />
+                                    <span className="action-title" style={{ color: isLightColor(style?.backgroundColor) ? '#182a4e' : 'currentColor' }}>Cover</span>
                                 </button>
-                                {action === 'cover' && <TaskAction action="cover" onSetCover={onSetCover} onRemoveCover={onRemoveCover} {...taskActionProps} />}
+                                {action === 'cover' && actionPosition === 2
+                                    && <TaskAction action="cover" onSetCover={onSetCover} onRemoveCover={onRemoveCover} {...taskActionProps} />}
                             </div>
                         }
                     </div>}
@@ -616,7 +618,7 @@ export function TaskDetails() {
                                         {labelsIds && labelsIds.map(id => {
                                             const label = getLabelById(id)
                                             if (!label) return null
-                                            return <span onClick={(ev) => onSetAction(ev, 'labels', 2)} className="label" key={id} style={{ backgroundColor: label.color ? label.color : '#3a444c' }}>{label.title}</span>
+                                            return <span onClick={(ev) => onSetAction(ev, 'labels', 2)} className="label" key={id} style={{ backgroundColor: label.color ? label.color : '#3a444c', color: isLightColor(label.color) ? '#1d2125' : 'currentColor' }}>{label.title}</span>
                                         })}
                                         <div onClick={(ev) => onSetAction(ev, 'labels', 2)} className="add-label-thumbnail"><img className="add-label-icon" src={addMemberIcon} alt="add plus icon" />
                                         </div>
@@ -980,11 +982,11 @@ export function TaskDetails() {
                         {!taskToEdit.style
                             &&
                             <div className="task-action-container">
-                                <button type='button' className="action" name="cover" onClick={(ev) => onSetAction(ev, 'cover')}>
+                                <button type='button' className="action" name="cover" onClick={(ev) => onSetAction(ev, 'cover', 1)}>
                                     <img className="cover-icon icon" src={coverIcon} alt="cover icon" />
                                     <span className="action-title">Cover</span>
                                 </button>
-                                {action === 'cover'
+                                {action === 'cover' && actionPosition === 1
                                     && <TaskAction action="cover" onSetCover={onSetCover} onRemoveCover={onRemoveCover} {...taskActionProps} />}
                             </div>
                         }

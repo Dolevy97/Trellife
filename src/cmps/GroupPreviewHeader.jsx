@@ -57,9 +57,9 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
                 g.id === group.id ? { ...g, title: titleToSet } : g
             )
         }
-        await updateBoard(updatedBoard)
         setNewTitle(titleToSet)
         setIsEditing(false)
+        await updateBoard(updatedBoard)
     }
 
     async function handleTitleBlur() {
@@ -84,8 +84,8 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
             ...board,
             groups: board.groups.filter(g => g.id !== group.id)
         }
-        await updateBoard(updatedBoard)
         setOpenMenuGroupId(null)
+        await updateBoard(updatedBoard)
     }
 
     async function handleColorChange(color) {
@@ -187,8 +187,8 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
                             )}
                         </div>
                         <hr className='menu-header-hr' />
-                        <footer className='menu-footer'>
-                            <span onClick={onDeleteGroup}>Delete</span>
+                        <footer onClick={onDeleteGroup} className='menu-footer'>
+                            <span>Delete</span>
                         </footer>
                     </div>
                 </div>
