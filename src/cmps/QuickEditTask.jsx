@@ -1,4 +1,4 @@
-// import { TaskAction } from '../cmps/TaskAction'
+import { TaskAction } from '../cmps/TaskAction'
 
 import membersIcon from '../assets/imgs/TaskDetails-icons/members.svg'
 import labelIcon from '../assets/imgs/TaskDetails-icons/labels.svg'
@@ -11,6 +11,12 @@ import { updateTask } from '../store/actions/task.actions'
 export function QuickEditTask({ task, onClose, taskPosition, group, board, user }) {
 
   const [taskTitleInputValue, setTaskTitleInputValue] = useState(task?.title || '')
+  const [action, setAction] = useState(null)
+
+  function onSetAction(ev, act) {
+    ev.stopPropagation()
+    setAction(action === act ? null : act)
+  }
 
   function handleTitleKeyPress(ev) {
     if (ev.key === 'Enter') {
@@ -35,6 +41,12 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user 
     }
   }
 
+  function getMemberById(id) {
+    return board.members.find(member => member._id === id)
+  }
+
+  const taskActionProps = { task, group, board, user, onClose: () => setAction(null) }
+
   return (
     <div className="quick-edit-overlay" onClick={onClose}>
       <div
@@ -42,9 +54,9 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user 
         style={{
           position: 'absolute',
           left: `${taskPosition.left - 2}px`,  // 2px wider on the left
-          top: `${taskPosition.top - 3}px`,    // 3px higher
+          top: `${taskPosition.top - 2}px`,    // 3px higher
           width: `${taskPosition.width + 4}px`, // 2px wider on each side
-          height: '72px',
+          height: '73px',
         }}
       >
         <textarea defaultValue={task.title}
@@ -54,13 +66,39 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user 
           onKeyPress={handleTitleKeyPress}
           autoFocus
         />
+          {task.membersIds && task.membersIds.length > 0 && (
+            <div className="members-container">
+              <div className="members-img-container">
+                {task.membersIds.map(id => {
+                  const member = getMemberById(id)
+                  return <img key={member._id} className="task-member-thumbnail" src={member.imgUrl} title={member.fullname} alt={member.fullname} />
+                })}
+              </div>
+            </div>
+          )}
         <span className="save-btn" onClick={() => {
-         onClose
+          onClose
           handleTitleUpdate()
 
         }} >save</span>
-        <div className="quick-edit-icons">
-          {/* <TaskAction /> */}
+
+        <div className="quick-card-editor-buttons">
+
+          <div className="task-action-container">
+            <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'members')}>
+              <img className="members-icon icon" src={membersIcon} alt="members icon" />
+              <span className="action-title">Members</span>
+            </button>
+            {action === 'members' &&
+              <TaskAction
+                action="members"
+                getMemberById={getMemberById}
+                {...taskActionProps}
+                onSetAction={onSetAction}
+              />
+            }
+          </div>
+        
         </div>
       </div>
     </div>
