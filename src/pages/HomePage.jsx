@@ -69,7 +69,7 @@ export function HomePage() {
 
 
             </section>
-                {/* <>
+                <>
                     <Swiper
                         pagination={{
                             dynamicBullets: true,
@@ -77,17 +77,11 @@ export function HomePage() {
                         modules={[Pagination]}
                         className="swiper"
                     >
-                        <SwiperSlide><img sec='../../../src/assets/imgs/board-details-screenshot.png'></img></SwiperSlide>
-                        <SwiperSlide>Slide 2</SwiperSlide>
+                        <SwiperSlide><img src='../../../src/assets/imgs/board-details-screenshot.png'></img></SwiperSlide>
+                        <SwiperSlide><img src='../../../src/assets/imgs/drag-and-drop-screenshot.png'></img></SwiperSlide>
                         <SwiperSlide>Slide 3</SwiperSlide>
-                        <SwiperSlide>Slide 4</SwiperSlide>
-                        <SwiperSlide>Slide 5</SwiperSlide>
-                        <SwiperSlide>Slide 6</SwiperSlide>
-                        <SwiperSlide>Slide 7</SwiperSlide>
-                        <SwiperSlide>Slide 8</SwiperSlide>
-                        <SwiperSlide>Slide 9</SwiperSlide>
                     </Swiper>
-                </> */}
+                </>
         </section >
     )
 }

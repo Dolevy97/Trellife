@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import { updateBoard } from '../store/actions/board.actions'
 import { updateTask } from '../store/actions/task.actions'
 
+import attachmentIcon from '../assets/imgs/TaskDetails-icons/attachment.svg'
 import descriptionIcon from '../assets/imgs/Icons/description.svg'
 import membersIcon from '../assets/imgs/TaskDetails-icons/members.svg'
 import labelIcon from '../assets/imgs/TaskDetails-icons/labels.svg'
@@ -16,6 +17,7 @@ import coverIcon from '../assets/imgs/TaskDetails-icons/cover.svg'
 import datesIcon from '../assets/imgs/TaskDetails-icons/dates.svg'
 import trashIcon from '../assets/imgs/TaskDetails-icons/trash.svg'
 import { updateGroup } from '../store/actions/group.actions'
+import { getFormattedShortTime } from '../services/util.service'
 
 export function QuickEditTask({ task, onClose, taskPosition, group, board, user, handleTaskClick, onSetCover, onRemoveCover }) {
 
@@ -85,6 +87,89 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
     await updateTask(updatedTask, group, board, activityTitle, user)
   }
 
+  /* Duedate */
+  function getTaskStatus(task) {
+    if (!task.dueDate) {
+      return null
+    }
+
+    const now = new Date()
+    const dueDate = new Date(task.dueDate)
+    const timeDiff = dueDate - now
+    const dayInMilliseconds = 24 * 60 * 60 * 1000
+
+    if (task.isDone) {
+      return {
+        title: 'This card is complete.',
+        style: { backgroundColor: '#4BCE97' },
+        textColor: '#1d2125',
+        iconFilter: 'brightness(0) saturate(100%) invert(9%) sepia(13%) saturate(697%) hue-rotate(169deg) brightness(97%) contrast(91%)'
+      }
+    } else if (timeDiff < -dayInMilliseconds) {
+      // Overdue by more than a day
+      return {
+        title: 'This card is past due.',
+        style: { backgroundColor: '#42221F' },
+        textColor: '#ffffff',
+        iconFilter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)'
+      }
+    } else if (timeDiff < 0) {
+      // Overdue by less than a day
+      return {
+        title: 'This card is recently overdue!',
+        style: { backgroundColor: '#F87462' },
+        textColor: '#ffffff',
+        iconFilter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)'
+      }
+    } else if (timeDiff <= dayInMilliseconds) {
+      return {
+        title: 'This card is due soon.',
+        style: { backgroundColor: '#F5CD47' },
+        textColor: '#1d2125',
+        iconFilter: 'none'
+      }
+    }
+
+    return {
+      title: 'This card is due later.',
+      style: {},
+      textColor: '',
+      iconFilter: 'none'
+    }
+  }
+
+  /*Checklist*/
+  function getDoneInChecklist(taskId, groupId) {
+    const group = board.groups.find(group => group.id === groupId)
+    const task = group.tasks.find(task => task.id === taskId)
+    return task.checklists.reduce((total, checklist) => {
+      return total + (Array.isArray(checklist.todos) ? checklist.todos.filter(todo => todo.isDone).length : 0)
+    }, 0)
+  }
+
+  function getAllTodosInChecklist(taskId, groupId) {
+    const group = board.groups.find(group => group.id === groupId)
+    if (!group) {
+      // console.error(`Group with id ${groupId} not found`)
+      return 0
+    }
+
+    const task = group.tasks.find(task => task.id === taskId)
+    if (!task) {
+      return 0
+    }
+
+    if (!task.checklists) {
+      console.warn(`Task ${taskId} has no checklists`)
+      return 0
+    }
+
+    return task.checklists.reduce((total, checklist) => {
+      return total + (Array.isArray(checklist.todos) ? checklist.todos.length : 0)
+    }, 0)
+  }
+
+  const taskStatus = getTaskStatus(task)
 
   const taskActionProps = { task, group, board, user, onClose: () => setAction(null) }
 
@@ -125,30 +210,93 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
             onKeyPress={handleTitleKeyPress}
             autoFocus
           />
+          <div className='task-bottom-container'>
 
-          <div>
-            {task.description && task.description.trim() !== '' && (
-              <img className='description' title='This card has a description.' src={descriptionIcon} alt="description" />
-            )}
+            <div className='bottom-leftside'>
 
-            {getComments(task.id).length ?
-              <div title='Comments' className='comment-container'>
-                <img src={commentIcon} />
-                <span className='task-comment'>{getComments(task.id).length} </span>
-              </div> : ''
-            }
+              {task.dueDate && (
+                <div
+                  title={taskStatus.title}
+                  className="timer-container"
+                  style={taskStatus.style}
+                >
+                  <img
+                    src={clockIcon}
+                    alt="clock icon"
+                    style={{ filter: taskStatus.iconFilter }}
+                  />
+                  <span
+                    style={{ color: taskStatus.textColor }}
+                  >
+                    {getFormattedShortTime(task.dueDate)}
+                  </span>
+                </div>
+              )}
+
+              {getComments(task.id).length ?
+                <div title='Comments' className='comment-container'>
+                  <img src={commentIcon} />
+                  <span className='task-comment'>{getComments(task.id).length} </span>
+                </div> : ''
+              }
+
+              {task.attachments.length ?
+                <div title='Attachments' className='attachment-container'>
+                  <img src={attachmentIcon} />
+                  <span className='task-comment'>{task.attachments.length}</span>
+                </div> : ''
+              }
+
+              {task.checklists.length && getAllTodosInChecklist(task.id, group.id) !== 0 ? (
+                <div
+                  title='Checklist items'
+                  className='task-checklist-container'
+                  style={{
+                    backgroundColor: getDoneInChecklist(task.id, group.id) === getAllTodosInChecklist(task.id, group.id) ? '#4BCE97' : '',
+                    color: getDoneInChecklist(task.id, group.id) === getAllTodosInChecklist(task.id, group.id) ? '#1d2125' : '',
+                    padding: '2px 4px',
+                    borderRadius: '3px'
+                  }}
+                >
+                  <img
+                    src={checklistIcon}
+                    style={{
+                      filter: getDoneInChecklist(task.id, group.id) === getAllTodosInChecklist(task.id, group.id)
+                        ? 'brightness(0) saturate(100%) invert(9%) sepia(13%) saturate(697%) hue-rotate(169deg) brightness(97%) contrast(91%)'
+                        : ''
+                    }}
+                  />
+                  <span
+                    className='task-checklist'
+                    style={{
+                      backgroundColor: getDoneInChecklist(task.id, group.id) === getAllTodosInChecklist(task.id, group.id) ? 'var(--bgclr1)' : ''
+                    }}
+                  >
+                    {getDoneInChecklist(task.id, group.id)}/{getAllTodosInChecklist(task.id, group.id)}
+                  </span>
+                </div>
+              ) : ''}
+
+              {task.description && task.description.trim() !== '' && (
+                <img className='description' title='This card has a description.' src={descriptionIcon} alt="description" />
+              )}
+
+
+            </div>
+
+            
+              {task.membersIds && task.membersIds.length > 0 && (
+                  <div className="members-container">
+                    {task.membersIds.map(id => {
+                      const member = getMemberById(id)
+                      return <img key={member._id} className="task-member-thumbnail" src={member.imgUrl} title={member.fullname} alt={member.fullname} />
+                    })}
+                  </div>
+              )}
+
+            
           </div>
 
-          {task.membersIds && task.membersIds.length > 0 && (
-            <div className="members-container">
-              <div className="members-img-container">
-                {task.membersIds.map(id => {
-                  const member = getMemberById(id)
-                  return <img key={member._id} className="task-member-thumbnail" src={member.imgUrl} title={member.fullname} alt={member.fullname} />
-                })}
-              </div>
-            </div>
-          )}
 
           {/* On the task end */}
           <div className="quick-card-editor-buttons">
