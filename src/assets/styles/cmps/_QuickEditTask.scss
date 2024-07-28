@@ -8,9 +8,7 @@
   z-index: 1000;
 }
 
-
 .quick-edit-container {
-
   display: flex;
   flex-direction: column;
   background-color: $bgclr2;
@@ -21,7 +19,6 @@
   border-radius: 8px;
 
   textarea {
-
     min-height: 56px;
     height: fit-content;
     padding: 8px 12px;
@@ -40,7 +37,6 @@
   }
 
   .save-btn {
-
     background-color: #579DFF;
     color: $bgclr1;
     padding: 5px 12px;
@@ -58,8 +54,30 @@
     &:hover {
       background-color: #85B8FF;
     }
-
   }
+
+  .quick-edit-details {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+  }
+
+  .labels-container {
+    display: flex;
+    flex-wrap: wrap;
+    /* margin-bottom: 4px; */
+    position: absolute;
+    top: 11px;
+
+    .label-item {
+      height: 8px;
+      width: 40px;
+      border-radius: 4px;
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
+  }
+
   .members-container {
     position: absolute;
     top: 42px;
@@ -80,7 +98,6 @@
 
       &:hover {
         opacity: 0.8;
-
       }
 
       .task-member-thumbnail {
@@ -88,12 +105,9 @@
         width: 24px;
         border-radius: 50%;
         margin: 0 4px 4px 0;
-
       }
-
     }
   }
-
 
   .quick-card-editor-buttons {
     position: absolute;
@@ -137,11 +151,7 @@
       &:hover {
         background-color: lighten(#2C333A, 10%);
       }
-
     }
-
- 
-
   }
 
 }
