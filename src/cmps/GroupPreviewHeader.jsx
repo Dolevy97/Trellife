@@ -167,7 +167,7 @@ export function GroupPreviewHeader({ group, setOpenMenuGroupId, openMenuGroupId,
                         <div className="color-picker-accordion">
                             <p className='color-picker-container' onClick={() => setIsColorPickerOpen(!isColorPickerOpen)}>
                                 <span className='color-picker-btn' >
-                                    Change color list
+                                    Change list color 
                                 </span>
                                 <span className='color-picker-arrow'>{isColorPickerOpen ? <img src={arrowUpIcon} /> :
                                     <img src={arrowDownIcon} alt="" />}</span>
