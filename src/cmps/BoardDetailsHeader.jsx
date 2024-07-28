@@ -132,7 +132,9 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
             autoFocus
           />
         ) : (
-          <span onClick={() => setIsEditing(true)} className='groups-header-logo'>{board.title}</span>
+          <span
+          onClick={() => setIsEditing(true)}
+          className='groups-header-title'>{board.title}</span>
         )}
         <div
           className='star-container'

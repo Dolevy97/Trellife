@@ -17,6 +17,10 @@
     }
 
 
+    .groups-header-title {
+        font-size: 18px;
+    }
+
     .groups-header-leftside {
         display: flex;
         align-items: center;
@@ -104,9 +108,11 @@
             border-radius: 4px;
             transition: background-color 0.1s ease;
             padding: 2px 6px;
+
             &:hover {
                 background-color: $btnhoverclr;
             }
+
             cursor: pointer;
 
             img {
@@ -156,8 +162,9 @@
             max-width: 400px;
             padding-inline-start: 8px;
             background-color: #DCDFE4;
-            
+
             transition: background-color 0.3s ease, color 0.3s ease;
+
             &:hover {
                 background-color: #FFFFFF;
             }
@@ -182,11 +189,11 @@
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.1s ease;
-    
+
             &:hover {
-              background-color: $btnhoverclr;
+                background-color: $btnhoverclr;
             }
-    
+
 
             .open-right-nav-icon {
                 cursor: pointer;
