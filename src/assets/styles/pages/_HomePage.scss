@@ -173,7 +173,7 @@
                 height: auto;
             }
 
-            @media (max-width: 576px) {
+            @media (max-width: 768px) {
                padding: 1rem;
             }
 
@@ -210,6 +210,7 @@
                     position: relative;
 
                     &.texts-swiper {
+                        padding-block-start: 1rem;
                         border-top-left-radius: 3px;
                         border-top-right-radius: 3px;
 
@@ -282,7 +283,7 @@
     justify-content: start;
     flex-wrap: wrap;
 
-    @media (max-width: 767.98px) {
+    @media (max-width: 768px) {
         justify-content: center;
         width: 100%;
     }
