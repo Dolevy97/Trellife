@@ -48,6 +48,11 @@
   src: url('../../../src/assets/styles/fonts/Charlie-Text-Bold.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'Charlie Display';
+  src: url('../../../src/assets/styles/fonts/CharlieDisplay-Semibold.ttf') format('truetype');
+}
+
 .material-symbols-outlined {
   font-variation-settings:
     'FILL' 0,
