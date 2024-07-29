@@ -21,7 +21,7 @@ import expandIcon from '../assets/imgs/Icons/expand.svg'
 import loadingAnimation from '../assets/imgs/TaskDetails-icons/loading animation.svg'
 
 
-export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpansion, areLabelsExpanded }) {
+export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpansion, areLabelsExpanded, displayStyle }) {
     const tasks = group?.tasks || []
     const board = useSelector(storeState => storeState.boardModule.board)
     const user = useSelector(storeState => storeState.userModule.user)
@@ -32,8 +32,6 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
     const [taskToEdit, setTaskToEdit] = useState(null)
     const [quickEditTaskId, setQuickEditTaskId] = useState(null)
     const [quickEditTaskPosition, setQuickEditTaskPosition] = useState(null)
-
-
 
     const buttonRef = useRef(null)
     const textareaRef = useRef(null)

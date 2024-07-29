@@ -18,6 +18,7 @@ import { useDispatch } from 'react-redux'
 import loadingAnimation from '../assets/imgs/TaskDetails-icons/loading animation.svg'
 import closeIcon from '../assets/imgs/Icons/close.svg'
 import addIcon from '../assets/imgs/Icons/add.svg'
+import { TableView } from '../cmps/TableView.jsx'
 
 export function BoardDetails() {
 
@@ -30,6 +31,7 @@ export function BoardDetails() {
   const [areLabelsExpanded, setAreLabelsExpanded] = useState(false)
   const [isRightNavBarOpen, setIsRightNavBarOpen] = useState(false)
   const [areAllGroupsCollapsed, setAreAllGroupsCollapsed] = useState(false)
+  const [displayStyle, setDisplayStyle] = useState('board')
 
   const groupListContainer = useRef()
   const groupListHeader = useRef()
@@ -192,16 +194,19 @@ export function BoardDetails() {
 
         isFilterOpen={isFilterOpen}
         setIsFilterOpen={setIsFilterOpen}
+
+        setDisplayStyle={setDisplayStyle}
+        displayStyle={displayStyle}
       />
-        {isFilterOpen &&
-          <BoardHederFilter
-            onClose={() => setIsFilterOpen(false)}
-            filterBy={filterBy}
-            setFilterBy={setFilterBy}
-            board={board}
-  
-          />
-        }
+      {isFilterOpen &&
+        <BoardHederFilter
+          onClose={() => setIsFilterOpen(false)}
+          filterBy={filterBy}
+          setFilterBy={setFilterBy}
+          board={board}
+
+        />
+      }
       <RightNavBar
         onClose={() => setIsRightNavBarOpen(false)}
         isRightNavBarOpen={isRightNavBarOpen}
@@ -210,69 +215,74 @@ export function BoardDetails() {
         board={board}
       />
 
-      <section ref={groupListContainer} className="group-list-container">
-        <DragDropContext onDragEnd={handleOnDragEnd}>
-          <Droppable droppableId='groups' direction='horizontal' type='GROUP'>
-            {(provided) => (
-              board && (
-                <div className='group-container' {...provided.droppableProps} ref={provided.innerRef}>
-                  {groups.map((group, index) => (
-                    <Draggable key={group.id} draggableId={group.id.toString()} index={index} type='GROUP'>
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          className={`group-item ${snapshot.isDragging ? 'dragging' : ''}`}
-                        >
-                          <GroupPreview
-                            key={group.id}
-                            boardId={boardId}
-                            group={group}
-                            handleOnDragEnd={handleOnDragEnd}
-                            toggleLabelExpansion={toggleLabelExpansion}
-                            areLabelsExpanded={areLabelsExpanded}
 
-                          />
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {/* drag end point */}
-                  {provided.placeholder}
-                  {isAddingGroup ? (
-                    <div className='addgroup-from-container' ref={addGroupRef}>
-                      <form className='addgroup-form' onSubmit={(e) => e.preventDefault()}>
-                        <input
-                          type="text"
-                          value={newGroupTitle}
-                          onChange={(e) => setNewGroupTitle(e.target.value)}
-                          autoFocus
-                          placeholder="Enter list title..."
-                          onKeyPress={handleKeyPress}
-                        />
-                        <div className='addgroup-btns'>
-                          <span onClick={onAddGroup}>Add list</span>
-                          <div className="close-btn-wrapper" onClick={() => {
-                            setIsAddingGroup(false)
-                            setNewGroupTitle('')
-                          }}>
-                            <img src={closeIcon} alt="" />
+      <section ref={groupListContainer} className="group-list-container">
+        {displayStyle === 'board' ? (
+          <DragDropContext onDragEnd={handleOnDragEnd}>
+            <Droppable droppableId='groups' direction='horizontal' type='GROUP'>
+              {(provided) => (
+                board && (
+                  <div className='group-container' {...provided.droppableProps} ref={provided.innerRef}>
+                    {groups.map((group, index) => (
+                      <Draggable key={group.id} draggableId={group.id.toString()} index={index} type='GROUP'>
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className={`group-item ${snapshot.isDragging ? 'dragging' : ''}`}
+                          >
+                            <GroupPreview
+                              key={group.id}
+                              boardId={boardId}
+                              group={group}
+                              handleOnDragEnd={handleOnDragEnd}
+                              toggleLabelExpansion={toggleLabelExpansion}
+                              areLabelsExpanded={areLabelsExpanded}
+                              displayStyle={displayStyle}
+                            />
                           </div>
-                        </div>
-                      </form>
-                    </div>
-                  ) : (
-                    <div className='add-group' onClick={() => setIsAddingGroup(true)}>
-                      <img src={addIcon} alt="add" />
-                      <span>Add another list</span>
-                    </div>
-                  )}
-                </div>
-              )
-            )}
-          </Droppable>
-        </DragDropContext>
+                        )}
+                      </Draggable>
+                    ))}
+                    {/* drag end point */}
+                    {provided.placeholder}
+                    {isAddingGroup ? (
+                      <div className='addgroup-from-container' ref={addGroupRef}>
+                        <form className='addgroup-form' onSubmit={(e) => e.preventDefault()}>
+                          <input
+                            type="text"
+                            value={newGroupTitle}
+                            onChange={(e) => setNewGroupTitle(e.target.value)}
+                            autoFocus
+                            placeholder="Enter list title..."
+                            onKeyPress={handleKeyPress}
+                          />
+                          <div className='addgroup-btns'>
+                            <span onClick={onAddGroup}>Add list</span>
+                            <div className="close-btn-wrapper" onClick={() => {
+                              setIsAddingGroup(false)
+                              setNewGroupTitle('')
+                            }}>
+                              <img src={closeIcon} alt="" />
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    ) : (
+                      <div className='add-group' onClick={() => setIsAddingGroup(true)}>
+                        <img src={addIcon} alt="add" />
+                        <span>Add another list</span>
+                      </div>
+                    )}
+                  </div>
+                )
+              )}
+            </Droppable>
+          </DragDropContext>
+        ) : (
+          <TableView groups={groups} board={board} />
+        )}
         <Outlet />
       </section>
     </section>

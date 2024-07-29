@@ -14,7 +14,7 @@ import dots from "../assets/imgs/icons/3dots.svg"
 import boardIcon from '../assets/imgs/Icons/boardIcon.svg'
 import tableIcon from '../assets/imgs/Icons/tableIcon.svg'
 
-export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen}) {
+export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, displayStyle, setDisplayStyle }) {
   const board = useSelector(storeState => storeState.boardModule.board)
   const user = useSelector(storeState => storeState.userModule.user)
 
@@ -27,10 +27,10 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
   const [textColor, setTextColor] = useState('')
   const [iconColor, setIconColor] = useState({})
   const [outsideIconColor, setOutsideIconColor] = useState({})
+  const [outsideTextColor, setOutsideTextColor] = useState({})
 
   const [inputWidth, setInputWidth] = useState(() => `${Math.max(board.title.length * 9.2, 100)}px`);
 
-  const [displayStyle, setDisplayStyle] = useState('board')
   const [isChatOpen, setIsChatOpen] = useState(false)
 
   useEffect(() => {
@@ -57,6 +57,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
         const avgColor = await getAverageColorFromUrl(board.style)
         setButtonColor(isLightColor(avgColor) ? '#091e42e3' : '#DCDFE4')
         setTextColor(isLightColor(avgColor) ? '#FFFFFF' : '#172B4D')
+        setOutsideTextColor(isLightColor(avgColor) ? '#172B4D' : '#FFFFFF')
         setIconColor(isLightColor(avgColor) ?
           { filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7489%) hue-rotate(29deg) brightness(100%) contrast(103%)' }
           :
@@ -177,32 +178,41 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
             alt="star icon"
           />
         </div>
+
         <div onClick={() => setDisplayStyle('board')}
           className="board-icon-container"
-          style={displayStyle === 'board' ? { backgroundColor: buttonColor, color: textColor } : {}}>
-          <img className='board-icon' src={boardIcon} alt="board icon" style={displayStyle === 'board' ? iconColor : outsideIconColor} />
+          style={displayStyle === 'board' ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }}>
+          <img className='board-icon'
+            src={boardIcon}
+            alt="board icon"
+            style={displayStyle === 'board' ? iconColor : outsideIconColor}
+          />
           <span className='board-icon-text'>Board</span>
         </div>
-        <div onClick={() => setDisplayStyle('table')}
+
+        <div
+          onClick={() => setDisplayStyle(prevStyle => prevStyle === 'board' ? 'table' : 'board')}
           className="table-icon-container"
-          style={displayStyle === 'table' ? { backgroundColor: buttonColor, color: textColor } : {}}
+          style={displayStyle === 'table' ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }}
         >
-          <img className='board-icon' src={tableIcon} alt="table icon"
-            style={displayStyle === 'table' ? iconColor : outsideIconColor} />
+          <img
+            className='board-icon'
+            src={tableIcon}
+            alt="table icon"
+            style={displayStyle === 'table' ? iconColor : outsideIconColor}
+          />
           <span className='board-icon-text'>table</span>
         </div>
 
         <div onClick={() => setIsChatOpen(!isChatOpen)}
           className='chat-trellife-container'
-          style={isChatOpen ? { backgroundColor: buttonColor, color: textColor } : {}} >
+          style={isChatOpen ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }} >
           <span
-          className='chat-trellife-text'>Chat Trellife</span>
+            className='chat-trellife-text'>Chat Trellife</span>
 
         </div>
 
       </div>
-
-
 
       <div className='groups-header-rightside'>
         <div className='filter-container' onClick={toggleFilterOpen} >
