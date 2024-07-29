@@ -137,14 +137,14 @@ export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen, position }) {
                     </div>
 
                 )
-            case 'Templates':
-                return (
-                    <div className="menu-content">
-                        <ul>
-                            <li style={{ cursor: 'default' }}>No templates to show</li>
-                        </ul>
-                    </div>
-                )
+            // case 'Templates':
+            //     return (
+            //         <div className="menu-content">
+            //             <ul>
+            //                 <li style={{ cursor: 'default' }}>No templates to show</li>
+            //             </ul>
+            //         </div>
+            //     )
             default:
                 return null
         }

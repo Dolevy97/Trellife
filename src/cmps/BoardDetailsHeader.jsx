@@ -14,8 +14,7 @@ import dots from "../assets/imgs/icons/3dots.svg"
 import boardIcon from '../assets/imgs/Icons/boardIcon.svg'
 import tableIcon from '../assets/imgs/Icons/tableIcon.svg'
 
-export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, onFilterClick,
-  filterButtonRef }) {
+export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, onFilterClick, filterButtonRef, displayStyle, setDisplayStyle }) {
   const board = useSelector(storeState => storeState.boardModule.board)
   const user = useSelector(storeState => storeState.userModule.user)
 
@@ -31,7 +30,6 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
   const [inputWidth, setInputWidth] = useState(() => `${Math.max(board.title.length * 9.2, 100)}px`);
 
-  const [displayStyle, setDisplayStyle] = useState('board')
   const [isChatOpen, setIsChatOpen] = useState(false)
 
   useEffect(() => {

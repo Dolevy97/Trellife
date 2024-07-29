@@ -143,10 +143,10 @@ export function AppHeader({ isHomePage }) {
 							<p className='header-link-text' title='Starred'>Starred</p>
 							<img src={arrowDownIcon} className='svg-arrow-down' alt="arrow-down" />
 						</article>
-						<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Templates' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Templates', e)}>
+						{/* <article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Templates' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Templates', e)}>
 							<p className='header-link-text' title='Templates'>Templates</p>
 							<img src={arrowDownIcon} className='svg-arrow-down' alt="arrow-down" />
-						</article>
+						</article> */}
 					</section>
 					<article className={`logo-wrapper more ${(isMoreMenuOpen || isMenuOpen) ? 'active' : ''}`} onClick={toggleMoreMenu}>
 						<p className='header-link-text' title='More'>More</p>
@@ -164,10 +164,10 @@ export function AppHeader({ isHomePage }) {
 								<p className='header-link-text' title='Starred'>Starred</p>
 								<img src={arrowDownIcon} className='svg-arrow-down' alt="arrow-down" />
 							</article>
-							<article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Templates' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Templates', e, true)}>
+							{/* <article className={`logo-wrapper ${isMenuOpen && menuToOpen === 'Templates' ? 'active' : ''}`} onClick={(e) => handleMenuChange('Templates', e, true)}>
 								<p className='header-link-text' title='Templates'>Templates</p>
 								<img src={arrowDownIcon} className='svg-arrow-down' alt="arrow-down" />
-							</article>
+							</article> */}
 						</section>
 					</>}
 

@@ -1,0 +1,17 @@
+.table-label-tab {
+    cursor: pointer;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    transition: opacity 0s ease;
+
+    .label-color {
+        width: auto;
+        min-width: 56px;
+        height: 16px;
+        padding: 0 8px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+}
