@@ -28,11 +28,13 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
   const [newTitle, setNewTitle] = useState(board.title)
 
   const [buttonColor, setButtonColor] = useState('')
+  const [hoverButtonColor, setHoverButtonColor] = useState('')
   const [textColor, setTextColor] = useState('')
   const [iconColor, setIconColor] = useState({})
   const [outsideIconColor, setOutsideIconColor] = useState({})
   const [outsideTextColor, setOutsideTextColor] = useState({})
   const [isHoveringStar, setIsHoveringStar] = useState(false)
+  const [btnHoverState, setBtnHoverState] = useState({ isHover: false, btn: '' })
 
   const [inputWidth, setInputWidth] = useState(() => `${Math.max(board.title.length * 9.2, 100)}px`);
 
@@ -63,6 +65,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
         setButtonColor(isLightColor(avgColor) ? '#091e42e3' : '#DCDFE4')
         setTextColor(isLightColor(avgColor) ? '#FFFFFF' : '#172B4D')
         setOutsideTextColor(isLightColor(avgColor) ? '#172B4D' : '#FFFFFF')
+        setHoverButtonColor(isLightColor(avgColor) ? '#091E4224' : '#A6C5E229')
         setIconColor(isLightColor(avgColor) ?
           { filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7489%) hue-rotate(29deg) brightness(100%) contrast(103%)' }
           :
@@ -212,8 +215,13 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
         </div>
 
         <div onClick={() => setDisplayStyle('board')}
+          onMouseEnter={() => setBtnHoverState({ isHover: true, btn: 'board' })}
+          onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'board' })}
           className="board-icon-container"
-          style={displayStyle === 'board' ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }}>
+          style={{
+            ...(displayStyle === 'board' ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }),
+            ...(btnHoverState.isHover && btnHoverState.btn === 'board' && displayStyle !== 'board' ? { backgroundColor: hoverButtonColor } : {})
+          }}>
           <img className='board-icon'
             src={boardIcon}
             alt="board icon"
@@ -221,11 +229,15 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
           />
           <span className='board-icon-text'>Board</span>
         </div>
-
         <div
           onClick={() => setDisplayStyle(prevStyle => prevStyle === 'board' ? 'table' : 'board')}
+          onMouseEnter={() => setBtnHoverState({ isHover: true, btn: 'table' })}
+          onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'table' })}
           className="table-icon-container"
-          style={displayStyle === 'table' ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }}
+          style={{
+            ...(displayStyle === 'table' ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }),
+            ...(btnHoverState.isHover && btnHoverState.btn === 'table' && displayStyle !== 'table' ? { backgroundColor: hoverButtonColor } : {})
+          }}
         >
           <img
             className='board-icon'
@@ -238,8 +250,13 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
         {/* <div onClick={() => setIsChatOpen(!isChatOpen)} */}
         <div onClick={onGetBoardFromGpt}
+          onMouseEnter={() => setBtnHoverState({ isHover: true, btn: 'chat' })}
+          onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'chat' })}
           className='chat-trellife-container'
-          style={isChatOpen ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }} >
+          style={{
+            ...(isChatOpen ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }),
+            ...(btnHoverState.isHover && btnHoverState.btn === 'chat' && displayStyle !== 'chat' ? { backgroundColor: hoverButtonColor } : {})
+          }} >
           <img src={openAiIcon}
             alt="Open AI Logo"
             style={isChatOpen ? iconColor : outsideIconColor}
@@ -251,9 +268,14 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
       </div>
 
       <div className='groups-header-rightside'>
-        <div className='filter-container' onClick={toggleFilterOpen} >
-          <img style={outsideIconColor} src={filter} />
-          <span className='filter-container-text' style={{ color: buttonColor }}>Filters</span>
+        <div className='filter-container' onClick={toggleFilterOpen}
+
+          style={isFilterOpen ? { backgroundColor: buttonColor } : { color: textColor }}>
+          <img style={isFilterOpen ? iconColor : outsideIconColor} src={filter}
+          />
+          <span className='filter-container-text'
+            style={isFilterOpen ? { color: textColor} : { color: outsideTextColor }}
+          >Filters</span>
         </div>
         <span className="sep">
 
@@ -290,6 +312,6 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
         )}
       </div>
-    </section>
+    </section >
   )
 }
