@@ -3,10 +3,13 @@ import { login } from "../store/actions/user.actions"
 import { useNavigate } from "react-router"
 
 import homepageImage from '../assets/imgs/homepage.png'
+
+import boardDetailsScreenshot from '../assets/imgs/board-details-screenshot.png'
+import dragAndDropScreenshot from '../assets/imgs/drag-and-drop-screenshot.png'
+import taskDetailsScreenshot from '../assets/imgs/task-details-screenshot.png'
 import React, { useRef, useState } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
-
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -103,9 +106,10 @@ export function HomePage() {
                         className="swiper"
                         onSlideChange={slide=>onChangeSlide(slide.activeIndex)}
                     >
-                        <SwiperSlide><img src='../../../src/assets/imgs/board-details-screenshot.png'/></SwiperSlide>
-                        <SwiperSlide><img src='../../../src/assets/imgs/drag-and-drop-screenshot.png'/></SwiperSlide>
-                        <SwiperSlide><img src='../../../src/assets/imgs/task-details-screenshot.png'/></SwiperSlide>
+           
+                        <SwiperSlide><img src={boardDetailsScreenshot}/></SwiperSlide>
+                        <SwiperSlide><img src={dragAndDropScreenshot}/></SwiperSlide>
+                        <SwiperSlide><img src={taskDetailsScreenshot}/></SwiperSlide>
                     </Swiper>
                 </div>
             </section>

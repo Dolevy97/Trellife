@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { GroupPreviewHeader } from './GroupPreviewHeader'
 import autosize from 'autosize'
-import { getFormattedShortTime } from '../services/util.service'
+import { getFormattedShortTime, isLightColor } from '../services/util.service'
 import { useSelector } from 'react-redux'
 import { addTask } from "../store/actions/task.actions"
 import { Droppable, Draggable } from 'react-beautiful-dnd'
@@ -307,7 +307,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                                                     className="label-color"
                                                                                     style={{ backgroundColor: label.color }}
                                                                                 >
-                                                                                    {areLabelsExpanded && <span className="label-title">{label.title}</span>}
+                                                                                    {areLabelsExpanded && <span className="label-title" style={{ color: isLightColor(label.color) ? '#1d2125' : 'currentColor' }}>{label.title}</span>}
                                                                                 </div>
                                                                             </div>
                                                                         )
