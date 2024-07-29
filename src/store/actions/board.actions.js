@@ -81,7 +81,8 @@ export async function addBoard(board) {
 
 export async function updateBoard(board) {
     
-    if (board.activities.length > 20) board.activities.splice(20,board.activities.length-20)
+    const length = 20
+    if (board.activities.length > length) board.activities.splice(length,board.activities.length-length)
 
     store.dispatch(getCmdUpdateBoard(board));
 
