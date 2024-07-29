@@ -14,7 +14,7 @@ import dots from "../assets/imgs/icons/3dots.svg"
 import boardIcon from '../assets/imgs/Icons/boardIcon.svg'
 import tableIcon from '../assets/imgs/Icons/tableIcon.svg'
 
-export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, onFilterClick, filterButtonRef, displayStyle, setDisplayStyle }) {
+export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, displayStyle, setDisplayStyle }) {
   const board = useSelector(storeState => storeState.boardModule.board)
   const user = useSelector(storeState => storeState.userModule.user)
 
@@ -193,7 +193,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
         <div
           onClick={() => setDisplayStyle(prevStyle => prevStyle === 'board' ? 'table' : 'board')}
           className="table-icon-container"
-          style={displayStyle === 'table' ? { backgroundColor: buttonColor, color: textColor } : {color: outsideTextColor}}
+          style={displayStyle === 'table' ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }}
         >
           <img
             className='board-icon'
@@ -206,7 +206,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
         <div onClick={() => setIsChatOpen(!isChatOpen)}
           className='chat-trellife-container'
-          style={isChatOpen ? { backgroundColor: buttonColor, color: textColor } : {color: outsideTextColor}} >
+          style={isChatOpen ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }} >
           <span
             className='chat-trellife-text'>Chat Trellife</span>
 
