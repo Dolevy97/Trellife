@@ -13,6 +13,8 @@ import share from "../assets/imgs/Icons/share.svg"
 import dots from "../assets/imgs/icons/3dots.svg"
 import boardIcon from '../assets/imgs/Icons/boardIcon.svg'
 import tableIcon from '../assets/imgs/Icons/tableIcon.svg'
+import openAiIcon from '../assets/imgs/Icons/openAI_Logo.svg'
+
 import { createBoardPrompt } from '../services/chat-gpt.service';
 import axios from 'axios';
 
@@ -30,6 +32,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
   const [iconColor, setIconColor] = useState({})
   const [outsideIconColor, setOutsideIconColor] = useState({})
   const [outsideTextColor, setOutsideTextColor] = useState({})
+  const [isHoveringStar, setIsHoveringStar] = useState(false)
 
   const [inputWidth, setInputWidth] = useState(() => `${Math.max(board.title.length * 9.2, 100)}px`);
 
@@ -152,25 +155,25 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
     // ev.preventDefault()
 
     // if (prompt) {
-        // setIsSubmit(true)
-        // const boardPrompt = createBoardPrompt(prompt)
-        const boardPrompt = createBoardPrompt('Trip to Australia')
-        axios.post("//localhost:3030/chat", { prompt: boardPrompt })
-            .then(res => {
-                console.log(res.data)
-                const result = res.data
-                console.log(JSON.stringify(result))
-                // addGeneratedBoard(result)
-            })
-            .catch(err => {
-                console.log(err);
-            })
-        // const savedBoard = await addBoard(moveApartmentBoard)
-        // setTimeout(() => {
-        //     addGeneratedBoard(savedBoard)
-        // }, 7000);
+    // setIsSubmit(true)
+    // const boardPrompt = createBoardPrompt(prompt)
+    const boardPrompt = createBoardPrompt('Trip to Australia')
+    axios.post("//localhost:3030/chat", { prompt: boardPrompt })
+      .then(res => {
+        console.log(res.data)
+        const result = res.data
+        console.log(JSON.stringify(result))
+        // addGeneratedBoard(result)
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    // const savedBoard = await addBoard(moveApartmentBoard)
+    // setTimeout(() => {
+    //     addGeneratedBoard(savedBoard)
+    // }, 7000);
     // }
-}
+  }
 
 
   return (
@@ -195,13 +198,15 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
         )}
         <div
           className='star-container'
+          onMouseEnter={() => setIsHoveringStar(true)}
+          onMouseLeave={() => setIsHoveringStar(false)}
           onClick={onClickStar}
-          title='Click to star or unstar this board. Starred boards show up at the top of your boards list.'
+          title='Click to star or unstar this board. Starred boards show up at the starred section of the header.'
         >
           <img
             className={`groupsheader-preview-star ${user.favorites.includes(board._id) ? 'starred' : ''}`}
             src={user.favorites.includes(board._id) ? fullStar : star}
-            style={outsideIconColor}
+            style={{ ...outsideIconColor, ...(isHoveringStar ? { transform: 'scale(1.2)' } : {}) }}
             alt="star icon"
           />
         </div>
@@ -232,12 +237,15 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
         </div>
 
         {/* <div onClick={() => setIsChatOpen(!isChatOpen)} */}
-          <div onClick={onGetBoardFromGpt}
+        <div onClick={onGetBoardFromGpt}
           className='chat-trellife-container'
           style={isChatOpen ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }} >
+          <img src={openAiIcon}
+            alt="Open AI Logo"
+            style={isChatOpen ? iconColor : outsideIconColor}
+          />
           <span
             className='chat-trellife-text'>Chat Trellife</span>
-
         </div>
 
       </div>
@@ -245,7 +253,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
       <div className='groups-header-rightside'>
         <div className='filter-container' onClick={toggleFilterOpen} >
           <img style={outsideIconColor} src={filter} />
-          <span style={{ color: buttonColor }}>Filters</span>
+          <span className='filter-container-text' style={{ color: buttonColor }}>Filters</span>
         </div>
         <span className="sep">
 

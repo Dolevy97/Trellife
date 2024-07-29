@@ -85,12 +85,12 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         return taskMembers.length ? taskMembers : null
     }
 
-    function isNoResults(){
-        return (action==='members' && !getBoardMembers() && !getTaskMembers())
+    function isNoResults() {
+        return (action === 'members' && !getBoardMembers() && !getTaskMembers())
     }
 
-    function getFilteredBoardLabels(){
-        return board.labels.filter(label=> label.title.toLowerCase().includes(filterBy.toLowerCase()))
+    function getFilteredBoardLabels() {
+        return board.labels.filter(label => label.title.toLowerCase().includes(filterBy.toLowerCase()))
     }
 
     // Members
@@ -209,7 +209,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         const updatedTask = { ...task }
         const newChecklist = { id: 'cl' + makeId(), title: checklistInputValue, todos: [] }
         updatedTask.checklists.push(newChecklist)
-        const activityTitle = `added ${checklistInputValue} to this card`
+        const activityTitle = `added ${checklistInputValue} to ${task.id}`
         onSetAction(ev, null)
         toggleAddingItem(newChecklist.id)
         await updateTask(updatedTask, group, board, activityTitle, user)
@@ -235,7 +235,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             let updatedTask = { ...task }
 
             updatedTask.attachments.push(attachment)
-            const activityTitle = `attached ${file.name} to this card`
+            const activityTitle = `attached ${file.name} to ${task.id}`
 
             if (!updatedTask.style || isCover) {
                 updatedTask = { ...updatedTask, style: { isFull: true, backgroundImage: `url(${attachment.url}`, backgroundColor: attachment.backgroundColor } }
@@ -456,7 +456,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                     className="text"
                     onChange={({ target }) => setFilterBy(target.value)}
                     placeholder={`Search ${action}`}
-                    style={isNoResults() ? {marginBlockEnd: '0'} : {}}
+                    style={isNoResults() ? { marginBlockEnd: '0' } : {}}
                 />}
             {action === 'members' &&
                 <>

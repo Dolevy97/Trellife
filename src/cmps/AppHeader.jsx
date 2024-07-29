@@ -8,6 +8,9 @@ import { login, logout } from '../store/actions/user.actions'
 import arrowDownIcon from '../assets/imgs/Icons/arrow-down.svg'
 import addIcon from '../assets/imgs/Icons/add.svg'
 
+import normalLogo from '../assets/imgs/staticLogo.gif'
+import hoverLogo from '../assets/imgs/animatedLogo.gif'
+
 export function AppHeader({ isHomePage }) {
 	const user = useSelector(storeState => storeState.userModule.user)
 
@@ -24,6 +27,7 @@ export function AppHeader({ isHomePage }) {
 
 	const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false)
 	const [createButtonPosition, setCreateButtonPosition] = useState(null)
+	const [isLogoHovered, setIsLogoHovered] = useState(false)
 
 	const userMenuRef = useRef()
 	const appHeaderRef = useRef()
@@ -126,8 +130,12 @@ export function AppHeader({ isHomePage }) {
 		<section className={`outer-header ${isHomePage ? 'homepage' : ''}`}>
 			<header className={`app-header full ${isHomePage ? 'homepage' : ''}`} ref={appHeaderRef}>
 				<div className='flex'>
-					<div onClick={() => navigate('/')} className={`trellife-logo-wrapper  ${isHomePage ? 'homepage' : ''}`}>
-						<div className='logo'></div>
+					<div
+						onClick={() => navigate('/')}
+						onMouseEnter={() => setIsLogoHovered(true)}
+						onMouseLeave={() => setIsLogoHovered(false)}
+						className={`trellife-logo-wrapper  ${isHomePage ? 'homepage' : ''}`}>
+						<div className='logo' style={{ backgroundImage: `url(${isLogoHovered ? hoverLogo : normalLogo})` }}></div>
 						<span className='logo-text'>Trellife</span>
 					</div>
 					<section className={`header-links ${isHomePage ? 'homepage' : ''}`}>
