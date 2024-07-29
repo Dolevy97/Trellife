@@ -82,18 +82,17 @@
             transition: opacity 0.15s ease-in-out;
           }
       
-          &:hover {
-            padding-right: 8px;
-            
-            .label-title {
-              opacity: 1;
-            }
-          }
       
           &.expanded {
             padding-right: 8px;
             height: 16px;
-            width: 56px;
+            min-width: 56px;
+
+            &:hover {
+              opacity: 0.7;
+              transition: none;
+          }
+
             .label-title {
               opacity: 1;
             }
