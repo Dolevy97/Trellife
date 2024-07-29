@@ -89,7 +89,8 @@
     }
 
     .homepage-second {
-        background: linear-gradient(0deg, lighten($bgclr1, 20), $bgclr1) 0% 0% / auto repeat scroll padding-box border-box rgb(178, 212, 255);
+        // background: linear-gradient(0deg, lighten($bgclr1, 20), $bgclr1) 0% 0% / auto repeat scroll padding-box border-box rgb(178, 212, 255);
+        background: linear-gradient(0deg, lighten($bgclr1, 20), $bgclr1) 0% 0% / auto repeat scroll padding-box border-box;
         background-blend-mode: normal;
         color: $txtclr1;
 
@@ -265,16 +266,89 @@
     }
 }
 
-.carousal {
-    padding: 16px;
+.homepage-info {
+    // padding: 16px;
+    // margin-inline-start: 38.5px;
+    margin-inline-end: 0;
+    display: flex;
+
+    @media (max-width: 992px) {
+        //  flex-direction: column-reverse;
+    }
+
+    .side-texts {
+        padding: 0 1rem;
+        width: 33.3333%;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .side-text {
+            padding: 16px 16px 16px 24px;
+            text-align: left;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            &.selected {
+                background-color: rgb(255, 255, 255, 0.9);
+                color: rgb(9, 30, 66);
+                box-shadow: rgba(9, 30, 66, 0.15) 0px 0.5rem 1rem 0px;
+                border-radius: 0.3rem;
+                border: 0px;
+                // height: 100%;
+                padding: 1rem 1rem 1rem 1.5rem;
+                position: relative;
+                text-align: left;
+
+                &::after {
+                    background-color: rgb(0, 199, 229);
+                    border-radius: 0.3rem 0px 0px 0.3rem;
+                    bottom: 0px;
+                    content: "";
+                    left: 0px;
+                    position: absolute;
+                    top: 0px;
+                    width: 0.5rem;
+                }
+            }
+
+            h3 {
+                font-family: 'Charlie Display';
+                font-size: 1rem;
+                font-weight: 500;
+                line-height: 21.3333px;
+                margin-block-end: 8px;
+            }
+
+            p {
+                font-family: 'Charlie Text';
+                font-weight: 400;
+                line-height: 24px;
+                margin: 0;
+            }
+
+        }
+    }
+
     .swiper {
-        border-radius: 6px;
+        border-radius: 12px;
         width: 728px;
         height: 488.5px;
+        // width: 100%;;
         padding-block-end: 47.5;
 
         img {
             height: 100%;
+
+            &:hover {
+                cursor: grab;
+            }
+
+            &:active{
+                cursor: grabbing;
+            }
         }
     }
 }
