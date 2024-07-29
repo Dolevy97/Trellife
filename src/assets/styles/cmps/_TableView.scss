@@ -60,9 +60,9 @@
 .table-body {
     tr:not(.table-footer):not(.table-footer-last-element):not(.long-width) {
 
-        &:hover .grab-icon {
-            opacity: 1;
-        }
+        // &:hover .grab-icon {
+        //     opacity: 1;
+        // }
 
         td {
             height: 40px;
@@ -115,11 +115,24 @@
     width: 17%;
     padding-inline-end: 8px !important;
     white-space: nowrap;
-    overflow: hidden;
+    overflow-y: hidden;
+    overflow-x: visible;
     text-overflow: ellipsis;
 
     &.table-list-td:hover {
         padding-inline-end: 30px !important;
+    }
+
+    &.labels-list-td:hover {
+        padding-inline-end: 20px !important;
+    }
+
+    &.members-td:hover {
+        padding-inline-end: 20px !important;
+    }
+
+    &.dates-td:hover {
+        padding-inline-end: 20px !important;
     }
 }
 
@@ -139,7 +152,6 @@
 }
 
 td {
-
     .member-thumbnail {
         width: 24px;
         height: 24px;
@@ -150,10 +162,15 @@ td {
     }
 
     .labels-container {
+        position: relative;
         display: flex;
         flex-wrap: wrap;
         max-height: 40px;
-        overflow: hidden;
+        overflow: visible;
+
+        &:hover .arrow-down-icon-labels {
+            opacity: 1;
+        }
 
         .table-label-tab {
             display: inline-block;
@@ -618,5 +635,91 @@ tr {
                 background-color: #A6C5E229;
             }
         }
+    }
+}
+
+.mid-width {
+    & .close-action-container {
+        position: absolute;
+        top: 0;
+        right: 3px;
+
+        padding: 2px !important;
+        border-radius: 3px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            width: 18px;
+            height: 18px;
+        }
+    }
+}
+
+.task-action-contain {
+    z-index: 100;
+}
+
+.arrow-down-icon-labels {
+    position: absolute;
+    top: 50%;
+    right: -18%;
+    translate: -50% -50%;
+
+    height: 12px;
+    width: 12px;
+
+    opacity: 0;
+    transition: opacity .2s;
+}
+
+.arrow-down-icon-members {
+    position: absolute;
+    right: 1em;
+    top: 15px;
+    height: 12px;
+    width: 12px;
+
+    opacity: 0;
+}
+
+.members-td {
+    position: relative;
+
+    &:hover .arrow-down-icon-members {
+        opacity: 1;
+    }
+}
+
+.dates-td {
+    position: relative;
+    
+    &:hover .arrow-down-icon-dates {
+        opacity: 1;
+    }
+}
+
+.arrow-down-icon-dates {
+    position: absolute;
+    right: 1em;
+    top: 15px;
+    height: 12px;
+    width: 12px;
+
+    opacity: 0;
+}
+
+.dates-td {
+    .checkbox-due-date {
+        @include checkbox;
+        vertical-align: middle;
+    }
+
+    .timer-container {
+        margin-inline-start: 5px;
+        vertical-align: middle;
+
     }
 }

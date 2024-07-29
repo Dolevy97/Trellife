@@ -24,7 +24,6 @@ export function BoardDetails() {
 
   const user = useSelector(storeState => storeState.userModule.user)
   const board = useSelector(storeState => storeState.boardModule.board)
-  // const navigate = useNavigate()
 
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [newGroupTitle, setNewGroupTitle] = useState('')

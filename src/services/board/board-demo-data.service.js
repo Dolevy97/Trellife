@@ -6,8 +6,6 @@ export const boardDemoDataService = {
     createDemoBoards
 }
 
-console.log(JSON.stringify(createSimpleDemoBoard()))
-
 function createDemoBoards(length = 20) {
     const boards = []
     for (let i = 0; i < length; i++) {

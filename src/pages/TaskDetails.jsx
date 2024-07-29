@@ -552,6 +552,36 @@ export function TaskDetails() {
         return { text: '', style: {} }
     }
 
+    // async function onChangeTaskGroup(task, newGroupId) {
+    //     const currentGroup = board.groups.find(g => g.tasks.some(t => t.id === task.id))
+    //     const newGroup = board.groups.find(g => g.id === newGroupId)
+
+    //     const updatedCurrentGroup = {
+    //         ...currentGroup,
+    //         tasks: currentGroup.tasks.filter(t => t.id !== task.id)
+    //     }
+
+    //     const updatedNewGroup = {
+    //         ...newGroup,
+    //         tasks: [...newGroup.tasks, task]
+    //     }
+
+    //     const updatedBoard = {
+    //         ...board,
+    //         groups: board.groups.map(g =>
+    //             g.id === currentGroup.id ? updatedCurrentGroup :
+    //                 g.id === newGroup.id ? updatedNewGroup : g
+    //         )
+    //     }
+    //     try {
+    //         await updateBoard(updatedBoard)
+    //         await updateTask(task, updatedNewGroup, updatedBoard, `Moved task "${task.title}" to "${newGroup.title}"`, user);
+    //     } catch (error) {
+    //         console.error('Failed to change task group:', error)
+    //     }
+    // }
+
+
     if (!taskToEdit || !group) return null
 
     const { title, description, membersIds, labelsIds, style } = taskToEdit
