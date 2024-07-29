@@ -86,10 +86,11 @@ export async function updateTask(task, group, board, activityTitle = '', user) {
 }
 
 
-export async function addTask(newTaskTitle, group, board) {
+export async function addTask(newTaskTitle, group, board, user) {
     try {
         const newTask = boardService.getEmptyTask()
         newTask.title = newTaskTitle.trim()
+        newTask.byMember = user
 
         const updatedGroup = {
             ...group,
