@@ -13,11 +13,10 @@ import datesIcon from '../assets/imgs/TaskDetails-icons/dates.svg'
 import trashIcon from '../assets/imgs/TaskDetails-icons/trash.svg'
 import { updateGroup } from '../store/actions/group.actions'
 import { getFormattedShortTime, isLightColor } from '../services/util.service'
+import autosize from 'autosize'
 
 import { TaskAction } from '../cmps/TaskAction'
-
 import { useState, useEffect, useRef } from "react"
-import { updateBoard } from '../store/actions/board.actions'
 import { updateTask } from '../store/actions/task.actions'
 
 export function QuickEditTask({ task, onClose, taskPosition, group, board, user, handleTaskClick, toggleLabelExpansion, areLabelsExpanded }) {
@@ -26,7 +25,20 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
   const [action, setAction] = useState(null)
   const [labelToEdit, setLabelToEdit] = useState(null)
   const [coverStyle, setCoverStyle] = useState(task.style || {})
+  const textareaRef = useRef(null)
 
+
+  useEffect(() => {
+    if (textareaRef.current) {
+        autosize(textareaRef.current)
+    }
+
+    return () => {
+        if (textareaRef.current) {
+            autosize.destroy(textareaRef.current)
+        }
+    }
+}, [taskTitleInputValue])
 
   /* Set Action */
   function onSetAction(ev, act) {
@@ -238,6 +250,7 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
               onChange={(ev) => setTaskTitleInputValue(ev.target.value)}
               onKeyPress={handleTitleKeyPress}
               autoFocus
+              ref={textareaRef}
             />
             <div className='task-bottom-container'>
 
