@@ -33,8 +33,6 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
     const [quickEditTaskId, setQuickEditTaskId] = useState(null)
     const [quickEditTaskPosition, setQuickEditTaskPosition] = useState(null)
 
-
-
     const buttonRef = useRef(null)
     const textareaRef = useRef(null)
     const addTaskRef = useRef(null)
