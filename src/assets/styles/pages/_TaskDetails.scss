@@ -66,14 +66,19 @@
 
             height: 24px;
             width: 24px;
+            padding: 4.6px;
+            scale: 1.7;
+            border-radius: 50%;
 
             z-index: 1002;
 
             &:hover {
                 cursor: pointer;
-                // background-color: #45505a;
-                // border-radius: 50%;
-                // padding: 20px;
+                background-color: #a6c5e229;
+            }
+
+            &.dark:hover {
+                background-color: #091e4224;
             }
         }
 
@@ -109,9 +114,13 @@
                     color: white;
                     border-radius: 3px;
 
-                    // &:hover {
-                    //     background-color: #45505a;
-                    // }
+                    &:hover {
+                        background-color: #a6c5e229;
+                    }
+                    
+                    &.dark:hover {
+                        background-color: #091e4224;
+                    }
 
                     .icon {
                         position: static;
