@@ -214,6 +214,10 @@
                         border-top-left-radius: 3px;
                         border-top-right-radius: 3px;
 
+                        .side-text{
+                            transition: 1800ms;
+                        }
+
                         @media (min-width: 992px) {
                             display: none;
                         }
