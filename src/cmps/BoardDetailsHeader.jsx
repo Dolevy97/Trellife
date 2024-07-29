@@ -6,13 +6,16 @@ import { showSuccessMsg } from '../services/event-bus.service';
 import { updateUser } from '../store/actions/user.actions';
 import { getAverageColorFromUrl, isLightColor } from '../services/util.service';
 
-import star from '../assets/imgs/Icons/star.svg';
-import fullStar from '../assets/imgs/Icons/fullstar.svg';
-import filter from '../assets/imgs/Icons/filter.svg';
-import share from '../assets/imgs/Icons/share.svg';
-import dots from '../assets/imgs/icons/3dots.svg';
-import boardIcon from '../assets/imgs/Icons/boardIcon.svg';
-import tableIcon from '../assets/imgs/Icons/tableIcon.svg';
+import star from '../assets/imgs/Icons/star.svg'
+import fullStar from '../assets/imgs/Icons/fullstar.svg'
+import filter from "../assets/imgs/Icons/filter.svg"
+import share from "../assets/imgs/Icons/share.svg"
+import dots from "../assets/imgs/icons/3dots.svg"
+import boardIcon from '../assets/imgs/Icons/boardIcon.svg'
+import tableIcon from '../assets/imgs/Icons/tableIcon.svg'
+import openAiIcon from '../assets/imgs/Icons/openAI_Logo.svg'
+
+import { createBoardPrompt } from '../services/chat-gpt.service';
 import axios from 'axios';
 
 export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, displayStyle, setDisplayStyle }) {
@@ -24,11 +27,14 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(board.title);
 
-  const [buttonColor, setButtonColor] = useState('');
-  const [textColor, setTextColor] = useState('');
-  const [iconColor, setIconColor] = useState({});
-  const [outsideIconColor, setOutsideIconColor] = useState({});
-  const [outsideTextColor, setOutsideTextColor] = useState({});
+  const [buttonColor, setButtonColor] = useState('')
+  const [hoverButtonColor, setHoverButtonColor] = useState('')
+  const [textColor, setTextColor] = useState('')
+  const [iconColor, setIconColor] = useState({})
+  const [outsideIconColor, setOutsideIconColor] = useState({})
+  const [outsideTextColor, setOutsideTextColor] = useState({})
+  const [isHoveringStar, setIsHoveringStar] = useState(false)
+  const [btnHoverState, setBtnHoverState] = useState({ isHover: false, btn: '' })
 
   const [inputWidth, setInputWidth] = useState(() => `${Math.max(board.title.length * 9.2, 100)}px`);
 
@@ -54,10 +60,11 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
   useEffect(() => {
     async function updateButtonColor() {
       try {
-        const avgColor = await getAverageColorFromUrl(board.style.background);
-        setButtonColor(isLightColor(avgColor) ? '#091e42e3' : '#DCDFE4');
-        setTextColor(isLightColor(avgColor) ? '#FFFFFF' : '#172B4D');
-        setOutsideTextColor(isLightColor(avgColor) ? '#172B4D' : '#FFFFFF');
+        const avgColor = await getAverageColorFromUrl(board.style)
+        setButtonColor(isLightColor(avgColor) ? '#091e42e3' : '#DCDFE4')
+        setTextColor(isLightColor(avgColor) ? '#FFFFFF' : '#172B4D')
+        setOutsideTextColor(isLightColor(avgColor) ? '#172B4D' : '#FFFFFF')
+        setHoverButtonColor(isLightColor(avgColor) ? '#091E4224' : '#A6C5E229')
         setIconColor(isLightColor(avgColor) ?
           { filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7489%) hue-rotate(29deg) brightness(100%) contrast(103%)' }
           :
@@ -184,20 +191,27 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
         )}
         <div
           className='star-container'
+          onMouseEnter={() => setIsHoveringStar(true)}
+          onMouseLeave={() => setIsHoveringStar(false)}
           onClick={onClickStar}
-          title='Click to star or unstar this board. Starred boards show up at the top of your boards list.'
+          title='Click to star or unstar this board. Starred boards show up at the starred section of the header.'
         >
           <img
             className={`groupsheader-preview-star ${user.favorites.includes(board._id) ? 'starred' : ''}`}
             src={user.favorites.includes(board._id) ? fullStar : star}
-            style={outsideIconColor}
+            style={{ ...outsideIconColor, ...(isHoveringStar ? { transform: 'scale(1.2)' } : {}) }}
             alt="star icon"
           />
         </div>
 
         <div onClick={() => setDisplayStyle('board')}
+          onMouseEnter={() => setBtnHoverState({ isHover: true, btn: 'board' })}
+          onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'board' })}
           className="board-icon-container"
-          style={displayStyle === 'board' ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }}>
+          style={{
+            ...(displayStyle === 'board' ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }),
+            ...(btnHoverState.isHover && btnHoverState.btn === 'board' && displayStyle !== 'board' ? { backgroundColor: hoverButtonColor } : {})
+          }}>
           <img className='board-icon'
             src={boardIcon}
             alt="board icon"
@@ -205,11 +219,15 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
           />
           <span className='board-icon-text'>Board</span>
         </div>
-
         <div
           onClick={() => setDisplayStyle(prevStyle => prevStyle === 'board' ? 'table' : 'board')}
+          onMouseEnter={() => setBtnHoverState({ isHover: true, btn: 'table' })}
+          onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'table' })}
           className="table-icon-container"
-          style={displayStyle === 'table' ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }}
+          style={{
+            ...(displayStyle === 'table' ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }),
+            ...(btnHoverState.isHover && btnHoverState.btn === 'table' && displayStyle !== 'table' ? { backgroundColor: hoverButtonColor } : {})
+          }}
         >
           <img
             className='board-icon'
@@ -222,19 +240,32 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
         {/* <div onClick={() => setIsChatOpen(!isChatOpen)} */}
         <div onClick={onGetBoardFromGpt}
+          onMouseEnter={() => setBtnHoverState({ isHover: true, btn: 'chat' })}
+          onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'chat' })}
           className='chat-trellife-container'
-          style={isChatOpen ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }} >
+          style={{
+            ...(isChatOpen ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }),
+            ...(btnHoverState.isHover && btnHoverState.btn === 'chat' && displayStyle !== 'chat' ? { backgroundColor: hoverButtonColor } : {})
+          }} >
+          <img src={openAiIcon}
+            alt="Open AI Logo"
+            style={isChatOpen ? iconColor : outsideIconColor}
+          />
           <span
             className='chat-trellife-text'>Chat Trellife</span>
-
         </div>
 
       </div>
 
       <div className='groups-header-rightside'>
-        <div className='filter-container' onClick={toggleFilterOpen} >
-          <img style={outsideIconColor} src={filter} />
-          <span style={{ color: buttonColor }}>Filters</span>
+        <div className='filter-container' onClick={toggleFilterOpen}
+
+          style={isFilterOpen ? { backgroundColor: buttonColor } : { color: textColor }}>
+          <img style={isFilterOpen ? iconColor : outsideIconColor} src={filter}
+          />
+          <span className='filter-container-text'
+            style={isFilterOpen ? { color: textColor} : { color: outsideTextColor }}
+          >Filters</span>
         </div>
         <span className="sep">
 
@@ -271,6 +302,6 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
         )}
       </div>
-    </section>
+    </section >
   )
 }

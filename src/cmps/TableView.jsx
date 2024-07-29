@@ -20,7 +20,7 @@ export function TableView({ groups, board }) {
     const [sortState, setSortState] = useState({ isSorting: false, dir: null })
     const [nameChangeOpen, setNameChangeOpen] = useState({ isOpen: false, taskId: null })
     const [changeListOpen, setChangeListOpen] = useState({ isOpen: false, taskId: null })
-    const [action, setAction] = useState(null)
+    const [action, setAction] = useState({ action: null, taskId: null, position: null })
 
     const [containerPosition, setContainerPosition] = useState({ top: 0, left: 0 })
 
@@ -48,13 +48,32 @@ export function TableView({ groups, board }) {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [nameChangeOpen.isOpen, isSortOpen, changeListOpen.isOpen]);
+    }, [nameChangeOpen.isOpen, isSortOpen, changeListOpen.isOpen, action]);
+
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (action.action && !event.target.closest('.task-action-contain')) {
+                setAction({ action: null, taskId: null, position: null })
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        };
+    }, [action])
 
 
     /* Set Action */
-    function onSetAction(ev, act) {
-        ev.stopPropagation()
-        setAction(action === act ? null : act)
+    function onSetAction(ev, act, taskId, height) {
+        ev.stopPropagation();
+        if (action.action === act && action.taskId === taskId) {
+            setAction({ action: null, taskId: null, position: null })
+        } else {
+            const position = calculateActionPosition(ev, height, 300)
+            setAction({ action: act, taskId: taskId, position: position })
+        }
     }
 
     function getLabelById(id) {
@@ -68,6 +87,26 @@ export function TableView({ groups, board }) {
             imgUrl: 'path/to/default/image.png',
             fullname: 'Unknown Member'
         }
+    }
+
+    function calculateActionPosition(event, containerHeight, containerWidth) {
+        const viewportHeight = window.innerHeight;
+        const viewportWidth = window.innerWidth;
+        const rect = event.target.getBoundingClientRect();
+
+        let top, left = rect.left;
+
+        if (viewportHeight - rect.bottom >= containerHeight) {
+            top = rect.bottom;
+        } else {
+            top = rect.top - containerHeight;
+        }
+
+        if (left + containerWidth > viewportWidth) {
+            left = viewportWidth - containerWidth;
+        }
+
+        return { top, left };
     }
 
     function calculatePosition(event, containerHeight) {
@@ -205,6 +244,12 @@ export function TableView({ groups, board }) {
         }
     }
 
+    async function onChangeIsDone({ target }, group, task) {
+        task.isDone = target.checked
+        const activityTitle = 'marked the due date ' + target.checked ? 'complete' : 'incomplete'
+        await updateTask(task, group, board, activityTitle, user)
+    }
+
     return (
         <section className="table-outside-container">
             <section className="table-container">
@@ -274,6 +319,7 @@ export function TableView({ groups, board }) {
                                 : group.tasks;
 
                             return tasksToRender.map(task => {
+                                const taskActionProps = { task, group, board, user, onClose: () => setAction(null) };
                                 const taskStatus = getTaskStatus(task);
                                 return (
                                     <tr key={task.id}>
@@ -369,27 +415,31 @@ export function TableView({ groups, board }) {
                                                                     alt="success icon" />
                                                             </div>
                                                         )}
-
                                                     </article>
                                                 </article>
                                             }
                                         </td>
-                                        <td className="mid-width">
+                                        <td className="mid-width labels-list-td"
+                                            onClick={(e) => onSetAction(e, 'labels', task.id, 371)}
+                                        >
                                             <div className="labels-container">
                                                 {task.labelsIds && task.labelsIds.map(id => {
                                                     const label = getLabelById(id)
                                                     return label?.color && (
-                                                        <div
-                                                            key={id}
-                                                            className={`table-label-tab`}
-                                                            title={label.title}>
+                                                        <>
                                                             <div
-                                                                className="label-color"
-                                                                style={{ backgroundColor: label.color }}
-                                                            >
-                                                                <span className="label-title" style={{ color: isLightColor(label.color) ? '#1d2125' : 'currentColor' }}>{label.title}</span>
+                                                                key={id}
+                                                                className={`table-label-tab`}
+                                                                title={label.title}>
+                                                                <div
+                                                                    className="label-color"
+                                                                    style={{ backgroundColor: label.color }}
+                                                                >
+                                                                    <span className="label-title" style={{ color: isLightColor(label.color) ? '#1d2125' : 'currentColor' }}>{label.title}</span>
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                            <img className="arrow-down-icon-labels" src={arrowDownIcon} alt="" />
+                                                        </>
                                                     )
                                                 })}
                                                 {!task.labelsIds.length &&
@@ -399,56 +449,98 @@ export function TableView({ groups, board }) {
                                                             <img src={addIcon} alt="plus add icon" />
                                                         </div>
                                                     </div>}
+                                                {action && action.action === 'labels' && action.taskId === task.id &&
+                                                    <div className="task-action-contain"
+                                                        style={{
+                                                            position: 'fixed',
+                                                            top: `${action.position.top}px`,
+                                                            left: `${action.position.left}px`,
+                                                        }}
+                                                    >
+                                                        <TaskAction
+                                                            action="labels"
+                                                            getLabelById={getLabelById}
+                                                            {...taskActionProps}
+                                                            onSetAction={onSetAction}
+                                                        />
+                                                    </div>
+                                                }
                                             </div>
                                         </td>
-                                        <td className="mid-width">
-                                            {task.membersIds && task.membersIds
-                                                .map(getMemberById)
-                                                .filter(member => member._id !== 'unknown')
-                                                .map((member, idx, members) => (
-                                                    <img
-                                                        key={member._id}
-                                                        className="member-thumbnail"
-                                                        src={member.imgUrl}
-                                                        title={member.fullname}
-                                                        alt={member.fullname}
-                                                        style={{ zIndex: members.length - idx }}
-                                                    />
-                                                ))
-                                            }
+                                        <td className="mid-width members-td"
+                                            onClick={(e) => onSetAction(e, 'members', task.id, 289)}
+                                        >
+                                            {task.membersIds && task.membersIds.length ? (
+                                                <>
+                                                    {task.membersIds
+                                                        .map(getMemberById)
+                                                        .filter(member => member._id !== 'unknown')
+                                                        .map((member, idx, members) => (
+                                                            <img
+                                                                key={member._id}
+                                                                className="member-thumbnail"
+                                                                src={member.imgUrl}
+                                                                title={member.fullname}
+                                                                alt={member.fullname}
+                                                                style={{ zIndex: members.length - idx }}
+                                                            />
+                                                        ))}
+                                                    <img className="arrow-down-icon-members" src={arrowDownIcon} alt="" />
+                                                </>
+                                            ) : null}
                                             {!task.membersIds.length && <div className="td-empty-content">
                                                 <div className="table-no-content"></div>
                                                 <div className="td-add-content">
                                                     <img src={addIcon} alt="plus add icon" />
                                                 </div>
                                             </div>}
-                                            {action === 'members' &&
-                                                <TaskAction
-                                                    action="members"
-                                                    getMemberById={getMemberById}
-                                                    {...taskActionProps}
-                                                    onSetAction={onSetAction}
-                                                />
+                                            {action && action.action === 'members' && action.taskId === task.id &&
+                                                <div className="task-action-contain"
+                                                    style={{
+                                                        position: 'fixed',
+                                                        top: `${action.position.top}px`,
+                                                        left: `${action.position.left}px`,
+                                                    }}
+                                                >
+                                                    <TaskAction
+                                                        action="members"
+                                                        getMemberById={getMemberById}
+                                                        {...taskActionProps}
+                                                        onSetAction={onSetAction}
+                                                    />
+                                                </div>
                                             }
                                         </td>
-                                        <td className="mid-width">
+                                        <td className="mid-width dates-td"
+                                            onClick={(e) => onSetAction(e, 'dates', task.id, 563)}
+                                        >
                                             {task.dueDate && (
-                                                <div
-                                                    title={taskStatus.title}
-                                                    className="timer-container"
-                                                    style={taskStatus.style}
-                                                >
-                                                    <img
-                                                        src={clockIcon}
-                                                        alt="clock icon"
-                                                        style={{ filter: taskStatus.iconFilter }}
+                                                <>
+                                                    <input
+                                                        onClick={(ev) => ev.stopPropagation()}
+                                                        className="checkbox-due-date"
+                                                        type="checkbox"
+                                                        onChange={(ev) => onChangeIsDone(ev, group, task)}
+                                                        checked={task.isDone}
                                                     />
-                                                    <span
-                                                        style={{ color: taskStatus.textColor }}
+                                                    <div
+                                                        title={taskStatus.title}
+                                                        className="timer-container"
+                                                        style={taskStatus.style}
                                                     >
-                                                        {getFormattedShortTime(task.dueDate)}
-                                                    </span>
-                                                </div>
+                                                        <img
+                                                            src={clockIcon}
+                                                            alt="clock icon"
+                                                            style={{ filter: taskStatus.iconFilter }}
+                                                        />
+                                                        <span
+                                                            style={{ color: taskStatus.textColor }}
+                                                        >
+                                                            {getFormattedShortTime(task.dueDate)}
+                                                        </span>
+                                                    </div>
+                                                    <img className="arrow-down-icon-dates" src={arrowDownIcon} alt="" />
+                                                </>
                                             )}
                                             {!task.dueDate && <div className="td-empty-content">
                                                 <div className="table-no-content"></div>
@@ -456,6 +548,21 @@ export function TableView({ groups, board }) {
                                                     <img src={addIcon} alt="plus add icon" />
                                                 </div>
                                             </div>}
+                                            {action && action.action === 'dates' && action.taskId === task.id &&
+                                                <div className="task-action-contain"
+                                                    style={{
+                                                        position: 'fixed',
+                                                        top: `${action.position.top}px`,
+                                                        left: `${action.position.left}px`,
+                                                    }}
+                                                >
+                                                    <TaskAction
+                                                        action="dates"
+                                                        {...taskActionProps}
+                                                        onSetAction={onSetAction}
+                                                    />
+                                                </div>
+                                            }
                                         </td>
                                     </tr>
                                 );

@@ -2,6 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    // flex-wrap: wrap;
 
     background: rgba(32, 32, 32, 0.13);
     backdrop-filter: blur(7.1px);
@@ -16,9 +17,10 @@
         margin-inline-end: 21.188em;
     }
 
-    // &.right-nav-open .groups-header-title {
+    @media (max-width: 430px) {
+        padding-inline-start: 0px;
+    }
 
-    // }
 
     .groups-header-title {
         font-size: 18px;
@@ -26,6 +28,10 @@
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 500px;
+
+        @media (max-width: 430px) {
+            max-width: 120px;
+        }
     }
 
     .groups-header-leftside {
@@ -33,6 +39,10 @@
         align-items: center;
         gap: 4px;
         padding-inline-start: 15px;
+
+        @media (max-width: 430px) {
+            padding-inline-start: 10px;
+        }
 
         & .groups-title-input {
             border: none;
@@ -77,27 +87,7 @@
 
             .groupsheader-preview-star {
                 opacity: 1;
-            }
-
-            &:hover {
-                .groupsheader-preview-star {
-                    opacity: 0;
-
-                }
-
-                &::after {
-                    content: '';
-                    position: absolute;
-                    top: 8px;
-                    left: 8px;
-                    width: 16px;
-                    height: 16px;
-                    background-image: url('../src/assets/imgs/Icons/star.svg');
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                    opacity: 1;
-                    transform: scale(1.2);
-                }
+                transition: transform .2s;
             }
         }
     }
@@ -210,7 +200,9 @@
     }
 }
 
-.table-icon-container, .board-icon-container,.chat-trellife-container {
+.table-icon-container,
+.board-icon-container,
+.chat-trellife-container {
     display: flex;
     align-items: center;
 
@@ -246,4 +238,12 @@
         text-transform: capitalize;
     }
 
+}
+
+.chat-trellife-text,
+.board-icon-text,
+.filter-container-text {
+    @media (max-width: 991px) {
+        display: none;
+    }
 }

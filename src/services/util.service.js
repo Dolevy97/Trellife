@@ -276,6 +276,43 @@ function getFromLocalCache(key) {
     return data ? JSON.parse(data) : null
 }
 
+export async function getUnsplashImageByQuery(query = 'random', count = 1) {
+
+    try {
+        const response = await axios.get('https://api.unsplash.com/photos/random', {
+            params: {
+                query,
+                count,
+                orientation: 'landscape',
+                w: 4000,
+                client_id: UNSPLASH_ACCESS_KEY
+            }
+        })
+
+        const images = response.data.map(image => ({
+            id: image.id,
+            title: image.description || image.alt_description || 'Untitled',
+            url: image.urls.raw,
+            smallUrl: image.urls.small,
+            thumbnailUrl: image.urls.thumb,
+            description: image.description || image.alt_description,
+            type: 'image'
+        })
+        )
+
+        for (let i = 0; i < images.length; i++) {
+            images[i].backgroundColor = await getAverageColorFromAttachment(images[i])
+            // FOR DEV
+            if (i >= 6) break
+        }
+
+        return images
+    } catch (error) {
+        console.error('Error fetching images from Unsplash:', error)
+        return []
+    }
+}
+
 export async function getUnsplashImages(query = 'random', count = 1) {
     const cacheKey = 'all_images'
 

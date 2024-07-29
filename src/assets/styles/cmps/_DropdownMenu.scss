@@ -124,6 +124,10 @@
     
     border-radius: 8px;
 
+    @media (max-width: 430px) {
+        width: 200px;
+    }
+
     & .logo-wrapper {
         margin-inline-end: 0;
         height: 32px;
