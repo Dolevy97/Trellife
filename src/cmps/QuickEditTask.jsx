@@ -187,9 +187,18 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
           width: `${taskPosition.width + 4}px`, // 2px wider on each side
         }}
       >
+        {/* On the task */}
+        <div className={`quick-edit-main ${task.style?.backgroundImage ? 'task-inner-container-img' : ''}`}
+          style={task.style && task.style ? { ...task.style, borderRadius: '8px' } : {}}>
 
-        <div className='quick-edit-main'>
-          {/* On the task */}
+          {task.style && !task.style && (
+            <section
+              className={`cover-container ${task.style?.backgroundImage ? 'cover-container-img' : ''}`}
+              style={{ ...task.style }}>
+            </section>
+          )}
+
+<div className='under-the-cover-info'>
           {task.labelsIds && task.labelsIds.length > 0 && (
             <div className="labels-container">
               {task.labelsIds.map(labelId => {
@@ -206,7 +215,9 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
             </div>
           )}
 
-          <textarea defaultValue={task.title}
+          <textarea
+           
+            defaultValue={task.title}
             onClick={(e) => e.stopPropagation()}
             value={taskTitleInputValue}
             onChange={(ev) => setTaskTitleInputValue(ev.target.value)}
@@ -284,119 +295,124 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
                 <img className='description' title='This card has a description.' src={descriptionIcon} alt="description" />
               )}
 
-
             </div>
 
-            
-              {task.membersIds && task.membersIds.length > 0 && (
-                  <div className="members-container">
-                    {task.membersIds.map(id => {
-                      const member = getMemberById(id)
-                      return <img key={member._id} className="task-member-thumbnail" src={member.imgUrl} title={member.fullname} alt={member.fullname} />
-                    })}
-                  </div>
-              )}
+            {task.membersIds && task.membersIds.length > 0 && (
+              <div className="members-container">
+                {task.membersIds.map(id => {
+                  const member = getMemberById(id)
+                  return <img key={member._id} className="task-member-thumbnail" src={member.imgUrl} title={member.fullname} alt={member.fullname} />
+                })}
+              </div>
+            )}
 
-            
-          </div>
-
-
-          {/* On the task end */}
-          <div className="quick-card-editor-buttons">
-
-            <div className="task-action-container">
-              <button type='button' className="action" onClick={() => handleTaskClick(task.id)} >
-                <img className="labels-icon icon" src={cardIcon} alt="labels icon" />
-                <span className="action-title">Open card</span>
-              </button>
-            </div>
-
-            <div className="task-action-container">
-              <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'labels')}>
-                <img className="labels-icon icon" src={labelIcon} alt="labels icon" />
-                <span className="action-title">Edit labels</span>
-              </button>
-              {action === 'labels' &&
-                <TaskAction
-                  action="labels"
-                  {...taskActionProps}
-                  setLabelToEdit={setLabelToEdit}
-                  onSetAction={onSetAction}
-                />
-              }
-              {action === 'edit label' &&
-                <TaskAction
-                  action="edit label"
-                  labelToEdit={labelToEdit}
-                  setLabelToEdit={setLabelToEdit}
-                  {...taskActionProps}
-                  onSetAction={onSetAction}
-                />
-              }
-            </div>
-
-            <div className="task-action-container">
-              <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'members')}>
-                <img className="members-icon icon" src={membersIcon} alt="members icon" />
-                <span className="action-title">Change members</span>
-              </button>
-              {action === 'members' &&
-                <TaskAction
-                  action="members"
-                  getMemberById={getMemberById}
-                  {...taskActionProps}
-                  onSetAction={onSetAction}
-                />
-              }
-            </div>
-
-            <div className="task-action-container">
-              <button type='button' className="action" name="cover" onClick={(ev) => onSetAction(ev, 'cover')}>
-                <img className="cover-icon icon" src={coverIcon} alt="cover icon" />
-                <span className="action-title">change cover</span>
-              </button>
-              {action === 'cover' &&
-                <TaskAction
-                  action="cover"
-                  onSetCover={onSetCover}
-                  onRemoveCover={onRemoveCover}
-                  {...taskActionProps}
-                  onSetAction={onSetAction}
-                />
-              }
-            </div>
-
-            <div className="task-action-container">
-              <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'dates')}>
-                <img className="dates-icon icon" src={datesIcon} alt="dates icon" />
-                <span className="action-title">Edit dates</span>
-              </button>
-              {action === 'dates' &&
-                <TaskAction
-                  action="dates"
-                  {...taskActionProps}
-                  dueDate={task.dueDate}
-                  onSetAction={onSetAction}
-                />
-              }
-            </div>
-
-
-            <button className="action remove-task" onClick={onRemoveTask}>
-              <img className="icon" src={trashIcon} alt="trash icon" />
-              <span className="action-title">Delete card</span>
-            </button>
 
           </div>
         </div>
+        </div>
+       
 
+
+
+        {/* On the task end */}
+
+
+        <div className="quick-card-editor-buttons">
+
+          <div className="task-action-container">
+            <button type='button' className="action" onClick={() => handleTaskClick(task.id)} >
+              <img className="labels-icon icon" src={cardIcon} alt="labels icon" />
+              <span className="action-title">Open card</span>
+            </button>
+          </div>
+
+          <div className="task-action-container">
+            <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'labels')}>
+              <img className="labels-icon icon" src={labelIcon} alt="labels icon" />
+              <span className="action-title">Edit labels</span>
+            </button>
+            {action === 'labels' &&
+              <TaskAction
+                action="labels"
+                {...taskActionProps}
+                setLabelToEdit={setLabelToEdit}
+                onSetAction={onSetAction}
+              />
+            }
+            {action === 'edit label' &&
+              <TaskAction
+                action="edit label"
+                labelToEdit={labelToEdit}
+                setLabelToEdit={setLabelToEdit}
+                {...taskActionProps}
+                onSetAction={onSetAction}
+              />
+            }
+          </div>
+
+          <div className="task-action-container">
+            <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'members')}>
+              <img className="members-icon icon" src={membersIcon} alt="members icon" />
+              <span className="action-title">Change members</span>
+            </button>
+            {action === 'members' &&
+              <TaskAction
+                action="members"
+                getMemberById={getMemberById}
+                {...taskActionProps}
+                onSetAction={onSetAction}
+              />
+            }
+          </div>
+
+          <div className="task-action-container">
+            <button type='button' className="action" name="cover" onClick={(ev) => onSetAction(ev, 'cover')}>
+              <img className="cover-icon icon" src={coverIcon} alt="cover icon" />
+              <span className="action-title">change cover</span>
+            </button>
+            {action === 'cover' &&
+              <TaskAction
+                action="cover"
+                onSetCover={onSetCover}
+                onRemoveCover={onRemoveCover}
+                {...taskActionProps}
+                onSetAction={onSetAction}
+              />
+            }
+          </div>
+
+          <div className="task-action-container">
+            <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'dates')}>
+              <img className="dates-icon icon" src={datesIcon} alt="dates icon" />
+              <span className="action-title">Edit dates</span>
+            </button>
+            {action === 'dates' &&
+              <TaskAction
+                action="dates"
+                {...taskActionProps}
+                dueDate={task.dueDate}
+                onSetAction={onSetAction}
+              />
+            }
+          </div>
+
+
+          <button className="action remove-task" onClick={onRemoveTask}>
+            <img className="icon" src={trashIcon} alt="trash icon" />
+            <span className="action-title">Delete card</span>
+          </button>
+
+        </div>
         <span className="save-btn" onClick={() => {
-          onClose
-          handleTitleUpdate()
+        onClose
+        handleTitleUpdate()
 
-        }} >save</span>
+      }} >save</span>
 
       </div>
+
+ 
     </div>
+
   )
 }
