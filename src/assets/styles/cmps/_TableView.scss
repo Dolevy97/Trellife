@@ -238,17 +238,51 @@ td {
 
 }
 
+.td-empty-content {
+    position: relative;
+    width: 100%;
+    height: 38px;
+    max-height: 38px;
 
-.table-no-content {
-    width: 2px;
-    height: 2px;
-    border-radius: 2px;
-    background: $txtclr1;
+    .table-no-content {
+        position: absolute;
+        top: 50%;
+        left: 10%;
+        transform: translate(-50%, -50%);
+
+        width: 2px;
+        height: 2px;
+        border-radius: 2px;
+        background-color: $txtclr1;
+    }
+
+    .td-add-content {
+        position: absolute;
+        top: 50%;
+        left: 10%;
+        transform: translate(-50%, -30%);
+
+        opacity: 0;
+
+        img {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    &:hover {
+        .table-no-content {
+            opacity: 0;
+        }
+
+        .td-add-content {
+            opacity: 1;
+        }
+    }
 }
 
 .name-change-container {
     position: fixed;
-    left: 190px;
     width: 304px;
 
     color: $txtclr2;
@@ -486,7 +520,6 @@ tr {
 
 .change-list-container {
     position: fixed;
-    left: 250px;
     width: 304px;
 
     color: $txtclr2;

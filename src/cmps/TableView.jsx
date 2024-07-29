@@ -6,6 +6,8 @@ import arrowDownIcon from '../assets/imgs/Icons/arrow-down.svg'
 import closeIcon from '../assets/imgs/Icons/close.svg'
 import successIcon from '../assets/imgs/Icons/vIcon.svg'
 import penIcon from '../assets/imgs/Icons/pen.svg'
+import addIcon from '../assets/imgs/Icons/add.svg'
+
 import { useNavigate } from "react-router"
 import { updateTask } from "../store/actions/task.actions"
 import { useSelector } from "react-redux"
@@ -17,6 +19,9 @@ export function TableView({ groups, board }) {
     const [sortState, setSortState] = useState({ isSorting: false, dir: null })
     const [nameChangeOpen, setNameChangeOpen] = useState({ isOpen: false, taskId: null })
     const [changeListOpen, setChangeListOpen] = useState({ isOpen: false, taskId: null })
+    const [action, setAction] = useState(null)
+    
+    const [containerPosition, setContainerPosition] = useState({ top: 0, left: 0 })
 
     const user = useSelector(storeState => storeState.userModule.user)
 
@@ -44,6 +49,13 @@ export function TableView({ groups, board }) {
         };
     }, [nameChangeOpen.isOpen, isSortOpen, changeListOpen.isOpen]);
 
+
+    /* Set Action */
+    function onSetAction(ev, act) {
+        ev.stopPropagation()
+        setAction(action === act ? null : act)
+    }
+
     function getLabelById(id) {
         return board.labels.find(label => label.id === id)
     }
@@ -55,6 +67,22 @@ export function TableView({ groups, board }) {
             imgUrl: 'path/to/default/image.png',
             fullname: 'Unknown Member'
         }
+    }
+
+    function calculatePosition(event, containerHeight) {
+        const viewportHeight = window.innerHeight;
+        const spaceBelow = viewportHeight - event.clientY;
+        const spaceAbove = event.clientY;
+
+        let top, left = event.clientX;
+
+        if (spaceBelow >= containerHeight || spaceBelow > spaceAbove) {
+            top = event.clientY;
+        } else {
+            top = event.clientY - containerHeight;
+        }
+
+        return { top, left };
     }
 
     function getTaskStatus(task) {
@@ -255,12 +283,23 @@ export function TableView({ groups, board }) {
                                             onClick={(e) => handleTaskClick(group.id, task.id, e)}
                                             className="long-width task-title">{task.title}
                                             <img className="task-title-pen-icon" src={penIcon}
-                                                onClick={e => { e.stopPropagation(); setNameChangeOpen({ isOpen: true, taskId: task.id }) }}
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    const position = calculatePosition(e, 200)
+                                                    setContainerPosition(position);
+                                                    setNameChangeOpen({ isOpen: true, taskId: task.id });
+                                                }}
                                                 alt=""
                                             />
                                             {nameChangeOpen.isOpen && nameChangeOpen.taskId === task.id &&
                                                 <article className="name-change-container"
-                                                    onClick={(e) => e.stopPropagation()}>
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    style={{
+                                                        position: 'fixed',
+                                                        top: `${containerPosition.top}px`,
+                                                        left: `${containerPosition.left}px`,
+                                                    }}
+                                                >
                                                     <header className="name-change-header">
                                                         <h1 className="header-title">Change name</h1>
                                                         <div
@@ -286,19 +325,27 @@ export function TableView({ groups, board }) {
                                             className={`mid-width table-list-td ${changeListOpen.isOpen && changeListOpen.taskId === task.id ? 'change-list-open' : ''}`}
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                setChangeListOpen({ isOpen: true, taskId: task.id });
+                                                const position = calculatePosition(e, 300);
+                                                setContainerPosition(position);
+                                                setChangeListOpen({ isOpen: true, taskId: task.id })
                                             }}
                                         >{group.title}
                                             <img className="arrow-down-icon" src={arrowDownIcon} alt="" />
                                             {changeListOpen.isOpen && changeListOpen.taskId === task.id &&
                                                 <article className="change-list-container"
-                                                    onClick={(e) => e.stopPropagation()}>
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    style={{
+                                                        position: 'fixed',
+                                                        top: `${containerPosition.top}px`,
+                                                        left: `${containerPosition.left}px`,
+                                                    }}
+                                                >
                                                     <header className="change-list-header">
                                                         <h1 className="header-title">Change list</h1>
                                                         <div
                                                             onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                setChangeListOpen({ isOpen: false, taskId: null });
+                                                                e.stopPropagation()
+                                                                setChangeListOpen({ isOpen: false, taskId: null })
                                                             }}
                                                             className="btn-close-container">
                                                             <img className="btn-close" src={closeIcon}></img>
@@ -344,7 +391,13 @@ export function TableView({ groups, board }) {
                                                         </div>
                                                     )
                                                 })}
-                                                {!task.labelsIds.length && <div className="table-no-content"></div>}
+                                                {!task.labelsIds.length &&
+                                                    <div className="td-empty-content">
+                                                        <div className="table-no-content"></div>
+                                                        <div className="td-add-content">
+                                                            <img src={addIcon} alt="plus add icon" />
+                                                        </div>
+                                                    </div>}
                                             </div>
                                         </td>
                                         <td className="mid-width">
@@ -362,7 +415,12 @@ export function TableView({ groups, board }) {
                                                     />
                                                 ))
                                             }
-                                            {!task.membersIds.length && <div className="table-no-content"></div>}
+                                            {!task.membersIds.length && <div className="td-empty-content">
+                                                <div className="table-no-content"></div>
+                                                <div className="td-add-content">
+                                                    <img src={addIcon} alt="plus add icon" />
+                                                </div>
+                                            </div>}
                                         </td>
                                         <td className="mid-width">
                                             {task.dueDate && (
@@ -383,7 +441,12 @@ export function TableView({ groups, board }) {
                                                     </span>
                                                 </div>
                                             )}
-                                            {!task.dueDate && <div className="table-no-content"></div>}
+                                            {!task.dueDate && <div className="td-empty-content">
+                                                <div className="table-no-content"></div>
+                                                <div className="td-add-content">
+                                                    <img src={addIcon} alt="plus add icon" />
+                                                </div>
+                                            </div>}
                                         </td>
                                     </tr>
                                 );
