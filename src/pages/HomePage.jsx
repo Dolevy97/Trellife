@@ -15,7 +15,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 // import required modules
-import { Pagination } from 'swiper/modules';
+import { Autoplay, Pagination } from 'swiper/modules';
 
 
 export function HomePage() {
@@ -101,11 +101,19 @@ export function HomePage() {
 
                         <Swiper
                             ref={swiperRef}
-                            pagination={{
-                                dynamicBullets: true,
+                            centeredSlides={true}
+                            autoplay={{
+                              delay: 4000,
+                              disableOnInteraction: true,
                             }}
-                            modules={[Pagination]}
-                            className="swiper"
+                            rewind={true}
+                            spaceBetween={250}
+                            pagination={{
+                                // dynamicBullets: true,
+                                clickable: true,
+                            }}
+                            modules={[Autoplay,Pagination]}
+                            className="my-swiper"
                             onSlideChange={slide => onChangeSlide(slide.activeIndex)}
                         >
 
@@ -113,6 +121,7 @@ export function HomePage() {
                             <SwiperSlide><img src={dragAndDropScreenshot} /></SwiperSlide>
                             <SwiperSlide><img src={taskDetailsScreenshot} /></SwiperSlide>
                         </Swiper>
+
                     </div>
                 </div>
             </section>
