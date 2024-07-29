@@ -23,11 +23,16 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
   const [isEditing, setIsEditing] = useState(false)
   const [newTitle, setNewTitle] = useState(board.title)
+
   const [buttonColor, setButtonColor] = useState('')
   const [textColor, setTextColor] = useState('')
   const [iconColor, setIconColor] = useState({})
   const [outsideIconColor, setOutsideIconColor] = useState({})
+
   const [inputWidth, setInputWidth] = useState(() => `${Math.max(board.title.length * 9.2, 100)}px`);
+
+  const [displayStyle, setDisplayStyle] = useState('board')
+  const [isChatOpen, setIsChatOpen] = useState(false)
 
   useEffect(() => {
     if (board) {
@@ -173,28 +178,28 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
             alt="star icon"
           />
         </div>
-        <div className="board-icon-container" style={{
-          backgroundColor: buttonColor,
-          color: textColor
-        }}>
-          <img className='board-icon' src={boardIcon} alt="board icon" style={iconColor} />
+        <div onClick={() => setDisplayStyle('board')}
+          className="board-icon-container"
+          style={displayStyle === 'board' ? { backgroundColor: buttonColor, color: textColor } : {}}>
+          <img className='board-icon' src={boardIcon} alt="board icon" style={displayStyle === 'board' ? iconColor : outsideIconColor} />
           <span className='board-icon-text'>Board</span>
         </div>
-        <div className="table-icon-container" style={{
-          backgroundColor: buttonColor,
-          color: textColor
-        }}>
-          <img className='board-icon' src={tableIcon} alt="table icon" style={iconColor} />
-          <span className='board-icon-text'>Table</span>
+        <div onClick={() => setDisplayStyle('table')}
+          className="table-icon-container"
+          style={displayStyle === 'table' ? { backgroundColor: buttonColor, color: textColor } : {}}
+        >
+          <img className='board-icon' src={tableIcon} alt="table icon"
+            style={displayStyle === 'table' ? iconColor : outsideIconColor} />
+          <span className='board-icon-text'>table</span>
         </div>
 
-        <div className='chat-trellife-container'style={{
-          backgroundColor: buttonColor,
-          color: textColor
-        }} >
-        <span className='chat-trellife-text'>Chat Trellife</span>
+        <div onClick={() => setIsChatOpen(!isChatOpen)}
+          className='chat-trellife-container'
+          style={isChatOpen ? { backgroundColor: buttonColor, color: textColor } : {}} >
+          <span
+          className='chat-trellife-text'>Chat Trellife</span>
 
-      </div>
+        </div>
 
       </div>
 
@@ -203,7 +208,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
       <div className='groups-header-rightside'>
         <div className='filter-container' onClick={toggleFilterOpen} >
           <img style={outsideIconColor} src={filter} />
-          <span style={{ color: buttonColor }}>Filters</span>
+          <span style={{ color: buttonColor }}>filters</span>
         </div>
         <span className="sep">
 
