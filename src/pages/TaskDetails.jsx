@@ -563,12 +563,12 @@ export function TaskDetails() {
     return (
         <div className="task-details-backdrop" onClick={onBackdropClicked}>
             <section className="task-details" onClick={onTaskDetailsClicked}>
-                <img onClick={onBackdropClicked} className="close-icon icon" src={isLightColor(style?.backgroundColor) ? closeDarkIcon : closeWhiteIcon} alt="close icon" />
+                <img onClick={onBackdropClicked} className={`close-icon icon ${isLightColor(style?.backgroundColor) ? 'dark' : 'light'}`} src={isLightColor(style?.backgroundColor) ? closeDarkIcon : closeWhiteIcon} alt="close icon" />
                 {style &&
                     <div className="task-details-cover" style={{ ...style, height: style.backgroundImage ? '160px' : '' }}>
                         {style &&
                             <div className="task-header-action-container">
-                                <button className="action" onClick={(ev) => onSetAction(ev, 'cover', 2)}>
+                                <button className={`action ${isLightColor(style?.backgroundColor) ? 'dark' : 'light'}`} onClick={(ev) => onSetAction(ev, 'cover', 2)}>
                                     <img className="cover-icon icon" src={isLightColor(style?.backgroundColor) ? coverDarkIcon : coverWhiteIcon} alt="cover icon" />
                                     <span className="action-title" style={{ color: isLightColor(style?.backgroundColor) ? '#182a4e' : 'currentColor' }}>Cover</span>
                                 </button>

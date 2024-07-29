@@ -73,7 +73,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
     async function onAddTask() {
         if (!newTaskTitle.trim()) return
         setNewTaskTitle('')
-        await addTask(newTaskTitle, group, board)
+        await addTask(newTaskTitle, group, board, user)
     }
 
     function handleTitleKeyPress(e) {

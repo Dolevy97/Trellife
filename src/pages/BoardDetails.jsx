@@ -216,7 +216,9 @@ export function BoardDetails() {
       />
 
 
-      <section ref={groupListContainer} className="group-list-container">
+      <section ref={groupListContainer}
+        className="group-list-container"
+        style={displayStyle === 'table' ? { paddingBlock: 0 } : {}}>
         {displayStyle === 'board' ? (
           <DragDropContext onDragEnd={handleOnDragEnd}>
             <Droppable droppableId='groups' direction='horizontal' type='GROUP'>

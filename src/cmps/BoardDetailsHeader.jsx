@@ -13,6 +13,8 @@ import share from "../assets/imgs/Icons/share.svg"
 import dots from "../assets/imgs/icons/3dots.svg"
 import boardIcon from '../assets/imgs/Icons/boardIcon.svg'
 import tableIcon from '../assets/imgs/Icons/tableIcon.svg'
+import { createBoardPrompt } from '../services/chat-gpt.service';
+import axios from 'axios';
 
 export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, displayStyle, setDisplayStyle }) {
   const board = useSelector(storeState => storeState.boardModule.board)
@@ -146,6 +148,31 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
     setIsFilterOpen(!isFilterOpen)
   }
 
+  async function onGetBoardFromGpt(ev) {
+    // ev.preventDefault()
+
+    // if (prompt) {
+        // setIsSubmit(true)
+        // const boardPrompt = createBoardPrompt(prompt)
+        const boardPrompt = createBoardPrompt('Trip to Australia')
+        axios.post("//localhost:3030/chat", { prompt: boardPrompt })
+            .then(res => {
+                console.log(res.data)
+                const result = res.data
+                console.log(JSON.stringify(result))
+                // addGeneratedBoard(result)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        // const savedBoard = await addBoard(moveApartmentBoard)
+        // setTimeout(() => {
+        //     addGeneratedBoard(savedBoard)
+        // }, 7000);
+    // }
+}
+
+
   return (
     <section className={`groups-header ${isRightNavBarOpen ? 'right-nav-open' : ''}`}>
       <div className='groups-header-leftside'>
@@ -204,7 +231,8 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
           <span className='board-icon-text'>table</span>
         </div>
 
-        <div onClick={() => setIsChatOpen(!isChatOpen)}
+        {/* <div onClick={() => setIsChatOpen(!isChatOpen)} */}
+          <div onClick={onGetBoardFromGpt}
           className='chat-trellife-container'
           style={isChatOpen ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }} >
           <span
@@ -217,7 +245,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
       <div className='groups-header-rightside'>
         <div className='filter-container' onClick={toggleFilterOpen} >
           <img style={outsideIconColor} src={filter} />
-          <span style={{ color: buttonColor }}>filters</span>
+          <span style={{ color: buttonColor }}>Filters</span>
         </div>
         <span className="sep">
 

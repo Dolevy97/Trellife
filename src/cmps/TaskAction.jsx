@@ -27,6 +27,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     const [labelInputValue, setLabelInputValue] = useState(labelToEdit ? labelToEdit.title : '')
     const [dueDateToEdit, setDueDateToEdit] = useState(dueDate ? dueDate : getDefaultDueDate());
     const [backgroundImages, setBackgroundImages] = useState([])
+    const [filterBy, setFilterBy] = useState('')
 
     const searchInputRef = useRef()
     const checklistTitleRef = useRef()
@@ -75,12 +76,21 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     // Getters
 
     function getBoardMembers() {
-        const boardMembers = board.members.filter(member => !task.membersIds.includes(member._id))
-        return boardMembers
+        const boardMembers = board.members.filter(member => !task.membersIds.includes(member._id) && member.fullname.toLowerCase().includes(filterBy.toLowerCase()))
+        return boardMembers.length ? boardMembers : null
     }
 
     function getTaskMembers() {
-        return task.membersIds.map(getMemberById)
+        const taskMembers = task.membersIds.map(getMemberById).filter(member => member.fullname.toLowerCase().includes(filterBy.toLowerCase()))
+        return taskMembers.length ? taskMembers : null
+    }
+
+    function isNoResults(){
+        return (action==='members' && !getBoardMembers() && !getTaskMembers())
+    }
+
+    function getFilteredBoardLabels(){
+        return board.labels.filter(label=> label.title.toLowerCase().includes(filterBy.toLowerCase()))
     }
 
     // Members
@@ -96,6 +106,10 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         task = { ...task, membersIds: task.membersIds.filter(mId => mId !== id) }
         await updateTask(task, group, board)
     }
+
+    // function onSearchMembers({target}){
+    //     setFilterBy
+    // }
 
     // Labels
 
@@ -436,39 +450,55 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                 <div onClick={(ev) => onSetAction(ev, null)} className="close-action-container"> <img className="close-action icon" src={closeIcon} /> </div>
             </header>
 
-            {(action === 'members' || action === 'labels') && <input ref={searchInputRef} className="text" placeholder={`Search ${action}`} />}
+            {(action === 'members' || action === 'labels') &&
+                <input
+                    ref={searchInputRef}
+                    className="text"
+                    onChange={({ target }) => setFilterBy(target.value)}
+                    placeholder={`Search ${action}`}
+                    style={isNoResults() ? {marginBlockEnd: '0'} : {}}
+                />}
             {action === 'members' &&
                 <>
-                    <div className="card-members">
-                        <span className="title">Card members</span>
-                        {getTaskMembers().map(member => {
-                            return (
-                                <div key={member._id} className="member card-member" onClick={() => onRemoveMember(member._id)}>
-                                    <img className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
-                                    <span className="name">{member.fullname}</span>
-                                    <img className="close-icon icon" src={closeIcon} />
-                                </div>
-                            )
-                        })}
-                    </div>
-                    <div className="board-members">
-                        <span className="title">Board members</span>
-                        {getBoardMembers().map(member => {
-                            return (
-                                <div key={member._id} className="member" onClick={() => onAddMember(member._id)}>
-                                    <img className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
-                                    <span className="name">{member.fullname}</span>
-                                </div>
-                            )
-                        })}
-                    </div>
+                    {getTaskMembers() &&
+                        <div className="card-members">
+                            <span className="title">Card members</span>
+                            {getTaskMembers().map(member => {
+                                return (
+                                    <div key={member._id} className="member card-member" onClick={() => onRemoveMember(member._id)}>
+                                        <img className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
+                                        <span className="name">{member.fullname}</span>
+                                        <img className="close-icon icon" src={closeIcon} />
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    }
+                    {getBoardMembers() &&
+                        <div className="board-members">
+                            <span className="title">Board members</span>
+                            {getBoardMembers().map(member => {
+                                return (
+                                    <div key={member._id} className="member" onClick={() => onAddMember(member._id)}>
+                                        <img className="member-thumbnail" src={member.imgUrl} title={member.fullname} />
+                                        <span className="name">{member.fullname}</span>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    }
+                    {isNoResults() &&
+                        <div className="no-members-results btn-dark-grey">
+                            No results
+                        </div>
+                    }
                 </>
             }
             {action === 'labels' &&
                 <>
                     <div className="labels">
                         <span className="title">Labels</span>
-                        {board.labels.map(label => {
+                        {getFilteredBoardLabels().map(label => {
                             return (
                                 <div key={label.id} className="label-container">
                                     <input

@@ -1,27 +1,13 @@
 import { getRandomColor, getRandomIntInclusive, getRandomTimestamp, makeId } from "../util.service"
-import { createSimpleDemoBoard } from "./short-demo-board.service"
 
+// console.log(JSON.stringify(_createDemoBoard()))
 
-export const boardDemoDataService = {
-    createDemoBoards
-}
-
-console.log(JSON.stringify(createSimpleDemoBoard()))
-
-function createDemoBoards(length = 20) {
-    const boards = []
-    for (let i = 0; i < length; i++) {
-        boards.push(_createDemoBoard())
-    }
-    return boards
-}
-
-function _createDemoBoard() {
+export function createSimpleDemoBoard() {
     const board = {
         _id: makeId(),
         title: _getProjectTitle(),
-        isStarred: getRandomIntInclusive(0, 9) < 3 ? true : false,
-        archivedAt: getRandomIntInclusive(0, 9) < 3 ? getRandomTimestamp() : null,
+        isStarred: false,
+        archivedAt: null,
         createdBy: getRandomMember(),
         style: {
             // background: 'url(https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1748&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
@@ -31,8 +17,7 @@ function _createDemoBoard() {
         members: _getRandomMembers(),
     }
     board.groups = _getRandomGroups(board)
-    board.activities = _getRandomActivities(board)
-    // board.activities.forEach(a=>console.log(a.task))
+    board.activities = []
     return board
 }
 
@@ -147,7 +132,7 @@ function _getRandomActivityTitle() {
 }
 
 function _getRandomGroups(board) {
-    const length = getRandomIntInclusive(4, 6)
+    const length = 3
     const groups = []
     for (let i = 0; i < length; i++) {
         const group = _getRandomGroup(board)
@@ -160,9 +145,9 @@ function _getRandomGroup(board) {
     const group = {
         id: 'g' + makeId(),
         title: getRandomGroupTitle(),
-        archivedAt: getRandomIntInclusive(0, 9) < 3 ? getRandomTimestamp() : null,
+        archivedAt: null,
         tasks: _getRandomTasks(board),
-        style:  { isCollapse: getRandomIntInclusive(1,5) === 1 ,backgroundColor: getRandomIntInclusive(1, 3) === 1 ? getRandomColor() : null}
+        style:  { isCollapse: false ,backgroundColor: getRandomIntInclusive(1, 3) === 1 ? getRandomColor() : null}
     }
     return group
 }
@@ -206,7 +191,7 @@ function getRandomGroupTitle() {
 }
 
 function _getRandomTasks(board) {
-    const length = getRandomIntInclusive(0, 20)
+    const length = getRandomIntInclusive(3,5)
     const tasks = []
     for (let i = 0; i < length; i++) {
         tasks.push(_getRandomTask(board))
@@ -218,15 +203,15 @@ function _getRandomTask(board) {
     const task = {
         id: 't' + makeId(),
         title: _getRandomTaskName(),
-        isDone: _getRandomTaskIsDone(),
-        priority: getRandomIntInclusive(1, 4) > 1 ? _getRandomPriority() : null,
-        dueDate: getRandomIntInclusive(1, 4) > 1 ? _getRandomDueDate() : null,
+        isDone: false,
+        priority: null,
+        dueDate: getRandomIntInclusive(1, 3) > 1 ? _getRandomDueDate() : null,
         description:  getRandomIntInclusive(1, 10) > 3 ? '' : _getRandomTaskDescription(),
         checklists: getRandomIntInclusive(1, 4) > 1 ? _getRandomChecklists() : [],
         membersIds: _getRandomTaskMembersIds(board),
         labelsIds: _getRandomTaskLabels(board),
         byMember: _getRandomTaskMember(board),
-        attachments: getRandomIntInclusive(1, 4) > 1 ? [] : _getRandomAttachments()
+        attachments: getRandomIntInclusive(1, 4) === 1 ? [] : _getRandomAttachments()
     }
     task.style = _getRandomTaskStyle(task.attachments)
     return task
@@ -284,7 +269,7 @@ function _getRandomAttachments() {
             backgroundColor: _rgb(63, 67, 50)
         }
     ]
-    const length = getRandomIntInclusive(1, 3)
+    const length = getRandomIntInclusive(1, 1)
     const attachments = []
     for (let i = 0; i < length; i++) {
         const attachment = { ...demoAttachments.splice(getRandomIntInclusive(0, demoAttachments.length - 1), 1)[0] }
@@ -320,7 +305,7 @@ function _getRandomTaskMember(board) {
 function _getRandomTaskLabels(board) {
     const boardLabelids = board.labels.map(label => label.id)
     const taskLabelIds = []
-    const length = getRandomIntInclusive(0, 3)
+    const length = getRandomIntInclusive(0, 1)
     for (let i = 0; i < length; i++) {
         const id = boardLabelids.splice(getRandomIntInclusive(0, boardLabelids.length - 1), 1)[0]
         taskLabelIds.push(id)
@@ -331,7 +316,7 @@ function _getRandomTaskLabels(board) {
 function _getRandomTaskMembersIds(board) {
     const boardMembersIds = board.members.map(member => member._id)
     const taskMembersIds = []
-    const length = getRandomIntInclusive(0, 3)
+    const length = getRandomIntInclusive(0, 1)
     for (let i = 0; i < length; i++) {
         const id = boardMembersIds.splice(getRandomIntInclusive(0, boardMembersIds.length - 1), 1)[0]
         taskMembersIds.push(id)
@@ -359,7 +344,7 @@ function _getRandomChecklist() {
 }
 
 function _getRandomTodos() {
-    const length = getRandomIntInclusive(2, 10)
+    const length = getRandomIntInclusive(3, 4)
     const todos = []
     for (let i = 0; i < length; i++) {
         const todo = _getRandomTodo()
@@ -506,7 +491,7 @@ function _getRandomTaskName() {
 }
 
 function _getRandomMembers() {
-    const length = getRandomIntInclusive(7, 7)
+    const length = 2
     const members = []
     for (let i = 0; i < length; i++) {
         const member = getRandomMember()
@@ -536,7 +521,7 @@ function _getRandomLabels() {
     // const numLabels = getRandomIntInclusive(0, 7)
     let randomLabels = []
 
-    while (randomLabels.length < 6) {
+    while (randomLabels.length < 3) {
         const randomIndex = Math.floor(Math.random() * labels.length)
         const label = labels[randomIndex]
         if (!randomLabels.includes(label)) {

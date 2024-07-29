@@ -200,7 +200,6 @@ export async function getAverageColorFromUrl(styleObject) {
 
     const urlMatch = styleObject.background.match(/url\(["']?(.+?)["']?\)/);
     if (!urlMatch) {
-        console.log('No URL found in background property');
         return 'transparent';
     }
 

@@ -80,6 +80,10 @@ export async function addBoard(board) {
 }
 
 export async function updateBoard(board) {
+    
+    const length = 20
+    if (board.activities.length > length) board.activities.splice(length,board.activities.length-length)
+
     store.dispatch(getCmdUpdateBoard(board));
 
     try {
