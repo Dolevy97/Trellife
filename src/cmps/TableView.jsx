@@ -12,6 +12,7 @@ import { useNavigate } from "react-router"
 import { updateTask } from "../store/actions/task.actions"
 import { useSelector } from "react-redux"
 import { updateBoard } from "../store/actions/board.actions"
+import { TaskAction } from "./TaskAction"
 
 export function TableView({ groups, board }) {
 
@@ -20,7 +21,7 @@ export function TableView({ groups, board }) {
     const [nameChangeOpen, setNameChangeOpen] = useState({ isOpen: false, taskId: null })
     const [changeListOpen, setChangeListOpen] = useState({ isOpen: false, taskId: null })
     const [action, setAction] = useState(null)
-    
+
     const [containerPosition, setContainerPosition] = useState({ top: 0, left: 0 })
 
     const user = useSelector(storeState => storeState.userModule.user)
@@ -38,7 +39,7 @@ export function TableView({ groups, board }) {
                 setChangeListOpen({ isOpen: false, taskId: null });
             }
 
-            if (isSortOpen && !event.target.closest('.sort-container') && !event.target.closest('.due-date')) {
+            if (isSortOpen && !event.target.closest('.table-sort-container') && !event.target.closest('.due-date')) {
                 setIsSortOpen(false);
             }
         }
@@ -226,7 +227,7 @@ export function TableView({ groups, board }) {
                                     src={arrowDownIcon}
                                     alt="arrow down icon" />
                                 {isSortOpen &&
-                                    <article className="sort-container" onClick={(e) => e.stopPropagation()}>
+                                    <article className="table-sort-container" onClick={(e) => e.stopPropagation()}>
                                         <header className="sort-header">
                                             <h1 className="header-title">Due date</h1>
                                             <div className="btn-close-container">
@@ -421,6 +422,14 @@ export function TableView({ groups, board }) {
                                                     <img src={addIcon} alt="plus add icon" />
                                                 </div>
                                             </div>}
+                                            {action === 'members' &&
+                                                <TaskAction
+                                                    action="members"
+                                                    getMemberById={getMemberById}
+                                                    {...taskActionProps}
+                                                    onSetAction={onSetAction}
+                                                />
+                                            }
                                         </td>
                                         <td className="mid-width">
                                             {task.dueDate && (
