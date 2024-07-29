@@ -12,7 +12,7 @@ import coverIcon from '../assets/imgs/TaskDetails-icons/cover.svg'
 import datesIcon from '../assets/imgs/TaskDetails-icons/dates.svg'
 import trashIcon from '../assets/imgs/TaskDetails-icons/trash.svg'
 import { updateGroup } from '../store/actions/group.actions'
-import { getFormattedShortTime } from '../services/util.service'
+import { getFormattedShortTime, isLightColor } from '../services/util.service'
 
 import { TaskAction } from '../cmps/TaskAction'
 
@@ -20,7 +20,7 @@ import { useState, useEffect, useRef } from "react"
 import { updateBoard } from '../store/actions/board.actions'
 import { updateTask } from '../store/actions/task.actions'
 
-export function QuickEditTask({ task, onClose, taskPosition, group, board, user, handleTaskClick, onSetCover, onRemoveCover }) {
+export function QuickEditTask({ task, onClose, taskPosition, group, board, user, handleTaskClick, toggleLabelExpansion, areLabelsExpanded }) {
 
   const [taskTitleInputValue, setTaskTitleInputValue] = useState(task?.title || '')
   const [action, setAction] = useState(null)
@@ -88,6 +88,11 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
     const updatedTask = { ...task, style: { ...task.style, backgroundImage: `url(${attachment.url})`, backgroundColor: attachment.backgroundColor } }
     const activityTitle = `set ${attachment.title} as a cover for task (id: ${updatedTask.id})`
     await updateTask(updatedTask, group, board, activityTitle, user)
+  }
+
+  async function onRemoveCover() {
+    const updatedTask = { ...task, style: null }
+    await updateTask(updatedTask, group, board, "Removed cover from task", user)
   }
 
   /* Duedate */
@@ -187,8 +192,9 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
           width: `${taskPosition.width + 4}px`, // 2px wider on each side
         }}
       >
+
         {/* On the task */}
-        <div className={`quick-edit-main ${task.style?.backgroundImage ? 'task-inner-container-img' : ''}`}
+        <div className={`quick-edit-main ${task.style?.backgroundImage ? 'task-inner-container-img' : ''} ${task.style ? '' : 'regular-task'}`}
           style={task.style && task.style ? { ...task.style, borderRadius: '8px' } : {}}>
 
           {task.style && !task.style && (
@@ -198,124 +204,128 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
             </section>
           )}
 
-<div className='under-the-cover-info'>
-          {task.labelsIds && task.labelsIds.length > 0 && (
-            <div className="labels-container">
-              {task.labelsIds.map(labelId => {
-                const label = board.labels.find(l => l.id === labelId)
-                return (
-                  <div
-                    key={label.id}
-                    className="label-item"
-                    style={{ backgroundColor: label.color }}
-                    title={label.title}
-                  ></div>
-                )
-              })}
-            </div>
-          )}
+          <div className='under-the-cover-info'>
 
-          <textarea
-           
-            defaultValue={task.title}
-            onClick={(e) => e.stopPropagation()}
-            value={taskTitleInputValue}
-            onChange={(ev) => setTaskTitleInputValue(ev.target.value)}
-            onKeyPress={handleTitleKeyPress}
-            autoFocus
-          />
-          <div className='task-bottom-container'>
-
-            <div className='bottom-leftside'>
-
-              {task.dueDate && (
-                <div
-                  title={taskStatus.title}
-                  className="timer-container"
-                  style={taskStatus.style}
-                >
-                  <img
-                    src={clockIcon}
-                    alt="clock icon"
-                    style={{ filter: taskStatus.iconFilter }}
-                  />
-                  <span
-                    style={{ color: taskStatus.textColor }}
-                  >
-                    {getFormattedShortTime(task.dueDate)}
-                  </span>
-                </div>
-              )}
-
-              {getComments(task.id).length ?
-                <div title='Comments' className='comment-container'>
-                  <img src={commentIcon} />
-                  <span className='task-comment'>{getComments(task.id).length} </span>
-                </div> : ''
-              }
-
-              {task.attachments.length ?
-                <div title='Attachments' className='attachment-container'>
-                  <img src={attachmentIcon} />
-                  <span className='task-comment'>{task.attachments.length}</span>
-                </div> : ''
-              }
-
-              {task.checklists.length && getAllTodosInChecklist(task.id, group.id) !== 0 ? (
-                <div
-                  title='Checklist items'
-                  className='task-checklist-container'
-                  style={{
-                    backgroundColor: getDoneInChecklist(task.id, group.id) === getAllTodosInChecklist(task.id, group.id) ? '#4BCE97' : '',
-                    color: getDoneInChecklist(task.id, group.id) === getAllTodosInChecklist(task.id, group.id) ? '#1d2125' : '',
-                    padding: '2px 4px',
-                    borderRadius: '3px'
-                  }}
-                >
-                  <img
-                    src={checklistIcon}
-                    style={{
-                      filter: getDoneInChecklist(task.id, group.id) === getAllTodosInChecklist(task.id, group.id)
-                        ? 'brightness(0) saturate(100%) invert(9%) sepia(13%) saturate(697%) hue-rotate(169deg) brightness(97%) contrast(91%)'
-                        : ''
-                    }}
-                  />
-                  <span
-                    className='task-checklist'
-                    style={{
-                      backgroundColor: getDoneInChecklist(task.id, group.id) === getAllTodosInChecklist(task.id, group.id) ? 'var(--bgclr1)' : ''
-                    }}
-                  >
-                    {getDoneInChecklist(task.id, group.id)}/{getAllTodosInChecklist(task.id, group.id)}
-                  </span>
-                </div>
-              ) : ''}
-
-              {task.description && task.description.trim() !== '' && (
-                <img className='description' title='This card has a description.' src={descriptionIcon} alt="description" />
-              )}
-
-            </div>
-
-            {task.membersIds && task.membersIds.length > 0 && (
-              <div className="members-container">
-                {task.membersIds.map(id => {
-                  const member = getMemberById(id)
-                  return <img key={member._id} className="task-member-thumbnail" src={member.imgUrl} title={member.fullname} alt={member.fullname} />
+            {task.labelsIds && task.labelsIds.length > 0 && (
+              <div className="labels-container">
+                {task.labelsIds.map(labelId => {
+                  const label = board.labels.find(l => l.id === labelId)
+                  return (
+                    <div
+                      key={label.id}
+                      className={`label-item ${areLabelsExpanded ? 'expanded' : ''}`}
+                      onClick={toggleLabelExpansion}
+                      style={{ backgroundColor: label.color }}
+                      title={label.title}
+                    >
+                      <div
+                        className="label-color"
+                        style={{ backgroundColor: label.color }}
+                      >
+                        {areLabelsExpanded && <span className="label-title" style={{ color: isLightColor(label.color) ? '#1d2125' : 'currentColor' }}>{label.title}</span>}
+                      </div>
+                    </div>
+                  )
                 })}
               </div>
             )}
 
+            <textarea
 
+              defaultValue={task.title}
+              onClick={(e) => e.stopPropagation()}
+              value={taskTitleInputValue}
+              onChange={(ev) => setTaskTitleInputValue(ev.target.value)}
+              onKeyPress={handleTitleKeyPress}
+              autoFocus
+            />
+            <div className='task-bottom-container'>
+
+              <div className='bottom-leftside'>
+
+                {task.dueDate && (
+                  <div
+                    title={taskStatus.title}
+                    className="timer-container"
+                    style={taskStatus.style}
+                  >
+                    <img
+                      src={clockIcon}
+                      alt="clock icon"
+                      style={{ filter: taskStatus.iconFilter }}
+                    />
+                    <span
+                      style={{ color: taskStatus.textColor }}
+                    >
+                      {getFormattedShortTime(task.dueDate)}
+                    </span>
+                  </div>
+                )}
+
+                {getComments(task.id).length ?
+                  <div title='Comments' className='comment-container'>
+                    <img src={commentIcon} />
+                    <span className='task-comment'>{getComments(task.id).length} </span>
+                  </div> : ''
+                }
+
+                {task.attachments.length ?
+                  <div title='Attachments' className='attachment-container'>
+                    <img src={attachmentIcon} />
+                    <span className='task-comment'>{task.attachments.length}</span>
+                  </div> : ''
+                }
+
+                {task.checklists.length && getAllTodosInChecklist(task.id, group.id) !== 0 ? (
+                  <div
+                    title='Checklist items'
+                    className='task-checklist-container'
+                    style={{
+                      backgroundColor: getDoneInChecklist(task.id, group.id) === getAllTodosInChecklist(task.id, group.id) ? '#4BCE97' : '',
+                      color: getDoneInChecklist(task.id, group.id) === getAllTodosInChecklist(task.id, group.id) ? '#1d2125' : '',
+                      padding: '2px 4px',
+                      borderRadius: '3px'
+                    }}
+                  >
+                    <img
+                      src={checklistIcon}
+                      style={{
+                        filter: getDoneInChecklist(task.id, group.id) === getAllTodosInChecklist(task.id, group.id)
+                          ? 'brightness(0) saturate(100%) invert(9%) sepia(13%) saturate(697%) hue-rotate(169deg) brightness(97%) contrast(91%)'
+                          : ''
+                      }}
+                    />
+                    <span
+                      className='task-checklist'
+                      style={{
+                        backgroundColor: getDoneInChecklist(task.id, group.id) === getAllTodosInChecklist(task.id, group.id) ? 'var(--bgclr1)' : ''
+                      }}
+                    >
+                      {getDoneInChecklist(task.id, group.id)}/{getAllTodosInChecklist(task.id, group.id)}
+                    </span>
+                  </div>
+                ) : ''}
+
+                {task.description && task.description.trim() !== '' && (
+                  <img className='description' title='This card has a description.' src={descriptionIcon} alt="description" />
+                )}
+
+              </div>
+
+              {task.membersIds && task.membersIds.length > 0 && (
+                <div className="members-container">
+                  {task.membersIds.map(id => {
+                    const member = getMemberById(id)
+                    return <img key={member._id} className="task-member-thumbnail" src={member.imgUrl} title={member.fullname} alt={member.fullname} />
+                  })}
+                </div>
+              )}
+
+
+            </div>
           </div>
         </div>
-        </div>
-       
-
-
-
         {/* On the task end */}
-
 
         <div className="quick-card-editor-buttons">
 
@@ -368,7 +378,7 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
           <div className="task-action-container">
             <button type='button' className="action" name="cover" onClick={(ev) => onSetAction(ev, 'cover')}>
               <img className="cover-icon icon" src={coverIcon} alt="cover icon" />
-              <span className="action-title">change cover</span>
+              <span className="action-title">Change cover</span>
             </button>
             {action === 'cover' &&
               <TaskAction
@@ -404,14 +414,14 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
 
         </div>
         <span className="save-btn" onClick={() => {
-        onClose
-        handleTitleUpdate()
+          onClose
+          handleTitleUpdate()
 
-      }} >save</span>
+        }} >Save</span>
 
       </div>
 
- 
+
     </div>
 
   )
