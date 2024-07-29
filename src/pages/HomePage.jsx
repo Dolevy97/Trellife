@@ -35,12 +35,12 @@ export function HomePage() {
         }
     }
 
-    function onChangeSlide(slideIdx){
-        sideTextsRef.current.forEach(st=>st.classList.remove('selected'))
+    function onChangeSlide(slideIdx) {
+        sideTextsRef.current.forEach(st => st.classList.remove('selected'))
         sideTextsRef.current[slideIdx].classList.add('selected')
     }
 
-    function onSideTextClick(idx){
+    function onSideTextClick(idx) {
         swiperRef.current.swiper.slideTo(idx)
     }
 
@@ -84,33 +84,36 @@ export function HomePage() {
                 </div>
                 <div className="homepage-info header">
                     <div className="side-texts">
-                        <div onClick={()=>onSideTextClick(0)} ref={st=>sideTextsRef.current[0]=st} className="side-text selected">
+                        <div onClick={() => onSideTextClick(0)} ref={st => sideTextsRef.current[0] = st} className="side-text selected">
                             <h3>Boards</h3>
                             <p>Trellife boards keep tasks organized and work moving forward. In a glance, see everything from “things to do” to “aww yeah, we did it!”</p>
                         </div>
-                        <div onClick={()=>onSideTextClick(1)} ref={st=>sideTextsRef.current[1]=st} className="side-text">
+                        <div onClick={() => onSideTextClick(1)} ref={st => sideTextsRef.current[1] = st} className="side-text">
                             <h3>Lists</h3>
                             <p>The different stages of a task. Start as simple as To Do, Doing or Done—or build a workflow custom fit to your team’s needs. There’s no wrong way to Trellife.</p>
                         </div>
-                        <div onClick={()=>onSideTextClick(2)} ref={st=>sideTextsRef.current[2]=st} className="side-text">
+                        <div onClick={() => onSideTextClick(2)} ref={st => sideTextsRef.current[2] = st} className="side-text">
                             <h3>Cards</h3>
                             <p>Cards represent tasks and ideas and hold all the information to get the job done. As you make progress, move cards across lists to show their status.</p>
                         </div>
                     </div>
-                    <Swiper
-                        ref={swiperRef}
-                        pagination={{
-                            dynamicBullets: true,
-                        }}
-                        modules={[Pagination]}
-                        className="swiper"
-                        onSlideChange={slide=>onChangeSlide(slide.activeIndex)}
-                    >
-           
-                        <SwiperSlide><img src={boardDetailsScreenshot}/></SwiperSlide>
-                        <SwiperSlide><img src={dragAndDropScreenshot}/></SwiperSlide>
-                        <SwiperSlide><img src={taskDetailsScreenshot}/></SwiperSlide>
-                    </Swiper>
+                    <div className="swiper-container">
+
+                        <Swiper
+                            ref={swiperRef}
+                            pagination={{
+                                dynamicBullets: true,
+                            }}
+                            modules={[Pagination]}
+                            className="swiper"
+                            onSlideChange={slide => onChangeSlide(slide.activeIndex)}
+                        >
+
+                            <SwiperSlide><img src={boardDetailsScreenshot} /></SwiperSlide>
+                            <SwiperSlide><img src={dragAndDropScreenshot} /></SwiperSlide>
+                            <SwiperSlide><img src={taskDetailsScreenshot} /></SwiperSlide>
+                        </Swiper>
+                    </div>
                 </div>
             </section>
 
