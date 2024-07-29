@@ -32,6 +32,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
   const [inputWidth, setInputWidth] = useState(() => `${Math.max(board.title.length * 9.2, 100)}px`);
 
   const [displayStyle, setDisplayStyle] = useState('board')
+  const [isChatOpen, setIsChatOpen] = useState(false)
 
   useEffect(() => {
     if (board) {
@@ -192,13 +193,13 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
           <span className='board-icon-text'>table</span>
         </div>
 
-        <div className='chat-trellife-container'style={{
-          backgroundColor: buttonColor,
-          color: textColor
-        }} >
-        <span className='chat-trellife-text'>Chat Trellife</span>
+        <div onClick={() => setIsChatOpen(!isChatOpen)}
+          className='chat-trellife-container'
+          style={isChatOpen ? { backgroundColor: buttonColor, color: textColor } : {}} >
+          <span
+          className='chat-trellife-text'>Chat Trellife</span>
 
-      </div>
+        </div>
 
       </div>
 
