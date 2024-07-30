@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { addBoard, updateBoard } from '../store/actions/board.actions';
 import { useSelector } from 'react-redux';
 import { RightNavBar } from '../cmps/RightNavBar';
-import { showSuccessMsg } from '../services/event-bus.service';
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service';
 import { updateUser } from '../store/actions/user.actions';
 import { getAverageColorFromUrl, isLightColor } from '../services/util.service';
 import { openAiService } from '../services/open-ai.service';
@@ -172,6 +172,8 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
       navigate (`/board/${addedBoard._id}`)
     } catch (er) {
       console.log(er)
+      setIsAILoading(false)
+      showErrorMsg('Operation failed. Please try again later')
     }
   }
 

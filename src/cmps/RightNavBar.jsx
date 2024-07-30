@@ -52,18 +52,21 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
         await toggleAllGroupsCollapse(newState)
     }
 
-    function getActivityByTitle(activity) {
+    function getActivityByTitle(activity, board, users) {
         const shortTitle = activity.title.split(' ').slice(0, 2).join(' ')
-    
+
         function replaceUserIds(title) {
+            if (!Array.isArray(users)) {
+                return title
+            }
             return users.reduce((acc, user) => {
-                if (acc.includes(user._id)) {
+                if (user && user._id && acc.includes(user._id)) {
                     return acc.replace(user._id, `<span class="user-mention">${user.fullname}</span>`)
                 }
                 return acc
             }, title)
         }
-    
+
         function formatTimestamp(timestamp) {
             const date = new Date(Number(timestamp))
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -74,12 +77,11 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
             const ampm = hours >= 12 ? 'PM' : 'AM'
             hours = hours % 12
             hours = hours ? hours : 12 // the hour '0' should be '12'
-            
+
             return `${month} ${day} ${hours}:${minutes} ${ampm}`
         }
-    
+
         function extractAndFormatTimestamp(title) {
-            // Regular expression to match Unix timestamp in milliseconds
             const timestampRegex = /\b\d{13}\b/
             const match = title.match(timestampRegex)
             if (match) {
@@ -89,31 +91,31 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
             }
             return title
         }
-    
+
         let formattedTitle = ''
-    
+
         if (shortTitle === 'create board') {
             formattedTitle = 'created this board'
-        } else if (activity.title.includes(activity.task.id)) {
+        } else if (activity.task && activity.title.includes(activity.task.id)) {
             const href = `${board._id}/${activity.group.id}/${activity.task.id}`
             const linkText = `<a href="${href}">${activity.task.title}</a>`
             formattedTitle = activity.title.replace(activity.task.id, linkText)
-        } else if (shortTitle === 'add comment') {
+        } else if (shortTitle === 'add comment' && activity.task) {
             const href = `${board._id}/${activity.group.id}/${activity.task.id}`
             const linkText = `<a href="${href}">${activity.task.title}</a>`
             const newTitle = `added a comment to ${activity.task.id}`
             formattedTitle = newTitle.replace(activity.task.id, linkText)
         } else {
-            // For all other cases, keep the original case
+            // For all other cases, keep the original title
             formattedTitle = activity.title
         }
-    
+
         // Replace timestamp in the title
         formattedTitle = extractAndFormatTimestamp(formattedTitle)
-    
+
         // Replace user IDs
         formattedTitle = replaceUserIds(formattedTitle)
-    
+
         return formattedTitle
     }
 

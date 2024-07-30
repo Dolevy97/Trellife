@@ -7,6 +7,7 @@ import { BoardList } from '../cmps/BoardList'
 import { Filter } from '../cmps/BoardFilter'
 import { SOCKET_EVENT_BOARD_ADDED, socketService } from '../services/socket.service'
 import { useDispatch } from 'react-redux'
+import { showErrorMsg } from '../services/event-bus.service'
 
 export function BoardIndex() {
     const boards = useSelector(storeState => storeState.boardModule.boards)
