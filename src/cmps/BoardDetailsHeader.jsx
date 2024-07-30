@@ -15,6 +15,7 @@ import dots from "../assets/imgs/icons/3dots.svg"
 import boardIcon from '../assets/imgs/Icons/boardIcon.svg'
 import tableIcon from '../assets/imgs/Icons/tableIcon.svg'
 import openAiIcon from '../assets/imgs/Icons/openAI_Logo.svg'
+import { AILoadingScreen } from './AILoadingScreen';
 
 
 export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, displayStyle, setDisplayStyle }) {
@@ -37,7 +38,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
   const [inputWidth, setInputWidth] = useState(() => `${Math.max(board.title.length * 9.2, 100)}px`);
 
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isAILoading, setIsAILoading] = useState(false);
 
   useEffect(() => {
     if (board) {
@@ -152,138 +153,140 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
   }
 
   return (
-    <section className={`groups-header ${isRightNavBarOpen ? 'right-nav-open' : ''}`}>
-      <div className='groups-header-leftside'>
-        {isEditing ? (
-          <input
-            ref={boardTitleRef}
-            value={newTitle}
-            onChange={(ev) => setNewTitle(ev.target.value)}
-            onBlur={handleBlur}
-            onKeyPress={handleKeyPress}
-            autoFocus
-            className='groups-title-input'
-            style={{ width: inputWidth }}
-          />
-        ) : (
-          <span
-            onClick={() => setIsEditing(true)}
-            style={{ color: buttonColor }}
-            className='groups-header-title'>{board.title}</span>
-        )}
-        <div
-          className='star-container'
-          onMouseEnter={() => setIsHoveringStar(true)}
-          onMouseLeave={() => setIsHoveringStar(false)}
-          onClick={onClickStar}
-          title='Click to star or unstar this board. Starred boards show up at the starred section of the header.'
-        >
-          <img
-            className={`groupsheader-preview-star ${user.favorites.includes(board._id) ? 'starred' : ''}`}
-            src={user.favorites.includes(board._id) ? fullStar : star}
-            style={{ ...outsideIconColor, ...(isHoveringStar ? { transform: 'scale(1.2)' } : {}) }}
-            alt="star icon"
-          />
-        </div>
-
-        <div onClick={() => setDisplayStyle('board')}
-          onMouseEnter={() => setBtnHoverState({ isHover: true, btn: 'board' })}
-          onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'board' })}
-          className="board-icon-container"
-          style={{
-            ...(displayStyle === 'board' ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }),
-            ...(btnHoverState.isHover && btnHoverState.btn === 'board' && displayStyle !== 'board' ? { backgroundColor: hoverButtonColor } : {})
-          }}>
-          <img className='board-icon'
-            src={boardIcon}
-            alt="board icon"
-            style={displayStyle === 'board' ? iconColor : outsideIconColor}
-          />
-          <span className='board-icon-text'>Board</span>
-        </div>
-        <div
-          onClick={() => setDisplayStyle(prevStyle => prevStyle === 'board' ? 'table' : 'board')}
-          onMouseEnter={() => setBtnHoverState({ isHover: true, btn: 'table' })}
-          onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'table' })}
-          className="table-icon-container"
-          style={{
-            ...(displayStyle === 'table' ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }),
-            ...(btnHoverState.isHover && btnHoverState.btn === 'table' && displayStyle !== 'table' ? { backgroundColor: hoverButtonColor } : {})
-          }}
-        >
-          <img
-            className='board-icon'
-            src={tableIcon}
-            alt="table icon"
-            style={displayStyle === 'table' ? iconColor : outsideIconColor}
-          />
-          <span className='board-icon-text'>table</span>
-        </div>
-
-        {/* <div onClick={() => setIsChatOpen(!isChatOpen)} */}
-        <div onClick={openAiService.onGetBoardFromGpt}
-          onMouseEnter={() => setBtnHoverState({ isHover: true, btn: 'chat' })}
-          onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'chat' })}
-          className='chat-trellife-container'
-          style={{
-            ...(isChatOpen ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }),
-            ...(btnHoverState.isHover && btnHoverState.btn === 'chat' && displayStyle !== 'chat' ? { backgroundColor: hoverButtonColor } : {})
-          }} >
-          <img src={openAiIcon}
-            alt="Open AI Logo"
-            style={isChatOpen ? iconColor : outsideIconColor}
-          />
-          <span
-            className='chat-trellife-text'>Create AI Board</span>
-        </div>
-
-      </div>
-
-      <div className='groups-header-rightside'>
-        <div className='filter-container' onClick={toggleFilterOpen}
-
-          style={isFilterOpen ? { backgroundColor: buttonColor } : { color: textColor }}>
-          <img style={isFilterOpen ? iconColor : outsideIconColor} src={filter}
-          />
-          <span className='filter-container-text'
-            style={isFilterOpen ? { color: textColor} : { color: outsideTextColor }}
-          >Filters</span>
-        </div>
-        <span className="sep">
-
-        </span>
-        <div className='members-container'>
-          {board.members.map((member, idx, members) => {
-            return <img
-              key={member._id}
-              className='user-img-header'
-              src={member.imgUrl}
-              alt="user image"
-              title={member.fullname}
-              style={{ zIndex: members.length - idx }} />
-          })}
-        </div>
-        <button
-          onClick={onShareJoinClick}
-          className='btn-share-join'
-          style={{
-            backgroundColor: buttonColor,
-            color: textColor
-          }}
-        >
-          <img className="share-join-icon" src={share} style={iconColor}></img>
-          <span className='share-join-text'>{canUserJoinBoard() ? 'Share' : 'Join'}</span></button>
-        {!isRightNavBarOpen && (
-          <div className='open-right-nav-wrapper'>
+    <>
+      <section className={`groups-header ${isRightNavBarOpen ? 'right-nav-open' : ''}`}>
+        <div className='groups-header-leftside'>
+          {isEditing ? (
+            <input
+              ref={boardTitleRef}
+              value={newTitle}
+              onChange={(ev) => setNewTitle(ev.target.value)}
+              onBlur={handleBlur}
+              onKeyPress={handleKeyPress}
+              autoFocus
+              className='groups-title-input'
+              style={{ width: inputWidth }}
+            />
+          ) : (
+            <span
+              onClick={() => setIsEditing(true)}
+              style={{ color: buttonColor }}
+              className='groups-header-title'>{board.title}</span>
+          )}
+          <div
+            className='star-container'
+            onMouseEnter={() => setIsHoveringStar(true)}
+            onMouseLeave={() => setIsHoveringStar(false)}
+            onClick={onClickStar}
+            title='Click to star or unstar this board. Starred boards show up at the starred section of the header.'
+          >
             <img
-              onClick={toggleRightNavBar}
-              src={dots} alt=""
-              style={outsideIconColor}
-              className='open-right-nav-icon' />
+              className={`groupsheader-preview-star ${user.favorites.includes(board._id) ? 'starred' : ''}`}
+              src={user.favorites.includes(board._id) ? fullStar : star}
+              style={{ ...outsideIconColor, ...(isHoveringStar ? { transform: 'scale(1.2)' } : {}) }}
+              alt="star icon"
+            />
           </div>
 
-        )}
-      </div>
-    </section >
+          <div onClick={() => setDisplayStyle('board')}
+            onMouseEnter={() => setBtnHoverState({ isHover: true, btn: 'board' })}
+            onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'board' })}
+            className="board-icon-container"
+            style={{
+              ...(displayStyle === 'board' ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }),
+              ...(btnHoverState.isHover && btnHoverState.btn === 'board' && displayStyle !== 'board' ? { backgroundColor: hoverButtonColor } : {})
+            }}>
+            <img className='board-icon'
+              src={boardIcon}
+              alt="board icon"
+              style={displayStyle === 'board' ? iconColor : outsideIconColor}
+            />
+            <span className='board-icon-text'>Board</span>
+          </div>
+          <div
+            onClick={() => setDisplayStyle(prevStyle => prevStyle === 'board' ? 'table' : 'board')}
+            onMouseEnter={() => setBtnHoverState({ isHover: true, btn: 'table' })}
+            onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'table' })}
+            className="table-icon-container"
+            style={{
+              ...(displayStyle === 'table' ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }),
+              ...(btnHoverState.isHover && btnHoverState.btn === 'table' && displayStyle !== 'table' ? { backgroundColor: hoverButtonColor } : {})
+            }}
+          >
+            <img
+              className='board-icon'
+              src={tableIcon}
+              alt="table icon"
+              style={displayStyle === 'table' ? iconColor : outsideIconColor}
+            />
+            <span className='board-icon-text'>table</span>
+          </div>
+
+          <div
+            onMouseEnter={() => setBtnHoverState({ isHover: true, btn: 'chat' })}
+            onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'chat' })}
+            className='chat-trellife-container'
+            style={{
+              ...(isAILoading ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }),
+              ...(btnHoverState.isHover && btnHoverState.btn === 'chat' && displayStyle !== 'chat' ? { backgroundColor: hoverButtonColor } : {})
+            }} >
+            <img src={openAiIcon}
+              alt="Open AI Logo"
+              style={isAILoading ? iconColor : outsideIconColor}
+            />
+            <span
+              className='chat-trellife-text'>Create AI Board</span>
+          </div>
+
+        </div>
+
+        <div className='groups-header-rightside'>
+          <div className='filter-container' onClick={toggleFilterOpen}
+
+            style={isFilterOpen ? { backgroundColor: buttonColor } : { color: textColor }}>
+            <img style={isFilterOpen ? iconColor : outsideIconColor} src={filter}
+            />
+            <span className='filter-container-text'
+              style={isFilterOpen ? { color: textColor } : { color: outsideTextColor }}
+            >Filters</span>
+          </div>
+          <span className="sep">
+
+          </span>
+          <div className='members-container'>
+            {board.members.map((member, idx, members) => {
+              return <img
+                key={member._id}
+                className='user-img-header'
+                src={member.imgUrl}
+                alt="user image"
+                title={member.fullname}
+                style={{ zIndex: members.length - idx }} />
+            })}
+          </div>
+          <button
+            onClick={onShareJoinClick}
+            className='btn-share-join'
+            style={{
+              backgroundColor: buttonColor,
+              color: textColor
+            }}
+          >
+            <img className="share-join-icon" src={share} style={iconColor}></img>
+            <span className='share-join-text'>{canUserJoinBoard() ? 'Share' : 'Join'}</span></button>
+          {!isRightNavBarOpen && (
+            <div className='open-right-nav-wrapper'>
+              <img
+                onClick={toggleRightNavBar}
+                src={dots} alt=""
+                style={outsideIconColor}
+                className='open-right-nav-icon' />
+            </div>
+
+          )}
+        </div>
+      </section >
+      <AILoadingScreen isLoading={isAILoading} />
+    </>
   )
 }
