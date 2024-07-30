@@ -232,6 +232,10 @@
         width: 16px;
         height: 16px;
         margin-inline-end: 6px;
+
+        @media (max-width: 991px) {
+            margin-inline-end: 0;
+        }
     }
 
     & span {

@@ -183,7 +183,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                 title: 'This card is due soon.',
                 style: { backgroundColor: '#F5CD47' },
                 textColor: '#1d2125',
-                iconFilter: 'none'
+                iconFilter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)'
             }
         }
 
@@ -191,7 +191,7 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
             title: 'This card is due later.',
             style: {},
             textColor: '',
-            iconFilter: 'none'
+            iconFilter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)'
         }
     }
 

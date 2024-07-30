@@ -72,6 +72,8 @@ export function TaskDetails() {
     const { taskId, groupId, boardId } = useParams()
     const navigate = useNavigate()
 
+    const menuRef = useRef(null)
+
     useEffect(() => {
         setTask()
     }, [board])
@@ -83,6 +85,9 @@ export function TaskDetails() {
         if (textareaCommentRef.current) {
             autosize(textareaCommentRef.current)
         }
+        if (editCommentRef.current) {
+            autosize(editCommentRef.current)
+        }
 
         return () => {
             if (textareaRef.current) {
@@ -93,19 +98,12 @@ export function TaskDetails() {
                 autosize.destroy(textareaCommentRef.current)
             }
 
-        }
-    }, [taskToEdit, isSettingDescription])
-
-    useEffect(() => {
-        if (editCommentRef.current) {
-            autosize(editCommentRef.current)
-        }
-        return () => {
             if (editCommentRef.current) {
                 autosize.destroy(editCommentRef.current)
             }
         }
-    }, [editCommentInputValue])
+    }, [taskToEdit, isSettingDescription, editCommentInputValue])
+
 
     useEffect(() => {
         if (isAddingItems && checklistItemRefs.current[isAddingItems]) {
@@ -123,6 +121,19 @@ export function TaskDetails() {
 
         }
     }, [editingTodoId])
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+    }, [])
+
+    function handleClickOutside(ev) {
+        if (menuRef.current && !menuRef.current.contains(ev.target)) {
+            setIsTodoMenuOpen(false)
+        }
+    }
 
     function setTask() {
         setTaskToEdit(() => {
@@ -349,6 +360,7 @@ export function TaskDetails() {
                 return checklistId
             }
         })
+        closeAllEditingItems()
     }
 
     async function onDeleteChecklist(checklistId) {
@@ -422,6 +434,7 @@ export function TaskDetails() {
         })
         setEditItemTitleValue(todoTitle)
         setEditingTodoId(todoId)
+        setIsAddingItems(null)
     }
 
     async function saveEditedItem(todo, checklist) {
@@ -846,6 +859,7 @@ export function TaskDetails() {
 
                                                 {isTodoMenuOpen && todoMenuPosition && (
                                                     <article
+                                                        ref={menuRef}
                                                         className="item-actions"
                                                         style={{
                                                             position: 'fixed',

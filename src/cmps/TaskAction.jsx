@@ -215,6 +215,13 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         await updateTask(updatedTask, group, board, activityTitle, user)
     }
 
+    function handleChecklistKeyDown(ev) {
+        ev.preventDefault()
+        if (ev.key === 'Enter') {
+            onAddChecklist(ev)
+        }
+    }
+
     // Attachments
 
     async function onAddAttachment(ev, isCover) {
@@ -682,6 +689,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                             ref={checklistTitleRef}
                             className="text"
                             value={checklistInputValue}
+                            onKeyDown={handleChecklistKeyDown}
                             onChange={(ev) => setChecklistInputValue(ev.target.value)} />
                     </div>
                     <button className="btn-blue" onClick={onAddChecklist}>Add</button>
