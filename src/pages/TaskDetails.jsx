@@ -306,7 +306,7 @@ export function TaskDetails() {
     async function onRemoveTask() {
         const newTasks = group.tasks.filter(task => task.id !== taskToEdit.id)
         const newGroup = { ...group, tasks: newTasks }
-        const activityTitle = `removed task (id: ${taskToEdit.id})`
+        const activityTitle = `removed card ${taskToEdit.id}`
         await updateGroup(newGroup.id, newGroup, board, activityTitle)
         onBackdropClicked()
     }
@@ -466,7 +466,7 @@ export function TaskDetails() {
         const updatedTask = { ...taskToEdit }
         if (isCover(attachment)) updatedTask.style = null
         const attachments = updatedTask.attachments.filter(a => a.url !== attachment.url)
-        const activity = `deleted the ${attachment.title} from card (id: ${updatedTask.id})`
+        const activity = `deleted the ${attachment.title} from card ${updatedTask.id}`
         updateTask({ ...updatedTask, attachments }, group, board, activity, user)
     }
 
@@ -488,7 +488,7 @@ export function TaskDetails() {
 
     async function onSetCover(attachment) {
         const updatedTask = { ...taskToEdit, style: { ...taskToEdit.style, backgroundImage: `url(${attachment.url})`, backgroundColor: attachment.backgroundColor } }
-        const activityTitle = `set ${attachment.title} as a cover for task (id: ${updatedTask.id})`
+        const activityTitle = `set ${attachment.title} as a cover for card ${updatedTask.id}`
         await updateTask(updatedTask, group, board, activityTitle, user)
     }
 

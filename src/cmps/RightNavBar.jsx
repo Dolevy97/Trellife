@@ -48,8 +48,14 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
     }
 
     function getActivityByTitle(activity) {
-        if (activity.title === 'create board') {
+        const shortTitle = activity.title.split(' ').slice(0, 2).join(' ')
+        if (shortTitle === 'create board') {
             return 'created this board'
+        }
+        if (activity.title.includes(activity.task.id)) {
+            const href = `${board._id}/${activity.group.id}/${activity.task.id}`
+            const linkText = `<a href="${href}">${activity.task.title}</a>`
+            return activity.title.replace(activity.task.id, linkText)
         }
         return activity.title.charAt(0).toLowerCase() + activity.title.slice(1) //Lowercase first letter
     }
@@ -113,7 +119,10 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
                                     <div key={currentActivity.id} className="activity-item-container">
                                         <img className="user-img" src={currentActivity.byMember.imgUrl} />
                                         <div className="activity-info">
-                                            <div className="activity-item">{currentActivity.byMember.fullname} {getActivityByTitle(currentActivity)}</div>
+                                            <div className="activity-item">
+                                                {currentActivity.byMember.fullname}{' '}
+                                                <span dangerouslySetInnerHTML={{ __html: getActivityByTitle(currentActivity) }} />
+                                            </div>
                                             <div className="activity-time">{getFormattedTime(currentActivity.createdAt)}</div>
                                         </div>
                                     </div>
