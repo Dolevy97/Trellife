@@ -33,6 +33,14 @@ export function BoardHederFilter({ onClose, filterBy, setFilterBy, board }) {
         }
     }
 
+    const filteredMembers = board.members.filter(member =>
+        !filterToEdit.title || member.fullname.toLowerCase().includes(filterToEdit.title.toLowerCase())
+    )
+
+    const filteredLabels = board.labels.filter(label =>
+        !filterToEdit.title || label.title.toLowerCase().includes(filterToEdit.title.toLowerCase())
+    )
+
     return (
         <section className="BoardHederFilter" >
             <header>
@@ -44,7 +52,7 @@ export function BoardHederFilter({ onClose, filterBy, setFilterBy, board }) {
             <div className="board-filter-body">
                 <div className="filter-info">
                     <div className="search-container">
-                        <span>Keywords</span>
+                        <span>Keyword</span>
                         <input
                             onChange={handleChange}
                             value={filterToEdit.title || ''}
@@ -56,47 +64,62 @@ export function BoardHederFilter({ onClose, filterBy, setFilterBy, board }) {
                         <span className='input-details'>Search cards, members, labels, and more.</span>
                     </div>
                 </div>
-                <div className="members-container">
-                    <span>Members</span>
-                    {board.members.map(member => (
-                        <label key={member._id}>
-                            <input
-                                type="checkbox"
-                                name="memberIds"
-                                value={member._id}
-                                checked={(filterToEdit.memberIds || []).includes(member._id)}
-                                onChange={handleChange}
-                            />
-                            <img
-                                src={member.imgUrl}
-                                alt={member.fullname}
-                                className="member-thumbnail"
-                                title={member.fullname}
-                            />
-                            {member.fullname}
-                        </label>
-                    ))}
-                </div>
-                <div className="labels-container">
-                    <span>Labels</span>
-                    {board.labels.map(label => (
-                        <label key={label.id}>
-                            <input
-                                type="checkbox"
-                                name="labelIds"
-                                value={label.id}
-                                checked={(filterToEdit.labelIds || []).includes(label.id)}
-                                onChange={handleChange}
-                            />
-                            <div
-                                className="label-color"
-                                style={{ backgroundColor: label.color, color: isLightColor(label.color) ? '#1d2125' : 'currentColor' }}
-                                title={label.title} >
-                                <span>{label.title}</span>
-                            </div>
-                        </label>
-                    ))}
-                </div>
+                {filteredMembers.length ?
+                    <div className="members-container">
+                        <span>Members</span>
+                        {filteredMembers.map(member => (
+                            <label key={member._id}>
+                                <input
+                                    type="checkbox"
+                                    name="memberIds"
+                                    value={member._id}
+                                    checked={(filterToEdit.memberIds || []).includes(member._id)}
+                                    onChange={handleChange}
+                                />
+                                <img
+                                    src={member.imgUrl}
+                                    alt={member.fullname}
+                                    className="member-thumbnail"
+                                    title={member.fullname}
+                                />
+                                {member.fullname}
+                            </label>
+                        ))}
+                    </div>
+                    :
+                    null}
+                {filteredLabels.length ?
+                    <div className="labels-container">
+                        <span>Labels</span>
+                        {filteredLabels.map(label => (
+                            <label key={label.id}>
+                                <input
+                                    type="checkbox"
+                                    name="labelIds"
+                                    value={label.id}
+                                    checked={(filterToEdit.labelIds || []).includes(label.id)}
+                                    onChange={handleChange}
+                                />
+                                <div
+                                    className="label-color"
+                                    style={{ backgroundColor: label.color, color: isLightColor(label.color) ? '#1d2125' : 'currentColor' }}
+                                    title={label.title} >
+                                    <span>{label.title}</span>
+                                </div>
+                            </label>
+                        ))}
+                    </div>
+                    :
+                    null
+                }
+                {!filteredLabels.length && !filteredMembers.length &&
+                    <div className="nothing-found">
+                        <img src="https://trello.com/assets/d2a0b151afa14cbf5147.svg" alt="" />
+                        <p>Nothing found</p>
+                        <p>Couldn't find any card, member or label match.</p>
+                        <p>Try another search.</p>
+                    </div>
+                }
             </div>
         </section>
     )

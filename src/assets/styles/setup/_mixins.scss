@@ -122,6 +122,12 @@
     &:hover {
         background-color: #85B8FF;
     }
+
+    &:disabled {
+        cursor: not-allowed;
+        background-color: #BCD6F00A;
+        color: #BFDBF847;
+    }
 }
 
 @mixin checkbox {
