@@ -21,7 +21,7 @@ import expandIcon from '../assets/imgs/Icons/expand.svg'
 import loadingAnimation from '../assets/imgs/TaskDetails-icons/loading animation.svg'
 
 
-export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpansion, areLabelsExpanded, displayStyle }) {
+export function GroupPreview({ group, boardId, toggleLabelExpansion, areLabelsExpanded}) {
     const tasks = group?.tasks || []
     const board = useSelector(storeState => storeState.boardModule.board)
     const user = useSelector(storeState => storeState.userModule.user)
@@ -33,7 +33,6 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
     const [quickEditTaskId, setQuickEditTaskId] = useState(null)
     const [quickEditTaskPosition, setQuickEditTaskPosition] = useState(null)
 
-    const buttonRef = useRef(null)
     const textareaRef = useRef(null)
     const addTaskRef = useRef(null)
 
@@ -195,18 +194,8 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
         }
     }
 
-
-    // function getQuickEditPosition() {
-    //     const buttonRect = buttonRef.current.getBoundingClientRect()
-    //     const positionX = buttonRect.right
-    //     const positionY = buttonRect.top
-    //     return ({ left: positionX, top: positionY })
-    // }
-
     const labelsIds = taskToEdit?.labelsIds || []
-
     if (!board || !tasks) return <div className='isloading-container'> <img className='isLoading' src={loadingAnimation} /> </div>
-
     return (
         <section className={`group-preview-container ${group.style.isCollapse ? 'collapsed' : ''}`}
             style={group.style}>
@@ -283,7 +272,6 @@ export function GroupPreview({ group, boardId, handleOnDragEnd, toggleLabelExpan
                                                         >
                                                             <img src={penIcon} />
                                                         </div>
-
 
                                                         <section className={`task-info-container ${task.style && task.style.backgroundImage && task.style.isFull ? 'is-full' : ''}`}
                                                             style={{
