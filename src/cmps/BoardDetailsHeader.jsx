@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react'
-import { updateBoard } from '../store/actions/board.actions'
-import { useSelector } from 'react-redux'
+import { useState, useEffect, useRef } from 'react';
+import { updateBoard } from '../store/actions/board.actions';
+import { useSelector } from 'react-redux';
 import { RightNavBar } from '../cmps/RightNavBar';
-import { showSuccessMsg } from '../services/event-bus.service'
+import { showSuccessMsg } from '../services/event-bus.service';
 import { updateUser } from '../store/actions/user.actions';
 import { getAverageColorFromUrl, isLightColor } from '../services/util.service';
 
@@ -15,17 +15,16 @@ import boardIcon from '../assets/imgs/Icons/boardIcon.svg'
 import tableIcon from '../assets/imgs/Icons/tableIcon.svg'
 import openAiIcon from '../assets/imgs/Icons/openAI_Logo.svg'
 
-import { createBoardPrompt } from '../services/chat-gpt.service';
 import axios from 'axios';
 
 export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, displayStyle, setDisplayStyle }) {
-  const board = useSelector(storeState => storeState.boardModule.board)
-  const user = useSelector(storeState => storeState.userModule.user)
+  const board = useSelector(storeState => storeState.boardModule.board);
+  const user = useSelector(storeState => storeState.userModule.user);
 
-  const boardTitleRef = useRef(null)
+  const boardTitleRef = useRef(null);
 
-  const [isEditing, setIsEditing] = useState(false)
-  const [newTitle, setNewTitle] = useState(board.title)
+  const [isEditing, setIsEditing] = useState(false);
+  const [newTitle, setNewTitle] = useState(board.title);
 
   const [buttonColor, setButtonColor] = useState('')
   const [hoverButtonColor, setHoverButtonColor] = useState('')
@@ -38,23 +37,22 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
   const [inputWidth, setInputWidth] = useState(() => `${Math.max(board.title.length * 9.2, 100)}px`);
 
-  const [isChatOpen, setIsChatOpen] = useState(false)
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   useEffect(() => {
     if (board) {
-      setNewTitle(board.title)
+      setNewTitle(board.title);
     }
-  }, [board])
+  }, [board]);
 
   useEffect(() => {
-    updateInputWidth()
-  }, [newTitle])
-
+    updateInputWidth();
+  }, [newTitle]);
 
   function updateInputWidth() {
     if (boardTitleRef.current) {
-      const newWidth = Math.max(newTitle.length * 9.2, 100) // Minimum width of 100px
-      setInputWidth(`${newWidth}px`)
+      const newWidth = Math.max(newTitle.length * 9.2, 100); // Minimum width of 100px
+      setInputWidth(`${newWidth}px`);
     }
   }
 
@@ -69,115 +67,106 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
         setIconColor(isLightColor(avgColor) ?
           { filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7489%) hue-rotate(29deg) brightness(100%) contrast(103%)' }
           :
-          { filter: 'brightness(0) saturate(100%) invert(12%) sepia(53%) saturate(1411%) hue-rotate(192deg) brightness(94%) contrast(92%)' })
+          { filter: 'brightness(0) saturate(100%) invert(12%) sepia(53%) saturate(1411%) hue-rotate(192deg) brightness(94%) contrast(92%)' });
         setOutsideIconColor(isLightColor(avgColor) ?
           { filter: 'brightness(0) saturate(100%) invert(12%) sepia(53%) saturate(1411%) hue-rotate(192deg) brightness(94%) contrast(92%)' }
           :
-          { filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7489%) hue-rotate(29deg) brightness(100%) contrast(103%)' }
-        )
+          { filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7489%) hue-rotate(29deg) brightness(100%) contrast(103%)' });
       } catch (error) {
-        console.error('Error getting average color:', error)
-        setButtonColor('transparent')
-        setTextColor('#000000')
+        console.error('Error getting average color:', error);
+        setButtonColor('transparent');
+        setTextColor('#000000');
       }
     }
 
-    updateButtonColor()
-  }, [board])
+    updateButtonColor();
+  }, [board]);
 
   async function handleTitleUpdate() {
-    let titleToSet = newTitle.trim()
+    let titleToSet = newTitle.trim();
     if (titleToSet === '') {
-      titleToSet = board.title
+      titleToSet = board.title;
     }
     const updatedBoard = {
       ...board,
       title: titleToSet
-    }
+    };
     try {
-      setNewTitle(titleToSet)
-      setIsEditing(false)
-      await updateBoard(updatedBoard)
+      setNewTitle(titleToSet);
+      setIsEditing(false);
+      await updateBoard(updatedBoard);
     } catch (error) {
-      console.error('Failed to update board title:', error)
+      console.error('Failed to update board title:', error);
     }
   }
 
   async function handleBlur() {
-    await handleTitleUpdate()
+    await handleTitleUpdate();
   }
 
   function handleKeyPress(e) {
     if (e.key === 'Enter') {
-      e.preventDefault()
-      handleTitleUpdate()
+      e.preventDefault();
+      handleTitleUpdate();
     }
   }
 
   async function onClickStar(ev) {
-    ev.stopPropagation()
-    ev.preventDefault()
-    if (!user.favorites.includes(board._id)) user.favorites.push(board._id)
+    ev.stopPropagation();
+    ev.preventDefault();
+    if (!user.favorites.includes(board._id)) user.favorites.push(board._id);
     else {
-      user.favorites = user.favorites.filter(id => id !== board._id)
+      user.favorites = user.favorites.filter(id => id !== board._id);
     }
-    await updateUser(user)
+    await updateUser(user);
   }
 
   async function onShareJoinClick() {
-    const userIsInBoard = canUserJoinBoard()
+    const userIsInBoard = canUserJoinBoard();
     if (!userIsInBoard) {
-      board.members.push(user)
-      await updateBoard(board)
-      return
+      board.members.push(user);
+      await updateBoard(board);
+      return;
     }
-    const currentURL = window.location.href
+    const currentURL = window.location.href;
 
     try {
-      await navigator.clipboard.writeText(currentURL)
-      showSuccessMsg('Board link copied to clipboard')
+      await navigator.clipboard.writeText(currentURL);
+      showSuccessMsg('Board link copied to clipboard');
     } catch (error) {
-      console.error('Failed to copy URL:', error)
+      console.error('Failed to copy URL:', error);
     }
   }
 
   function canUserJoinBoard() {
-    return board.members.find(u => u._id === user._id)
+    return board.members.find(u => u._id === user._id);
   }
 
   function toggleRightNavBar() {
-    setIsRightNavBarOpen(!isRightNavBarOpen)
-    setIsFilterOpen(false)
+    setIsRightNavBarOpen(!isRightNavBarOpen);
+    setIsFilterOpen(false);
   }
 
   function toggleFilterOpen() {
-    setIsFilterOpen(!isFilterOpen)
+    setIsFilterOpen(!isFilterOpen);
   }
 
-  async function onGetBoardFromGpt(ev) {
-    // ev.preventDefault()
+  async function onGetBoardFromGpt() {
+    // const title = "Becoming the best music producer";
+    // const title = "Trip to Australia";
+    // const title = "Master fullstack programming";
+    const title = prompt('Name the project you\'d like to create (enter \'cancel\' to cancel)')
+    if (title.toLowerCase === 'cancel') return
 
-    // if (prompt) {
-    // setIsSubmit(true)
-    // const boardPrompt = createBoardPrompt(prompt)
-    const boardPrompt = createBoardPrompt('Trip to Australia')
-    axios.post("//localhost:3030/chat", { prompt: boardPrompt })
-      .then(res => {
-        console.log(res.data)
-        const result = res.data
-        console.log(JSON.stringify(result))
-        // addGeneratedBoard(result)
-      })
-      .catch(err => {
-        console.log(err);
-      })
-    // const savedBoard = await addBoard(moveApartmentBoard)
-    // setTimeout(() => {
-    //     addGeneratedBoard(savedBoard)
-    // }, 7000);
-    // }
+    const payload = { title };
+
+    try {
+      const res = await axios.post("http://localhost:3030/chat", payload);
+      console.log(JSON.stringify(res.data));
+    } catch (er) {
+      console.error(er);
+    }
   }
-
 
   return (
     <section className={`groups-header ${isRightNavBarOpen ? 'right-nav-open' : ''}`}>
