@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { removeBoard } from '../store/actions/board.actions'
 import { removeBoardFromFavorites } from '../store/actions/user.actions'
 import { useNavigate } from "react-router"
@@ -26,6 +26,11 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
     const [field, setField] = useState('Menu')
 
     const navigate = useNavigate()
+
+
+    useEffect(() => {
+        if (!board) return null
+    }, [])
 
     async function onRemoveBoard() {
         try {
@@ -96,11 +101,11 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
 
         if (shortTitle === 'create board') {
             formattedTitle = 'created this board'
-        } else if (activity.task && activity.title.includes(activity.task.id)) {
+        } else if (activity.task && board && activity.title.includes(activity.task.id)) {
             const href = `${board._id}/${activity.group.id}/${activity.task.id}`
             const linkText = `<a href="${href}">${activity.task.title}</a>`
             formattedTitle = activity.title.replace(activity.task.id, linkText)
-        } else if (shortTitle === 'add comment' && activity.task) {
+        } else if (board && shortTitle === 'add comment' && activity.task) {
             const href = `${board._id}/${activity.group.id}/${activity.task.id}`
             const linkText = `<a href="${href}">${activity.task.title}</a>`
             const newTitle = `added a comment to ${activity.task.id}`
@@ -119,7 +124,7 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
         return formattedTitle
     }
 
-    if (!users) return <div className='isloading-container'> <img className='isLoading' src={loadingAnimation} /> </div>
+    if (!users || !board) return <div className='isloading-container'> <img className='isLoading' src={loadingAnimation} /> </div>
 
     return (
         <section className={`right-nav-bar-container ${!isRightNavBarOpen ? 'is-close' : ''}`}>
