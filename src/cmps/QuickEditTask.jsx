@@ -90,7 +90,7 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
   async function onRemoveTask() {
     const newTasks = group.tasks.filter(t => t.id !== task.id)
     const newGroup = { ...group, tasks: newTasks }
-    const activityTitle = `removed task (id: ${task.id})`
+    const activityTitle = `removed task ${task.id}`
     await updateGroup(newGroup.id, newGroup, board, activityTitle, user)
 
   }
@@ -98,7 +98,7 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
   /*Cover */
   async function onSetCover(attachment) {
     const updatedTask = { ...task, style: { ...task.style, backgroundImage: `url(${attachment.url})`, backgroundColor: attachment.backgroundColor } }
-    const activityTitle = `set ${attachment.title} as a cover for task (id: ${updatedTask.id})`
+    const activityTitle = `set ${attachment.title} as a cover for card ${updatedTask.id}`
     await updateTask(updatedTask, group, board, activityTitle, user)
   }
 

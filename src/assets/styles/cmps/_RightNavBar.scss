@@ -319,6 +319,11 @@
 
                 & .activity-item {
                     font-size: .875em;
+
+                    a {
+                        text-decoration: none;
+                        color: #579dff;
+                    }
                 }
 
                 & .user-img {

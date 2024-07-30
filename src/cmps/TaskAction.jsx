@@ -116,7 +116,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     async function onAddMember(id) {
         const updatedTask = { ...task }
         updatedTask.membersIds.push(id)
-        const activityTitle = `added member (id: ${id}) to task (id: ${task.id})`
+        const activityTitle = `added member ${id} to task ${task.id}`
         await updateTask(updatedTask, group, board, activityTitle, user)
     }
 
@@ -286,7 +286,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             else return updatedAttachment
         })
         const updatedTask = { ...task, attachments }
-        const activityTitle = `updated attachment's link name from ${attachmentToEdit.title} to ${attachmentInputValue} on card (id: ${task.id})`
+        const activityTitle = `updated attachment's link name from ${attachmentToEdit.title} to ${attachmentInputValue} on card ${task.id}`
         onSetAction(ev, null)
         await updateTask(updatedTask, group, board, activityTitle, user)
     }
