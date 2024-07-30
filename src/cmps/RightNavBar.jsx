@@ -12,11 +12,15 @@ import collapseIcon from '../assets/imgs/Icons/collapse.svg'
 import arrowDownIcon from '../assets/imgs/Icons/arrow-down.svg'
 import activityIcon from '../assets/imgs/TaskDetails-icons/activity.svg'
 import trashIcon from '../assets/imgs/TaskDetails-icons/trash.svg'
+import loadingAnimation from '../assets/imgs/TaskDetails-icons/loading animation.svg'
 
 import photosOptions from '../assets/imgs/photosoption.jpg'
 import colorsOptions from '../assets/imgs/colorsoption.png'
+import { useSelector } from "react-redux"
 
 export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollapse, board }) {
+    const users = useSelector(store => store.userModule.users)
+
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
     const [isCollapseOpen, setIsCollapseOpen] = useState(false)
     const [field, setField] = useState('Menu')
@@ -35,6 +39,7 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
         }
     }
 
+
     function handleDeleteConfirm() {
         onRemoveBoard()
         setIsDeleteModalOpen(false)
@@ -49,23 +54,70 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
 
     function getActivityByTitle(activity) {
         const shortTitle = activity.title.split(' ').slice(0, 2).join(' ')
-        if (shortTitle === 'create board') {
-            return 'created this board'
+    
+        function replaceUserIds(title) {
+            return users.reduce((acc, user) => {
+                if (acc.includes(user._id)) {
+                    return acc.replace(user._id, `<span class="user-mention">${user.fullname}</span>`)
+                }
+                return acc
+            }, title)
         }
-        if (activity.title.includes(activity.task.id)) {
+    
+        function formatTimestamp(timestamp) {
+            const date = new Date(Number(timestamp))
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            const month = months[date.getMonth()]
+            const day = date.getDate()
+            let hours = date.getHours()
+            const minutes = date.getMinutes().toString().padStart(2, '0')
+            const ampm = hours >= 12 ? 'PM' : 'AM'
+            hours = hours % 12
+            hours = hours ? hours : 12 // the hour '0' should be '12'
+            
+            return `${month} ${day} ${hours}:${minutes} ${ampm}`
+        }
+    
+        function extractAndFormatTimestamp(title) {
+            // Regular expression to match Unix timestamp in milliseconds
+            const timestampRegex = /\b\d{13}\b/
+            const match = title.match(timestampRegex)
+            if (match) {
+                const timestamp = match[0]
+                const formattedTime = formatTimestamp(timestamp)
+                return title.replace(timestamp, formattedTime)
+            }
+            return title
+        }
+    
+        let formattedTitle = ''
+    
+        if (shortTitle === 'create board') {
+            formattedTitle = 'created this board'
+        } else if (activity.title.includes(activity.task.id)) {
             const href = `${board._id}/${activity.group.id}/${activity.task.id}`
             const linkText = `<a href="${href}">${activity.task.title}</a>`
-            return activity.title.replace(activity.task.id, linkText)
-        }
-        if (shortTitle === 'add comment') {
+            formattedTitle = activity.title.replace(activity.task.id, linkText)
+        } else if (shortTitle === 'add comment') {
             const href = `${board._id}/${activity.group.id}/${activity.task.id}`
             const linkText = `<a href="${href}">${activity.task.title}</a>`
             const newTitle = `added a comment to ${activity.task.id}`
-            // console.log(newTitle)
-            return newTitle.replace(activity.task.id, linkText)
+            formattedTitle = newTitle.replace(activity.task.id, linkText)
+        } else {
+            // For all other cases, keep the original case
+            formattedTitle = activity.title
         }
-        return activity.title.charAt(0).toLowerCase() + activity.title.slice(1) //Lowercase first letter
+    
+        // Replace timestamp in the title
+        formattedTitle = extractAndFormatTimestamp(formattedTitle)
+    
+        // Replace user IDs
+        formattedTitle = replaceUserIds(formattedTitle)
+    
+        return formattedTitle
     }
+
+    if (!users) return <div className='isloading-container'> <img className='isLoading' src={loadingAnimation} /> </div>
 
     return (
         <section className={`right-nav-bar-container ${!isRightNavBarOpen ? 'is-close' : ''}`}>
@@ -127,7 +179,7 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
                                         <img className="user-img" src={currentActivity.byMember.imgUrl} />
                                         <div className="activity-info">
                                             <div className="activity-item">
-                                                {currentActivity.byMember.fullname}{' '}
+                                                <span className="user-mention">{currentActivity.byMember.fullname}</span>{' '}
                                                 <span dangerouslySetInnerHTML={{ __html: getActivityByTitle(currentActivity) }} />
                                             </div>
                                             <div className="activity-time">{getFormattedTime(currentActivity.createdAt)}</div>

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { DropdownMenu } from './DropdownMenu'
 import { BoardCreate } from './BoardCreate'
 import { useSelector } from 'react-redux'
-import { login, logout } from '../store/actions/user.actions'
+import { loadUsers, login, logout } from '../store/actions/user.actions'
 
 import arrowDownIcon from '../assets/imgs/Icons/arrow-down.svg'
 import addIcon from '../assets/imgs/Icons/add.svg'
@@ -45,10 +45,11 @@ export function AppHeader({ isHomePage }) {
 		return () => {
 			window.removeEventListener('resize', handleResize)
 			document.removeEventListener('mousedown', handleClickOutside)
-		};
+		}
 	}, [userMenuRef, appHeaderRef])
 
 	useEffect(() => {
+		loadUsers()
 		return () => {
 			document.body.classList.remove('no-scroll')
 		}
