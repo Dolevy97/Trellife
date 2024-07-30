@@ -5,18 +5,15 @@ export const openAiService = {
     onGetBoardFromGpt
 }
 
-async function onGetBoardFromGpt() {
-    // const title = "Becoming the best music producer";
-    // const title = "Trip to Australia";
-    // const title = "Master fullstack programming";
-    const title = prompt('Name the project you\'d like to create')
-
+async function onGetBoardFromGpt(title) {
+    
     const payload = { title };
 
     try {
         const res = await axios.post("http://localhost:3030/api/open-ai", payload);
         const board = await getBoardImgsFromGptObject(res.data)
-        console.log(board)
+        console.log ('board from gpt function: ', board)
+        return (board)
     } catch (er) {
         console.error(er);
     }
@@ -25,15 +22,21 @@ async function onGetBoardFromGpt() {
 async function getBoardImgsFromGptObject(board) {
     console.log(board)
     const updatedBoard = { ...board }
-    updatedBoard.style.background = getUnsplashImageByQuery(updatedBoard.style.background)
+    updatedBoard.style.background = `url(${(await getUnsplashImageByQuery(updatedBoard.style.background))[0].url})`
     const { groups } = updatedBoard
     for (let i = 0; i < groups.length; i++) {
         const group = groups[i]
         const { tasks } = group
         for (let j = 0; j < tasks.length; j++) {
             const task = tasks[j]
-            if (task?.style?.backgroundImage) task.style.backgroundImage = await getUnsplashImageByQuery(task.style.backgroundImage)
+            if (task?.style?.backgroundImage){
+                const img = (await getUnsplashImageByQuery(task.style.backgroundImage))[0]
+                task.style.backgroundImage = `url(${img.url})`
+                task.style.backgroundColor = img.backgroundColor
+            } 
+                
         }
     }
+    console.log ('board from unsplash function: ', updatedBoard)
     return updatedBoard
 }
