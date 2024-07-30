@@ -252,7 +252,6 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
           onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'chat' })}
           className='chat-trellife-container'
           style={{
-            ...(isAILoading ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }),
             ...(btnHoverState.isHover && btnHoverState.btn === 'chat' && displayStyle !== 'chat' ? { backgroundColor: hoverButtonColor } : {})
           }} >
           <img src={openAiIcon}
