@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { updateBoard } from '../store/actions/board.actions';
+import { addBoard, updateBoard } from '../store/actions/board.actions';
 import { useSelector } from 'react-redux';
 import { RightNavBar } from '../cmps/RightNavBar';
 import { showSuccessMsg } from '../services/event-bus.service';
@@ -16,6 +16,7 @@ import boardIcon from '../assets/imgs/Icons/boardIcon.svg'
 import tableIcon from '../assets/imgs/Icons/tableIcon.svg'
 import openAiIcon from '../assets/imgs/Icons/openAI_Logo.svg'
 import { AILoadingScreen } from './AILoadingScreen';
+import { useNavigate } from 'react-router';
 
 
 export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, displayStyle, setDisplayStyle }) {
@@ -37,6 +38,8 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
   const [btnHoverState, setBtnHoverState] = useState({ isHover: false, btn: '' })
 
   const [inputWidth, setInputWidth] = useState(() => `${Math.max(board.title.length * 9.2, 100)}px`);
+
+  const navigate = useNavigate()
 
   const [isAILoading, setIsAILoading] = useState(false);
 
@@ -152,6 +155,23 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
     setIsFilterOpen(!isFilterOpen);
   }
 
+  async function onCreateBoardWithOpenAi(){
+    // const title = "Becoming the best music producer";
+    // const title = "Trip to Australia";
+    // const title = "Master fullstack programming";
+    try {
+      const title = prompt('Name the project you\'d like to create')
+      const newBoard = await openAiService.onGetBoardFromGpt(title)
+      newBoard.createdBy = {...user}
+      console.log('newBoard: ' , newBoard)
+      const addedBoard = await addBoard(newBoard)
+      console.log('addedBoard: ' , addedBoard)
+      navigate (`/board/${addedBoard._id}`)
+    } catch (er) {
+      console.log(er)
+    }
+  }
+
   return (
     <>
       <section className={`groups-header ${isRightNavBarOpen ? 'right-nav-open' : ''}`}>
@@ -222,21 +242,22 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
             <span className='board-icon-text'>table</span>
           </div>
 
-          <div
-            onMouseEnter={() => setBtnHoverState({ isHover: true, btn: 'chat' })}
-            onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'chat' })}
-            className='chat-trellife-container'
-            style={{
-              ...(isAILoading ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }),
-              ...(btnHoverState.isHover && btnHoverState.btn === 'chat' && displayStyle !== 'chat' ? { backgroundColor: hoverButtonColor } : {})
-            }} >
-            <img src={openAiIcon}
-              alt="Open AI Logo"
-              style={isAILoading ? iconColor : outsideIconColor}
-            />
-            <span
-              className='chat-trellife-text'>Create AI Board</span>
-          </div>
+        {/* <div onClick={() => setIsChatOpen(!isChatOpen)} */}
+        <div onClick={onCreateBoardWithOpenAi}
+          onMouseEnter={() => setBtnHoverState({ isHover: true, btn: 'chat' })}
+          onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'chat' })}
+          className='chat-trellife-container'
+          style={{
+            ...(isChatOpen ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }),
+            ...(btnHoverState.isHover && btnHoverState.btn === 'chat' && displayStyle !== 'chat' ? { backgroundColor: hoverButtonColor } : {})
+          }} >
+          <img src={openAiIcon}
+            alt="Open AI Logo"
+            style={isChatOpen ? iconColor : outsideIconColor}
+          />
+          <span
+            className='chat-trellife-text'>Create AI Board</span>
+        </div>
 
         </div>
 
