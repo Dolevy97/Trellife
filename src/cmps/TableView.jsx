@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { getFormattedShortTime, isLightColor } from "../services/util.service"
 
 import clockIcon from '../assets/imgs/Icons/clock.svg'
@@ -9,12 +9,14 @@ import penIcon from '../assets/imgs/Icons/pen.svg'
 import addIcon from '../assets/imgs/Icons/add.svg'
 
 import { useNavigate } from "react-router"
-import { updateTask } from "../store/actions/task.actions"
+import { addTask, updateTask } from "../store/actions/task.actions"
 import { useSelector } from "react-redux"
 import { updateBoard } from "../store/actions/board.actions"
 import { TaskAction } from "./TaskAction"
 
 export function TableView({ groups, board }) {
+
+    const user = useSelector(storeState => storeState.userModule.user)
 
     const [isSortOpen, setIsSortOpen] = useState(false)
     const [isAdding, setIsAdding] = useState({ state: false, type: null })
@@ -27,20 +29,26 @@ export function TableView({ groups, board }) {
     const [containerPosition, setContainerPosition] = useState({ top: 0, left: 0 })
     const [newListPos, setNewListPos] = useState(null)
     const [newListTitle, setNewListTitle] = useState('')
-
-    const user = useSelector(storeState => storeState.userModule.user)
+    const [newCardTitle, setNewCardTitle] = useState('')
 
     const navigate = useNavigate()
 
     const nameChangeRef = useRef(null)
     const newCardTitleRef = useRef(null)
+    const dropdownRef = useRef(null)
 
     const options = []
     board.groups.map((g, idx) => options.push(idx + 1))
 
+    const cardOptions = []
+    board.groups.map(g => cardOptions.push(g))
+
+    const [newCardList, setNewCardList] = useState(cardOptions[0] || '')
+
     const [isOpen, setIsOpen] = useState(false)
     const [selectedOption, setSelectedOption] = useState(options[0] || 1)
-    const dropdownRef = useRef(null)
+    const [selectedCardOption, setSelectedCardOption] = useState(cardOptions[0] || {})
+
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -100,6 +108,12 @@ export function TableView({ groups, board }) {
         setSelectedOption(option)
         setIsOpen(false)
         setNewListPos(option)
+    }
+
+    function handleCardOptionClick(option) {
+        setSelectedCardOption(option)
+        setIsOpen(false)
+        setNewCardList(option)
     }
 
     /* Set Action */
@@ -294,15 +308,24 @@ export function TableView({ groups, board }) {
         try {
             const newGroup = boardService.getEmptyGroup()
             newGroup.title = newListTitle.trim()
-            const updatedBoard = {
-                ...board,
-                groups: [...board.groups, newGroup]
-            }
+            board.groups.splice(newListPos, 0, newGroup)
             setNewListTitle('')
-            await updateBoard(updatedBoard)
+            setIsAdding({ state: false, type: null })
+            await updateBoard(board)
         } catch (err) {
-            console.error('Failed to add group:', err)
+            console.error('Failed to add list:', err)
         }
+    }
+
+    async function onAddCard() {
+
+        try {
+            setIsAdding({ state: false, type: null })
+            await addTask(newCardTitle, newCardList, board, user)
+        } catch (err) {
+            console.error('Failed to add card:', err)
+        }
+
     }
 
     return (
@@ -481,9 +504,9 @@ export function TableView({ groups, board }) {
                                                 {task.labelsIds && task.labelsIds.map(id => {
                                                     const label = getLabelById(id)
                                                     return label?.color && (
-                                                        <>
+                                                        <React.Fragment key={id}>
+
                                                             <div
-                                                                key={id}
                                                                 className={`table-label-tab`}
                                                                 title={label.title}>
                                                                 <div
@@ -494,7 +517,7 @@ export function TableView({ groups, board }) {
                                                                 </div>
                                                             </div>
                                                             <img className="arrow-down-icon-labels" src={arrowDownIcon} alt="" />
-                                                        </>
+                                                        </React.Fragment>
                                                     )
                                                 })}
                                                 {!task.labelsIds.length &&
@@ -711,23 +734,38 @@ export function TableView({ groups, board }) {
                             :
                             <article className="add-card-body">
                                 <h4>Title</h4>
-                                <div
-                                    className="btn-sort-option">
-                                    Sort ascending
+                                <input
+                                    onChange={e => setNewCardTitle(e.target.value)}
+                                    type="text"
+                                    placeholder="Enter a title for this card"
+                                    className="add-card-input" />
+                                <h4>List</h4>
+                                <div className="custom-select" ref={dropdownRef}>
+                                    <div className="select-header" onClick={toggleDropdown}>
+                                        <span className="selected-option">{selectedCardOption.title}</span>
+                                        <svg className='arrow' width="24" height="24" viewBox="0 0 24 24" role="presentation">
+                                            <path d="M8.292 10.293a1.009 1.009 0 000 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 000-1.419.987.987 0 00-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 00-1.406 0z" fill="currentColor" fillRule="evenodd"></path>
+                                        </svg>
+                                    </div>
+                                    {isOpen && (
+                                        <ul className="options">
+                                            {cardOptions.map(option => (
+                                                <li
+                                                    key={option.id}
+                                                    className={option.id === selectedCardOption.id ? 'selected' : ''}
+                                                    onClick={() => handleCardOptionClick(option)}>
+                                                    {option.title}
+                                                </li>
+                                            ))
+                                            }
+                                        </ul>
+                                    )}
                                 </div>
-                                <div
-                                    className="btn-sort-option"
-                                    onClick={() => onChangeSort(-1)}>
-                                    Sort descending
-                                    <img
-                                        src={successIcon}
-                                        className="success-icon"
-                                        style={{
-                                            opacity: sortState.dir === -1 ? 1 : 0,
-                                            filter: sortState.dir === -1 ? 'invert(86%) sepia(18%) saturate(190%) hue-rotate(171deg) brightness(89%) contrast(86%)' : ''
-                                        }}
-                                        alt="" />
-                                </div>
+                                <button
+                                    disabled={!newCardTitle}
+                                    className="btn-add-list"
+                                    onClick={onAddCard}
+                                >Add Card</button>
                             </article>
                         }
                     </article>

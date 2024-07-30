@@ -264,9 +264,7 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
                   >
                     <img
                       src={clockIcon}
-                      alt="clock icon"
-                      style={{ filter: taskStatus.iconFilter }}
-                    />
+                      alt="clock icon"/>
                     <span
                       style={{ color: taskStatus.textColor }}
                     >

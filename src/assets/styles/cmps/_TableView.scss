@@ -962,3 +962,93 @@ tr {
         }
     }
 }
+
+.add-card-body {
+
+    .add-card-input {
+        @include input;
+
+        &::placeholder {
+            color: $txtclr2;
+        }
+    }
+
+    .custom-select {
+        position: relative;
+
+        z-index: 30;
+        font-size: .875em;
+
+        .select-header {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background-color: #A1BDD914;
+            color: #B6C2CF;
+            width: 100%;
+            // border: 1px solid #4E5C6C;
+            border-radius: 3px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #A6C5E229;
+            }
+
+            .arrow {
+                font-size: 12px;
+            }
+        }
+
+        .options {
+            position: absolute;
+            left: 285px;
+            bottom: 0;
+            background-color: $bgclr4;
+            border-top: none;
+            border-radius: 8px;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            padding-block: 5px;
+            overflow-y: auto;
+            user-select: none;
+            width: 100%;
+
+            box-shadow: 0px 8px 12px #091e4226, 0px 0px 1px #091e424f;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+
+            z-index: 40;
+
+            li {
+                display: flex;
+                align-items: center;
+                font-size: 14px;
+
+                padding: 6px 12px;
+                height: 32px;
+                color: #B6C2CF;
+
+                cursor: pointer;
+
+
+                &:hover {
+                    background-color: #323940;
+
+                }
+            }
+        }
+    }
+
+    .btn-add-list {
+        @include btn;
+        margin-block-start: 20px;
+        width: 100%;
+    }
+}
+
+.user-mention {
+    font-weight: 700;
+}

@@ -29,9 +29,9 @@
         z-index: 1;
 
         @media (max-width:500px) {
-            margin-inline:0; 
+            margin-inline: 0;
         }
-    
+
 
         .menu-title {
             height: 20px;
@@ -140,7 +140,7 @@
                     width: 20px;
                     scale: 0.9;
                 }
-                
+
                 &:hover {
                     background-color: $btnhoverclr;
                 }
@@ -467,40 +467,60 @@
 }
 
 .change-color-background {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, 142px);
-    justify-content: center;
-    gap: 8px;
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    margin-block: 1em;
-    padding: 0 8px;
+    padding: 0 16px;
 
-    .color-button {
-        position: relative;
+    .gradient-colors {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        margin-bottom: 22px;
+        padding-block-end: 22px;
+        border-bottom: 1px $hrclr solid;
 
-        background-size: cover;
-        border-radius: 8px;
-        height: 96px;
-        width: 142px;
-        cursor: pointer;
+        .color-button {
+            position: relative;
+            background-size: cover;
+            border-radius: 8px;
+            height: 96px;
+            cursor: pointer;
 
-        &:hover {
-            opacity: 0.7;
-        }
+            &:hover {
+                opacity: 0.9;
+            }
 
-        &::after {
-            content: '⭐';
-            position: absolute;
-            bottom: 5px;
-            left: 5px;
-            font-size: 14px;
-            opacity: 1;
+            &::after {
+                content: '⭐';
+                position: absolute;
+                bottom: 8px;
+                left: 8px;
+                font-size: 14px;
+                color: rgba(255, 255, 255, 0.8);
+            }
         }
     }
 
-    &::after {
-        content: '';
-        width: 142px;
+    .solid-colors {
+        display: flex;
+        justify-items: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-block-start: 1px;
+        margin-block-end: 58px;
+
+        .color-button {
+            width: 52px;
+            height: 58px;
+            border-radius: 8px;
+            cursor: pointer;
+
+            &:hover {
+                opacity: 0.9;
+            }
+        }
     }
 }
 
