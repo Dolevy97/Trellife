@@ -57,6 +57,13 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
             const linkText = `<a href="${href}">${activity.task.title}</a>`
             return activity.title.replace(activity.task.id, linkText)
         }
+        if (shortTitle === 'add comment') {
+            const href = `${board._id}/${activity.group.id}/${activity.task.id}`
+            const linkText = `<a href="${href}">${activity.task.title}</a>`
+            const newTitle = `added a comment to ${activity.task.id}`
+            // console.log(newTitle)
+            return newTitle.replace(activity.task.id, linkText)
+        }
         return activity.title.charAt(0).toLowerCase() + activity.title.slice(1) //Lowercase first letter
     }
 
