@@ -8,8 +8,7 @@ async function onGetBoardFromGpt() {
     // const title = "Becoming the best music producer";
     // const title = "Trip to Australia";
     // const title = "Master fullstack programming";
-    const title = prompt('Name the project you\'d like to create (enter \'cancel\' to cancel)')
-    if (title.toLowerCase === 'cancel') return
+    const title = prompt('Name the project you\'d like to create')
 
     const payload = { title };
 
