@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { removeBoard } from '../store/actions/board.actions'
 import { removeBoardFromFavorites } from '../store/actions/user.actions'
 import { useNavigate } from "react-router"
@@ -24,8 +24,25 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
     const [isCollapseOpen, setIsCollapseOpen] = useState(false)
     const [field, setField] = useState('Menu')
+    const [isSmallScreen, setIsSmallScreen] = useState(false)
 
+    const containerRef = useRef(null)
     const navigate = useNavigate()
+
+
+    useEffect(() => {
+        const checkScreenSize = () => {
+            setIsSmallScreen(window.innerWidth <= 500)
+        }
+
+        checkScreenSize() 
+
+        window.addEventListener('resize', checkScreenSize)
+
+        return () => {
+            window.removeEventListener('resize', checkScreenSize)
+        }
+    }, [])
 
     async function onRemoveBoard() {
         try {
@@ -38,7 +55,6 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
             console.error('Cannot remove board', err)
         }
     }
-
 
     function handleDeleteConfirm() {
         onRemoveBoard()
@@ -54,7 +70,7 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
 
     function getActivityByTitle(activity) {
         const shortTitle = activity.title.split(' ').slice(0, 2).join(' ')
-    
+
         function replaceUserIds(title) {
             return users.reduce((acc, user) => {
                 if (acc.includes(user._id)) {
@@ -63,7 +79,7 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
                 return acc
             }, title)
         }
-    
+
         function formatTimestamp(timestamp) {
             const date = new Date(Number(timestamp))
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -74,10 +90,10 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
             const ampm = hours >= 12 ? 'PM' : 'AM'
             hours = hours % 12
             hours = hours ? hours : 12 // the hour '0' should be '12'
-            
+
             return `${month} ${day} ${hours}:${minutes} ${ampm}`
         }
-    
+
         function extractAndFormatTimestamp(title) {
             // Regular expression to match Unix timestamp in milliseconds
             const timestampRegex = /\b\d{13}\b/
@@ -89,9 +105,9 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
             }
             return title
         }
-    
+
         let formattedTitle = ''
-    
+
         if (shortTitle === 'create board') {
             formattedTitle = 'created this board'
         } else if (activity.title.includes(activity.task.id)) {
@@ -107,20 +123,20 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
             // For all other cases, keep the original case
             formattedTitle = activity.title
         }
-    
+
         // Replace timestamp in the title
         formattedTitle = extractAndFormatTimestamp(formattedTitle)
-    
+
         // Replace user IDs
         formattedTitle = replaceUserIds(formattedTitle)
-    
+
         return formattedTitle
     }
 
     if (!users) return <div className='isloading-container'> <img className='isLoading' src={loadingAnimation} /> </div>
 
     return (
-        <section className={`right-nav-bar-container ${!isRightNavBarOpen ? 'is-close' : ''}`}>
+        <section className={`right-nav-bar-container ${!isRightNavBarOpen ? 'is-close' : ''}`} ref={containerRef}>
             <section className="right-nav-bar-header">
                 <span className="menu-title">{field}</span>
                 <div className={`to-menu-btn-wrapper${field !== 'Menu' ? '' : ' back-to'}`} onClick={() => setField('Menu')}>
@@ -149,15 +165,17 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
                             </div>
                         </div>
 
-                        <div className="collapse-all-container" >
-                            <div className="collapse-all-wrapper" onClick={onCollapseToggle}>
-                                <img
-                                    src={isCollapseOpen ? expandIcon : collapseIcon}
-                                    alt={isCollapseOpen ? "Expand" : "Collapse"}
-                                />
-                                <span>{isCollapseOpen ? 'Expand all' : 'Collapse all'}</span>
+                        {!isSmallScreen && (
+                            <div className="collapse-all-container" >
+                                <div className="collapse-all-wrapper" onClick={onCollapseToggle}>
+                                    <img
+                                        src={isCollapseOpen ? expandIcon : collapseIcon}
+                                        alt={isCollapseOpen ? "Expand" : "Collapse"}
+                                    />
+                                    <span>{isCollapseOpen ? 'Expand all' : 'Collapse all'}</span>
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         <div className="delete-board-container" onClick={() => setIsDeleteModalOpen(true)}>
                             <div className="delete-board-wrapper">

@@ -21,7 +21,7 @@ import expandIcon from '../assets/imgs/Icons/expand.svg'
 import loadingAnimation from '../assets/imgs/TaskDetails-icons/loading animation.svg'
 
 
-export function GroupPreview({ group, boardId, toggleLabelExpansion, areLabelsExpanded}) {
+export function GroupPreview({ group, boardId, toggleLabelExpansion, areLabelsExpanded }) {
     const tasks = group?.tasks || []
     const board = useSelector(storeState => storeState.boardModule.board)
     const user = useSelector(storeState => storeState.userModule.user)
@@ -32,11 +32,14 @@ export function GroupPreview({ group, boardId, toggleLabelExpansion, areLabelsEx
     const [taskToEdit, setTaskToEdit] = useState(null)
     const [quickEditTaskId, setQuickEditTaskId] = useState(null)
     const [quickEditTaskPosition, setQuickEditTaskPosition] = useState(null)
+    const [isSmallScreen, setIsSmallScreen] = useState(false)
 
+    const containerRef = useRef(null)
     const textareaRef = useRef(null)
     const addTaskRef = useRef(null)
 
     const navigate = useNavigate()
+
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -63,6 +66,33 @@ export function GroupPreview({ group, boardId, toggleLabelExpansion, areLabelsEx
             }
         }
     }, [newTaskTitle])
+
+    useEffect(() => {
+        const checkScreenSize = () => {
+            setIsSmallScreen(window.innerWidth <= 500)
+        }
+
+        checkScreenSize() // Check initial size
+
+        window.addEventListener('resize', checkScreenSize)
+
+        return () => {
+            window.removeEventListener('resize', checkScreenSize)
+        }
+    }, [])
+
+    useEffect(() => {
+        if (isSmallScreen && group.style.isCollapse) {
+            const updatedGroup = {
+                ...group,
+                style: {
+                    ...group.style,
+                    isCollapse: false
+                }
+            }
+            updateGroup(updatedGroup.id, updatedGroup, board)
+        }
+    }, [isSmallScreen])
 
     function handleTaskClick(taskId) {
         navigate(`/board/${boardId}/${group.id}/${taskId}`, { replace: true })
@@ -197,10 +227,34 @@ export function GroupPreview({ group, boardId, toggleLabelExpansion, areLabelsEx
     const labelsIds = taskToEdit?.labelsIds || []
     if (!board || !tasks) return <div className='isloading-container'> <img className='isLoading' src={loadingAnimation} /> </div>
     return (
-        <section className={`group-preview-container ${group.style.isCollapse ? 'collapsed' : ''}`}
-            style={group.style}>
+        <section className={`group-preview-container ${(!isSmallScreen && group.style.isCollapse) ? 'collapsed' : ''}`}
+            style={group.style}
+            ref={containerRef}
+        >
+            {(!isSmallScreen && group.style.isCollapse) ? (
+                <div className="collapsed-group-container">
+                    <img
+                        className="collapse-icon "
+                        src={expandIcon}
+                        alt="expand"
+                        title="expand"
+                        onClick={() => {
+                            const updatedGroup = {
+                                ...group,
+                                style: {
+                                    ...group.style,
+                                    isCollapse: false
+                                }
+                            }
+                            updateGroup(updatedGroup.id, updatedGroup, board)
+                        }}
+                    />
+                    <span className='collapse-title'>{group.title}</span>
+                    <span className='collapse-length'> {group.tasks.length}</span>
 
-            {!group.style.isCollapse ? (
+                </div>
+            ) : (
+
                 <>
                     <GroupPreviewHeader
                         group={group}
@@ -446,28 +500,6 @@ export function GroupPreview({ group, boardId, toggleLabelExpansion, areLabelsEx
                         </footer>
                     )}
                 </>
-            ) : (
-                <div className="collapsed-group-container">
-                    <img
-                        className="collapse-icon "
-                        src={expandIcon}
-                        alt="expand"
-                        title="expand"
-                        onClick={() => {
-                            const updatedGroup = {
-                                ...group,
-                                style: {
-                                    ...group.style,
-                                    isCollapse: false
-                                }
-                            }
-                            updateGroup(updatedGroup.id, updatedGroup, board)
-                        }}
-                    />
-                    <span className='collapse-title'>{group.title}</span>
-                    <span className='collapse-length'> {group.tasks.length}</span>
-
-                </div>
             )}
 
         </section>
