@@ -11,7 +11,7 @@ import { cloudinaryService } from "../services/cloudinary.service"
 
 import { updateBoard } from "../store/actions/board.actions"
 import { updateTask } from "../store/actions/task.actions"
-import { getAverageColorFromAttachment, getBackgroundImages, getUnsplashImages, isLightColor, makeId } from "../services/util.service"
+import { getAverageColor, getAverageColorFromAttachment, getAverageColorFromUrl, getBackgroundImages, getUnsplashImages, isLightColor, makeId } from "../services/util.service"
 
 import closeIcon from '../assets/imgs/Icons/close.svg'
 import closeDisabledIcon from '../assets/imgs/TaskDetails-icons/close-disabled.svg'
@@ -28,6 +28,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     const [dueDateToEdit, setDueDateToEdit] = useState(dueDate ? dueDate : getDefaultDueDate());
     const [backgroundImages, setBackgroundImages] = useState([])
     const [filterBy, setFilterBy] = useState('')
+    const [lineColor, setLineColor] = useState('')
 
     const searchInputRef = useRef()
     const checklistTitleRef = useRef()
@@ -72,6 +73,23 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             }
         }
     }, [dueDateToEdit])
+
+
+    useEffect(() => {
+        async function updateLineColor() {
+            try {
+                setLineColor(isLightColor(task.style?.backgroundColor) ? '#596773' : '#FFFFFFCC')
+            } catch (error) {
+                console.error('Error getting average color:', error);
+                setLineColor('transparent');
+                setTextColor('#000000');
+            }
+        }
+
+        updateLineColor()
+    }, [task.style])
+
+    console.log(lineColor)
 
     // Getters
 
@@ -606,27 +624,27 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                                         <div className="card-header" style={task.style}>
                                         </div>
                                         <div className="card-body">
-                                            <div className="top-line">
+                                            <div className="top-line" style={{backgroundColor: lineColor}}>
                                             </div>
-                                            <div className="middle-line">
+                                            <div className="middle-line" style={{backgroundColor: lineColor}}>
                                             </div>
-                                            <div className="bottom-line">
-                                                <div className="left">
+                                            <div className="bottom-line" >
+                                                <div className="left" style={{backgroundColor: lineColor}}>
                                                 </div>
-                                                <div className="right">
+                                                <div className="right" style={{backgroundColor: lineColor}}>
                                                 </div>
                                             </div>
-                                            <div className="dot-corner">
+                                            <div className="dot-corner" style={{backgroundColor: lineColor}}>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="body" data-name="true" onClick={onUpdateCoverIsFull} >
                                         <div className={`body-cover ${task.style?.isFull ? 'focused' : ''}`} style={task.style} >
                                             <div className="card-body">
-                                                <div className="top-line">
+                                                <div className="top-line" style={{backgroundColor: lineColor}}>
 
                                                 </div>
-                                                <div className="middle-line">
+                                                <div className="middle-line" style={{backgroundColor: lineColor}}>
                                                 </div>
                                             </div>
                                         </div>

@@ -224,6 +224,39 @@ export async function getAverageColorFromUrl(styleObject) {
     }
 }
 
+export function getAverageColor(input) {
+    if (!input) {
+        console.log('Invalid input');
+        return Promise.resolve('transparent');
+    }
+    const isSimpleColor = /^(#|rgb)/.test(input);
+
+    if (isSimpleColor) {
+        return Promise.resolve(input)
+    }
+
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = "Anonymous";
+        img.src = input;
+
+        img.onload = () => {
+            const fac = new FastAverageColor();
+            fac.getColorAsync(img)
+                .then(color => resolve(color.hexa))
+                .catch(err => {
+                    console.log('Error getting average color:', err);
+                    resolve('transparent');
+                });
+        };
+
+        img.onerror = () => {
+            console.log('Error loading image');
+            resolve('transparent');
+        };
+    });
+}
+
 export async function onDownloadUrl(url, filename) {
     if (!url) {
         console.error('Missing URL')
