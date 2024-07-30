@@ -11,7 +11,7 @@ import { cloudinaryService } from "../services/cloudinary.service"
 
 import { updateBoard } from "../store/actions/board.actions"
 import { updateTask } from "../store/actions/task.actions"
-import { getAverageColorFromAttachment, getBackgroundImages, getUnsplashImages, isLightColor, makeId } from "../services/util.service"
+import { getAverageColor, getAverageColorFromAttachment, getAverageColorFromUrl, getBackgroundImages, getUnsplashImages, isLightColor, makeId } from "../services/util.service"
 
 import closeIcon from '../assets/imgs/Icons/close.svg'
 import closeDisabledIcon from '../assets/imgs/TaskDetails-icons/close-disabled.svg'
@@ -28,6 +28,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     const [dueDateToEdit, setDueDateToEdit] = useState(dueDate ? dueDate : getDefaultDueDate());
     const [backgroundImages, setBackgroundImages] = useState([])
     const [filterBy, setFilterBy] = useState('')
+    const [lineColor, setLineColor] = useState('')
 
     const searchInputRef = useRef()
     const checklistTitleRef = useRef()
@@ -73,6 +74,23 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         }
     }, [dueDateToEdit])
 
+
+    useEffect(() => {
+        async function updateLineColor() {
+            try {
+                setLineColor(isLightColor(task.style?.backgroundColor) ? '#596773' : '#FFFFFFCC')
+            } catch (error) {
+                console.error('Error getting average color:', error);
+                setLineColor('transparent');
+                setTextColor('#000000');
+            }
+        }
+
+        updateLineColor()
+    }, [task.style])
+
+    console.log(lineColor)
+
     // Getters
 
     function getBoardMembers() {
@@ -98,7 +116,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
     async function onAddMember(id) {
         const updatedTask = { ...task }
         updatedTask.membersIds.push(id)
-        const activityTitle = `added member (id: ${id}) to task (id: ${task.id})`
+        const activityTitle = `added member ${id} to task ${task.id}`
         await updateTask(updatedTask, group, board, activityTitle, user)
     }
 
@@ -215,6 +233,13 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         await updateTask(updatedTask, group, board, activityTitle, user)
     }
 
+    function handleChecklistKeyDown(ev) {
+        ev.preventDefault()
+        if (ev.key === 'Enter') {
+            onAddChecklist(ev)
+        }
+    }
+
     // Attachments
 
     async function onAddAttachment(ev, isCover) {
@@ -240,14 +265,14 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             if (!updatedTask.style || isCover) {
                 updatedTask = { ...updatedTask, style: { isFull: true, backgroundImage: `url(${attachment.url}`, backgroundColor: attachment.backgroundColor } }
                 if (isCover) {
+                    onSetAction(ev, action)
                     await updateTask(updatedTask, group, board, activityTitle, user)
                     break
                 }
             }
+            onSetAction(ev, action)
             await updateTask(updatedTask, group, board, activityTitle, user)
         }
-
-        onSetAction(ev, action)
     }
 
     function onUpload() {
@@ -261,7 +286,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             else return updatedAttachment
         })
         const updatedTask = { ...task, attachments }
-        const activityTitle = `updated attachment's link name from ${attachmentToEdit.title} to ${attachmentInputValue} on card (id: ${task.id})`
+        const activityTitle = `updated attachment's link name from ${attachmentToEdit.title} to ${attachmentInputValue} on card ${task.id}`
         onSetAction(ev, null)
         await updateTask(updatedTask, group, board, activityTitle, user)
     }
@@ -599,27 +624,27 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                                         <div className="card-header" style={task.style}>
                                         </div>
                                         <div className="card-body">
-                                            <div className="top-line">
+                                            <div className="top-line" style={{ backgroundColor: lineColor }}>
                                             </div>
-                                            <div className="middle-line">
+                                            <div className="middle-line" style={{ backgroundColor: lineColor }}>
                                             </div>
-                                            <div className="bottom-line">
-                                                <div className="left">
+                                            <div className="bottom-line" >
+                                                <div className="left" style={{ backgroundColor: lineColor }}>
                                                 </div>
-                                                <div className="right">
+                                                <div className="right" style={{ backgroundColor: lineColor }}>
                                                 </div>
                                             </div>
-                                            <div className="dot-corner">
+                                            <div className="dot-corner" style={{ backgroundColor: lineColor }}>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="body" data-name="true" onClick={onUpdateCoverIsFull} >
                                         <div className={`body-cover ${task.style?.isFull ? 'focused' : ''}`} style={task.style} >
                                             <div className="card-body">
-                                                <div className="top-line">
+                                                <div className="top-line" style={{ backgroundColor: lineColor }}>
 
                                                 </div>
-                                                <div className="middle-line">
+                                                <div className="middle-line" style={{ backgroundColor: lineColor }}>
                                                 </div>
                                             </div>
                                         </div>
@@ -682,6 +707,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                             ref={checklistTitleRef}
                             className="text"
                             value={checklistInputValue}
+                            onKeyDown={handleChecklistKeyDown}
                             onChange={(ev) => setChecklistInputValue(ev.target.value)} />
                     </div>
                     <button className="btn-blue" onClick={onAddChecklist}>Add</button>

@@ -72,6 +72,8 @@ export function TaskDetails() {
     const { taskId, groupId, boardId } = useParams()
     const navigate = useNavigate()
 
+    const menuRef = useRef(null)
+
     useEffect(() => {
         setTask()
     }, [board])
@@ -83,6 +85,9 @@ export function TaskDetails() {
         if (textareaCommentRef.current) {
             autosize(textareaCommentRef.current)
         }
+        if (editCommentRef.current) {
+            autosize(editCommentRef.current)
+        }
 
         return () => {
             if (textareaRef.current) {
@@ -93,19 +98,12 @@ export function TaskDetails() {
                 autosize.destroy(textareaCommentRef.current)
             }
 
-        }
-    }, [taskToEdit, isSettingDescription])
-
-    useEffect(() => {
-        if (editCommentRef.current) {
-            autosize(editCommentRef.current)
-        }
-        return () => {
             if (editCommentRef.current) {
                 autosize.destroy(editCommentRef.current)
             }
         }
-    }, [editCommentInputValue])
+    }, [taskToEdit, isSettingDescription, editCommentInputValue])
+
 
     useEffect(() => {
         if (isAddingItems && checklistItemRefs.current[isAddingItems]) {
@@ -123,6 +121,19 @@ export function TaskDetails() {
 
         }
     }, [editingTodoId])
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+    }, [])
+
+    function handleClickOutside(ev) {
+        if (menuRef.current && !menuRef.current.contains(ev.target)) {
+            setIsTodoMenuOpen(false)
+        }
+    }
 
     function setTask() {
         setTaskToEdit(() => {
@@ -295,7 +306,7 @@ export function TaskDetails() {
     async function onRemoveTask() {
         const newTasks = group.tasks.filter(task => task.id !== taskToEdit.id)
         const newGroup = { ...group, tasks: newTasks }
-        const activityTitle = `removed task (id: ${taskToEdit.id})`
+        const activityTitle = `removed card ${taskToEdit.id}`
         await updateGroup(newGroup.id, newGroup, board, activityTitle)
         onBackdropClicked()
     }
@@ -349,6 +360,7 @@ export function TaskDetails() {
                 return checklistId
             }
         })
+        closeAllEditingItems()
     }
 
     async function onDeleteChecklist(checklistId) {
@@ -422,6 +434,7 @@ export function TaskDetails() {
         })
         setEditItemTitleValue(todoTitle)
         setEditingTodoId(todoId)
+        setIsAddingItems(null)
     }
 
     async function saveEditedItem(todo, checklist) {
@@ -453,7 +466,7 @@ export function TaskDetails() {
         const updatedTask = { ...taskToEdit }
         if (isCover(attachment)) updatedTask.style = null
         const attachments = updatedTask.attachments.filter(a => a.url !== attachment.url)
-        const activity = `deleted the ${attachment.title} from card (id: ${updatedTask.id})`
+        const activity = `deleted the ${attachment.title} from card ${updatedTask.id}`
         updateTask({ ...updatedTask, attachments }, group, board, activity, user)
     }
 
@@ -475,7 +488,7 @@ export function TaskDetails() {
 
     async function onSetCover(attachment) {
         const updatedTask = { ...taskToEdit, style: { ...taskToEdit.style, backgroundImage: `url(${attachment.url})`, backgroundColor: attachment.backgroundColor } }
-        const activityTitle = `set ${attachment.title} as a cover for task (id: ${updatedTask.id})`
+        const activityTitle = `set ${attachment.title} as a cover for card ${updatedTask.id}`
         await updateTask(updatedTask, group, board, activityTitle, user)
     }
 
@@ -551,35 +564,6 @@ export function TaskDetails() {
 
         return { text: '', style: {} }
     }
-
-    // async function onChangeTaskGroup(task, newGroupId) {
-    //     const currentGroup = board.groups.find(g => g.tasks.some(t => t.id === task.id))
-    //     const newGroup = board.groups.find(g => g.id === newGroupId)
-
-    //     const updatedCurrentGroup = {
-    //         ...currentGroup,
-    //         tasks: currentGroup.tasks.filter(t => t.id !== task.id)
-    //     }
-
-    //     const updatedNewGroup = {
-    //         ...newGroup,
-    //         tasks: [...newGroup.tasks, task]
-    //     }
-
-    //     const updatedBoard = {
-    //         ...board,
-    //         groups: board.groups.map(g =>
-    //             g.id === currentGroup.id ? updatedCurrentGroup :
-    //                 g.id === newGroup.id ? updatedNewGroup : g
-    //         )
-    //     }
-    //     try {
-    //         await updateBoard(updatedBoard)
-    //         await updateTask(task, updatedNewGroup, updatedBoard, `Moved task "${task.title}" to "${newGroup.title}"`, user);
-    //     } catch (error) {
-    //         console.error('Failed to change task group:', error)
-    //     }
-    // }
 
 
     if (!taskToEdit || !group) return null
@@ -846,6 +830,7 @@ export function TaskDetails() {
 
                                                 {isTodoMenuOpen && todoMenuPosition && (
                                                     <article
+                                                        ref={menuRef}
                                                         className="item-actions"
                                                         style={{
                                                             position: 'fixed',

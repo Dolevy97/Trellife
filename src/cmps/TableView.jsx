@@ -33,22 +33,22 @@ export function TableView({ groups, board }) {
     useEffect(() => {
         function handleClickOutside(event) {
             if (nameChangeOpen.isOpen && !event.target.closest('.name-change-container')) {
-                setNameChangeOpen({ isOpen: false, taskId: null });
+                setNameChangeOpen({ isOpen: false, taskId: null })
             }
             if (changeListOpen.isOpen && !event.target.closest('.change-list-container')) {
-                setChangeListOpen({ isOpen: false, taskId: null });
+                setChangeListOpen({ isOpen: false, taskId: null })
             }
 
             if (isSortOpen && !event.target.closest('.table-sort-container') && !event.target.closest('.due-date')) {
-                setIsSortOpen(false);
+                setIsSortOpen(false)
             }
         }
 
-        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('mousedown', handleClickOutside)
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [nameChangeOpen.isOpen, isSortOpen, changeListOpen.isOpen, action]);
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [nameChangeOpen.isOpen, isSortOpen, changeListOpen.isOpen, action])
 
 
     useEffect(() => {
@@ -61,13 +61,13 @@ export function TableView({ groups, board }) {
         document.addEventListener('mousedown', handleClickOutside)
         return () => {
             document.removeEventListener('mousedown', handleClickOutside)
-        };
+        }
     }, [action])
 
 
     /* Set Action */
     function onSetAction(ev, act, taskId, height) {
-        ev.stopPropagation();
+        ev.stopPropagation()
         if (action.action === act && action.taskId === taskId) {
             setAction({ action: null, taskId: null, position: null })
         } else {
@@ -90,39 +90,39 @@ export function TableView({ groups, board }) {
     }
 
     function calculateActionPosition(event, containerHeight, containerWidth) {
-        const viewportHeight = window.innerHeight;
-        const viewportWidth = window.innerWidth;
-        const rect = event.target.getBoundingClientRect();
+        const viewportHeight = window.innerHeight
+        const viewportWidth = window.innerWidth
+        const rect = event.target.getBoundingClientRect()
 
-        let top, left = rect.left;
+        let top, left = rect.left
 
         if (viewportHeight - rect.bottom >= containerHeight) {
-            top = rect.bottom;
+            top = rect.bottom
         } else {
-            top = rect.top - containerHeight;
+            top = rect.top - containerHeight
         }
 
         if (left + containerWidth > viewportWidth) {
-            left = viewportWidth - containerWidth;
+            left = viewportWidth - containerWidth
         }
 
-        return { top, left };
+        return { top, left }
     }
 
     function calculatePosition(event, containerHeight) {
-        const viewportHeight = window.innerHeight;
-        const spaceBelow = viewportHeight - event.clientY;
-        const spaceAbove = event.clientY;
+        const viewportHeight = window.innerHeight
+        const spaceBelow = viewportHeight - event.clientY
+        const spaceAbove = event.clientY
 
-        let top, left = event.clientX;
+        let top, left = event.clientX
 
         if (spaceBelow >= containerHeight || spaceBelow > spaceAbove) {
-            top = event.clientY;
+            top = event.clientY
         } else {
-            top = event.clientY - containerHeight;
+            top = event.clientY - containerHeight
         }
 
-        return { top, left };
+        return { top, left }
     }
 
     function getTaskStatus(task) {
@@ -190,12 +190,12 @@ export function TableView({ groups, board }) {
 
     function sortTasks(tasks, dir) {
         return [...tasks].sort((a, b) => {
-            if (!a.dueDate && !b.dueDate) return 0;
-            if (!a.dueDate) return 1;
-            if (!b.dueDate) return -1;
+            if (!a.dueDate && !b.dueDate) return 0
+            if (!a.dueDate) return 1
+            if (!b.dueDate) return -1
 
-            const dateA = new Date(a.dueDate);
-            const dateB = new Date(b.dueDate);
+            const dateA = new Date(a.dueDate)
+            const dateB = new Date(b.dueDate)
             return dir * (dateA - dateB)
         })
     }
@@ -237,8 +237,9 @@ export function TableView({ groups, board }) {
             )
         }
         try {
+            setChangeListOpen({ isOpen: false, taskId: null })
             await updateBoard(updatedBoard)
-            await updateTask(task, updatedNewGroup, updatedBoard, `Moved task "${task.title}" to "${newGroup.title}"`, user);
+            await updateTask(task, updatedNewGroup, updatedBoard, `Moved task ${task.id} to ${newGroup.id}`, user)
         } catch (error) {
             console.error('Failed to change task group:', error)
         }
@@ -316,11 +317,11 @@ export function TableView({ groups, board }) {
                         {groups.map(group => {
                             const tasksToRender = sortState.isSorting
                                 ? sortTasks(group.tasks, sortState.dir)
-                                : group.tasks;
+                                : group.tasks
 
                             return tasksToRender.map(task => {
-                                const taskActionProps = { task, group, board, user, onClose: () => setAction(null) };
-                                const taskStatus = getTaskStatus(task);
+                                const taskActionProps = { task, group, board, user, onClose: () => setAction(null) }
+                                const taskStatus = getTaskStatus(task)
                                 return (
                                     <tr key={task.id}>
                                         <td className="short-width">
@@ -333,8 +334,8 @@ export function TableView({ groups, board }) {
                                                 onClick={(e) => {
                                                     e.stopPropagation()
                                                     const position = calculatePosition(e, 200)
-                                                    setContainerPosition(position);
-                                                    setNameChangeOpen({ isOpen: true, taskId: task.id });
+                                                    setContainerPosition(position)
+                                                    setNameChangeOpen({ isOpen: true, taskId: task.id })
                                                 }}
                                                 alt=""
                                             />
@@ -351,8 +352,8 @@ export function TableView({ groups, board }) {
                                                         <h1 className="header-title">Change name</h1>
                                                         <div
                                                             onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                setNameChangeOpen({ isOpen: false, taskId: null });
+                                                                e.stopPropagation()
+                                                                setNameChangeOpen({ isOpen: false, taskId: null })
                                                             }}
                                                             className="btn-close-container">
                                                             <img className="btn-close" src={closeIcon}></img>
@@ -371,9 +372,9 @@ export function TableView({ groups, board }) {
                                         <td
                                             className={`mid-width table-list-td ${changeListOpen.isOpen && changeListOpen.taskId === task.id ? 'change-list-open' : ''}`}
                                             onClick={(e) => {
-                                                e.stopPropagation();
-                                                const position = calculatePosition(e, 300);
-                                                setContainerPosition(position);
+                                                e.stopPropagation()
+                                                const position = calculatePosition(e, 300)
+                                                setContainerPosition(position)
                                                 setChangeListOpen({ isOpen: true, taskId: task.id })
                                             }}
                                         >{group.title}
@@ -565,8 +566,8 @@ export function TableView({ groups, board }) {
                                             }
                                         </td>
                                     </tr>
-                                );
-                            });
+                                )
+                            })
                         })}
                         <tr className="table-footer-last-element">
                             <td className="table-footer-last-element" colSpan="6"></td>
