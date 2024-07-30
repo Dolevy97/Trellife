@@ -265,14 +265,14 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
             if (!updatedTask.style || isCover) {
                 updatedTask = { ...updatedTask, style: { isFull: true, backgroundImage: `url(${attachment.url}`, backgroundColor: attachment.backgroundColor } }
                 if (isCover) {
+                    onSetAction(ev, action)
                     await updateTask(updatedTask, group, board, activityTitle, user)
                     break
                 }
             }
+            onSetAction(ev, action)
             await updateTask(updatedTask, group, board, activityTitle, user)
         }
-
-        onSetAction(ev, action)
     }
 
     function onUpload() {
@@ -624,27 +624,27 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
                                         <div className="card-header" style={task.style}>
                                         </div>
                                         <div className="card-body">
-                                            <div className="top-line" style={{backgroundColor: lineColor}}>
+                                            <div className="top-line" style={{ backgroundColor: lineColor }}>
                                             </div>
-                                            <div className="middle-line" style={{backgroundColor: lineColor}}>
+                                            <div className="middle-line" style={{ backgroundColor: lineColor }}>
                                             </div>
                                             <div className="bottom-line" >
-                                                <div className="left" style={{backgroundColor: lineColor}}>
+                                                <div className="left" style={{ backgroundColor: lineColor }}>
                                                 </div>
-                                                <div className="right" style={{backgroundColor: lineColor}}>
+                                                <div className="right" style={{ backgroundColor: lineColor }}>
                                                 </div>
                                             </div>
-                                            <div className="dot-corner" style={{backgroundColor: lineColor}}>
+                                            <div className="dot-corner" style={{ backgroundColor: lineColor }}>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="body" data-name="true" onClick={onUpdateCoverIsFull} >
                                         <div className={`body-cover ${task.style?.isFull ? 'focused' : ''}`} style={task.style} >
                                             <div className="card-body">
-                                                <div className="top-line" style={{backgroundColor: lineColor}}>
+                                                <div className="top-line" style={{ backgroundColor: lineColor }}>
 
                                                 </div>
-                                                <div className="middle-line" style={{backgroundColor: lineColor}}>
+                                                <div className="middle-line" style={{ backgroundColor: lineColor }}>
                                                 </div>
                                             </div>
                                         </div>
