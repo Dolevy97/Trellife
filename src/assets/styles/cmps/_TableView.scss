@@ -441,6 +441,8 @@ td {
             height: 32px;
             border-radius: 8px;
 
+            z-index: 40;
+
             cursor: pointer;
 
             .btn-close {
@@ -695,7 +697,7 @@ tr {
 
 .dates-td {
     position: relative;
-    
+
     &:hover .arrow-down-icon-dates {
         opacity: 1;
     }
@@ -721,5 +723,242 @@ tr {
         margin-inline-start: 5px;
         vertical-align: middle;
 
+    }
+}
+
+
+
+.add-btn {
+    @include btn;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    position: absolute;
+    bottom: 60px;
+    left: 33px;
+
+    width: 74px;
+    height: 32px;
+
+    background-color: $bgclr4;
+
+    box-shadow: 0px 8px 12px #091e4226, 0px 0px 1px #091e424f;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    &:hover {
+        background-color: lighten($bgclr4, 5%);
+    }
+
+    .btn-icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .btn-text {
+        font-size: 14px;
+        color: $txtclr1;
+    }
+}
+
+.add-list-or-card {
+    position: fixed;
+    inset: auto auto 100px 33px;
+    width: 232px;
+
+    color: $txtclr2;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    overflow: hidden;
+    border-radius: 8px;
+    outline: 0;
+    background-color: $bgclr4;
+    box-shadow: 0px 8px 12px #091e4226, 0px 0px 1px #091e424f;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    padding: 12px;
+
+    z-index: 30;
+
+    .btn-add-option {
+        color: $txtclr1;
+        display: flex;
+        position: relative;
+        align-items: center;
+        margin: 0 -12px;
+        padding: 6px 12px;
+        font-weight: normal;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #A6C5E229;
+        }
+    }
+
+
+}
+
+.table-add-container {
+    position: fixed;
+    inset: auto auto 102px 33px;
+    width: 304px;
+
+    color: $txtclr2;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    border-radius: 8px;
+    outline: 0;
+    background-color: $bgclr4;
+    box-shadow: 0px 8px 12px #091e4226, 0px 0px 1px #091e424f;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    z-index: 30;
+
+    .add-header {
+        display: grid;
+        position: relative;
+        grid-template-columns: 32px 1fr 32px;
+        align-items: center;
+        padding: 4px 8px;
+        text-align: center;
+        cursor: default;
+
+        h1 {
+            position: relative;
+            grid-column: 1 / span 3;
+            grid-row: 1;
+            height: 40px;
+            margin: 0;
+            padding: 0 32px;
+            overflow: hidden;
+            font-size: 1em;
+            font-weight: 600;
+            letter-spacing: -0.003em;
+            line-height: 40px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: $txtclr2;
+        }
+
+        .btn-close-container {
+            grid-column: 3;
+            grid-row: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+
+            z-index: 40;
+
+            cursor: pointer;
+
+            .btn-close {
+                width: 16px;
+                height: 16px;
+            }
+        }
+    }
+
+    .add-list-body,
+    .add-card-body {
+        padding: 0 12px 12px;
+
+        & h4 {
+            margin-block: 12px 4px !important;
+            font-size: 12px;
+            line-height: 16px;
+            font-weight: 600;
+            margin-top: 0;
+        }
+    }
+
+    .add-list-body {
+        .add-list-input {
+            @include input;
+
+            &::placeholder {
+                color: $txtclr2;
+            }
+        }
+
+        .custom-select {
+            position: relative;
+            width: 60px;
+
+            z-index: 30;
+            font-size: .875em;
+
+            .select-header {
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                background-color: #A1BDD914;
+                color: #B6C2CF;
+                // border: 1px solid #4E5C6C;
+                border-radius: 3px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #A6C5E229;
+                }
+
+                .arrow {
+                    font-size: 12px;
+                }
+            }
+
+            .options {
+                position: absolute;
+                left: -20px;
+                bottom: 45px;
+                background-color: $bgclr4;
+                border-top: none;
+                border-radius: 8px;
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+                padding-block: 5px;
+                overflow-y: auto;
+                user-select: none;
+                width: 160px;
+
+                box-shadow: 0px 8px 12px #091e4226, 0px 0px 1px #091e424f;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+
+
+                z-index: 30;
+
+                li {
+                    display: flex;
+                    align-items: center;
+                    font-size: 14px;
+
+                    padding: 6px 12px;
+                    height: 32px;
+                    color: #B6C2CF;
+
+                    cursor: pointer;
+
+
+                    &:hover {
+                        background-color: #323940;
+
+                    }
+                }
+            }
+        }
+
+        .btn-add-list {
+            @include btn;
+            margin-block-start: 20px;
+            width: 100%;
+        }
     }
 }

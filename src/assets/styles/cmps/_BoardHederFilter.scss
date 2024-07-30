@@ -1,6 +1,6 @@
 .BoardHederFilter {
     position: fixed;
-    right: 0;
+    right: 2px;
 
 
     display: flex;
@@ -8,10 +8,10 @@
 
     width: 384px;
 
-    min-height: 400px;
+    min-height: 200px;
     height: max-content;
 
-    background-color: $bgclr1;
+    background-color: $bgclr4;
     z-index: 100;
     border-radius: 8px;
     box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 0, 0, 0.2);
@@ -19,14 +19,14 @@
 
     overflow-x: hidden;
     overflow-y: auto;
-    
+
     scrollbar-color: rgb(255 255 255 / 20%) rgb(233 255 236 / 2%);
     scrollbar-width: thin;
 
     @media (max-width:430px) {
         height: calc(100vh - 104px);
         width: 100vw;
-        border-radius:0;
+        border-radius: 0;
     }
 
     header {
@@ -39,13 +39,13 @@
         align-items: center;
 
         padding: 12px;
-        background-color: $bgclr1;
+        background-color: $bgclr4;
         z-index: 100;
 
         span {
             font-size: 14px;
             font-weight: 600;
-            color: $txtclr1;
+            color: $txtclr2;
         }
 
         .close-btn-wrapper {
@@ -76,7 +76,7 @@
     }
 
     .filter-info {
-        padding: 12px;
+        // padding: 12px;
 
         .search-container {
             display: flex;
@@ -86,7 +86,7 @@
             span {
                 font-size: 12px;
                 font-weight: 600;
-                color: $txtclr1;
+                color: $txtclr2;
                 margin-bottom: 4px;
             }
 
@@ -99,7 +99,7 @@
                 border-radius: 3px;
                 font-size: 14px;
                 background-color: #23262a;
-                color: $txtclr1;
+                color: $txtclr2;
                 overflow: hidden;
                 font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 
@@ -119,14 +119,13 @@
 
     .members-container,
     .labels-container {
-        padding: 12px;
 
         >span {
             display: block;
             font-size: 12px;
             font-weight: 600;
-            color: $txtclr1;
-            margin-bottom: 8px;
+            color: $txtclr2;
+            margin-block: 16px 8px;
             text-align: left;
         }
 
@@ -231,5 +230,27 @@
             }
 
         }
+    }
+}
+
+.nothing-found {
+    margin-top: 48px;
+    margin-bottom: calc((8px * 4) - 12px);
+    padding: 0 24px;
+    text-align: center;
+
+    font-size: 14px;
+
+    p {
+        margin-block-end: 14px !important;
+
+        &:first-of-type {
+            font-weight: 600;
+        }
+    }
+
+    img {
+        display: block;
+        margin: 0 auto 8px;
     }
 }

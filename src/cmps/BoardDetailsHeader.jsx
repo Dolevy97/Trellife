@@ -5,6 +5,7 @@ import { RightNavBar } from '../cmps/RightNavBar';
 import { showSuccessMsg } from '../services/event-bus.service';
 import { updateUser } from '../store/actions/user.actions';
 import { getAverageColorFromUrl, isLightColor } from '../services/util.service';
+import { openAiService } from '../services/open-ai.service';
 
 import star from '../assets/imgs/Icons/star.svg'
 import fullStar from '../assets/imgs/Icons/fullstar.svg'
@@ -15,7 +16,6 @@ import boardIcon from '../assets/imgs/Icons/boardIcon.svg'
 import tableIcon from '../assets/imgs/Icons/tableIcon.svg'
 import openAiIcon from '../assets/imgs/Icons/openAI_Logo.svg'
 
-import axios from 'axios';
 
 export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, displayStyle, setDisplayStyle }) {
   const board = useSelector(storeState => storeState.boardModule.board);
@@ -151,23 +151,6 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
     setIsFilterOpen(!isFilterOpen);
   }
 
-  async function onGetBoardFromGpt() {
-    // const title = "Becoming the best music producer";
-    // const title = "Trip to Australia";
-    // const title = "Master fullstack programming";
-    const title = prompt('Name the project you\'d like to create (enter \'cancel\' to cancel)')
-    if (title.toLowerCase === 'cancel') return
-
-    const payload = { title };
-
-    try {
-      const res = await axios.post("http://localhost:3030/chat", payload);
-      console.log(JSON.stringify(res.data));
-    } catch (er) {
-      console.error(er);
-    }
-  }
-
   return (
     <section className={`groups-header ${isRightNavBarOpen ? 'right-nav-open' : ''}`}>
       <div className='groups-header-leftside'>
@@ -238,7 +221,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
         </div>
 
         {/* <div onClick={() => setIsChatOpen(!isChatOpen)} */}
-        <div onClick={onGetBoardFromGpt}
+        <div onClick={openAiService.onGetBoardFromGpt}
           onMouseEnter={() => setBtnHoverState({ isHover: true, btn: 'chat' })}
           onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'chat' })}
           className='chat-trellife-container'
@@ -251,7 +234,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
             style={isChatOpen ? iconColor : outsideIconColor}
           />
           <span
-            className='chat-trellife-text'>Chat Trellife</span>
+            className='chat-trellife-text'>Create AI Board</span>
         </div>
 
       </div>
