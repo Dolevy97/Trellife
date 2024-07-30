@@ -1,10 +1,8 @@
 import { updateBoardBgc } from "../store/actions/board.actions";
 
-
 export function ChangeColorBackground({ board }) {
 
-
-    const palette = [
+    const gradientPalette = [
         'https://res.cloudinary.com/dp0y6hy2o/image/upload/v1686384751/707f35bc691220846678_pjgxni.svg',
         'https://res.cloudinary.com/dp0y6hy2o/image/upload/v1686384735/d106776cb297f000b1f4_aixvzg.svg',
         'https://res.cloudinary.com/dp0y6hy2o/image/upload/v1686384777/8ab3b35f3a786bb6cdac_f6yj4u.svg',
@@ -16,9 +14,21 @@ export function ChangeColorBackground({ board }) {
         'https://res.cloudinary.com/dp0y6hy2o/image/upload/v1686389871/1cbae06b1a428ad6234a_rhmbqu.svg'
     ]
 
+    const colorsPalette = [
+        '#0079bf',
+        '#d29034',
+        '#519839',  
+        '#b04632',  
+        '#89609e', 
+        '#cd5a91', 
+        '#4bbf6b',  
+        '#00aecc',  
+        '#838c91', 
+    ]
+
     async function onUpdateBgc(bgc) {
         try {
-            await updateBoardBgc(board, `url(${bgc})`)
+            await updateBoardBgc(board, bgc.startsWith('http') ? `url(${bgc})` : bgc)
         } catch (err) {
             console.log('Cannot update bgc board', err)
         }
@@ -26,15 +36,26 @@ export function ChangeColorBackground({ board }) {
 
     return (
         <section className="change-color-background">
-            {palette.map((colorOption, index) => (
-                <button
-                    key={index}
-                    className="color-button"
-                    onClick={() => onUpdateBgc(colorOption)}
-                    style={{ backgroundImage: `url(${colorOption})` }}
-                ></button>
-            ))}
-
+            <div className="gradient-colors">
+                {gradientPalette.map((color, index) => (
+                    <button
+                        key={index}
+                        className="color-button"
+                        onClick={() => onUpdateBgc(color)}
+                        style={{ backgroundImage: `url(${color})` }}
+                    />
+                ))}
+            </div>
+            <div className="solid-colors">
+                {colorsPalette.map((color, index) => (
+                    <button
+                        key={index}
+                        className="color-button"
+                        onClick={() => onUpdateBgc(color)}
+                        style={{ backgroundColor: color }}
+                    />
+                ))}
+            </div>
         </section>
     )
 }
