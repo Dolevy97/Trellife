@@ -17,18 +17,30 @@ import { TaskAction } from "./TaskAction"
 export function TableView({ groups, board }) {
 
     const [isSortOpen, setIsSortOpen] = useState(false)
+    const [isAdding, setIsAdding] = useState({ state: false, type: null })
+
     const [sortState, setSortState] = useState({ isSorting: false, dir: null })
     const [nameChangeOpen, setNameChangeOpen] = useState({ isOpen: false, taskId: null })
     const [changeListOpen, setChangeListOpen] = useState({ isOpen: false, taskId: null })
     const [action, setAction] = useState({ action: null, taskId: null, position: null })
 
     const [containerPosition, setContainerPosition] = useState({ top: 0, left: 0 })
+    const [newListPos, setNewListPos] = useState(null)
+    const [newListTitle, setNewListTitle] = useState('')
 
     const user = useSelector(storeState => storeState.userModule.user)
 
     const navigate = useNavigate()
 
-    const nameChangeRef = useRef()
+    const nameChangeRef = useRef(null)
+    const newCardTitleRef = useRef(null)
+
+    const options = []
+    board.groups.map((g, idx) => options.push(idx + 1))
+
+    const [isOpen, setIsOpen] = useState(false)
+    const [selectedOption, setSelectedOption] = useState(options[0] || 1)
+    const dropdownRef = useRef(null)
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -64,6 +76,31 @@ export function TableView({ groups, board }) {
         }
     }, [action])
 
+
+    // Custom Select
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsOpen(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [])
+
+    function toggleDropdown() {
+        setIsOpen(!isOpen)
+    }
+
+    function handleOptionClick(option) {
+        setSelectedOption(option)
+        setIsOpen(false)
+        setNewListPos(option)
+    }
 
     /* Set Action */
     function onSetAction(ev, act, taskId, height) {
@@ -249,6 +286,23 @@ export function TableView({ groups, board }) {
         task.isDone = target.checked
         const activityTitle = 'marked the due date ' + target.checked ? 'complete' : 'incomplete'
         await updateTask(task, group, board, activityTitle, user)
+    }
+
+    async function onAddList() {
+        if (!newListTitle.trim()) return
+
+        try {
+            const newGroup = boardService.getEmptyGroup()
+            newGroup.title = newListTitle.trim()
+            const updatedBoard = {
+                ...board,
+                groups: [...board.groups, newGroup]
+            }
+            setNewListTitle('')
+            await updateBoard(updatedBoard)
+        } catch (err) {
+            console.error('Failed to add group:', err)
+        }
     }
 
     return (
@@ -577,6 +631,107 @@ export function TableView({ groups, board }) {
                         </tr>
                     </tbody>
                 </table>
+                <button
+                    className="add-btn"
+                    onClick={() => setIsAdding({ state: !isAdding.state, type: null })}
+                >
+                    <img className="btn-icon" src={addIcon} alt="add plus icon" />
+                    <span className="btn-text">
+                        Add
+                    </span>
+                </button>
+                {isAdding.state && !isAdding.type &&
+                    <article className="add-list-or-card">
+                        <div
+                            className="btn-add-option"
+                            onClick={() => setIsAdding({ state: true, type: 'card' })}>
+                            Card
+                        </div>
+                        <div
+                            className="btn-add-option"
+                            onClick={() => setIsAdding({ state: true, type: 'list' })}>
+                            List
+                        </div>
+                    </article>
+                }
+                {isAdding.state && isAdding.type &&
+                    <article className="table-add-container" onClick={(e) => e.stopPropagation()}>
+                        <header className="add-header">
+                            <h1 className="header-title">{isAdding.type === 'list' ? 'Add List' : 'Add Card'}</h1>
+                            <div className="btn-close-container"
+                                onClick={() => setIsAdding({ state: false, type: null })}
+                            >
+                                <img className="btn-close" src={closeIcon}></img>
+                            </div>
+                        </header>
+                        {isAdding.type === 'list' ?
+                            <article className="add-list-body">
+                                <h4>Name</h4>
+                                <input
+                                    onChange={e => setNewListTitle(e.target.value)}
+                                    type="text"
+                                    placeholder="Enter list name..."
+                                    className="add-list-input" />
+                                <h4>Position</h4>
+                                <div className="custom-select" ref={dropdownRef}>
+                                    <div className="select-header" onClick={toggleDropdown}>
+                                        <span className="selected-option">{selectedOption}</span>
+                                        <svg className='arrow' width="24" height="24" viewBox="0 0 24 24" role="presentation">
+                                            <path d="M8.292 10.293a1.009 1.009 0 000 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 000-1.419.987.987 0 00-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 00-1.406 0z" fill="currentColor" fillRule="evenodd"></path>
+                                        </svg>
+                                    </div>
+                                    {isOpen && (
+                                        <ul className="options">
+                                            {options.length === 0 ? (
+                                                <li
+                                                    key="1"
+                                                    className={selectedOption === "1" ? 'selected' : ''}
+                                                    onClick={() => handleOptionClick("1")}>
+                                                    1
+                                                </li>
+                                            ) : (
+                                                options.map(option => (
+                                                    <li
+                                                        key={option}
+                                                        className={option === selectedOption ? 'selected' : ''}
+                                                        onClick={() => handleOptionClick(option)}>
+                                                        {option}
+                                                    </li>
+                                                ))
+                                            )}
+                                        </ul>
+                                    )}
+                                </div>
+                                <button
+                                    disabled={!newListTitle}
+                                    className="btn-add-list"
+                                    onClick={onAddList}
+                                >Add List</button>
+                            </article>
+                            :
+                            <article className="add-card-body">
+                                <h4>Title</h4>
+                                <div
+                                    className="btn-sort-option">
+                                    Sort ascending
+                                </div>
+                                <div
+                                    className="btn-sort-option"
+                                    onClick={() => onChangeSort(-1)}>
+                                    Sort descending
+                                    <img
+                                        src={successIcon}
+                                        className="success-icon"
+                                        style={{
+                                            opacity: sortState.dir === -1 ? 1 : 0,
+                                            filter: sortState.dir === -1 ? 'invert(86%) sepia(18%) saturate(190%) hue-rotate(171deg) brightness(89%) contrast(86%)' : ''
+                                        }}
+                                        alt="" />
+                                </div>
+                            </article>
+                        }
+                    </article>
+                }
             </section>
         </section>
 
