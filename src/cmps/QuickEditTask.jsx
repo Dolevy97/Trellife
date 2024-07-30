@@ -30,15 +30,15 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
 
   useEffect(() => {
     if (textareaRef.current) {
-        autosize(textareaRef.current)
+      autosize(textareaRef.current)
     }
 
     return () => {
-        if (textareaRef.current) {
-            autosize.destroy(textareaRef.current)
-        }
+      if (textareaRef.current) {
+        autosize.destroy(textareaRef.current)
+      }
     }
-}, [taskTitleInputValue])
+  }, [taskTitleInputValue])
 
   /* Set Action */
   function onSetAction(ev, act) {
@@ -146,7 +146,7 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
         title: 'This card is due soon.',
         style: { backgroundColor: '#F5CD47' },
         textColor: '#1d2125',
-        iconFilter: 'none'
+        iconFilter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)'
       }
     }
 
@@ -154,10 +154,9 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
       title: 'This card is due later.',
       style: {},
       textColor: '',
-      iconFilter: 'none'
+      iconFilter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)'
     }
   }
-
   /*Checklist*/
   function getDoneInChecklist(taskId, groupId) {
     const group = board.groups.find(group => group.id === groupId)
@@ -263,14 +262,19 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
                     style={taskStatus.style}
                   >
                     <img
+                      style={{ filter: taskStatus.iconFilter }}
                       src={clockIcon}
-                      alt="clock icon"/>
+                      alt="clock icon" />
                     <span
                       style={{ color: taskStatus.textColor }}
                     >
                       {getFormattedShortTime(task.dueDate)}
                     </span>
                   </div>
+                )}
+
+                {task.description && task.description.trim() !== '' && (
+                  <img className='description' title='This card has a description.' src={descriptionIcon} alt="description" />
                 )}
 
                 {getComments(task.id).length ?
@@ -316,10 +320,6 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
                     </span>
                   </div>
                 ) : ''}
-
-                {task.description && task.description.trim() !== '' && (
-                  <img className='description' title='This card has a description.' src={descriptionIcon} alt="description" />
-                )}
 
               </div>
 

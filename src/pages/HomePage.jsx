@@ -25,7 +25,8 @@ export function HomePage() {
 
     async function onSignIn() {
         try {
-            await login({ username: 'Guest', password: '1234' });
+            // Switch to guest after presentation
+            await login({ username: 'Yona', password: '1234' });
             navigate('/board');
         } catch (err) {
             console.log('error logging in:', err);
