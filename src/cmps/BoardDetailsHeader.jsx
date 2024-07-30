@@ -15,8 +15,9 @@ import dots from "../assets/imgs/icons/3dots.svg"
 import boardIcon from '../assets/imgs/Icons/boardIcon.svg'
 import tableIcon from '../assets/imgs/Icons/tableIcon.svg'
 import openAiIcon from '../assets/imgs/Icons/openAI_Logo.svg'
-import { AILoadingScreen } from './AILoadingScreen';
-import { useNavigate } from 'react-router';
+
+import { AILoadingScreen } from './AILoadingScreen'
+import { useNavigate } from 'react-router'
 
 
 export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, displayStyle, setDisplayStyle }) {
@@ -41,17 +42,17 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
   const navigate = useNavigate()
 
-  const [isAILoading, setIsAILoading] = useState(false);
+  const [isAILoading, setIsAILoading] = useState(false)
 
   useEffect(() => {
     if (board) {
-      setNewTitle(board.title);
+      setNewTitle(board.title)
     }
-  }, [board]);
+  }, [board])
 
   useEffect(() => {
-    updateInputWidth();
-  }, [newTitle]);
+    updateInputWidth()
+  }, [newTitle])
 
   function updateInputWidth() {
     if (boardTitleRef.current) {
@@ -161,11 +162,13 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
     // const title = "Master fullstack programming";
     try {
       const title = prompt('Name the project you\'d like to create')
+      setIsAILoading(true)
       const newBoard = await openAiService.onGetBoardFromGpt(title)
       newBoard.createdBy = {...user}
       console.log('newBoard: ' , newBoard)
       const addedBoard = await addBoard(newBoard)
       console.log('addedBoard: ' , addedBoard)
+      setIsAILoading(false)
       navigate (`/board/${addedBoard._id}`)
     } catch (er) {
       console.log(er)
