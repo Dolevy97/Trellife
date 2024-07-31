@@ -17,7 +17,7 @@ async function onGetBoardFromGpt(title, user) {
             const hardCodedJSONBoard1 = `{
                 "title": "Trip to Greece",
                 "style": {
-                    "background": "url(https://images.unsplash.com/photo-1496566084516-c5b96fcbd5c8?ixid=M3w2MzcwMzh8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MjI0MzQwMzd8&ixlib=rb-4.0.3)"
+                    "background": "url('https://images.unsplash.com/photo-1560703650-ef3e0f254ae0?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')"
                 },
                 "labels": [
                     {
@@ -104,8 +104,9 @@ async function onGetBoardFromGpt(title, user) {
                                     "label3"
                                 ],
                                 "style": {
-                                    "backgroundImage": "url(https://images.unsplash.com/photo-1471977360223-d8cc63cec57c?ixid=M3w2MzcwMzh8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MjI0MzQwMzl8&ixlib=rb-4.0.3)",
-                                    "backgroundColor": "#262c2eff"
+                                    "backgroundImage": "url('https://plus.unsplash.com/premium_photo-1661290470322-a313098e7c2a?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+                                    "backgroundColor": "#262c2e",
+                                    "isFull": true
                                 }
                             }
                         ],
@@ -195,9 +196,7 @@ async function onGetBoardFromGpt(title, user) {
                                 "labelsIds": [
                                     "label1"
                                 ],
-                                "style": {
-                                    "backgroundColor": "#206e4e"
-                                }
+                                "style": null
                             },
                             {
                                 "id": "task10",
@@ -229,8 +228,9 @@ async function onGetBoardFromGpt(title, user) {
                                     "label1"
                                 ],
                                 "style": {
-                                    "backgroundImage": "url(https://images.unsplash.com/photo-1575014638175-42e5dd7538a7?ixid=M3w2MzcwMzh8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MjI0MzQwNDJ8&ixlib=rb-4.0.3)",
-                                    "backgroundColor": "#8b9191ff"
+                                    "backgroundImage": "url('https://plus.unsplash.com/premium_photo-1661962428291-7ec1fd509076?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+                                    "backgroundColor": "#8b9191",
+                                    "isFull": true
                                 }
                             }
                         ],
@@ -314,7 +314,7 @@ async function onGetBoardFromGpt(title, user) {
             const boardToAdd = fillEmptyValues(JSON.parse(hardCodedJSONBoard1),user)
             resolve(boardToAdd)
         }
-            , 7000)})
+            , 1000)})
 
     const payload = { title };
 
@@ -378,7 +378,7 @@ function fillEmptyValues(board, user) {
             task.priority = null;
             task.isDone = false;
             task.byMember = { ...user };
-            if (!task.style) task.style = { backgroundColor: null, isFull: false };
+            if (!task.style) task.style = null;
             if (!task.description) task.description = "";
             if (!task.checklists) task.checklists = [];
             task.attachments = [];
