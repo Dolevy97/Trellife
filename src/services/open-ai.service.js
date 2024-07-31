@@ -9,7 +9,7 @@ const BASE_URL = process.env.NODE_ENV === 'production'
     ? '/api/open-ai'
     : '//localhost:3030/api/open-ai'
 
-async function onGetBoardFromGpt(title,user) {
+async function onGetBoardFromGpt(title, user) {
     const payload = { title };
 
     try {
@@ -20,18 +20,24 @@ async function onGetBoardFromGpt(title,user) {
             console.error('Error content:', res.data.content || '');
             throw new Error(res.data.error);
         }
-        const board = await getBoardImgsFromGptObject(res.data);
+        console.log('Raw response from GPT:', JSON.stringify(res.data));
+        const board = await updateBoardImgsFromGptObject(res.data);
         return fillEmptyValues(board, user);
     } catch (er) {
         console.error('Error in onGetBoardFromGpt:', er.message);
-        throw er;  // Optionally rethrow if you want to handle it higher up
+        throw er;
     }
 }
 
-async function getBoardImgsFromGptObject(board) {
-    console.log(board);
-    const updatedBoard = { ...board };
+async function updateBoardImgsFromGptObject(board) {
+    console.log('Initial board from GPT:', JSON.stringify(board, null, 2));
+    
+    // Deep copy to avoid mutation of the original structure
+    const updatedBoard = JSON.parse(JSON.stringify(board));
+
+    // Update the board's background image
     updatedBoard.style.background = `url(${(await getUnsplashImageByQuery(updatedBoard.style.background))[0].url})`;
+    
     const { groups } = updatedBoard;
     for (let i = 0; i < groups.length; i++) {
         const group = groups[i];
@@ -42,33 +48,33 @@ async function getBoardImgsFromGptObject(board) {
                 const img = (await getUnsplashImageByQuery(task.style.backgroundImage))[0];
                 task.style.backgroundImage = `url(${img.url})`;
                 task.style.backgroundColor = img.backgroundColor;
-            } 
+            }
         }
     }
-    console.log('board from unsplash function: ', updatedBoard);
+
+    console.log('Final updated board:', JSON.stringify(updatedBoard, null, 2));
     return updatedBoard;
 }
 
-function fillEmptyValues(board,user) {
-    // Adding back default values
-    board.createdBy = {...user}
+function fillEmptyValues(board, user) {
+    // Ensure default values are set
+    board.createdBy = { ...user };
     board.activities = [];
     board.isStarred = false;
     board.members = [];
-    
+
     for (let group of board.groups) {
         if (!group.style) group.style = { backgroundColor: null, isCollapse: false };
-        
+
         for (let task of group.tasks) {
             task.priority = null;
-            task.isDone = false
-            task.byMember = {...user};
-            if (!task.style) task.style = defaultTaskStyle;
+            task.isDone = false;
+            task.byMember = { ...user };
+            if (!task.style) task.style = { backgroundColor: null, isFull: false };
             if (!task.description) task.description = "";
             if (!task.checklists) task.checklists = [];
             task.attachments = [];
             task.membersIds = [];
-            if (!task.style) task.style = null
         }
     }
     return board;

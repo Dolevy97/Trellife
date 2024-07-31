@@ -164,6 +164,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
   function openModal() {
     setIsModalOpen(true)
   }
+  
   async function onCreateBoardWithOpenAi() {
     try {
         const title = prompt('Name the project you\'d like to create');
@@ -181,6 +182,9 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
             navigate(`/board/${addedBoard._id}`);
         } catch (serviceError) {
             console.error('Error while creating board with OpenAI:', serviceError.message);
+            if (serviceError.response && serviceError.response.data) {
+                console.error('Response Data:', serviceError.response.data);
+            }
             showErrorMsg('Operation failed. Please try again later.');
             setIsAILoading(false);
         }
