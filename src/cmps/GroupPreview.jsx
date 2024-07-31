@@ -33,6 +33,8 @@ export function GroupPreview({ group, boardId, toggleLabelExpansion, areLabelsEx
     const [quickEditTaskId, setQuickEditTaskId] = useState(null)
     const [quickEditTaskPosition, setQuickEditTaskPosition] = useState(null)
     const [isSmallScreen, setIsSmallScreen] = useState(false)
+    const [previouslyCollapsedGroups, setPreviouslyCollapsedGroups] = useState({})
+
 
     const containerRef = useRef(null)
     const textareaRef = useRef(null)
@@ -82,17 +84,56 @@ export function GroupPreview({ group, boardId, toggleLabelExpansion, areLabelsEx
     }, [])
 
     useEffect(() => {
-        if (isSmallScreen && group.style.isCollapse) {
-            const updatedGroup = {
-                ...group,
-                style: {
-                    ...group.style,
-                    isCollapse: false
+        const checkScreenSize = () => {
+            const newIsSmallScreen = window.innerWidth <= 500
+            if (newIsSmallScreen !== isSmallScreen) {
+                setIsSmallScreen(newIsSmallScreen)
+                
+                if (newIsSmallScreen) {
+                    // Store the current collapse state of groups
+                    const collapsedState = {}
+                    board.groups.forEach(g => {
+                        collapsedState[g.id] = g.style.isCollapse
+                    })
+                    setPreviouslyCollapsedGroups(collapsedState)
+                    
+                    // Expand all groups
+                    board.groups.forEach(g => {
+                        if (g.style.isCollapse) {
+                            const updatedGroup = {
+                                ...g,
+                                style: {
+                                    ...g.style,
+                                    isCollapse: false
+                                }
+                            }
+                            updateGroup(updatedGroup.id, updatedGroup, board)
+                        }
+                    })
+                } else {
+                    // Restore previous collapse state
+                    board.groups.forEach(g => {
+                        if (previouslyCollapsedGroups[g.id]) {
+                            const updatedGroup = {
+                                ...g,
+                                style: {
+                                    ...g.style,
+                                    isCollapse: true
+                                }
+                            }
+                            updateGroup(updatedGroup.id, updatedGroup, board)
+                        }
+                    })
                 }
             }
-            updateGroup(updatedGroup.id, updatedGroup, board)
         }
-    }, [isSmallScreen])
+    
+        checkScreenSize() // Check initial size
+        window.addEventListener('resize', checkScreenSize)
+        return () => {
+            window.removeEventListener('resize', checkScreenSize)
+        }
+    }, [isSmallScreen, board, previouslyCollapsedGroups])
 
     function handleTaskClick(taskId) {
         navigate(`/board/${boardId}/${group.id}/${taskId}`, { replace: true })
