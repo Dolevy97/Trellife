@@ -243,7 +243,7 @@ export function QuickEditTask({ task, onClose, taskPosition, group, board, user,
 
             <textarea
 
-              defaultValue={task.title}
+              // defaultValue={task.title}
               onClick={(e) => e.stopPropagation()}
               value={taskTitleInputValue}
               onChange={(ev) => setTaskTitleInputValue(ev.target.value)}

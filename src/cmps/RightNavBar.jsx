@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { removeBoard } from '../store/actions/board.actions'
 import { removeBoardFromFavorites } from '../store/actions/user.actions'
 import { useNavigate } from "react-router"
@@ -24,12 +24,24 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
     const [isCollapseOpen, setIsCollapseOpen] = useState(false)
     const [field, setField] = useState('Menu')
+    const [isSmallScreen, setIsSmallScreen] = useState(false)
 
+    const containerRef = useRef(null)
     const navigate = useNavigate()
 
 
     useEffect(() => {
-        if (!board) return null
+        const checkScreenSize = () => {
+            setIsSmallScreen(window.innerWidth <= 500)
+        }
+
+        checkScreenSize() 
+
+        window.addEventListener('resize', checkScreenSize)
+
+        return () => {
+            window.removeEventListener('resize', checkScreenSize)
+        }
     }, [])
 
     async function onRemoveBoard() {
@@ -43,7 +55,6 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
             console.error('Cannot remove board', err)
         }
     }
-
 
     function handleDeleteConfirm() {
         onRemoveBoard()
@@ -60,6 +71,7 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
     function getActivityByTitle(activity, board, users) {
         const shortTitle = activity.title.split(' ').slice(0, 2).join(' ')
 
+
         function replaceUserIds(title) {
             if (!Array.isArray(users)) {
                 return title
@@ -72,6 +84,7 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
             }, title)
         }
 
+
         function formatTimestamp(timestamp) {
             const date = new Date(Number(timestamp))
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -83,8 +96,10 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
             hours = hours % 12
             hours = hours ? hours : 12 // the hour '0' should be '12'
 
+
             return `${month} ${day} ${hours}:${minutes} ${ampm}`
         }
+
 
         function extractAndFormatTimestamp(title) {
             const timestampRegex = /\b\d{13}\b/
@@ -97,7 +112,9 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
             return title
         }
 
+
         let formattedTitle = ''
+
 
         if (shortTitle === 'create board') {
             formattedTitle = 'created this board'
@@ -115,11 +132,14 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
             formattedTitle = activity.title
         }
 
+
         // Replace timestamp in the title
         formattedTitle = extractAndFormatTimestamp(formattedTitle)
 
+
         // Replace user IDs
         formattedTitle = replaceUserIds(formattedTitle)
+
 
         return formattedTitle
     }
@@ -127,7 +147,7 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
     if (!users || !board) return <div className='isloading-container'> <img className='isLoading' src={loadingAnimation} /> </div>
 
     return (
-        <section className={`right-nav-bar-container ${!isRightNavBarOpen ? 'is-close' : ''}`}>
+        <section className={`right-nav-bar-container ${!isRightNavBarOpen ? 'is-close' : ''}`} ref={containerRef}>
             <section className="right-nav-bar-header">
                 <span className="menu-title">{field}</span>
                 <div className={`to-menu-btn-wrapper${field !== 'Menu' ? '' : ' back-to'}`} onClick={() => setField('Menu')}>
@@ -156,15 +176,17 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
                             </div>
                         </div>
 
-                        <div className="collapse-all-container" >
-                            <div className="collapse-all-wrapper" onClick={onCollapseToggle}>
-                                <img
-                                    src={isCollapseOpen ? expandIcon : collapseIcon}
-                                    alt={isCollapseOpen ? "Expand" : "Collapse"}
-                                />
-                                <span>{isCollapseOpen ? 'Expand all' : 'Collapse all'}</span>
+                        {!isSmallScreen && (
+                            <div className="collapse-all-container" >
+                                <div className="collapse-all-wrapper" onClick={onCollapseToggle}>
+                                    <img
+                                        src={isCollapseOpen ? expandIcon : collapseIcon}
+                                        alt={isCollapseOpen ? "Expand" : "Collapse"}
+                                    />
+                                    <span>{isCollapseOpen ? 'Expand all' : 'Collapse all'}</span>
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         <div className="delete-board-container" onClick={() => setIsDeleteModalOpen(true)}>
                             <div className="delete-board-wrapper">
