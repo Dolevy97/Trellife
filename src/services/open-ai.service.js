@@ -6,7 +6,7 @@ export const openAiService = {
 }
 
 const BASE_URL = process.env.NODE_ENV === 'production'
-    ? '/api/'
+    ? '/api/open-ai'
     : '//localhost:3030/api/open-ai'
 
 async function onGetBoardFromGpt(title,user) {
