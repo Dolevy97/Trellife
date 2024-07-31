@@ -578,7 +578,7 @@ async function onGetBoardFromGpt(title, user) {
             const boardToAdd = fillEmptyValues(JSON.parse(hardCodedJSONBoard1),user)
             resolve(boardToAdd)
         }
-            , 5000)})
+            , 7000)})
 
     const payload = { title };
 
