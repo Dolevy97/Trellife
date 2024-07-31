@@ -163,8 +163,8 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
     try {
       const title = prompt('Name the project you\'d like to create')
       setIsAILoading(true)
-      const newBoard = await openAiService.onGetBoardFromGpt(title)
-      newBoard.createdBy = {...user}
+      const newBoard = await openAiService.onGetBoardFromGpt(title,user)
+      
       console.log('newBoard: ' , newBoard)
       const addedBoard = await addBoard(newBoard)
       console.log('addedBoard: ' , addedBoard)
