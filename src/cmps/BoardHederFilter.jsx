@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import closeIcon from '../assets/imgs/Icons/close.svg'
 import { isLightColor } from '../services/util.service'
 
 export function BoardHederFilter({ onClose, filterBy, setFilterBy, board }) {
+
     const [filterToEdit, setFilterToEdit] = useState(filterBy)
+    const filterRef = useRef(null)
 
     useEffect(() => {
         const debounceTimer = setTimeout(() => {
@@ -12,6 +14,19 @@ export function BoardHederFilter({ onClose, filterBy, setFilterBy, board }) {
 
         return () => clearTimeout(debounceTimer)
     }, [filterToEdit, setFilterBy])
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (filterRef.current && !filterRef.current.contains(event.target)) {
+                onClose()
+            }
+        }
+    
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [onClose])
 
     function handleChange(ev) {
         const { name, value, type, checked } = ev.target
@@ -42,7 +57,7 @@ export function BoardHederFilter({ onClose, filterBy, setFilterBy, board }) {
     )
 
     return (
-        <section className="BoardHederFilter" >
+        <section className="BoardHederFilter" ref={filterRef}>
             <header>
                 <span>Filter</span>
                 <div className="close-btn-wrapper" onClick={onClose}>
