@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { addBoard, updateBoard } from '../store/actions/board.actions';
 import { useSelector } from 'react-redux';
 import { RightNavBar } from '../cmps/RightNavBar';
-import { showSuccessMsg } from '../services/event-bus.service';
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service';
 import { updateUser } from '../store/actions/user.actions';
 import { getAverageColorFromUrl, isLightColor } from '../services/util.service';
 import { openAiService } from '../services/open-ai.service';
@@ -156,15 +156,17 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
     setIsFilterOpen(!isFilterOpen);
   }
 
-  async function onCreateBoardWithOpenAi(){
+  async function onCreateBoardWithOpenAi() {
     // const title = "Becoming the best music producer";
     // const title = "Trip to Australia";
     // const title = "Master fullstack programming";
     try {
       const title = prompt('Name the project you\'d like to create')
+      if (title === null) return showErrorMsg('AI operation cancelled.')
+      if (title.length === 0) return showErrorMsg('Please enter a title for your project.')
       setIsAILoading(true)
-      const newBoard = await openAiService.onGetBoardFromGpt(title)
-      newBoard.createdBy = {...user}
+      const newBoard = await openAiService.onGetBoardFromGpt(title,user)
+
       console.log('newBoard: ' , newBoard)
       const addedBoard = await addBoard(newBoard)
       console.log('addedBoard: ' , addedBoard)
@@ -172,6 +174,8 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
       navigate (`/board/${addedBoard._id}`)
     } catch (er) {
       console.log(er)
+      setIsAILoading(false)
+      showErrorMsg('Operation failed. Please try again later')
     }
   }
 
@@ -245,21 +249,22 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
             <span className='board-icon-text'>table</span>
           </div>
 
-        <div onClick={onCreateBoardWithOpenAi}
-          onMouseEnter={() => setBtnHoverState({ isHover: true, btn: 'chat' })}
-          onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'chat' })}
-          className='chat-trellife-container'
-          style={{
-            ...(isAILoading ? { backgroundColor: buttonColor, color: textColor } : { color: outsideTextColor }),
-            ...(btnHoverState.isHover && btnHoverState.btn === 'chat' && displayStyle !== 'chat' ? { backgroundColor: hoverButtonColor } : {})
-          }} >
-          <img src={openAiIcon}
-            alt="Open AI Logo"
-            style={isAILoading ? iconColor : outsideIconColor}
-          />
-          <span
-            className='chat-trellife-text'>Create AI Board</span>
-        </div>
+          <div onClick={onCreateBoardWithOpenAi}
+            onMouseEnter={() => setBtnHoverState({ isHover: true, btn: 'chat' })}
+            onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'chat' })}
+            className='chat-trellife-container'
+            style={{
+              ...(btnHoverState.isHover && btnHoverState.btn === 'chat' && displayStyle !== 'chat' ? { backgroundColor: hoverButtonColor } : {})
+            }} >
+            <img src={openAiIcon}
+              alt="Open AI Logo"
+              style={outsideIconColor}
+            />
+            <span
+              className='chat-trellife-text'
+              style={{ color: outsideTextColor }}
+            >Create AI Board</span>
+          </div>
 
         </div>
 

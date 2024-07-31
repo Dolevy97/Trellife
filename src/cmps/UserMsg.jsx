@@ -32,12 +32,12 @@ export function UserMsg() {
 		setMsg(null)
 	}
 
-    function msgClass() {
-        return msg ? 'visible' : ''
-    }
+	function msgClass() {
+		return msg ? 'visible' : ''
+	}
 	return (
 		<section className={`user-msg ${msg?.type} ${msgClass()}`}>
-			<img className='user-msg-icon' src={successIcon} alt="success icon" />
+			{msg?.type === 'success' && <img className='user-msg-icon' src={successIcon} alt="success icon" />}
 			{msg?.txt}
 		</section>
 	)
