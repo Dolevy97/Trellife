@@ -5,16 +5,22 @@ export const openAiService = {
     onGetBoardFromGpt
 }
 
-async function onGetBoardFromGpt(title,user) {
+async function onGetBoardFromGpt(title, user) {
     const payload = { title };
 
     try {
         const res = await axios.post("http://localhost:3030/api/open-ai", payload);
+        if (res.data.error) {
+            console.error('Error from backend:', res.data.error);
+            console.error('Error details:', res.data.details);
+            console.error('Error content:', res.data.content || '');
+            throw new Error(res.data.error);
+        }
         const board = await getBoardImgsFromGptObject(res.data);
-        console.log('board from gpt function: ', board);
-        return fillEmptyValues(board,user);
+        return fillEmptyValues(board, user);
     } catch (er) {
-        console.error(er);
+        console.error('Error in onGetBoardFromGpt:', er.message);
+        throw er;  // Optionally rethrow if you want to handle it higher up
     }
 }
 

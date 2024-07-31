@@ -157,27 +157,31 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
   }
 
   async function onCreateBoardWithOpenAi() {
-    // const title = "Becoming the best music producer";
-    // const title = "Trip to Australia";
-    // const title = "Master fullstack programming";
     try {
-      const title = prompt('Name the project you\'d like to create')
-      if (title === null) return showErrorMsg('AI operation cancelled.')
-      if (title.length === 0) return showErrorMsg('Please enter a title for your project.')
-      setIsAILoading(true)
-      const newBoard = await openAiService.onGetBoardFromGpt(title,user)
-
-      console.log('newBoard: ' , newBoard)
-      const addedBoard = await addBoard(newBoard)
-      console.log('addedBoard: ' , addedBoard)
-      setIsAILoading(false)
-      navigate (`/board/${addedBoard._id}`)
+        const title = prompt('Name the project you\'d like to create');
+        if (title === null) return showErrorMsg('AI operation cancelled.');
+        if (title.length === 0) return showErrorMsg('Please enter a title for your project.');
+        
+        setIsAILoading(true);
+        
+        try {
+            const newBoard = await openAiService.onGetBoardFromGpt(title, user);
+            console.log('newBoard: ', newBoard);
+            const addedBoard = await addBoard(newBoard);
+            console.log('addedBoard: ', addedBoard);
+            setIsAILoading(false);
+            navigate(`/board/${addedBoard._id}`);
+        } catch (serviceError) {
+            console.error('Error while creating board with OpenAI:', serviceError.message);
+            showErrorMsg('Operation failed. Please try again later.');
+            setIsAILoading(false);
+        }
     } catch (er) {
-      console.log(er)
-      setIsAILoading(false)
-      showErrorMsg('Operation failed. Please try again later')
+        console.error('Unexpected error in onCreateBoardWithOpenAi:', er.message);
+        setIsAILoading(false);
+        showErrorMsg('Unexpected error. Please try again later.');
     }
-  }
+}
 
   return (
     <>
