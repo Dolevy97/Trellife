@@ -5,11 +5,15 @@ export const openAiService = {
     onGetBoardFromGpt
 }
 
-async function onGetBoardFromGpt(title, user) {
+const BASE_URL = process.env.NODE_ENV === 'production'
+    ? '/api/open-ai'
+    : '//localhost:3030/api/open-ai'
+
+async function onGetBoardFromGpt(title,user) {
     const payload = { title };
 
     try {
-        const res = await axios.post("http://localhost:3030/api/open-ai", payload);
+        const res = await axios.post(BASE_URL, payload);
         if (res.data.error) {
             console.error('Error from backend:', res.data.error);
             console.error('Error details:', res.data.details);
