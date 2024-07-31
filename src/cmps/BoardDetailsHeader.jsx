@@ -1,11 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
-import { addBoard, updateBoard } from '../store/actions/board.actions';
-import { useSelector } from 'react-redux';
-import { RightNavBar } from '../cmps/RightNavBar';
-import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service';
-import { updateUser } from '../store/actions/user.actions';
-import { getAverageColorFromUrl, isLightColor } from '../services/util.service';
-import { openAiService } from '../services/open-ai.service';
+import { useState, useEffect, useRef } from 'react'
+import { addBoard, updateBoard } from '../store/actions/board.actions'
+import { useSelector } from 'react-redux'
+import { RightNavBar } from '../cmps/RightNavBar'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
+import { updateUser } from '../store/actions/user.actions'
+import { getAverageColorFromUrl, isLightColor } from '../services/util.service'
+import { openAiService } from '../services/open-ai.service'
 
 import star from '../assets/imgs/Icons/star.svg'
 import fullStar from '../assets/imgs/Icons/fullstar.svg'
@@ -18,16 +18,17 @@ import openAiIcon from '../assets/imgs/Icons/openAI_Logo.svg'
 
 import { AILoadingScreen } from './AILoadingScreen'
 import { useNavigate } from 'react-router'
+import { CreateAiBoardModal } from './CreateAiBoardModal'
 
 
 export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, displayStyle, setDisplayStyle }) {
-  const board = useSelector(storeState => storeState.boardModule.board);
-  const user = useSelector(storeState => storeState.userModule.user);
+  const board = useSelector(storeState => storeState.boardModule.board)
+  const user = useSelector(storeState => storeState.userModule.user)
 
-  const boardTitleRef = useRef(null);
+  const boardTitleRef = useRef(null)
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [newTitle, setNewTitle] = useState(board.title);
+  const [isEditing, setIsEditing] = useState(false)
+  const [newTitle, setNewTitle] = useState(board.title)
 
   const [buttonColor, setButtonColor] = useState('')
   const [hoverButtonColor, setHoverButtonColor] = useState('')
@@ -37,10 +38,10 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
   const [outsideTextColor, setOutsideTextColor] = useState({})
   const [isHoveringStar, setIsHoveringStar] = useState(false)
   const [btnHoverState, setBtnHoverState] = useState({ isHover: false, btn: '' })
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
 
-  const [inputWidth, setInputWidth] = useState(() => `${Math.max(board.title.length * 9.2, 100)}px`);
+  const [inputWidth, setInputWidth] = useState(() => `${Math.max(board.title.length * 9.2, 100)}px`)
 
   const navigate = useNavigate()
 
@@ -58,8 +59,8 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
   function updateInputWidth() {
     if (boardTitleRef.current) {
-      const newWidth = Math.max(newTitle.length * 9.2, 100); // Minimum width of 100px
-      setInputWidth(`${newWidth}px`);
+      const newWidth = Math.max(newTitle.length * 9.2, 100) // Minimum width of 100px
+      setInputWidth(`${newWidth}px`)
     }
   }
 
@@ -74,126 +75,116 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
         setIconColor(isLightColor(avgColor) ?
           { filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7489%) hue-rotate(29deg) brightness(100%) contrast(103%)' }
           :
-          { filter: 'brightness(0) saturate(100%) invert(12%) sepia(53%) saturate(1411%) hue-rotate(192deg) brightness(94%) contrast(92%)' });
+          { filter: 'brightness(0) saturate(100%) invert(12%) sepia(53%) saturate(1411%) hue-rotate(192deg) brightness(94%) contrast(92%)' })
         setOutsideIconColor(isLightColor(avgColor) ?
           { filter: 'brightness(0) saturate(100%) invert(12%) sepia(53%) saturate(1411%) hue-rotate(192deg) brightness(94%) contrast(92%)' }
           :
-          { filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7489%) hue-rotate(29deg) brightness(100%) contrast(103%)' });
+          { filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7489%) hue-rotate(29deg) brightness(100%) contrast(103%)' })
       } catch (error) {
-        console.error('Error getting average color:', error);
-        setButtonColor('transparent');
-        setTextColor('#000000');
+        console.error('Error getting average color:', error)
+        setButtonColor('transparent')
+        setTextColor('#000000')
       }
     }
 
-    updateButtonColor();
-  }, [board]);
+    updateButtonColor()
+  }, [board])
 
 
 
-  
+
   async function handleTitleUpdate() {
-    let titleToSet = newTitle.trim();
+    let titleToSet = newTitle.trim()
     if (titleToSet === '') {
-      titleToSet = board.title;
+      titleToSet = board.title
     }
     const updatedBoard = {
       ...board,
       title: titleToSet
-    };
+    }
     try {
-      setNewTitle(titleToSet);
-      setIsEditing(false);
-      await updateBoard(updatedBoard);
+      setNewTitle(titleToSet)
+      setIsEditing(false)
+      await updateBoard(updatedBoard)
     } catch (error) {
-      console.error('Failed to update board title:', error);
+      console.error('Failed to update board title:', error)
     }
   }
 
   async function handleBlur() {
-    await handleTitleUpdate();
+    await handleTitleUpdate()
   }
 
   function handleKeyPress(e) {
     if (e.key === 'Enter') {
-      e.preventDefault();
-      handleTitleUpdate();
+      e.preventDefault()
+      handleTitleUpdate()
     }
   }
 
   async function onClickStar(ev) {
-    ev.stopPropagation();
-    ev.preventDefault();
-    if (!user.favorites.includes(board._id)) user.favorites.push(board._id);
+    ev.stopPropagation()
+    ev.preventDefault()
+    if (!user.favorites.includes(board._id)) user.favorites.push(board._id)
     else {
-      user.favorites = user.favorites.filter(id => id !== board._id);
+      user.favorites = user.favorites.filter(id => id !== board._id)
     }
-    await updateUser(user);
+    await updateUser(user)
   }
 
   async function onShareJoinClick() {
-    const userIsInBoard = canUserJoinBoard();
+    const userIsInBoard = canUserJoinBoard()
     if (!userIsInBoard) {
-      board.members.push(user);
-      await updateBoard(board);
-      return;
+      board.members.push(user)
+      await updateBoard(board)
+      return
     }
-    const currentURL = window.location.href;
+    const currentURL = window.location.href
 
     try {
-      await navigator.clipboard.writeText(currentURL);
-      showSuccessMsg('Board link copied to clipboard');
+      await navigator.clipboard.writeText(currentURL)
+      showSuccessMsg('Board link copied to clipboard')
     } catch (error) {
-      console.error('Failed to copy URL:', error);
+      console.error('Failed to copy URL:', error)
     }
   }
 
   function canUserJoinBoard() {
-    return board.members.find(u => u._id === user._id);
+    return board.members.find(u => u._id === user._id)
   }
 
   function toggleRightNavBar() {
-    setIsRightNavBarOpen(!isRightNavBarOpen);
-    setIsFilterOpen(false);
+    setIsRightNavBarOpen(!isRightNavBarOpen)
+    setIsFilterOpen(false)
   }
 
   function toggleFilterOpen() {
-    setIsFilterOpen(!isFilterOpen);
+    setIsFilterOpen(!isFilterOpen)
   }
-  
-  function openModal() {
-    setIsModalOpen(true)
-  }
-  
-  async function onCreateBoardWithOpenAi() {
+
+
+  async function onCreateBoardWithOpenAi(title) {
+    // const title = "Becoming the best music producer"
+    // const title = "Trip to Australia"
+    // const title = "Master fullstack programming"
+
     try {
-        const title = prompt('Name the project you\'d like to create');
-        if (title === null) return showErrorMsg('AI operation cancelled.');
-        if (title.length === 0) return showErrorMsg('Please enter a title for your project.');
-        
-        setIsAILoading(true);
-        
-        try {
-            const newBoard = await openAiService.onGetBoardFromGpt(title, user);
-            console.log('newBoard: ', newBoard);
-            const addedBoard = await addBoard(newBoard);
-            console.log('addedBoard: ', addedBoard);
-            setIsAILoading(false);
-            navigate(`/board/${addedBoard._id}`);
-        } catch (serviceError) {
-            console.error('Error while creating board with OpenAI:', serviceError.message);
-            if (serviceError.response && serviceError.response.data) {
-                console.error('Response Data:', serviceError.response.data);
-            }
-            showErrorMsg('Operation failed. Please try again later.');
-            setIsAILoading(false);
-        }
+      // const title = prompt('Name the project you\'d like to create')
+     
+      setIsAILoading(true)
+      const newBoard = await openAiService.onGetBoardFromGpt(title, user)
+
+      console.log('newBoard: ', newBoard)
+      const addedBoard = await addBoard(newBoard)
+      console.log('addedBoard: ', addedBoard)
+      setIsAILoading(false)
+      navigate(`/board/${addedBoard._id}`)
     } catch (er) {
-        console.error('Unexpected error in onCreateBoardWithOpenAi:', er.message);
-        setIsAILoading(false);
-        showErrorMsg('Unexpected error. Please try again later.');
+      console.log(er)
+      setIsAILoading(false)
+      showErrorMsg('Operation failed. Please try again later')
     }
-}
+  }
 
   return (
     <>
@@ -265,7 +256,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
             <span className='board-icon-text'>table</span>
           </div>
 
-          <div onClick={onCreateBoardWithOpenAi}
+          <div onClick={() => setIsModalOpen(true)}
             onMouseEnter={() => setBtnHoverState({ isHover: true, btn: 'chat' })}
             onMouseLeave={() => setBtnHoverState({ isHover: false, btn: 'chat' })}
             className='chat-trellife-container'
@@ -331,6 +322,11 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
         </div>
       </section >
       <AILoadingScreen isLoading={isAILoading} />
+      <CreateAiBoardModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onSubmit={onCreateBoardWithOpenAi}
+          />
     </>
   )
 }
