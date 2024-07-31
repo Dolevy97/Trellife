@@ -5,11 +5,15 @@ export const openAiService = {
     onGetBoardFromGpt
 }
 
+const BASE_URL = process.env.NODE_ENV === 'production'
+    ? '/api/'
+    : '//localhost:3030/api/'
+
 async function onGetBoardFromGpt(title,user) {
     const payload = { title };
 
     try {
-        const res = await axios.post("http://localhost:3030/api/open-ai", payload);
+        const res = await axios.post(BASE_URL, payload);
         const board = await getBoardImgsFromGptObject(res.data);
         console.log('board from gpt function: ', board);
         return fillEmptyValues(board,user);
