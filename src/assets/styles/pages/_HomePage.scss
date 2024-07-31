@@ -149,16 +149,16 @@
                     }
 
                     @media (max-width: 992px) {
-                       .text-title{
-                        line-height: 48px;
+                        .text-title {
+                            line-height: 48px;
 
-                        @media (max-width: 768px) {
-                            p.subtitle{
-                                font-size: 24px;
-                                padding-block-end: 8px;
+                            @media (max-width: 768px) {
+                                p.subtitle {
+                                    font-size: 24px;
+                                    padding-block-end: 8px;
+                                }
                             }
-                       }
-                    }
+                        }
                     }
 
 
@@ -184,7 +184,7 @@
             }
 
             @media (max-width: 576px) {
-               padding-inline: 0;
+                padding-inline: 0;
             }
 
             .side-texts {
@@ -219,12 +219,19 @@
                     border-radius: 12px;
                     position: relative;
 
+                    .swiper-slide {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                    }
+
                     &.texts-swiper {
                         padding-block-start: 1rem;
                         border-top-left-radius: 3px;
                         border-top-right-radius: 3px;
 
-                        .side-text{
+                        .side-text {
                             transition: 1800ms;
                         }
 
