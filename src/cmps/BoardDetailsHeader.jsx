@@ -37,6 +37,8 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
   const [outsideTextColor, setOutsideTextColor] = useState({})
   const [isHoveringStar, setIsHoveringStar] = useState(false)
   const [btnHoverState, setBtnHoverState] = useState({ isHover: false, btn: '' })
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   const [inputWidth, setInputWidth] = useState(() => `${Math.max(board.title.length * 9.2, 100)}px`);
 
@@ -87,6 +89,9 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
     updateButtonColor();
   }, [board]);
 
+
+
+  
   async function handleTitleUpdate() {
     let titleToSet = newTitle.trim();
     if (titleToSet === '') {
@@ -155,7 +160,10 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
   function toggleFilterOpen() {
     setIsFilterOpen(!isFilterOpen);
   }
-
+  
+  function openModal() {
+    setIsModalOpen(true)
+  }
   async function onCreateBoardWithOpenAi() {
     // const title = "Becoming the best music producer";
     // const title = "Trip to Australia";
