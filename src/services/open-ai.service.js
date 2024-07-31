@@ -17,7 +17,7 @@ async function onGetBoardFromGpt(title, user) {
             const hardCodedJSONBoard1 = `{
                 "title": "Trip to Greece",
                 "style": {
-                    "background": "url(https://images.unsplash.com/photo-1496566084516-c5b96fcbd5c8?ixid=M3w2MzcwMzh8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MjI0MzQwMzd8&ixlib=rb-4.0.3)"
+                    "background": "url('https://images.unsplash.com/photo-1560703650-ef3e0f254ae0?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')"
                 },
                 "labels": [
                     {
@@ -104,8 +104,9 @@ async function onGetBoardFromGpt(title, user) {
                                     "label3"
                                 ],
                                 "style": {
-                                    "backgroundImage": "url(https://images.unsplash.com/photo-1471977360223-d8cc63cec57c?ixid=M3w2MzcwMzh8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MjI0MzQwMzl8&ixlib=rb-4.0.3)",
-                                    "backgroundColor": "#262c2eff"
+                                    "backgroundImage": "url('https://plus.unsplash.com/premium_photo-1661290470322-a313098e7c2a?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+                                    "backgroundColor": "#262c2e",
+                                    "isFull": true
                                 }
                             }
                         ],
@@ -195,9 +196,7 @@ async function onGetBoardFromGpt(title, user) {
                                 "labelsIds": [
                                     "label1"
                                 ],
-                                "style": {
-                                    "backgroundColor": "#206e4e"
-                                }
+                                "style": null
                             },
                             {
                                 "id": "task10",
@@ -229,8 +228,9 @@ async function onGetBoardFromGpt(title, user) {
                                     "label1"
                                 ],
                                 "style": {
-                                    "backgroundImage": "url(https://images.unsplash.com/photo-1575014638175-42e5dd7538a7?ixid=M3w2MzcwMzh8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MjI0MzQwNDJ8&ixlib=rb-4.0.3)",
-                                    "backgroundColor": "#8b9191ff"
+                                    "backgroundImage": "url('https://plus.unsplash.com/premium_photo-1661962428291-7ec1fd509076?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+                                    "backgroundColor": "#8b9191",
+                                    "isFull": true
                                 }
                             }
                         ],
@@ -311,274 +311,10 @@ async function onGetBoardFromGpt(title, user) {
                     }
                 ]
             }`
-            const hardCodedJSONBoard2 = `{
-  "title": "Trip to Greece",
-  "style": {
-    "background": "url(https://images.unsplash.com/photo-1678036544630-242575470afa?ixid=M3w2MzcwMzh8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MjI0MzY2Nzd8&ixlib=rb-4.0.3)"
-  },
-  "labels": [
-    {
-      "id": "label1",
-      "title": "Historical Sites",
-      "color": "#7f5f02"
-    },
-    {
-      "id": "label2",
-      "title": "Beach Activities",
-      "color": "#0055cc"
-    },
-    {
-      "id": "label3",
-      "title": "Cultural Experiences",
-      "color": "#a64700"
-    }
-  ],
-  "groups": [
-    {
-      "id": "group1",
-      "title": "Preparation Phase",
-      "tasks": [
-        {
-          "id": "task1",
-          "title": "Book Flights",
-          "labelsIds": [
-            "label1"
-          ],
-          "style": {
-            "backgroundColor": "#5e4db2"
-          },
-          "dueDate": 1723248000001
-        },
-        {
-          "id": "task2",
-          "title": "Reserve Accommodations",
-          "labelsIds": [
-            "label2"
-          ],
-          "style": {
-            "backgroundColor": "#1f6a83"
-          },
-          "dueDate": 1731283200000
-        },
-        {
-          "id": "task3",
-          "title": "Travel Insurance",
-          "labelsIds": [
-            "label3"
-          ],
-          "style": {
-            "backgroundColor": "#ae2e24"
-          },
-          "dueDate": 1728547200000
-        },
-        {
-          "id": "task4",
-          "title": "Create Itinerary",
-          "description": "Outline main activities for each day",
-          "labelsIds": [
-            "label1"
-          ],
-          "style": {
-            "backgroundImage": "url(https://images.unsplash.com/photo-1640179840059-ffb51b831e06?ixid=M3w2MzcwMzh8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MjI0MzY2Nzl8&ixlib=rb-4.0.3)",
-            "backgroundColor": "#a8a78fff"
-          }
-        }
-      ],
-      "style": {
-        "backgroundColor": "#344563"
-      }
-    },
-    {
-      "id": "group2",
-      "title": "Activities in Athens",
-      "tasks": [
-        {
-          "id": "task5",
-          "title": "Visit the Acropolis",
-          ".labelsIds": [
-            "label1"
-          ],
-          "style": {
-            "backgroundColor": "#943d73"
-          },
-          "checklists": [
-            {
-              "id": "checklist1",
-              "title": "Visit Checklist",
-              "todos": [
-                {
-                  "id": "todo1",
-                  "title": "Buy tickets online",
-                  "isDone": false
-                },
-                {
-                  "id": "todo2",
-                  "title": "Check opening hours",
-                  "isDone": false
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "task6",
-          "title": "Explore Plaka District",
-          "labelsIds": [
-            "label3"
-          ],
-          "style": {
-            "backgroundColor": "#596773"
-          }
-        },
-        {
-          "id": "task7",
-          "title": "Dinner at a Traditional Taverna",
-          "labelsIds": [
-            "label3"
-          ],
-          "style": {
-            "backgroundColor": "#4d6b1f"
-          }
-        },
-        {
-          "id": "task8",
-          "title": "Visit the National Archaeological Museum",
-          "labelsIds": [
-            "label1"
-          ],
-          "style": {
-            "backgroundColor": "#1f6a83"
-          }
-        }
-      ],
-      "style": {
-        "backgroundColor": "#1A6ED8"
-      }
-    },
-    {
-      "id": "group3",
-      "title": "Island Hopping",
-      "tasks": [
-        {
-          "id": "task9",
-          "title": "Ferry Tickets",
-          "labelsIds": [
-            "label2"
-          ],
-          "style": {
-            "backgroundColor": "#1f6a83"
-          },
-          "dueDate": 1735689600000
-        },
-        {
-          "id": "task10",
-          "title": "Santorini Visit",
-          "labelsIds": [
-            "label1"
-          ],
-          "style": {
-            "backgroundColor": "#0055cc"
-          }
-        },
-        {
-          "id": "task11",
-          "title": "Mykonos Beach Day",
-          "labelsIds": [
-            "label2"
-          ],
-          "style": {
-            "backgroundColor": "#0055cc"
-          },
-          "checklists": [
-            {
-              "id": "checklist2",
-              "title": "Beach Day Checklist",
-              "todos": [
-                {
-                  "id": "todo3",
-                  "title": "Pack sunscreen",
-                  "isDone": false
-                },
-                {
-                  "id": "todo4",
-                  "title": "Rent beach umbrella",
-                  "isDone": false
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "task12",
-          "title": "Crete Historical Sites",
-          "labelsIds": [
-            "label1"
-          ],
-          "style": {
-            "backgroundColor": "#596773"
-          }
-        }
-      ],
-      "style": {
-        "backgroundColor": "#C26A3E"
-      }
-    },
-    {
-      "id": "group4",
-      "title": "Cultural Experiences",
-      "tasks": [
-        {
-          "id": "task13",
-          "title": "Learn Basic Greek Phrases",
-          "labelsIds": [
-            "label3"
-          ],
-          "style": {
-            "backgroundColor": "#a64700"
-          }
-        },
-        {
-          "id": "task14",
-          "title": "Greek Cooking Class",
-          "description": "Book a class to learn making traditional Greek dishes",
-          "labelsIds": [
-            "label3"
-          ],
-          "style": {
-            "backgroundColor": "#206e4e"
-          },
-          "checklists": [
-            {
-              "id": "checklist3",
-              "title": "Cooking Class Checklist",
-              "todos": [
-                {
-                  "id": "todo5",
-                  "title": "Confirm booking",
-                  "isDone": false
-                },
-                {
-                  "id": "todo6",
-                  "title": "Review recipes",
-                  "isDone": false
-                }
-              ]
-            }
-          ],
-          "dueDate": 1723248000001
-        }
-      ],
-      "style": {
-        "backgroundColor": "#B84A45"
-      }
-    }
-  ]
-}`
-            // const hardCodedBoard = JSON.parse(hardCodedJSONBoard)
             const boardToAdd = fillEmptyValues(JSON.parse(hardCodedJSONBoard1),user)
             resolve(boardToAdd)
         }
-            , 5000)})
+            , 1000)})
 
     const payload = { title };
 
@@ -642,7 +378,7 @@ function fillEmptyValues(board, user) {
             task.priority = null;
             task.isDone = false;
             task.byMember = { ...user };
-            if (!task.style) task.style = { backgroundColor: null, isFull: false };
+            if (!task.style) task.style = null;
             if (!task.description) task.description = "";
             if (!task.checklists) task.checklists = [];
             task.attachments = [];

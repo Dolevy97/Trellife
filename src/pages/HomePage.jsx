@@ -123,14 +123,14 @@ export function HomePage() {
                             ref={imgsSwiperRef}
                             centeredSlides={true}
                             rewind={true}
-                            spaceBetween={200}
+                            spaceBetween={130}
                             speed={1800}
                             pagination={{
                                 clickable: true,
                             }}
                             autoplay={{
                                 delay: 4000,
-                                disableOnInteraction: true,
+                                disableOnInteraction: false,
                             }}
                             modules={[Autoplay, Pagination]}
                             className="my-swiper imgs-swiper"
@@ -144,7 +144,7 @@ export function HomePage() {
                             ref={textsSwiperRef}
                             centeredSlides={true}
                             rewind={true}
-                            spaceBetween={200}
+                            spaceBetween={130}
                             speed={1800}
                             pagination={{
                                 clickable: true,
