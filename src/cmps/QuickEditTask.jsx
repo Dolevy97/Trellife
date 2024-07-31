@@ -6,25 +6,24 @@ import labelIcon from '../assets/imgs/TaskDetails-icons/labels.svg'
 import commentIcon from '../assets/imgs/Icons/comment.svg'
 import checklistIcon from '../assets/imgs/Icons/checklist.svg'
 import clockIcon from '../assets/imgs/Icons/clock.svg'
-import coverWhiteIcon from '../assets/imgs/TaskDetails-icons/cover-white.svg'
 import cardIcon from '../assets/imgs/TaskDetails-icons/card.svg'
 import coverIcon from '../assets/imgs/TaskDetails-icons/cover.svg'
 import datesIcon from '../assets/imgs/TaskDetails-icons/dates.svg'
 import trashIcon from '../assets/imgs/TaskDetails-icons/trash.svg'
+
 import { updateGroup } from '../store/actions/group.actions'
 import { getFormattedShortTime, isLightColor } from '../services/util.service'
-import autosize from 'autosize'
-
 import { TaskAction } from '../cmps/TaskAction'
 import { useState, useEffect, useRef } from "react"
 import { updateTask } from '../store/actions/task.actions'
+
+import autosize from 'autosize'
 
 export function QuickEditTask({ task, onClose, taskPosition, group, board, user, handleTaskClick, toggleLabelExpansion, areLabelsExpanded }) {
 
   const [taskTitleInputValue, setTaskTitleInputValue] = useState(task?.title || '')
   const [action, setAction] = useState(null)
   const [labelToEdit, setLabelToEdit] = useState(null)
-  const [coverStyle, setCoverStyle] = useState(task.style || {})
   const textareaRef = useRef(null)
 
 

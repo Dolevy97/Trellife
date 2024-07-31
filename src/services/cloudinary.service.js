@@ -2,21 +2,15 @@ export const cloudinaryService = {
     uploadImg
 }
 
-//FETCH
 async function uploadImg(img) {
-    //Defining our variables
-    // const CLOUD_NAME = 'insert1'
     const CLOUD_NAME = import.meta.env.CLOUD_NAME || 'dw5vg4xiv'
     const UPLOAD_PRESET = 'trellife_uploads'
-    // const UPLOAD_PRESET = 'insert2'
     const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`
     const FORM_DATA = new FormData()
     
-    //Bulding the request body
     FORM_DATA.append('file', img)
     FORM_DATA.append('upload_preset', UPLOAD_PRESET)
   
-    // Sending a post method request to Cloudinarys API
   
     try {
       const res = await fetch(UPLOAD_URL, {
@@ -24,14 +18,8 @@ async function uploadImg(img) {
         body: FORM_DATA,
       })
       const { url } = await res.json()
-      // console.log(url)
       return url
-    //   console.log('url:', url)
-    //   const elImg = document.createElement('img')
-    //   elImg.src = url
-    //   document.body.append(elImg)
     } catch (err) {
-        // console.log(err)
       console.error(err)
       throw err
     }

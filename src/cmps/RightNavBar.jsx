@@ -48,7 +48,6 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
         try {
             await removeBoard(board._id)
             await removeBoardFromFavorites(board._id)
-            console.log('Board removed successfully')
             navigate('/board')
             //add msg
         } catch (err) {

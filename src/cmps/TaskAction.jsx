@@ -11,7 +11,7 @@ import { cloudinaryService } from "../services/cloudinary.service"
 
 import { updateBoard } from "../store/actions/board.actions"
 import { updateTask } from "../store/actions/task.actions"
-import { getAverageColor, getAverageColorFromAttachment, getAverageColorFromUrl, getBackgroundImages, getUnsplashImages, isLightColor, makeId } from "../services/util.service"
+import { getAverageColorFromAttachment, getBackgroundImages, isLightColor, makeId } from "../services/util.service"
 
 import closeIcon from '../assets/imgs/Icons/close.svg'
 import closeDisabledIcon from '../assets/imgs/TaskDetails-icons/close-disabled.svg'

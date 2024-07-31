@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router"
-import { updateUser } from "../store/actions/user.actions";
+import { updateUser } from "../store/actions/user.actions"
 
 import star from '../assets/imgs/Icons/star.svg'
 import fullStar from '../assets/imgs/Icons/fullstar.svg'
@@ -137,14 +137,6 @@ export function DropdownMenu({ menu, setIsMenuOpen, isMenuOpen, position }) {
                     </div>
 
                 )
-            // case 'Templates':
-            //     return (
-            //         <div className="menu-content">
-            //             <ul>
-            //                 <li style={{ cursor: 'default' }}>No templates to show</li>
-            //             </ul>
-            //         </div>
-            //     )
             default:
                 return null
         }

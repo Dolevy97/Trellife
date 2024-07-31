@@ -59,7 +59,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
   function updateInputWidth() {
     if (boardTitleRef.current) {
-      const newWidth = Math.max(newTitle.length * 9.2, 100) // Minimum width of 100px
+      const newWidth = Math.max(newTitle.length * 9.2, 100)
       setInputWidth(`${newWidth}px`)
     }
   }
@@ -168,9 +168,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
     // const title = "Trip to Australia"
     // const title = "Master fullstack programming"
 
-    try {
-      // const title = prompt('Name the project you\'d like to create')
-     
+    try {     
       setIsAILoading(true)
       const newBoard = await openAiService.onGetBoardFromGpt(title, user)
 
