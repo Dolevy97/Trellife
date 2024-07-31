@@ -26,9 +26,21 @@
 
 
 .modal {
+  // background-color: #1e2731;
+  // padding: 20px;
+  // border-radius: 8px;
+  // box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  // width: 90%;
+  // color: $txtclr2 ;
+  // max-width: 500px;
+  // font-family: inherit;
+  // transform: translateY(-50vh);
+  // opacity: 0;
+  // transition: transform 0.5s ease, opacity 0.5s ease;
+  
   background-color: #1e2731;
-  padding: 20px;
-  border-radius: 8px;
+  padding: 15px 45px 27px 49px;
+  border-radius: 16px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   width: 90%;
   color: $txtclr2 ;
@@ -47,6 +59,14 @@
   }
 
   .ai-title {
+    // margin-top: 0;
+    // margin-bottom: 20px;
+    // font-size: 24px;
+    // display: flex;
+    // justify-content: flex-start;
+    // align-items: center;
+    // gap: 7px;
+
     margin-top: 0;
     margin-bottom: 20px;
     font-size: 24px;
@@ -54,13 +74,24 @@
     justify-content: flex-start;
     align-items: center;
     gap: 7px;
+    position: relative;
 
     img {
-      width: 24px;
-      height: 24px;
+      // width: 24px;
+      // height: 24px;
+      // animation: spin 3.5s linear infinite;
+      // margin-block-start: 5px;
+      // filter: invert(73%) sepia(5%) saturate(819%) hue-rotate(171deg) brightness(93%) contrast(90%);  
+      
+      width: 23.5px;
+      height: 23.5px;
       animation: spin 3.5s linear infinite;
       margin-block-start: 5px;
-      filter: invert(73%) sepia(5%) saturate(819%) hue-rotate(171deg) brightness(93%) contrast(90%);    }
+      filter: invert(73%) sepia(5%) saturate(819%) hue-rotate(171deg) brightness(93%) contrast(90%);
+      position: absolute;
+      left: -34px;
+      bottom: 12.4px;
+     }
   }
 
   form {
@@ -80,6 +111,8 @@
       border-radius: 4px;
       font-size: 16px;
       margin-bottom: 20px;
+      // font-weight: 400;
+      font-weight: 500;
 
       &:focus {
         outline: none;
@@ -90,7 +123,8 @@
 
     .modal-buttons {
       display: flex;
-      justify-content: flex-end;
+      // justify-content: flex-end;
+      justify-content: space-between;
       gap: 10px;
 
       button {

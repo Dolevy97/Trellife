@@ -57,8 +57,10 @@ export function CreateAiBoardModal({ isOpen, onClose, onSubmit }) {
                         required
                     />
                     <div className="modal-buttons">
-                        <button type="button" onClick={handleClose}>Cancel</button>
+                        {/* <button type="button" onClick={handleClose}>Cancel</button>
+                        <button type="submit">Create</button> */}
                         <button type="submit">Create</button>
+                        <button type="button" onClick={handleClose}>Cancel</button>
                     </div>
                 </form>
             </div>
