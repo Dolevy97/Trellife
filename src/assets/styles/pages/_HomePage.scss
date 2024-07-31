@@ -414,7 +414,17 @@
     text-align: left;
 
     &:hover {
-        cursor: pointer;
+        cursor: grab;
+        @media (min-width: 992px) {
+            cursor: pointer;
+        }
+    }
+
+    &:active{
+        cursor: grabbing;
+        @media (min-width: 992px) {
+            cursor: pointer;
+        }
     }
 
     &.selected {
