@@ -223,6 +223,8 @@
                         display: flex;
                         justify-content: center;
                         align-items: center;
+                        border-radius: 12px;
+                        overflow: hidden;
 
                     }
 
@@ -415,13 +417,15 @@
 
     &:hover {
         cursor: grab;
+
         @media (min-width: 992px) {
             cursor: pointer;
         }
     }
 
-    &:active{
+    &:active {
         cursor: grabbing;
+
         @media (min-width: 992px) {
             cursor: pointer;
         }
