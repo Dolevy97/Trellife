@@ -79,7 +79,7 @@ export function AppHeader({ isHomePage }) {
 	}
 
 	async function guestLogin() {
-		await login({ username: 'Guest', password: '1234' })
+		await login({ username: 'Yona', password: '1234' })
 	}
 
 	function handleResize() {
