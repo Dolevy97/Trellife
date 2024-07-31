@@ -989,13 +989,13 @@ export function TaskDetails() {
                             {action === 'attachment' && actionPosition === 1
                                 && <TaskAction action="attach" {...taskActionProps} />}
                         </div>
-                        <div className="task-action-container">
+                        {/* <div className="task-action-container">
                             <button type='button' className="action" onClick={(ev) => onSetAction(ev, 'location')} style={{ cursor: 'not-allowed' }}>
                                 <img className="location-icon icon" src={locationIcon} alt="location icon" />
                                 <span className="action-title">Location</span>
                             </button>
-                            {/* Enter location action rendering */}
-                        </div>
+                            Enter location action rendering
+                        </div> */}
                         {!taskToEdit.style
                             &&
                             <div className="task-action-container">
