@@ -89,6 +89,7 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
         updateLineColor()
     }, [task.style])
 
+
     // Getters
 
     function getBoardMembers() {
