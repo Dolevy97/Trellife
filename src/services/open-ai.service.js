@@ -318,7 +318,7 @@ async function getDemoAiBoard(title,user){
             const boardToAdd = fillEmptyValues(JSON.parse(hardCodedJSONBoard1), user)
             resolve(boardToAdd)
         }
-            , 7000)
+            , 12000)
     })
 }
 
