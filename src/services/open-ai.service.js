@@ -3,15 +3,15 @@ import { getUnsplashImageByQuery } from "./util.service";
 import { json } from "react-router";
 
 export const openAiService = {
-    onGetBoardFromGpt
+    getBoardFromGpt,
+    getDemoAiBoard
 }
 
 const BASE_URL = process.env.NODE_ENV === 'production'
     ? '/api/open-ai'
     : '//localhost:3030/api/open-ai'
 
-async function onGetBoardFromGpt(title, user) {
-
+async function getDemoAiBoard(title,user){
     return new Promise((resolve) => {
         setTimeout(() => {
             const hardCodedJSONBoard1 = `{
@@ -318,8 +318,11 @@ async function onGetBoardFromGpt(title, user) {
             const boardToAdd = fillEmptyValues(JSON.parse(hardCodedJSONBoard1), user)
             resolve(boardToAdd)
         }
-            , 1000)
+            , 7000)
     })
+}
+
+async function getBoardFromGpt(title, user) {
 
     const payload = { title };
 

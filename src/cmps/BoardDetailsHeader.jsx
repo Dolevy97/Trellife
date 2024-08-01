@@ -170,7 +170,8 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
     try {     
       setIsAILoading(true)
-      const newBoard = await openAiService.onGetBoardFromGpt(title, user)
+      const newBoard = await openAiService.getDemoAiBoard(title, user)
+      // const newBoard = await openAiService.getBoardFromGpt(title, user)
 
       console.log('newBoard: ', newBoard)
       const addedBoard = await addBoard(newBoard)
