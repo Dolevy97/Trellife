@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { showErrorMsg } from "../services/event-bus.service"
 
+import openAILogo from '../assets/imgs/Icons/OpenAI_Logo.svg'
+
 
 export function CreateAiBoardModal({ isOpen, onClose, onSubmit }) {
     const [title, setTitle] = useState('')
@@ -44,7 +46,7 @@ export function CreateAiBoardModal({ isOpen, onClose, onSubmit }) {
         <div className={`modal-overlay ${isActive ? 'active' : ''} ${isClosing ? 'closing' : ''}`}>
             <div className={`modal ${isActive ? 'active' : ''} ${isClosing ? 'closing' : ''}`}>
                 <div className="ai-title"> 
-                    <img src="../../../src\assets\imgs\Icons\OpenAI_Logo.svg" alt="" />
+                    <img src={openAILogo} alt="" />
                     <h2>Create AI Board</h2>
                 </div>
                 <form onSubmit={handleSubmit}>
@@ -57,10 +59,8 @@ export function CreateAiBoardModal({ isOpen, onClose, onSubmit }) {
                         required
                     />
                     <div className="modal-buttons">
-                        {/* <button type="button" onClick={handleClose}>Cancel</button>
-                        <button type="submit">Create</button> */}
-                        <button type="submit">Create</button>
                         <button type="button" onClick={handleClose}>Cancel</button>
+                        <button type="submit">Create</button>
                     </div>
                 </form>
             </div>
