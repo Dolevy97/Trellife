@@ -34,22 +34,24 @@ async function onGetBoardFromGpt(title, user) {
                         "id": "label3",
                         "title": "Accommodations",
                         "color": "#4cce97"
-                    }
-                ],
-                "groups": [
-                    {
-                        "id": "group1",
-                        "title": "Itinerary Planning",
-                        "tasks": [
+                        }
+                        ],
+                        "groups": [
                             {
-                                "id": "task1",
-                                "title": "Book flights to Athens",
-                                "description": "",
-                                "labelsIds": [
-                                    "label3"
-                                ],
-                                "style": {
-                                    "backgroundColor": "#ae2e24"
+                                "id": "group1",
+                                "title": "Itinerary Planning",
+                                "tasks": [
+                                    {
+                                        "id": "task1",
+                                        "title": "Book flights to Athens",
+                                        "description": "",
+                                        "labelsIds": [
+                                            "label3"
+                                            ],
+                                            "style": {
+                                                "backgroundImage": "url('https://images.unsplash.com/photo-1583708877666-49b849736e1f?q=80&w=3725&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+                                                "backgroundColor": "#71abce",
+                                                "isFull": true
                                 },
                                 "dueDate": 1723248000001
                             },
@@ -62,195 +64,197 @@ async function onGetBoardFromGpt(title, user) {
                                 ],
                                 "style": {
                                     "backgroundColor": "#596773"
-                                },
-                                "dueDate": 1723348000001
-                            },
-                            {
-                                "id": "task3",
-                                "title": "Itinerary for Athens",
-                                "description": "",
-                                "labelsIds": [
-                                    "label1",
-                                    "label2"
-                                ],
-                                "style": {
-                                    "backgroundColor": "#1f6a83"
-                                },
-                                "dueDate": 1723448000001,
-                                "checklists": [
+                                    },
+                                    "dueDate": 1723348000001
+                                    },
                                     {
-                                        "id": "checklist1",
-                                        "title": "Athens Tour",
-                                        "todos": [
-                                            {
-                                                "id": "todo1",
-                                                "title": "Visit the Acropolis",
-                                                "isDone": false
-                                            },
-                                            {
-                                                "id": "todo2",
-                                                "title": "Walk through Plaka",
-                                                "isDone": false
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "task4",
-                                "title": "Car Rental",
-                                "description": "",
-                                "labelsIds": [
-                                    "label3"
-                                ],
-                                "style": {
-                                    "backgroundImage": "url('https://plus.unsplash.com/premium_photo-1661290470322-a313098e7c2a?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
-                                    "backgroundColor": "#262c2e",
-                                    "isFull": true
-                                }
-                            }
-                        ],
-                        "style": {
-                            "backgroundColor": "#344563"
-                        }
-                    },
-                    {
-                        "id": "group2",
-                        "title": "Culinary Experiences",
-                        "tasks": [
-                            {
-                                "id": "task5",
-                                "title": "Taste local wines",
-                                "description": "",
-                                "labelsIds": [
-                                    "label2"
-                                ],
-                                "style": {
-                                    "backgroundColor": "#0065cc"
-                                }
-                            },
-                            {
-                                "id": "task6",
-                                "title": "Cooking Classes in Crete",
-                                "description": "Learn to cook traditional Cretan dishes.",
-                                "labelsIds": [
-                                    "label2"
-                                ],
-                                "style": {
-                                    "backgroundColor": "#ae2e24"
-                                },
-                                "checklists": [
-                                    {
-                                        "id": "checklist2",
-                                        "title": "Cooking Essentials",
-                                        "todos": [
-                                            {
-                                                "id": "todo3",
-                                                "title": "Buy ingredients",
-                                                "isDone": false
-                                            },
-                                            {
-                                                "id": "todo4",
-                                                "title": "Confirm booking",
-                                                "isDone": false
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "id": "task7",
-                                "title": "Food tour in Athens",
-                                "description": "Experience a variety of Greek cuisines.",
-                                "labelsIds": [
-                                    "label2"
-                                ],
-                                "style": {
-                                    "backgroundColor": "#596773"
-                                }
-                            },
-                            {
-                                "id": "task8",
-                                "title": "Dinner reservations",
-                                "description": "",
-                                "labelsIds": [
-                                    "label2"
-                                ],
-                                "style": {
-                                    "backgroundColor": "#943d73"
-                                }
-                            }
-                        ],
-                        "style": {
-                            "backgroundColor": "#7B6CC1"
-                        }
-                    },
-                    {
-                        "id": "group3",
-                        "title": "Cultural Tours",
-                        "tasks": [
-                            {
-                                "id": "task9",
-                                "title": "Guided tours of historical sites",
-                                "description": "",
-                                "labelsIds": [
-                                    "label1"
-                                ],
-                                "style": null
-                            },
-                            {
-                                "id": "task10",
-                                "title": "Museum visits",
-                                "description": "Plan visits to the National Archaeological Museum and Museum of Cycladic Art.",
-                                "labelsIds": [
-                                    "label1"
-                                ],
-                                "style": {
-                                    "backgroundColor": "#5e4db2"
-                                }
-                            },
-                            {
-                                "id": "task11",
-                                "title": "Live Greek music nights",
-                                "description": "",
-                                "labelsIds": [
-                                    "label1"
-                                ],
-                                "style": {
-                                    "backgroundColor": "#0055cc"
-                                }
-                            },
-                            {
-                                "id": "task12",
-                                "title": "Mythology tour",
-                                "description": "",
-                                "labelsIds": [
-                                    "label1"
-                                ],
-                                "style": {
-                                    "backgroundImage": "url('https://plus.unsplash.com/premium_photo-1661962428291-7ec1fd509076?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
-                                    "backgroundColor": "#8b9191",
-                                    "isFull": true
-                                }
-                            }
-                        ],
-                        "style": {
-                            "backgroundColor": "#216e4e"
-                        }
-                    },
-                    {
-                        "id": "group4",
-                        "title": "Adventure Activities",
-                        "tasks": [
-                            {
-                                "id": "task13",
-                                "title": "Scuba diving in Santorini",
-                                "description": "",
-                                "labelsIds": [
-                                    "label1"
-                                ],
-                                "style": {
-                                    "backgroundColor": "#4d6b1f"
+                                        "id": "task3",
+                                        "title": "Itinerary for Athens",
+                                        "description": "",
+                                        "labelsIds": [
+                                            "label1",
+                                            "label2"
+                                            ],
+                                            "style": {
+                                                "backgroundColor": "#1f6a83"
+                                                },
+                                                "dueDate": 1723448000001,
+                                                "checklists": [
+                                                    {
+                                                        "id": "checklist1",
+                                                        "title": "Athens Tour",
+                                                        "todos": [
+                                                            {
+                                                                "id": "todo1",
+                                                                "title": "Visit the Acropolis",
+                                                                "isDone": false
+                                                                },
+                                                                {
+                                                                    "id": "todo2",
+                                                                    "title": "Walk through Plaka",
+                                                                    "isDone": false
+                                                                    }
+                                                                    ]
+                                                                    }
+                                                                    ]
+                                                                    },
+                                                                    {
+                                                                        "id": "task4",
+                                                                        "title": "Car Rental",
+                                                                        "description": "",
+                                                                        "labelsIds": [
+                                                                            "label3"
+                                                                            ],
+                                                                            "style": {
+                                                                                "backgroundColor": "#596773"
+                                                                                }
+                                                                                }
+                                                                                ],
+                                                                                "style": {
+                                        "backgroundColor": "#344563"
+                                        }
+                                        },
+                                        {
+                                            "id": "group2",
+                                            "title": "Culinary Experiences",
+                                            "tasks": [
+                                                {
+                                                    "id": "task5",
+                                                    "title": "Taste local wines",
+                                                    "description": "",
+                                                    "labelsIds": [
+                                                        "label2"
+                                                        ],
+                                                        "style": {
+                                                            "backgroundColor": "#0065cc"
+                                                            }
+                                                            },
+                                                            {
+                                                                "id": "task6",
+                                                                "title": "Cooking Classes in Crete",
+                                                                "description": "Learn to cook traditional Cretan dishes.",
+                                                                "labelsIds": [
+                                                                    "label2"
+                                                                    ],
+                                                                    "style": {
+                                                                        "backgroundColor": "#ae2e24"
+                                                                        },
+                                                                        "checklists": [
+                                                                            {
+                                                                                "id": "checklist2",
+                                                                                "title": "Cooking Essentials",
+                                                                                "todos": [
+                                                                                    {
+                                                                                        "id": "todo3",
+                                                                                        "title": "Buy ingredients",
+                                                                                        "isDone": false
+                                                                                        },
+                                                                                        {
+                                                                                            "id": "todo4",
+                                                                                            "title": "Confirm booking",
+                                                                                            "isDone": false
+                                                                                            }
+                                                                                            ]
+                                                                                            }
+                                                                                            ]
+                                                                                            },
+                                                                                            {
+                                                                                                "id": "task7",
+                                                                                                "title": "Food tour in Athens",
+                                                                                                "description": "Experience a variety of Greek cuisines.",
+                                                                                                "labelsIds": [
+                                                                                                    "label2"
+                                                                                                    ],
+                                                                                                    "style": {
+                                                                                                        "backgroundImage": "url('https://plus.unsplash.com/premium_photo-1686285541226-44d0d185ad4f?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+                                                                                                        "backgroundColor": "#a47c47",
+                                                                                                        "isFull": true
+                                                                                                        }
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "id": "task8",
+                                                                                                            "title": "Dinner reservations",
+                                                                                                            "description": "",
+                                                                                                            "labelsIds": [
+                                                                                                                "label2"
+                                                                                                                ],
+                                                                                                                "style": {
+                                                                                                                    "backgroundColor": "#943d73"
+                                                                                                                    }
+                                                                                                                    }
+                                                                                                                    ],
+                                                                                                                    "style": {
+                                                                                                                        "backgroundColor": "#7B6CC1"
+                                                                                                                        }
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "id": "group3",
+                                                                                                                            "title": "Cultural Tours",
+                                                                                                                            "tasks": [
+                                                                                                                                {
+                                                                                                                                    "id": "task9",
+                                                                                                                                    "title": "Guided tours of historical sites",
+                                                                                                                                    "description": "",
+                                                                                                                                    "labelsIds": [
+                                                                                                                                        "label1"
+                                                                                                                                        ],
+                                                                                                                                        "style": null
+                                                                                                                                        },
+                                                                                                                                        {
+                                                                                                                                            "id": "task10",
+                                                                                                                                            "title": "Museum visits",
+                                                                                                                                            "description": "Plan visits to the National Archaeological Museum and Museum of Cycladic Art.",
+                                                                                                                                            "labelsIds": [
+                                                                                                                                                "label1"
+                                                                                                                                                ],
+                                                                                                                                                "style": {
+                                                                                                                                                    "backgroundColor": "#5e4db2"
+                                                                                                                                                    }
+                                                                                                                                                    },
+                                                                                                                                                    {
+                                                                                                                                                        "id": "task11",
+                                                                                                                                                        "title": "Live Greek music nights",
+                                                                                                                                                        "description": "",
+                                                                                                                                                        "labelsIds": [
+                                                                                                                                                            "label1"
+                                                                                                                                                            ],
+                                                                                                                                                            "style": {
+                                                                                                                                                                "backgroundColor": "#0055cc"
+                                                                                                                                                                }
+                                                                                                                                                                },
+                                                                                                                                                                {
+                                                                                                                                                                    "id": "task12",
+                                                                                                                                                                    "title": "Mythology tour",
+                                                                                                                                                                    "description": "",
+                                                                                                                                                                    "labelsIds": [
+                                                                                                                                                                        "label1"
+                                                                                                                                                                        ],
+                                                                                                                                                                        "style": {
+                                                                                                                                                                            "backgroundImage": "url('https://plus.unsplash.com/premium_photo-1676391702953-f6ef6316eb0a?q=80&w=2672&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+                                                                                                                                                                            "backgroundColor": "#847e75",
+                                                                                                                                                                            "isFull": true
+                                                                                                                                                                            }
+                                                                                                                                                                            }
+                                                                                                                                                                            ],
+                                                                                                                                                                            "style": {
+                                                                                                                                                                                "backgroundColor": "#216e4e"
+                                                                                                                                                                                }
+                                                                                                                                                                                },
+                                                                                                                                                                                {
+                                                                                                                                                                                    "id": "group4",
+                                                                                                                                                                                    "title": "Adventure Activities",
+                                                                                                                                                                                    "tasks": [
+                                                                                                                                                                                        {
+                                                                                                                                                                                            "id": "task13",
+                                                                                                                                                                                            "title": "Scuba diving in Santorini",
+                                                                                                                                                                                            "description": "",
+                                                                                                                                                                                            "labelsIds": [
+                                                                                                                                                                                                "label1"
+                                                                                                                                                                                                ],
+                                                                                                                                                                                                "style": {
+                                                                                                                                                                                                    "backgroundImage": "url('https://plus.unsplash.com/premium_photo-1661265851801-e523847e3932?q=80&w=2274&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+                                                                                                                                                                                                    "backgroundColor": "#2a79ad",
+                                                                                                                                                                                                    "isFull": true
                                 }
                             },
                             {
@@ -311,10 +315,11 @@ async function onGetBoardFromGpt(title, user) {
                     }
                 ]
             }`
-            const boardToAdd = fillEmptyValues(JSON.parse(hardCodedJSONBoard1),user)
+            const boardToAdd = fillEmptyValues(JSON.parse(hardCodedJSONBoard1), user)
             resolve(boardToAdd)
         }
-            , 1000)})
+            , 1000)
+    })
 
     const payload = { title };
 
