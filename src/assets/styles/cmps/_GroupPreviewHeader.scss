@@ -6,7 +6,6 @@
     justify-content: space-between;
 
     padding: 8px 8px 0;
-    // margin: 4px 4px 0;
 
     input {
         border: none;
@@ -50,8 +49,6 @@
 
     .header-svg-container {
         display: inline-flex;
-        // align-items: center;
-        // gap: 2px;
 
         .collapse-wrapper {
             display: flex;
@@ -85,8 +82,8 @@
             height: 28px;
             transition: background-color 0.1s ease;
             border-radius: 4px;
-            cursor: pointer;
             padding: 4px;
+            cursor: pointer;
 
             &:hover {
                 background-color: $btnhoverclr;
@@ -120,6 +117,7 @@
 
         .menu-header {
             position: relative;
+            
             display: flex;
             align-items: center;
             justify-content: center;

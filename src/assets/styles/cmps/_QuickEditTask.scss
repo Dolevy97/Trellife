@@ -14,7 +14,6 @@
   gap: 5px;
 
   .quick-edit-main {
-
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -25,25 +24,22 @@
     border-radius: 3px;
     box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25), 0 0 0 1px rgba(9, 30, 66, 0.08);
     z-index: 100;
-    /* border-radius: 8px; */
     width: 100%;
 
     &.regular-task {
       padding-top: 5px;
-      /* padding-top: 36px; */
       border-radius: 8px;
     }
 
     .under-the-cover-info {
-
       display: flex;
       flex-direction: column;
+
       background-color: #22272b;
       padding: 8px 14px 16px 14px;
       border-bottom-right-radius: 8px;
       border-bottom-left-radius: 8px;
       z-index: 100;
-      
       width: 100%;
 
 
@@ -63,10 +59,11 @@
           cursor: pointer;
       
           .label-color {
-            width: 100%;
-            height: 100%;
             display: flex;
             align-items: center;
+
+            width: 100%;
+            height: 100%;
             padding: 0 8px;
             box-sizing: border-box;
           }
@@ -80,7 +77,6 @@
             opacity: 0;
             transition: opacity 0.15s ease-in-out;
           }
-      
       
           &.expanded {
             padding-right: 8px;
@@ -112,7 +108,6 @@
           align-items: center;
           gap: 4px;
           margin-block-end: 2px;
-
 
           img {
             height: 16px;
@@ -189,9 +184,7 @@
             color: $txtclr1;
             font-size: .75em;
 
-            & img {
-              
-              // filter: invert(100%) sepia(99%) saturate(1%) hue-rotate(20deg) brightness(104%) contrast(100%);
+            & img {        
             }
 
             & span {
@@ -255,7 +248,6 @@
       }
     }
 
-
     textarea {
       min-height: 21px;
       height: fit-content;
@@ -278,7 +270,6 @@
 
   }
 
-
   .task-inner-container-img {
     min-height: 245px;
     width: 100%;
@@ -288,16 +279,17 @@
   }
 
   .cover-container {
+    display: block;
     width: 100%;
     height: 36px;
     overflow: hidden;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
-    display: block;
 
   }
 
   .cover-container-img {
+    display: flex;
     width: 100%;
     background-color: rgb(252, 252, 252);
     height: 260px;
@@ -305,7 +297,6 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    display: flex;
 
   }
 
@@ -335,7 +326,6 @@
       font-family: inherit;
       font-weight: 500;
 
-      // width: 156px;
       font-size: 14px;
       color: inherit;
       background-color: #2C333A;
@@ -354,10 +344,6 @@
         height: 1em;
         width: 1em;
         margin-inline-end: 7px;
-      }
-
-      .action-title {
-        // padding-inline-start: em(24, 14);
       }
 
       &:hover {

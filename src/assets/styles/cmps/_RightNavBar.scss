@@ -1,10 +1,11 @@
 .right-nav-bar-container {
-    display: flex;
-    flex-direction: column;
-
     position: fixed;
     right: 0;
     top: 3rem;
+
+    display: flex;
+    flex-direction: column;
+
     z-index: 100;
     width: 21.188em;
     height: 100%;
@@ -39,7 +40,6 @@
 
 
         .to-menu-btn-wrapper {
-            position: absolute;
             position: absolute;
             left: 12px;
             top: 16px;
@@ -103,7 +103,6 @@
     }
 
     .right-nav-bar-body {
-
         display: flex;
         flex-direction: column;
         gap: 26px;
@@ -124,15 +123,14 @@
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
-                border-radius: 8px;
 
+                border-radius: 8px;
                 font-weight: 400;
                 padding: 8px 6px 8px 12px;
                 margin-block-start: 4px;
 
                 width: 94%;
                 gap: 10px;
-
                 cursor: pointer;
 
                 img {
@@ -158,8 +156,8 @@
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
-                border-radius: 8px;
 
+                border-radius: 8px;
                 font-weight: 400;
                 padding: 8px 6px 8px 12px;
                 width: 94%;
@@ -182,15 +180,15 @@
         .collapse-all-container {
             display: flex;
             justify-content: center;
-            margin-bottom: 4px;
             cursor: pointer;
+            margin-bottom: 4px;
 
             .collapse-all-wrapper {
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
-                border-radius: 8px;
 
+                border-radius: 8px;
                 font-weight: 400;
                 padding: 6px 6px 6px 10px;
                 width: 94%;
@@ -217,8 +215,8 @@
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
-                border-radius: 8px;
 
+                border-radius: 8px;
                 font-weight: 400;
                 padding: 8px 6px 8px 12px;
                 width: 94%;
@@ -245,7 +243,6 @@
                 position: absolute;
                 top: 0;
                 right: 9px;
-
 
                 display: flex;
                 justify-content: center;
@@ -327,10 +324,11 @@
                 }
 
                 & .user-img {
-                    align-self: start;
-                    margin-block-start: 4px;
                     position: absolute;
                     left: -40px;
+
+                    align-self: start;
+                    margin-block-start: 4px;
 
                     height: 32px;
                     width: 32px;
@@ -348,19 +346,19 @@
             padding: 0px 18px;
 
             .imgs-option {
-                cursor: pointer;
+                position: relative;
                 float: left;
                 padding: 0 4px;
-                position: relative;
                 text-align: center;
                 width: 50%;
+                cursor: pointer;
 
                 img {
+                    position: relative;
                     background-size: cover;
                     border-radius: 8px;
                     height: 96px;
                     margin-bottom: 8px;
-                    position: relative;
                     width: 100%;
 
                     &:hover {
@@ -370,19 +368,19 @@
             }
 
             .colors-option {
-                cursor: pointer;
+                position: relative;
                 float: left;
                 padding: 0 4px;
-                position: relative;
                 text-align: center;
                 width: 50%;
+                cursor: pointer;
 
                 img {
+                    position: relative;
                     background-size: cover;
                     border-radius: 8px;
                     height: 96px;
                     margin-bottom: 8px;
-                    position: relative;
                     width: 100%;
 
                     &:hover {
@@ -397,6 +395,7 @@
 
     .delete-modal {
         position: relative;
+
         display: flex;
         justify-content: center;
         color: inherit;
@@ -405,7 +404,6 @@
             position: absolute;
             top: 16em;
             right: 9px;
-
 
             display: flex;
             justify-content: center;
@@ -469,6 +467,7 @@
 .change-color-background {
     display: flex;
     flex-direction: column;
+
     width: 100%;
     padding: 0 16px;
 
@@ -482,6 +481,7 @@
 
         .color-button {
             position: relative;
+
             background-size: cover;
             border-radius: 8px;
             height: 96px;
@@ -538,11 +538,11 @@
         max-width: 338px;
 
         .photo-container {
+            position: relative;
             border-radius: 8px;
             box-sizing: border-box;
             display: inline-block;
             padding: 0 4px 8px;
-            position: relative;
             text-align: left;
             vertical-align: top;
             width: 50%;
@@ -551,13 +551,13 @@
             cursor: pointer;
 
             .photo {
+                position: relative;
                 background-color: #A1BDD914;
                 background-size: cover;
                 border-radius: 8px;
                 display: block;
                 height: 96px;
                 overflow: hidden;
-                position: relative;
                 width: 100%;
             }
         }
