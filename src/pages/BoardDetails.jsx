@@ -32,7 +32,7 @@ export function BoardDetails() {
   const [areAllGroupsCollapsed, setAreAllGroupsCollapsed] = useState(false)
   const [displayStyle, setDisplayStyle] = useState('board')
 
-  const groupListContainer = useRef()
+  const boardDetailsContainer = useRef()
   const groupListHeader = useRef()
   const addGroupRef = useRef(null)
 
@@ -76,9 +76,9 @@ export function BoardDetails() {
   }, [user])
 
   useEffect(() => {
-    if (board && board.style && board.style.background && groupListContainer) {
-      groupListContainer.current.style.background = board.style.background
-      groupListContainer.current.style.backgroundSize = 'cover'
+    if (board && board.style && board.style.background && boardDetailsContainer) {
+      boardDetailsContainer.current.style.background = board.style.background
+      boardDetailsContainer.current.style.backgroundSize = 'cover'
       groupListHeader.current.style.background = board.style.background
       groupListHeader.current.style.backgroundSize = 'cover'
     }
@@ -215,8 +215,8 @@ export function BoardDetails() {
       />
 
 
-      <section ref={groupListContainer}
-        className="group-list-container"
+      <section ref={boardDetailsContainer}
+        className="board-details-container"
         style={displayStyle === 'table' ? { paddingBlock: 0 } : {}}>
         {displayStyle === 'board' ? (
           <DragDropContext onDragEnd={handleOnDragEnd}>

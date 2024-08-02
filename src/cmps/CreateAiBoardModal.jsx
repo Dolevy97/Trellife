@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { showErrorMsg } from "../services/event-bus.service"
 
 import openAILogo from '../assets/imgs/Icons/OpenAI_Logo.svg'
+import closeIcon from '../assets/imgs/Icons/close.svg'
 
 
 export function CreateAiBoardModal({ isOpen, onClose, onSubmit }) {
@@ -46,8 +47,11 @@ export function CreateAiBoardModal({ isOpen, onClose, onSubmit }) {
         <div className={`modal-overlay ${isActive ? 'active' : ''} ${isClosing ? 'closing' : ''}`}>
             <div className={`modal ${isActive ? 'active' : ''} ${isClosing ? 'closing' : ''}`}>
                 <div className="ai-title"> 
-                    <img src={openAILogo} alt="" />
+                    <img className="icon" src={openAILogo} alt="" />
                     <h2>Create AI Board</h2>
+                    <div className="close-btn-wrapper" onClick={handleClose}>
+                    <img src={closeIcon} alt="Close" />
+                </div>
                 </div>
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="project-title">Name the project you'd like to create</label>
@@ -59,7 +63,6 @@ export function CreateAiBoardModal({ isOpen, onClose, onSubmit }) {
                         required
                     />
                     <div className="modal-buttons">
-                        <button type="button" onClick={handleClose}>Cancel</button>
                         <button type="submit">Create</button>
                     </div>
                 </form>
