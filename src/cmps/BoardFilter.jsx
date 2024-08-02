@@ -5,7 +5,7 @@ import { boardService } from '../services/board'
 export function Filter({ filterBy, onSetFilter, onSortBy, onSetSort }) {
 
     const [filterToEdit, setFilterToEdit] = useState(structuredClone(filterBy))
-    const [sortByToEdit, setSortByToEdit] = useState(boardService.getDefaultSort())
+    const [sortByToEdit, setSortByToEdit] = useState({ field: 'activity', dir: -1 })
 
     useEffect(() => {
         onSetFilter(filterToEdit)

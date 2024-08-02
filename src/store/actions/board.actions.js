@@ -118,6 +118,7 @@ export async function updateBoardBgc(board, bgc) {
 export function setSortBy(sortBy) {
     store.dispatch({ type: SET_SORT_BY, sortBy })
 }
+
 export function setFilterBy(filterBy) {
     store.dispatch({ type: SET_FILTER_BY, filterBy })
 }
