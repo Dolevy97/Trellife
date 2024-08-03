@@ -19,7 +19,6 @@ import { AILoadingScreen } from './AILoadingScreen'
 import { useNavigate } from 'react-router'
 import { CreateAiBoardModal } from './CreateAiBoardModal'
 
-
 export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, setIsFilterOpen, isFilterOpen, displayStyle, setDisplayStyle }) {
   const board = useSelector(storeState => storeState.boardModule.board)
   const user = useSelector(storeState => storeState.userModule.user)
@@ -185,11 +184,11 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
       showErrorMsg('Operation failed. Please try again later')
     }
   }
-
+  
   return (
     <>
-      <section className={`groups-header ${isRightNavBarOpen ? 'right-nav-open' : ''}`}>
-        <div className='groups-header-leftside'>
+      <section className={`board-details-header ${isRightNavBarOpen ? 'right-nav-open' : ''}`}>
+        <div className='board-header-leftside'>
           {isEditing ? (
             <input
               ref={boardTitleRef}
@@ -205,7 +204,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
             <span
               onClick={() => setIsEditing(true)}
               style={{ color: buttonColor }}
-              className='groups-header-title'>{board.title}</span>
+              className='board-details-title'>{board.title}</span>
           )}
           <div
             className='star-container'
@@ -275,7 +274,7 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
         </div>
 
-        <div className='groups-header-rightside'>
+        <div className='board-header-rightside'>
           <div className='filter-container' onClick={toggleFilterOpen}
 
             style={isFilterOpen ? { backgroundColor: buttonColor } : { color: textColor }}>

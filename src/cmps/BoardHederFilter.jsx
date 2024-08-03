@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import closeIcon from '../assets/imgs/Icons/close.svg'
 import { isLightColor } from '../services/util.service'
 
-export function BoardHederFilter({ onClose, filterBy, setFilterBy, board }) {
+export function BoardHeaderFilter({ onClose, filterBy, setFilterBy, board }) {
 
     const [filterToEdit, setFilterToEdit] = useState(filterBy)
     const filterRef = useRef(null)
@@ -57,7 +57,7 @@ export function BoardHederFilter({ onClose, filterBy, setFilterBy, board }) {
     )
 
     return (
-        <section className="BoardHederFilter" ref={filterRef}>
+        <section className="board-header-filter" ref={filterRef}>
             <header>
                 <span>Filter</span>
                 <div className="close-btn-wrapper" onClick={onClose}>

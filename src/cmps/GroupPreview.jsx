@@ -20,7 +20,6 @@ import addIcon from '../assets/imgs/Icons/add.svg'
 import expandIcon from '../assets/imgs/Icons/expand.svg'
 import loadingAnimation from '../assets/imgs/TaskDetails-icons/loading animation.svg'
 
-
 export function GroupPreview({ group, boardId, toggleLabelExpansion, areLabelsExpanded }) {
     const tasks = group?.tasks || []
     const board = useSelector(storeState => storeState.boardModule.board)

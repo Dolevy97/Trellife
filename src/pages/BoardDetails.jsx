@@ -10,7 +10,7 @@ import { BoardDetailsHeader } from '../cmps/BoardDetailsHeader.jsx'
 
 import { RightNavBar } from '../cmps/RightNavBar'
 
-import { BoardHederFilter } from '../cmps/BoardHederFilter.jsx'
+import { BoardHeaderFilter } from '../cmps/BoardHederFilter.jsx'
 import { login } from '../store/actions/user.actions.js'
 import { SOCKET_EMIT_SET_WATCHED_BOARED, SOCKET_EVENT_WATCHED_BOARD_UPDATED, socketService } from '../services/socket.service.js'
 import { useDispatch } from 'react-redux'
@@ -195,7 +195,7 @@ export function BoardDetails() {
         displayStyle={displayStyle}
       />
       {isFilterOpen &&
-        <BoardHederFilter
+        <BoardHeaderFilter
           onClose={() => setIsFilterOpen(false)}
           filterBy={filterBy}
           setFilterBy={setFilterBy}

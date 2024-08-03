@@ -3,7 +3,6 @@ import { BoardPreview } from './BoardPreview'
 
 export function BoardList({ boards }) {
 
-
     return <section>
         <section className="board-list">
             <div className="board-preview-container">

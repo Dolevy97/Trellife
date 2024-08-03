@@ -1,4 +1,4 @@
-.groups-header {
+.board-details-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -21,7 +21,7 @@
     }
 
 
-    .groups-header-title {
+    .board-details-title {
         max-width: 500px;
         font-size: 18px;
         white-space: nowrap;
@@ -33,7 +33,7 @@
         }
     }
 
-    .groups-header-leftside {
+    .board-header-leftside {
         display: flex;
         align-items: center;
 
@@ -92,7 +92,7 @@
         }
     }
 
-    .groups-header-rightside {
+    .board-header-rightside {
         display: flex;
         align-items: center;
         gap: 8px;

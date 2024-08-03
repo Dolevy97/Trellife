@@ -4,7 +4,6 @@ import { showErrorMsg } from "../services/event-bus.service"
 import openAILogo from '../assets/imgs/Icons/OpenAI_Logo.svg'
 import closeIcon from '../assets/imgs/Icons/close.svg'
 
-
 export function CreateAiBoardModal({ isOpen, onClose, onSubmit }) {
     const [title, setTitle] = useState('')
     const [isActive, setIsActive] = useState(false)
