@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { addBoard, updateBoard } from '../store/actions/board.actions'
 import { useSelector } from 'react-redux'
-import { RightNavBar } from '../cmps/RightNavBar'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { updateUser } from '../store/actions/user.actions'
 import { getAverageColorFromUrl, isLightColor } from '../services/util.service'

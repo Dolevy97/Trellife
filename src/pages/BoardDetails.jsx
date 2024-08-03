@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
 import { loadBoard, updateBoard, removeBoard, filterBoard, getCmdUpdateBoard } from '../store/actions/board.actions'
@@ -180,12 +180,9 @@ export function BoardDetails() {
   }
 
   const groups = filteredBoard?.groups || board?.groups || []
-  //needs layers
   if (!board) return <div className='isloading-container'> <img className='isLoading' src={loadingAnimation} /> </div>
 
   return (
-    // <section className="main-display-container">
-    // <LeftNavBar />
     <section ref={groupListHeader} className='board-details'>
       <BoardDetailsHeader
         isRightNavBarOpen={isRightNavBarOpen}

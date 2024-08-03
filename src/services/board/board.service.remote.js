@@ -9,7 +9,7 @@ export const boardService = {
     remove,
 }
 
-async function query(filterBy = {}, sortBy = {}) {
+async function query(filterBy = {}, sortBy = { field: 'activity', dir: -1 }) {
     const filterAndSort = { ...filterBy, ...sortBy }
     return httpService.get(BASE_URL, filterAndSort)
 }
