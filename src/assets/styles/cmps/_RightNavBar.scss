@@ -423,6 +423,10 @@
             border: 1px solid $hrclr;
             border-radius: 8px;
 
+            @media (max-width: 500px) {
+                top: 13em;
+            }
+
             button {
                 background-color: #F87168;
                 color: #172b4d;

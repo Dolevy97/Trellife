@@ -104,6 +104,10 @@
                 &:hover {
                     background-color: $btnhoverclr;
                 }
+
+                @media (max-width: 500px) {
+                    display: none;
+                }
             }
 
             .task-links {

@@ -61,7 +61,7 @@
             cursor: pointer;
 
             padding: 4px;
-            
+
             @media (max-width: 500px) {
                 display: none;
             }
@@ -119,9 +119,14 @@
         padding-bottom: 2.5em;
         z-index: 10;
 
+        @media (max-width: 500px) {
+            left: -6px;
+            top: 43px;
+        }
+
         .menu-header {
             position: relative;
-            
+
             display: flex;
             align-items: center;
             justify-content: center;
