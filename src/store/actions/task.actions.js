@@ -72,9 +72,7 @@ export async function updateTask(task, group, board, activityTitle = '', user) {
     store.dispatch({ type: UPDATE_BOARD, board: updatedBoard })
 
     try {
-        // console.log('Sending updated board to server:', updatedBoard._id);
         const savedBoard = await updateBoard(updatedBoard)
-        // console.log('Board updated successfully on server');
         store.dispatch({ type: UPDATE_BOARD, board: savedBoard })
 
         return savedBoard

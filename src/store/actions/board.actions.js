@@ -7,7 +7,6 @@ export async function loadBoards(filterBy, sortBy) {
         const boards = await boardService.query(filterBy, sortBy)
         store.dispatch(getCmdSetBoards(boards))
     } catch (err) {
-        console.log('Cannot load boards', err)
         throw err
     }
 }
@@ -52,7 +51,6 @@ export async function loadBoard(boardId) {
         store.dispatch(getCmdSetBoard(board))
         return board
     } catch (err) {
-        console.log('Cannot load board', err)
         throw err
     }
 }
@@ -63,7 +61,6 @@ export async function removeBoard(boardId) {
         await boardService.remove(boardId)
         store.dispatch(getCmdRemoveBoard(boardId))
     } catch (err) {
-        console.log('Cannot remove board', err)
         throw err
     }
 }
@@ -74,7 +71,6 @@ export async function addBoard(board) {
         store.dispatch(getCmdAddBoard(savedBoard))
         return savedBoard
     } catch (err) {
-        console.log('Cannot add board', err)
         throw err
     }
 }
@@ -91,7 +87,6 @@ export async function updateBoard(board) {
         store.dispatch(getCmdUpdateBoard(savedBoard))
         return savedBoard;
     } catch (err) {
-        console.log('Cannot save board', err)
         store.dispatch({ type: 'UPDATE_BOARD_FAILED', originalBoard: board })
         throw err;
     }
@@ -109,7 +104,6 @@ export async function updateBoardBgc(board, bgc) {
         await updateBoard(updatedBoard)
         return updatedBoard
     } catch (err) {
-        console.log('Cannot update bgc board', err)
         throw err
     }
 }
