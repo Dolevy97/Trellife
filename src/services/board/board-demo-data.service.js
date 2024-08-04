@@ -30,7 +30,6 @@ function _createDemoBoard() {
     }
     board.groups = _getRandomGroups(board)
     board.activities = _getRandomActivities(board)
-    // board.activities.forEach(a=>console.log(a.task))
     return board
 }
 

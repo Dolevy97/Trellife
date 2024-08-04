@@ -35,7 +35,6 @@ export async function updateGroup(groupId, updatedGroup, board, activityTitle = 
 
 
         const savedBoard = await updateBoard(updatedBoard)
-        // console.log(savedBoard)
         return savedBoard
     } catch (err) {
         console.error('Failed to update group:', err)

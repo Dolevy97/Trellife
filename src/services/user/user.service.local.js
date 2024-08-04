@@ -73,17 +73,3 @@ function saveLoggedinUser(user) {
 	sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
 	return user
 }
-
-// To quickly create an admin user, uncomment the next line
-// _createAdmin()
-async function _createAdmin() {
-    const user = {
-        username: 'admin',
-        password: 'admin',
-        fullname: 'Mustafa Adminsky',
-        imgUrl: 'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png',
-    }
-
-    const newUser = await storageService.post('user', userCred)
-    console.log('newUser: ', newUser)
-}

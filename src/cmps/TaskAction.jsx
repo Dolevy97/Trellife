@@ -294,7 +294,6 @@ export function TaskAction({ action, board, group, task, getMemberById, onSetAct
 
     async function onSaveDueDate(ev) {
         if (!dueDateCheckboxRef.current.checked) {
-            console.log('remove')
             onRemoveDueDate(ev)
             return
         }
