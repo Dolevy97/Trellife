@@ -345,7 +345,6 @@ async function getBoardFromGpt(title, user) {
 }
 
 async function updateBoardImgsFromGptObject(board) {
-    console.log('Initial board from GPT:', JSON.stringify(board, null, 2));
 
     // Deep copy to avoid mutation of the original structure
     const updatedBoard = JSON.parse(JSON.stringify(board));
@@ -366,8 +365,6 @@ async function updateBoardImgsFromGptObject(board) {
             }
         }
     }
-
-    console.log('Final updated board:', JSON.stringify(updatedBoard, null, 2));
 
     return updatedBoard;
 }
