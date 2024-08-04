@@ -162,20 +162,13 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
 
   async function onCreateBoardWithOpenAi(title) {
-    // const title = "Becoming the best music producer"
-    // const title = "Trip to Australia"
-    // const title = "Master fullstack programming"
-
     try {     
       setIsAILoading(true)
-
-      const newBoard = await openAiService.getDemoAiBoard(title, user)
-      // const newBoard = await openAiService.getBoardFromGpt(title, user)
+      // const newBoard = await openAiService.getDemoAiBoard(title, user)
+      const newBoard = await openAiService.getBoardFromGpt(title, user)
       // console.log('newBoard: ', newBoard)
-
       const addedBoard = await addBoard(newBoard)
       // console.log('addedBoard: ', addedBoard)
-      
       setIsAILoading(false)
       navigate(`/board/${addedBoard._id}`)
     } catch (er) {

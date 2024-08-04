@@ -334,12 +334,12 @@ async function getBoardFromGpt(title, user) {
             console.error('Error content:', res.data.content || '');
             throw new Error(res.data.error);
         }
-        console.log('Raw response from GPT:', JSON.stringify(res.data));
+        // console.log('Raw response from GPT:', JSON.stringify(res.data));
         const board = await updateBoardImgsFromGptObject(res.data);
         const boardToAdd = fillEmptyValues(board, user);
         return boardToAdd
     } catch (er) {
-        console.error('Error in onGetBoardFromGpt:', er.message);
+        // console.error('Error in onGetBoardFromGpt:', er.message);
         throw er;
     }
 }
