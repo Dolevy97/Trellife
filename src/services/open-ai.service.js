@@ -338,7 +338,7 @@ async function getBoardFromGpt(title, user) {
         const boardToAdd = fillEmptyValues(board, user);
         return boardToAdd
     } catch (er) {
-        console.error('Error in onGetBoardFromGpt:', er.message);
+        // console.error('Error in onGetBoardFromGpt:', er.message);
         throw er;
     }
 }

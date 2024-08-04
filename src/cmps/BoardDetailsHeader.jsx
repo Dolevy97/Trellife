@@ -162,10 +162,6 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
 
   async function onCreateBoardWithOpenAi(title) {
-    // const title = "Becoming the best music producer"
-    // const title = "Trip to Australia"
-    // const title = "Master fullstack programming"
-
     try {     
       setIsAILoading(true)
 
