@@ -17,6 +17,7 @@ import loadingAnimation from '../assets/imgs/TaskDetails-icons/loading animation
 import photosOptions from '../assets/imgs/photosoption.jpg'
 import colorsOptions from '../assets/imgs/colorsoption.png'
 import { useSelector } from "react-redux"
+import { showErrorMsg } from "../services/event-bus.service"
 
 export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollapse, board }) {
     const users = useSelector(store => store.userModule.users)
@@ -51,7 +52,8 @@ export function RightNavBar({ onClose, isRightNavBarOpen, toggleAllGroupsCollaps
             navigate('/board')
             //add msg
         } catch (err) {
-            console.error('Cannot remove board', err)
+            showErrorMsg('Cannot remove board - you are not the creator of it')
+            // console.error('Cannot remove board', err)
         }
     }
 
