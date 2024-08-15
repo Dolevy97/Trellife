@@ -1,7 +1,5 @@
 # Trellife
-A full-stack web application that replicates the core functionalities of trello app, developed by Yonatan Hershko, Dolev Levy and Jonathan Dolan.
-
-
+A full-stack web application that replicates the core functionalities of trello app, developed by Yonatan Hershko, Dolev Levy and Jonathan Dolan, as part of our bootcamp in Coding Academy.
 
 https://github.com/user-attachments/assets/b56e52a5-0669-4bfd-ba4a-e46e7d00a1a3
 
@@ -10,7 +8,7 @@ https://github.com/user-attachments/assets/b56e52a5-0669-4bfd-ba4a-e46e7d00a1a3
 <img width="940" alt="23" src="https://github.com/user-attachments/assets/35b2766a-5dd0-4a56-8c56-bf095a949f3f">
 </div>
 
-Built with :
+Built with:
 
 ![Tech](https://skillicons.dev/icons?i=js,html,css,sass,react,redux,mongodb,nodejs,vite,&perline=10)
 
@@ -40,4 +38,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-Feel free to contact us for any questions ! 💻
+Feel free to contact us for any questions! 💻
