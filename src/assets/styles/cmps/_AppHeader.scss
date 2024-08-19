@@ -158,9 +158,9 @@
     background-repeat: no-repeat;
     background-position: center;
 
-    @media (max-width:430px) {
-        padding-inline-start: 0px;
-    }
+    // @media (max-width:430px) {
+    //     padding-inline-start: 0px;
+    // }
 
     &.homepage {
         font-size: 1.2em;
@@ -183,7 +183,6 @@
         letter-spacing: .1em;
     }
 }
-
 
 .logo-wrapper {
     position: relative;
