@@ -6,6 +6,8 @@ import { BoardList } from '../cmps/BoardList'
 import { Filter } from '../cmps/BoardFilter'
 import { SOCKET_EVENT_BOARD_ADDED, socketService } from '../services/socket.service'
 import { useDispatch } from 'react-redux'
+import { useEffectUpdate } from '../customHooks/useEffectUpdate'
+import loadingAnimation from '../assets/imgs/TaskDetails-icons/loading animation.svg'
 
 export function BoardIndex() {
     const boards = useSelector(storeState => storeState.boardModule.boards)
@@ -21,7 +23,7 @@ export function BoardIndex() {
         }
     }, [])
 
-    useEffect(() => {
+    useEffectUpdate(() => {
         loadBoards(filterBy, sortBy)
     }, [filterBy, sortBy])
 
@@ -33,6 +35,9 @@ export function BoardIndex() {
         setFilterBy(filter)
     }
 
+    if (!boards) return <div className='isloading-container'>
+        <img className='isLoading' src={loadingAnimation} />
+    </div>
     return (
         <main className="board-index">
             <header>
@@ -50,9 +55,13 @@ export function BoardIndex() {
                 <section>
                     <Filter filterBy={filterBy} onSetFilter={onSetFilter} sortBy={sortBy} onSetSort={onSetSort} />
                 </section>
-                <BoardList
+
+                {boards.length ? <BoardList
                     boards={boards}
-                />
+                /> : <div className='no-boards'>
+                    <h1>No results to show</h1>
+                    <h2>Please try a different search</h2>
+                </div>}
             </section>
         </main>
     )

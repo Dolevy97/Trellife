@@ -6,6 +6,7 @@ import { getBackgroundImages } from "../services/util.service"
 import { useSelector } from "react-redux"
 
 import addPreview from '../assets/imgs/add-preview.svg'
+import loadingAnimation from '../assets/imgs/TaskDetails-icons/loading animation.svg'
 
 export function BoardCreate({ setIsAdding, createButtonPosition }) {
     const [background, setBackground] = useState(`#0079bf`)
@@ -86,8 +87,7 @@ export function BoardCreate({ setIsAdding, createButtonPosition }) {
     }
 
     const { title } = boardToAdd
-
-    if (!backgroundImages) return null
+    if (!backgroundImages) return <div className='isloading-container'> <img className='isLoading' src={loadingAnimation}/> </div>
 
     return (
         <section

@@ -10,7 +10,7 @@ export const SET_SORT_BY = 'SET_SORT_BY'
 export const SET_FILTER_BY = 'SET_FILTER_BY'
 
 const initialState = {
-    boards: [],
+    boards: null,
     board: null,
     sortBy: { field: 'activity', dir: -1 },
     filterBy: boardService.getDefaultFilter()

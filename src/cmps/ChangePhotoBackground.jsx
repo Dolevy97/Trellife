@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getBackgroundImages } from "../services/util.service";
 import { updateBoardBgc } from "../store/actions/board.actions";
+import loadingAnimation from '../assets/imgs/TaskDetails-icons/loading animation.svg'
 
 export function ChangePhotoBackground({ board }) {
 
@@ -18,7 +19,7 @@ export function ChangePhotoBackground({ board }) {
         }
     }
 
-    if (!images) return null
+    if (!images) return <div className='isloading-container'> <img className='isLoading' src={loadingAnimation}/> </div>
 
     return (
         <section className="change-photo-background">

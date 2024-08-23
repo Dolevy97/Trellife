@@ -14,6 +14,7 @@ import dots from "../assets/imgs/icons/3dots.svg"
 import boardIcon from '../assets/imgs/Icons/boardIcon.svg'
 import tableIcon from '../assets/imgs/Icons/tableIcon.svg'
 import openAiIcon from '../assets/imgs/Icons/openAI_Logo.svg'
+import loadingAnimation from '../assets/imgs/TaskDetails-icons/loading animation.svg'
 
 import { AILoadingScreen } from './AILoadingScreen'
 import { useNavigate } from 'react-router'
@@ -48,6 +49,9 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
   useEffect(() => {
     if (board) {
       setNewTitle(board.title)
+    }
+    if (!user) {
+      navigate('/login')
     }
   }, [board])
 
@@ -162,14 +166,14 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
 
 
   async function onCreateBoardWithOpenAi(title) {
-    try {     
+    try {
       setIsAILoading(true)
 
       // const newBoard = await openAiService.getDemoAiBoard(title, user)
       const newBoard = await openAiService.getBoardFromGpt(title, user)
 
       const addedBoard = await addBoard(newBoard)
-      
+
       setIsAILoading(false)
       navigate(`/board/${addedBoard._id}`)
     } catch (er) {
@@ -178,7 +182,9 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
       showErrorMsg('Operation failed. Please try again later')
     }
   }
-  
+
+  if (!user) return <div className='isloading-container'> <img className='isLoading' src={loadingAnimation}/> </div>
+
   return (
     <>
       <section className={`board-details-header ${isRightNavBarOpen ? 'right-nav-open' : ''}`}>
@@ -303,9 +309,8 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
             <img className="share-join-icon" src={share} style={iconColor}></img>
             <span className='share-join-text'>{canUserJoinBoard() ? 'Share' : 'Join'}</span></button>
           {!isRightNavBarOpen && (
-            <div className='open-right-nav-wrapper'>
+            <div className='open-right-nav-wrapper' onClick={toggleRightNavBar}>
               <img
-                onClick={toggleRightNavBar}
                 src={dots} alt=""
                 style={outsideIconColor}
                 className='open-right-nav-icon' />
@@ -316,10 +321,10 @@ export function BoardDetailsHeader({ isRightNavBarOpen, setIsRightNavBarOpen, se
       </section >
       <AILoadingScreen isLoading={isAILoading} />
       <CreateAiBoardModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            onSubmit={onCreateBoardWithOpenAi}
-          />
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={onCreateBoardWithOpenAi}
+      />
     </>
   )
 }

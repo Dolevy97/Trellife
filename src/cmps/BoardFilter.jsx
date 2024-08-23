@@ -1,17 +1,20 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { CustomSelect } from './CustomSelect'
-import { boardService } from '../services/board'
+import { debounce } from '../services/util.service'
+import { useEffectUpdate } from '../customHooks/useEffectUpdate'
 
 export function Filter({ filterBy, onSetFilter, onSortBy, onSetSort }) {
 
     const [filterToEdit, setFilterToEdit] = useState(structuredClone(filterBy))
     const [sortByToEdit, setSortByToEdit] = useState({ field: 'activity', dir: -1 })
 
-    useEffect(() => {
-        onSetFilter(filterToEdit)
+    const debouncedSetFilter = useRef(debounce(filter => onSetFilter(filter), 300))
+
+    useEffectUpdate(() => {
+        debouncedSetFilter.current(filterToEdit)
     }, [filterToEdit])
 
-    useEffect(() => {
+    useEffectUpdate(() => {
         onSetSort(sortByToEdit)
     }, [sortByToEdit])
 
