@@ -194,7 +194,7 @@
             width: 32px;
             height: 32px;
             border-radius: 4px;
-            transition: background-color 0table-icon-container.1s ease;
+            transition: background-color 0 table-icon-container .1s ease;
             cursor: pointer;
 
             &:hover {
@@ -202,6 +202,12 @@
             }
 
         }
+    }
+}
+
+.table-icon-container {
+    @media (max-width: 455px) {
+        display: none;
     }
 }
 
