@@ -97,6 +97,10 @@
         align-items: center;
         gap: 8px;
 
+        @media (max-width: 455px) {
+            gap: 2px;
+        }
+
         .filter-container {
             display: flex;
             align-items: center;
@@ -202,6 +206,12 @@
             }
 
         }
+    }
+}
+
+.table-icon-container {
+    @media (max-width: 455px) {
+        display: none;
     }
 }
 
