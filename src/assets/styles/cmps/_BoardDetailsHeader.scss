@@ -211,6 +211,12 @@
     }
 }
 
+.table-icon-container {
+    @media (max-width: 455px) {
+        display: none;
+    }
+}
+
 .table-icon-container,
 .board-icon-container,
 .chat-trellife-container {
